@@ -18,30 +18,27 @@ export const LatestPostPreview: React.FC<LatestPostPreviewProps> = ({
   createdAt
 }) => {
   return (
-    <Link
-      className="bg-secondary media-padding flex h-1/3 min-h-96 cursor-pointer items-center gap-4"
-      href={`/posts/${postId}`}
-    >
+    <section className="bg-secondary media-padding-x flex min-h-96 items-center gap-4 py-12">
       <div className="flex h-full w-1/2 flex-col justify-center">
         <PreviewContainer>
-          <p className="text-sky-blue text-md">최근 게시글</p>
+          <p className="text-sky-blue text-base">최근 게시글</p>
           <h1>{title}</h1>
         </PreviewContainer>
         <PreviewContainer className="text-gray-500">
           <p className="line-clamp-3">{description}</p>
           <p className="text-end">{createdAt}</p>
         </PreviewContainer>
+        <Link
+          href={`/blog/${postId}`}
+          className="bg-sky-blue hover:bg-bright-blue mt-3 w-fit rounded-md px-6 py-3 text-base font-semibold text-white"
+        >
+          게시글 보러 가기
+        </Link>
       </div>
-      <div className="relative my-auto h-4/5 w-1/2">
-        <Image
-          src={thumbnailUrl}
-          alt={title}
-          layout="fill"
-          objectFit="cover"
-          className="h-1/2 w-1/2 rounded-md"
-        />
+      <div className="relative my-auto min-h-96 w-1/2">
+        <Image src={thumbnailUrl} alt={title} layout="fill" objectFit="cover" />
       </div>
-    </Link>
+    </section>
   );
 };
 
