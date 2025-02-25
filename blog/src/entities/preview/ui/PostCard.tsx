@@ -28,7 +28,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 }) => {
   return (
     <Link
-      className="flex aspect-video flex-col gap-4 rounded-md px-4 py-2 shadow-md transition-shadow duration-200 hover:shadow-lg"
+      className="flex aspect-video flex-col gap-4 rounded-md px-4 py-2 shadow-md transition-transform duration-200 hover:scale-105 hover:shadow-xl"
       href={`/post/${postId}`}
     >
       {/* 이미지 */}

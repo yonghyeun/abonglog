@@ -10,7 +10,7 @@ interface PopularPostWidgetProps {
   }>;
 }
 
-const mockPopularPostData = Array.from({ length: 4 }, (_, idx) => ({
+const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
   postId: idx + 1,
   title: "Lorem ipsum dolor",
   description:
