@@ -27,7 +27,7 @@ const Header = () => (
 const Footer = () => (
   <footer className="bg-tertiary media-padding-x py-4 text-gray-200">
     {/* introduce */}
-    <div className="flex gap-4">
+    <div className="flex flex-col justify-between gap-4 md:flex-row">
       <div className="flex-grow">
         <h3>abonglog</h3>
         <p>
@@ -49,6 +49,8 @@ const Footer = () => (
         </span>
       </div>
     </div>
-    <p className="text-center italic">@ 2025 abonglog All rights reserved</p>
+    <p className="mt-2 text-center italic">
+      @ 2025 abonglog All rights reserved
+    </p>
   </footer>
 );
