@@ -1,6 +1,35 @@
-export const Button: React.FC<React.PropsWithChildren> = ({ children }) => {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  size: keyof typeof buttonSizes;
+  variant: keyof typeof buttonStyles;
+}
+
+const buttonStyles = {
+  filled:
+    "bg-sky-blue text-white hover:bg-bright-blue active:scale-105 transform",
+  outlined:
+    "bg-primary text-sky-blue border border-2 border-sky-blue hover:bg-secondary active:scale-105 transform"
+} as const;
+
+const buttonSizes = {
+  sm: "px-4 py-2 text-sm",
+  md: "px-6 py-3 text-base",
+  lg: "px-8 py-4 text-lg"
+} as const;
+
+const buttonDefaultClassName =
+  "rounded-md transition-transform duration-50 font-semibold";
+
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  size,
+  variant,
+  ...props
+}) => {
   return (
-    <button className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3">
+    <button
+      className={`${buttonDefaultClassName} ${buttonSizes[size]} ${buttonStyles[variant]}`}
+      {...props}
+    >
       {children}
     </button>
   );

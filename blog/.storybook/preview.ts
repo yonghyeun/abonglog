@@ -4,7 +4,7 @@ import type { Preview } from "@storybook/react";
 const preview: Preview = {
   tags: ["autodocs"],
   parameters: {
-    layouts: ["center"],
+    layout: "centered",
     controls: {
       matchers: {
         color: /(background|color)$/i,

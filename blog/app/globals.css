@@ -1,3 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --white: #ffffff;
+  --secondary-white: #f0f0f0;
+  --hot-pink: #d90479;
+  --bright-blue: #056cf2;
+  --sky-blue: #0785f2;
+  --orange: #f29d35;
+
+  --bg-primary: var(--white);
+  --bg-secondary: var(--secondary-white);
+  --bg-tertiary: var(--bright-blue);
+}
+
+.dark {
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+h1 {
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 2rem;
+  word-break: keep-all;
+}
+h2 {
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 1.5rem;
+  word-break: keep-all;
+}
+h3 {
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 1.17rem;
+  word-break: keep-all;
+}
+
+.media-padding-x {
+  @apply px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-40;
+}
