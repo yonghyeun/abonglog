@@ -1,3 +1,4 @@
+import { SideBar } from "./ui";
 import { Noto_Sans } from "next/font/google";
 import { FaGithub } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
@@ -9,7 +10,7 @@ const notoSans = Noto_Sans({
 export const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html className={notoSans.className}>
-      <body className="bg-primary flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col bg-primary">
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
@@ -19,13 +20,14 @@ export const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const Header = () => (
-  <header className="media-padding-x flex items-center justify-between py-4">
+  <header className="media-padding-x flex items-center gap-2 py-4">
     <h1>abonglog</h1>
+    <SideBar />
   </header>
 );
 
 const Footer = () => (
-  <footer className="bg-tertiary media-padding-x py-4 text-gray-200">
+  <footer className="media-padding-x bg-tertiary py-4 text-gray-200">
     {/* introduce */}
     <div className="flex flex-col justify-between gap-4 md:flex-row">
       <div className="flex-grow">
