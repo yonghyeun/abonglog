@@ -28,7 +28,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 }) => {
   return (
     <Link
-      className="flex aspect-video flex-col gap-4 rounded-md p-4 shadow-md transition-shadow duration-200 hover:shadow-lg"
+      className="flex aspect-video flex-col gap-4 rounded-md px-4 py-2 shadow-md transition-shadow duration-200 hover:shadow-lg"
       href={`/post/${postId}`}
     >
       {/* 이미지 */}
@@ -45,7 +45,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         {tags.map(({ id, name }) => (
           <li
             key={id}
-            className={`${tagStyleArray[id % tagStyleArray.length]} rounded-md px-2`}
+            className={`${tagStyleArray[id % tagStyleArray.length]} font semibold rounded-md px-2 py-1`}
           >
             {capitalizeFirstLetter(name)}
           </li>
@@ -53,7 +53,7 @@ export const PostCard: React.FC<PostCardProps> = ({
       </ul>
       {/* 제목 */}
       <h3>{title}</h3>
-      <div className="flex flex-col gap-2 text-sm text-gray-500">
+      <div className="flex flex-col gap-4 text-sm text-gray-500">
         {/* 설명 */}
         <p className="line-clamp-2">{description}</p>
         <div className="flex gap-2">
