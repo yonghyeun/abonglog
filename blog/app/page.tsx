@@ -1,3 +1,3 @@
-export default function Page() {
-  return <div>hi!</div>;
-}
+import { MainPage } from "@/views/main";
+
+export default MainPage;
