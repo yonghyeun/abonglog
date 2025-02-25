@@ -1,5 +1,4 @@
 import { PopularPostWidget } from "@/widgets/popular/ui";
-import type { PopularSearchParams } from "@/widgets/types";
 
 import { LatestPostPreview } from "@/entities/preview/ui";
 
@@ -12,18 +11,14 @@ const mockLatestPostPreviewProps = {
   thumbnailUrl: "/images/latest_post_thumbnail.jpg"
 };
 
-export const MainPage: React.FC<{
-  searchParams: Promise<{
-    popular?: PopularSearchParams;
-  }>;
-}> = async ({ searchParams }) => {
+export const MainPage = () => {
   return (
     <>
       {/* Latest Post */}
       <LatestPostPreview {...mockLatestPostPreviewProps} />
       {/* Popular */}
       <div className="media-padding-x mt-4">
-        <PopularPostWidget searchParams={searchParams} />
+        <PopularPostWidget />
       </div>
       {/* Series */}
       <div></div>

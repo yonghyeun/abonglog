@@ -1,14 +1,9 @@
-import type { PopularSearchParams } from "../../types";
+"use client";
+
 import { popularPostNavData } from "../config";
-import Link from "next/link";
+import { useState } from "react";
 
 import { PostCard } from "@/entities/preview/ui";
-
-interface PopularPostWidgetProps {
-  searchParams: Promise<{
-    popular?: PopularSearchParams;
-  }>;
-}
 
 const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
   postId: idx + 1,
@@ -24,16 +19,20 @@ const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
   ]
 }));
 
-export const PopularPostWidget: React.FC<PopularPostWidgetProps> = async ({
-  searchParams
-}) => {
-  const { popular = "daily" } = await searchParams;
+type PopularMenu = "daily" | "weekly" | "monthly";
+
+export const PopularPostWidget = () => {
+  const [popularMenu, setPopularMenu] = useState<PopularMenu>("daily");
+
+  const handleClick = (value: PopularMenu) => {
+    setPopularMenu(value);
+  };
 
   return (
     <section className="flex flex-col gap-4 py-4">
       <div>
         <h1 className="mb-2">인기글 모아보기</h1>
-        <PopularNavigationBar activeParam={popular} />
+        <PopularNavigationBar popularMenu={popularMenu} onClick={handleClick} />
       </div>
       <section className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
         {mockPopularPostData.map((data) => (
@@ -45,29 +44,29 @@ export const PopularPostWidget: React.FC<PopularPostWidgetProps> = async ({
 };
 
 interface PopularNavigationBarProps {
-  activeParam: PopularSearchParams;
+  popularMenu: PopularMenu;
+  onClick: (value: PopularMenu) => void;
 }
 
 export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
-  activeParam
+  popularMenu,
+  onClick
 }) => {
   const activeParamIndex = popularPostNavData.findIndex(
-    ({ value }) => value === activeParam
+    ({ value }) => value === popularMenu
   );
 
   return (
     <div className="w-fit">
       <nav>
         {popularPostNavData.map(({ name, value }) => (
-          <Link
-            href={`./?popular=${value}`}
+          <button
             key={value}
-            className={`${value === activeParam ? "text-sky-blue text-semibold" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
-            replace
-            scroll={false}
+            className={`${value === popularMenu ? "text-sky-blue text-semibold" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
+            onClick={() => onClick(value)}
           >
             {name}
-          </Link>
+          </button>
         ))}
       </nav>
       <div className="bg-secondary relative mt-2 h-0.5 w-full">
