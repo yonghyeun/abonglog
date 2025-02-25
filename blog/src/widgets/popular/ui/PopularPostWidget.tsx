@@ -29,7 +29,7 @@ export const PopularPostWidget = () => {
   };
 
   return (
-    <section className="flex flex-col gap-4 py-4">
+    <section className="media-padding-x mt-4 flex flex-col gap-4 py-4">
       <div>
         <h1 className="mb-2">인기글 모아보기</h1>
         <PopularNavigationBar popularMenu={popularMenu} onClick={handleClick} />
@@ -62,16 +62,16 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
         {popularPostNavData.map(({ name, value }) => (
           <button
             key={value}
-            className={`${value === popularMenu ? "text-sky-blue text-semibold" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
+            className={`${value === popularMenu ? "text-semibold text-sky-blue" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
             onClick={() => onClick(value)}
           >
             {name}
           </button>
         ))}
       </nav>
-      <div className="bg-secondary relative mt-2 h-0.5 w-full">
+      <div className="relative mt-2 h-0.5 w-full bg-secondary">
         <div
-          className={`bg-sky-blue absolute h-0.5 w-1/3 transition-transform duration-200`}
+          className={`absolute h-0.5 w-1/3 bg-sky-blue transition-transform duration-200`}
           style={{
             transform: `translateX(${activeParamIndex * 100}%)`
           }}

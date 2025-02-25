@@ -17,13 +17,7 @@ export const MainPage = () => {
       {/* Latest Post */}
       <LatestPostPreview {...mockLatestPostPreviewProps} />
       {/* Popular */}
-      <div className="media-padding-x mt-4">
-        <PopularPostWidget />
-      </div>
-      {/* Series */}
-      <div></div>
-      {/* tag */}
-      <div></div>
+      <PopularPostWidget />
     </>
   );
 };
