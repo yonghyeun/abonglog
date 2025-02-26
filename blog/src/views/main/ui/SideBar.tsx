@@ -14,7 +14,7 @@ export const SideBar = () => {
     <>
       {/* 사이드바 햄버거 */}
       <button
-        className="rounded-dm flex flex-col gap-1 p-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
+        className="flex flex-col gap-1 rounded-md p-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
         aria-label="메뉴 열기"
         tabIndex={0}
         onClick={handleOpenSidebar}

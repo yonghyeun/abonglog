@@ -1,6 +1,8 @@
 import { SideBar } from "./ui";
 import { Noto_Sans } from "next/font/google";
+import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
+import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 
 const notoSans = Noto_Sans({
@@ -20,9 +22,19 @@ export const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const Header = () => (
-  <header className="media-padding-x flex items-center gap-2 py-4">
-    <h1>abonglog</h1>
-    <SideBar />
+  <header className="media-padding-x flex items-center justify-between py-4">
+    <div className="flex items-center gap-2">
+      <h1>abonglog</h1>
+      <SideBar />
+    </div>
+    {/* 로그인 모달 트리거 */}
+    <Link
+      href="#"
+      className="rounded-md p-2 hover:bg-gray-200"
+      aria-label="로그인"
+    >
+      <FaRegUserCircle size="24" />
+    </Link>
   </header>
 );
 
