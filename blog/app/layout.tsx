@@ -11,12 +11,20 @@ const notoSans = Noto_Sans({
   display: "swap"
 });
 
-const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+interface RootLayoutProps {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}
+
+const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   return (
     <html className={notoSans.className}>
       <body className="flex min-h-screen flex-col bg-primary">
         <Header />
-        <main className="flex-grow">{children}</main>
+        <main className="flex flex-grow flex-col">
+          {modal}
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
@@ -31,7 +39,7 @@ const Header = () => (
     </div>
     {/* 로그인 모달 트리거 */}
     <Link
-      href="#"
+      href="/login"
       className="rounded-md p-2 hover:bg-gray-200"
       aria-label="로그인"
     >

@@ -43,3 +43,7 @@ h3 {
 .media-padding-x {
   @apply px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-40;
 }
+
+p {
+  margin-bottom: 0.5rem;
+}
