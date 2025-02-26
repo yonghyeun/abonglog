@@ -1,3 +1,4 @@
+import { OAuthLoginAction } from "../lib";
 import { FaGithub } from "react-icons/fa";
 
 import { Button } from "@/shared/ui/Button";
@@ -15,7 +16,11 @@ export const OAuthLoginForm: React.FC = () => {
             <label htmlFor="login-form">abonglog Login</label>
           </h1>
         </header>
-        <form id="login-form" aria-labelledby="login-form-title">
+        <form
+          id="login-form"
+          aria-labelledby="login-form-title"
+          action={OAuthLoginAction}
+        >
           <Button
             size="lg"
             variant="filled"
