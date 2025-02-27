@@ -1,1 +1,1 @@
-export * from "./createServerSupabase";
+export * from "./checkUserLoggedIn";

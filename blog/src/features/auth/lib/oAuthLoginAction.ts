@@ -3,7 +3,7 @@
 import { headers as _headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { createServerSupabase } from "@/shared/lib";
+import { createServerSupabase } from "@/shared/utils";
 
 export const OAuthLoginAction = async () => {
   const supabase = await createServerSupabase();
