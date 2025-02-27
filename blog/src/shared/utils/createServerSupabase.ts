@@ -20,9 +20,20 @@ export const createServerSupabase = async () => {
         return cookieStore.getAll();
       },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) =>
-          cookieStore.set(name, value, options)
-        );
+        try {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
+        } catch {
+          /**
+           * 해당 catch 문은 createServerSupabase 함수가 서버 컴포넌트에서 사용 될 경우 발생하는
+           * 에러를 무시하기 위한 캐치문입니다.
+           *
+           * 기본적으로 NextJS 에서 cookieStore에 setCookie 동작은 서버 액션이나 라우트 핸들러에서만 사용 가능합니다.
+           * 우리는 setCookie 동작을 하는 @supabase/ssr 을 사용하고 있기 때문에 서버 컴포넌트에서 사용할 경우
+           * 에러가 발생하여 해당 에러를 무시 할 catch문을 추가해줍니다.
+           */
+        }
       }
     },
     auth: {

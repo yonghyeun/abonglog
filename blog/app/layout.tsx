@@ -7,6 +7,8 @@ import { MdOutlineEmail } from "react-icons/md";
 
 import { SideBar } from "@/widgets/navigate/ui";
 
+import { checkUserLoggedIn } from "@/shared/lib";
+
 const notoSans = Noto_Sans({
   display: "swap"
 });
@@ -31,22 +33,28 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   );
 };
 
-const Header = () => (
-  <header className="media-padding-x flex items-center justify-between py-4">
-    <div className="flex items-center gap-2">
-      <h1>abonglog</h1>
-      <SideBar />
-    </div>
-    {/* 로그인 모달 트리거 */}
-    <Link
-      href="/login"
-      className="rounded-md p-2 hover:bg-gray-200"
-      aria-label="로그인"
-    >
-      <FaRegUserCircle size="24" />
-    </Link>
-  </header>
-);
+const Header = async () => {
+  const { isLoggedIn } = await checkUserLoggedIn();
+  return (
+    <header className="media-padding-x flex items-center justify-between py-4">
+      <div className="flex items-center gap-2">
+        <h1>abonglog</h1>
+        <SideBar />
+      </div>
+      {/* 로그인 모달 트리거 */}
+      {isLoggedIn && (
+        <Link
+          href="/auth"
+          className="rounded-md p-2 hover:bg-gray-200"
+          aria-label="인증 페이지로 이동"
+          replace
+        >
+          <FaRegUserCircle size="24" />
+        </Link>
+      )}
+    </header>
+  );
+};
 
 const Footer = () => (
   <footer className="media-padding-x bg-tertiary py-4 text-gray-200">
