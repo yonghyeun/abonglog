@@ -18,11 +18,23 @@ export const GET = async (req: NextRequest) => {
   const { user } = data;
 
   if (error) {
+    // TODO 적합한 에러 페이지 생성하기
     redirect(`/error/${error.code}`);
   }
 
   if (!user) {
+    // TODO 적합한 에러 페이지 생성하기
     redirect(`/error/401`);
+  }
+
+  if (user.email !== HOST_EMAIL) {
+    await Promise.all([
+      supabase.auth.admin.deleteUser(user.id),
+      supabase.auth.signOut()
+    ]);
+
+    // TODO 사용자 에러 페이지로 적합하게 리다이렉션 하기
+    return NextResponse.redirect(url.origin);
   }
 
   return NextResponse.redirect(url.origin);
