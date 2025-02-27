@@ -38,7 +38,11 @@ const Header = async () => {
   return (
     <header className="media-padding-x flex items-center justify-between py-4">
       <div className="flex items-center gap-2">
-        <h1>abonglog</h1>
+        <h1>
+          <Link href="/" aria-labelledby="메인 페이지로 이동">
+            abonglog
+          </Link>
+        </h1>
         <SideBar />
       </div>
       {/* 로그인 모달 트리거 */}
