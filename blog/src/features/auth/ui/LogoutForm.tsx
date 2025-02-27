@@ -1,9 +1,8 @@
-import { OAuthLoginAction } from "../lib";
-import { FaGithub } from "react-icons/fa";
+import { logoutAction } from "../lib";
 
 import { Button } from "@/shared/ui/Button";
 
-export const OAuthLoginForm: React.FC = () => {
+export const LogoutForm = () => {
   return (
     <section
       className="flex flex-col gap-4"
@@ -12,31 +11,30 @@ export const OAuthLoginForm: React.FC = () => {
     >
       <div className="flex flex-col gap-4">
         <header className="flex">
-          <h1 id="login-form-title" className="flex-grow text-center">
-            <label htmlFor="login-form">abonglog Login</label>
+          <h1 id="logout-form-title" className="flex-grow text-center">
+            <label htmlFor="logout-form">abonglog Logout</label>
           </h1>
         </header>
         <form
-          id="login-form"
-          aria-labelledby="login-form-title"
-          action={OAuthLoginAction}
+          id="logout-form"
+          aria-labelledby="logout-form-title"
+          action={logoutAction}
         >
           <Button
             size="md"
             variant="filled"
             type="submit"
             className="flex w-full items-center gap-2"
-            aria-label="Github 계정으로 로그인"
+            aria-label="로그아웃"
           >
-            <FaGithub size="24" />
-            <p className="flex-grow text-center">Github 계정으로 로그인</p>
+            <p className="flex-grow text-center">로그아웃</p>
           </Button>
         </form>
       </div>
       <aside
         className="text-sm text-gray-400"
         role="complementary"
-        aria-labelledby="login-form-title"
+        aria-labelledby="logout-form-title"
       >
         <p>
           현재 로그인 기능은 주인장이 블로그를 관리하기 위해서만 사용 됩니다.
