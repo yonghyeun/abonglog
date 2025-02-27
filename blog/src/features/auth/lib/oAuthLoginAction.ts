@@ -1,13 +1,22 @@
 "use server";
 
-import { getSupabaseClient } from "@/shared/lib";
+import { headers as _headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { createServerSupabase } from "@/shared/lib";
 
 export const OAuthLoginAction = async () => {
-  const supabase = await getSupabaseClient();
+  const supabase = await createServerSupabase();
 
-  const data = await supabase.auth.signInWithOAuth({
-    provider: "github"
+  const headers = await _headers();
+  const origin = headers.get("origin");
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: `${origin}/api/auth/callback`
+    }
   });
 
-  console.log(data);
+  redirect(error ? origin || "/" : data.url);
 };
