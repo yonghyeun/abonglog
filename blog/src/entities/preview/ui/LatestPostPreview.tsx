@@ -18,10 +18,10 @@ export const LatestPostPreview: React.FC<LatestPostPreviewProps> = ({
   createdAt
 }) => {
   return (
-    <section className="bg-secondary media-padding-x flex min-h-96 items-center gap-4 py-12">
+    <section className="media-padding-x flex min-h-96 items-center gap-4 bg-secondary py-12">
       <div className="flex h-full w-1/2 flex-col justify-center">
         <PreviewContainer>
-          <p className="text-sky-blue text-base">최근 게시글</p>
+          <p className="text-base text-sky-blue">최근 게시글</p>
           <h1>{title}</h1>
         </PreviewContainer>
         <PreviewContainer className="text-gray-500">
@@ -30,7 +30,7 @@ export const LatestPostPreview: React.FC<LatestPostPreviewProps> = ({
         </PreviewContainer>
         <Link
           href={`/blog/${postId}`}
-          className="bg-sky-blue hover:bg-bright-blue mt-3 w-fit rounded-md px-6 py-3 text-base font-semibold text-white"
+          className="mt-3 w-fit rounded-md bg-sky-blue px-6 py-3 text-base font-semibold text-white hover:bg-bright-blue"
         >
           게시글 보러 가기
         </Link>
