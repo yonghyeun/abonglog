@@ -47,7 +47,6 @@ const Header = async () => {
           href="/auth"
           className="rounded-md p-2 hover:bg-gray-200"
           aria-label="인증 페이지로 이동"
-          replace
         >
           <FaRegUserCircle size="24" />
         </Link>
