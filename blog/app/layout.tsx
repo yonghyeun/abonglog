@@ -48,17 +48,25 @@ const Header = async () => {
         <SideBar />
       </div>
       {user && (
-        <Link
-          className="flex items-end gap-2 rounded-md p-2 hover:bg-secondary"
-          href="/auth"
-        >
-          <Profile
-            size="sm"
-            src={`${user.profileUrl}`}
-            alt={`${user.email} 의 프로필 이미지`}
-          />
-          <p className="text-xs text-gray-400">{user.email}</p>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/write"
+            className="text-md p-2 text-gray-400 hover:bg-secondary"
+          >
+            글 쓰기
+          </Link>
+          <Link
+            className="flex items-end gap-2 rounded-md p-2 hover:bg-secondary"
+            href="/auth"
+          >
+            <Profile
+              size="sm"
+              src={`${user.profileUrl}`}
+              alt={`${user.email} 의 프로필 이미지`}
+            />
+            <p className="text-xs text-gray-400">{user.email}</p>
+          </Link>
+        </div>
       )}
     </header>
   );
