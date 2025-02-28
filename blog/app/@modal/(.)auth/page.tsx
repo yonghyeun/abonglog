@@ -1,4 +1,4 @@
-import { OAuthLoginForm } from "@/features/auth/ui";
+import { EmailLoginForm } from "@/features/auth/ui";
 import { LogoutForm } from "@/features/auth/ui/LogoutForm";
 
 import { checkUserLoggedIn } from "@/shared/lib";
@@ -8,7 +8,7 @@ const AuthModal = async () => {
   const { isLoggedIn } = await checkUserLoggedIn();
   return (
     <RoutingModal>
-      {isLoggedIn ? <LogoutForm /> : <OAuthLoginForm />}
+      {isLoggedIn ? <LogoutForm /> : <EmailLoginForm />}
     </RoutingModal>
   );
 };
