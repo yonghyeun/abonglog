@@ -1,8 +1,6 @@
 import "./globals.css";
 import { Noto_Sans } from "next/font/google";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { MdOutlineEmail } from "react-icons/md";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
 
@@ -10,6 +8,7 @@ import { SideBar } from "@/widgets/navigate/ui";
 
 import { getCurrentUserData } from "@/entities/user/model";
 
+import { GithubIcon, HumanIcon } from "@/shared/config";
 import { Profile } from "@/shared/ui/Profile";
 
 const notoSans = Noto_Sans({
@@ -93,11 +92,11 @@ const Footer = () => (
           href="https://github.com/yonghyeun"
           className="flex items-center gap-2 text-sm"
         >
-          <FaGithub />
+          <GithubIcon />
           Github
         </a>
         <span className="flex items-center gap-2 text-sm">
-          <MdOutlineEmail /> ttddcc119@naver.com
+          <HumanIcon /> ttddcc119@naver.com
         </span>
       </div>
     </div>

@@ -2,9 +2,8 @@
 
 import { useSidebar } from "../lib";
 import Link from "next/link";
-import { HiOutlineBuildingLibrary } from "react-icons/hi2";
-import { IoMdArrowBack } from "react-icons/io";
-import { LuLibrary } from "react-icons/lu";
+
+import { BackwardIcon, BooksIcon, LibraryIcon } from "@/shared/config";
 
 export const SideBar = () => {
   const { isOpen, sideBarRef, handleOpenSidebar, handleCloseSidebar } =
@@ -36,7 +35,7 @@ export const SideBar = () => {
             aria-label="메뉴 닫기"
             className="p-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
           >
-            <IoMdArrowBack size="24" />
+            <BackwardIcon size="24" />
           </button>
         </div>
         {/* 목차 */}
@@ -44,13 +43,13 @@ export const SideBar = () => {
           <h3 className="mb-2 border-b">게시글 목록</h3>
           <ul className="flex flex-col gap-2">
             <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-bright-blue">
-              <LuLibrary />
+              <BooksIcon />
               <Link href="#" className="py-2">
                 전체 게시글 보기
               </Link>
             </li>
             <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-bright-blue">
-              <HiOutlineBuildingLibrary />
+              <LibraryIcon />
               <Link href="#" className="py-2">
                 시리즈 목록 보기
               </Link>
