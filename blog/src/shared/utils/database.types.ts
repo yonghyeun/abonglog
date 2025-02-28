@@ -9,18 +9,21 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      users: {
+      tags: {
         Row: {
-          id: string;
-          profile_image: string;
+          created_at: string;
+          id: number;
+          name: string;
         };
         Insert: {
-          id?: string;
-          profile_image?: string;
+          created_at?: string;
+          id?: number;
+          name: string;
         };
         Update: {
-          id?: string;
-          profile_image?: string;
+          created_at?: string;
+          id?: number;
+          name?: string;
         };
         Relationships: [];
       };
