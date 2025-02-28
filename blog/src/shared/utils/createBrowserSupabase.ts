@@ -1,5 +1,5 @@
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "../config";
-import { Database } from "./database.types";
+import type { Database } from "../model/database.types";
 import { createBrowserClient } from "@supabase/ssr";
 
 export const createBrowserSupabase = () => {
