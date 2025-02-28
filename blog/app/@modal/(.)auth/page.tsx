@@ -1,15 +1,14 @@
 import { EmailLoginForm } from "@/features/auth/ui";
 import { LogoutForm } from "@/features/auth/ui/LogoutForm";
 
-import { checkUserLoggedIn } from "@/shared/lib";
+import { getCurrentUserData } from "@/entities/user/model";
+
 import { RoutingModal } from "@/shared/ui/RoutingModal";
 
 const AuthModal = async () => {
-  const { isLoggedIn } = await checkUserLoggedIn();
+  const user = await getCurrentUserData();
   return (
-    <RoutingModal>
-      {isLoggedIn ? <LogoutForm /> : <EmailLoginForm />}
-    </RoutingModal>
+    <RoutingModal>{user ? <LogoutForm /> : <EmailLoginForm />}</RoutingModal>
   );
 };
 

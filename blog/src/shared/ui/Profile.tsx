@@ -1,6 +1,6 @@
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 
-interface ProfileProps {
+interface ProfileProps extends ImageProps {
   size: keyof typeof profileSizeMap;
 }
 
@@ -10,15 +10,24 @@ const profileSizeMap = {
   lg: "h-16 w-16"
 } as const;
 
-export const Profile: React.FC<ProfileProps> = ({ size }) => (
-  <div
-    className={`${profileSizeMap[size]} relative overflow-hidden rounded-full`}
-  >
-    <Image
-      layout="fill"
-      objectFit="cover"
-      src="/images/profile.jpg"
-      alt="프로필 이미지"
-    />
-  </div>
-);
+export const Profile: React.FC<ProfileProps> = ({
+  size,
+  src,
+  alt,
+  ...props
+}) => {
+  return (
+    <div
+      className={`${profileSizeMap[size]} relative overflow-hidden rounded-full`}
+    >
+      <Image
+        width={48}
+        height={48}
+        className="object-cover"
+        src={src}
+        alt={alt}
+        {...props}
+      />
+    </div>
+  );
+};

@@ -57,7 +57,8 @@ export const PostCard: React.FC<PostCardProps> = ({
         {/* 설명 */}
         <p className="line-clamp-2">{description}</p>
         <div className="flex gap-2">
-          <Profile size="sm" />
+          {/* TODO 필수적으로 author 이미지로 변경 하기  */}
+          <Profile size="sm" src="/images/profile.jpg" alt="프로필 이미지" />
           <div className="text-xs">
             <p>yonghyeun</p>
             <p>{createdAt}</p>
