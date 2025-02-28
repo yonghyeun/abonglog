@@ -12,7 +12,12 @@ interface TagProps
   onClick?: (tagName: string) => void;
 }
 
-export const Tag: React.FC<TagProps> = ({ tagId, name, onClick, ...props }) => {
+export const TagChip: React.FC<TagProps> = ({
+  tagId,
+  name,
+  onClick,
+  ...props
+}) => {
   return (
     <button
       className={`${tagStyleArray[tagId % tagStyleArray.length]} rounded-full px-4 py-1 text-sm`}

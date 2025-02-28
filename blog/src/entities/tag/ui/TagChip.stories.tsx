@@ -1,9 +1,9 @@
-import { Tag } from "./Tag";
+import { TagChip } from "./TagChip";
 import type { Meta, StoryObj } from "@storybook/react";
 
-const meta: Meta<typeof Tag> = {
-  title: "entities/tag/Tag",
-  component: Tag,
+const meta: Meta<typeof TagChip> = {
+  title: "entities/tag/TagChip",
+  component: TagChip,
   argTypes: {
     tagId: {
       control: {
@@ -26,13 +26,14 @@ const meta: Meta<typeof Tag> = {
       description: {
         component: `
 ## 개요
-\`Tag\` 컴포넌트는 태그를 나타내는 버튼 컴포넌트입니다. 각 태그는 고유한 색상 스타일을 가지며, 클릭 시 지정된 콜백 함수를 호출합니다.
+\`TagChip\` 컴포넌트는 태그를 나타내는 버튼 컴포넌트입니다. 각 태그는 고유한 색상 스타일을 가지며, 클릭 시 지정된 콜백 함수를 호출합니다.
 
 ## 파일 경로
+\`/c:/Users/ttddc/OneDrive/바탕 화면/github/abonglog/blog/src/entities/tag/ui/TagChip.tsx\`
 
 ## Props
 
-### TagProps
+### TagChipProps
 - \`tagId\` (number): 태그의 고유 ID. 색상 스타일을 결정하는 데 사용됩니다.
 - \`name\` (string): 태그 이름.
 - \`onClick\` (function)?: 태그 클릭 시 호출되는 함수. 태그 이름을 인자로 받습니다.
@@ -41,7 +42,7 @@ const meta: Meta<typeof Tag> = {
 ## 사용 예시
 
 \`\`\`typescript
-import { Tag } from "@/entities/tag/ui/Tag";
+import { TagChip } from "@/entities/tag/ui/TagChip";
 
 const handleTagClick = (tagName: string) => {
   console.log(\`Clicked tag: \${tagName}\`);
@@ -50,9 +51,9 @@ const handleTagClick = (tagName: string) => {
 const ExampleComponent = () => {
   return (
     <div>
-      <Tag tagId={0} name="javascript" onClick={handleTagClick} />
-      <Tag tagId={1} name="react" onClick={handleTagClick} />
-      <Tag tagId={2} name="typescript" onClick={handleTagClick} />
+      <TagChip tagId={0} name="javascript" onClick={handleTagClick} />
+      <TagChip tagId={1} name="react" onClick={handleTagClick} />
+      <TagChip tagId={2} name="typescript" onClick={handleTagClick} />
     </div>
   );
 };
@@ -89,7 +90,7 @@ const ExampleComponent = () => {
 };
 
 export default meta;
-type Story = StoryObj<typeof Tag>;
+type Story = StoryObj<typeof TagChip>;
 
 export const Default: Story = {
   args: {
@@ -101,7 +102,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <div className="p-4">
-      <Tag {...args} />
+      <TagChip {...args} />
     </div>
   )
 };
@@ -110,7 +111,7 @@ export const MultipleColors: Story = {
   render: () => (
     <div className="flex gap-2 p-4">
       {["react", "typescript", "nextjs", "tailwind"].map((name, index) => (
-        <Tag
+        <TagChip
           key={index}
           tagId={index}
           name={name}
