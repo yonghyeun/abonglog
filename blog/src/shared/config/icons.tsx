@@ -1,3 +1,4 @@
+import { CiSearch } from "react-icons/ci";
 import { FaGithub } from "react-icons/fa";
 import { HiOutlineBuildingLibrary } from "react-icons/hi2";
 import { IoMdClose } from "react-icons/io";
@@ -11,3 +12,4 @@ export const HumanIcon = MdOutlineEmail;
 export const LibraryIcon = HiOutlineBuildingLibrary;
 export const BooksIcon = LuLibrary;
 export const BackwardIcon = IoMdArrowBack;
+export const SearchIcon = CiSearch;
