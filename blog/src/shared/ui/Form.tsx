@@ -31,7 +31,7 @@ const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
   return (
     <input
       {...props}
-      className="focus: rounded-md p-2 outline-none focus:outline-sky-blue"
+      className="focus: rounded-md border border-bright-blue p-2 outline-none focus:outline-sky-blue"
     />
   );
 };

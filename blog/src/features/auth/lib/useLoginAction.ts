@@ -68,10 +68,10 @@ export const useLoginAction = () => {
 
   const getSubmitButtonClassName = () => {
     if (isPending) {
-      return "bg-gray-400 hover:bg-gray-500";
+      return "bg-gray-500 hover:bg-gray-600";
     }
     if (clientState.error) {
-      return "bg-red-500 hover:bg-red-600";
+      return "bg-red-600 hover:bg-red-500";
     }
     return "";
   };
