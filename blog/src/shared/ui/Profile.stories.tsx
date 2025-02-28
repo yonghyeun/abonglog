@@ -19,7 +19,7 @@ export default meta;
 
 export const Default = {
   render: () => (
-    <div className="bg-secondary flex items-center gap-4 p-4">
+    <div className="flex items-center gap-4 bg-secondary p-4">
       <Profile size="sm" />
       <Profile size="md" />
       <Profile size="lg" />
