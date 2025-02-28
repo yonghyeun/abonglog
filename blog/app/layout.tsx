@@ -4,6 +4,8 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 
+import { ServiceProvider } from "@/app/ServiceProvider";
+
 import { SideBar } from "@/widgets/navigate/ui";
 
 import { getCurrentUserData } from "@/entities/user/model";
@@ -22,14 +24,16 @@ interface RootLayoutProps {
 const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   return (
     <html className={notoSans.className}>
-      <body className="flex min-h-screen flex-col bg-primary">
-        <Header />
-        <main className="flex flex-grow flex-col">
-          {modal}
-          {children}
-        </main>
-        <Footer />
-      </body>
+      <ServiceProvider>
+        <body className="flex min-h-screen flex-col bg-primary">
+          <Header />
+          <main className="flex flex-grow flex-col">
+            {modal}
+            {children}
+          </main>
+          <Footer />
+        </body>
+      </ServiceProvider>
     </html>
   );
 };
