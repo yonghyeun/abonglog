@@ -35,7 +35,7 @@ const meta: Meta<typeof Tag> = {
 ### TagProps
 - \`tagId\` (number): 태그의 고유 ID. 색상 스타일을 결정하는 데 사용됩니다.
 - \`name\` (string): 태그 이름.
-- \`onClick\` (function): 태그 클릭 시 호출되는 함수. 태그 이름을 인자로 받습니다.
+- \`onClick\` (function)?: 태그 클릭 시 호출되는 함수. 태그 이름을 인자로 받습니다.
 - 기타 \`React.ButtonHTMLAttributes<HTMLButtonElement>\` 속성들을 상속받습니다.
 
 ## 사용 예시
