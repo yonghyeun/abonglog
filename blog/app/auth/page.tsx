@@ -1,5 +1,4 @@
-import { OAuthLoginForm } from "@/features/auth/ui";
-import { LogoutForm } from "@/features/auth/ui/LogoutForm";
+import { LogoutForm } from "@/features/auth/ui";
 
 import { checkUserLoggedIn } from "@/shared/lib";
 
@@ -8,7 +7,7 @@ const LoginPage = async () => {
 
   return (
     <section className="media-padding-x flex flex-grow flex-col items-center justify-center gap-4 bg-secondary">
-      {isLoggedIn ? <LogoutForm /> : <OAuthLoginForm />}
+      {isLoggedIn ? <LogoutForm /> : <div>login</div>}
     </section>
   );
 };

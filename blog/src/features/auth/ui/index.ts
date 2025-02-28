@@ -1,1 +1,1 @@
-export * from "./OAuthLoginForm";
+export * from "./LogoutForm";
