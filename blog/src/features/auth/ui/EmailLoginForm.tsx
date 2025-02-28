@@ -26,16 +26,28 @@ export const EmailLoginForm = () => {
         action={formAction}
       >
         <Form.Container>
-          <Form.Label htmlFor="email" className="font-semibold">
+          <Form.Label htmlFor="email" className="w-20 text-sm">
             이메일
           </Form.Label>
-          <Form.Input type="email" id="email" name="email" required />
+          <Form.Input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="이메일을 입력해주세요"
+          />
         </Form.Container>
         <Form.Container className="flex items-center gap-2">
-          <Form.Label htmlFor="password" className="font-semibold">
+          <Form.Label htmlFor="password" className="w-20 text-sm">
             비밀번호
           </Form.Label>
-          <Form.Input type="password" id="password" name="password" required />
+          <Form.Input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="비밀번호를 입력해주세요"
+          />
         </Form.Container>
         <Form.SubmitButton
           disabled={isPending}
