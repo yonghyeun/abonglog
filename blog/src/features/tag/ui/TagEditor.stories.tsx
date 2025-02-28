@@ -86,8 +86,7 @@ const MockTagEditor = () => {
       action: "removed"
     },
     onAddNewTagAction: {
-      description:
-        "새 태그 추가 시 호출되는 함수. FormData 객체를 인자로 받습니다.",
+      description: "새 태그 추가 시 호출되는 함수. tag 이름을 인자로 받습니다.",
       action: "added"
     }
   }
@@ -110,10 +109,10 @@ const MockTagEditor = () => {
     setTags(tags.filter((t) => t.id !== tag.id));
   };
 
-  const handleAddNewTag = (formData: FormData) => {
+  const handleAddNewTag = (tagName: string) => {
     const newTag = {
       id: tags.length + 1,
-      name: formData.get("tag") as string,
+      name: tagName,
       created_at: new Date().toISOString()
     };
     setTags([...tags, newTag]);
