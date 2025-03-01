@@ -1,21 +1,22 @@
 "use client";
 
 import { ArticleTitleInput, MarkdownEditor, MarkdownRenderer } from "./write";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { TagEditor } from "@/features/tag/ui/TagEditor";
 
-import { type Tag, getTags, tagQueryKey } from "@/entities/tag/model";
+import {
+  type Tag,
+  useGetAllTags,
+  usePostAddNewTag
+} from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { useTransitionInput } from "@/shared/lib";
 
 export const ArticleWriteWidget = () => {
-  const { data: allTags } = useSuspenseQuery({
-    queryKey: tagQueryKey.default,
-    queryFn: getTags
-  });
+  const { data: allTags } = useGetAllTags();
+  const { mutate: addNewTag } = usePostAddNewTag();
 
   const [title, handleChangeTitle] = useTransitionInput();
   // tag editor 에서 선택된 태그들
