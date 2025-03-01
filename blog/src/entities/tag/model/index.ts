@@ -40,7 +40,7 @@ export const useGetAllTags = () => {
   });
 };
 
-export const postAddNewTag = async (tagName: string) => {
+const postAddNewTag = async (tagName: string) => {
   const supabase = await createBrowserSupabase();
   const created_at = new Date().toISOString();
 

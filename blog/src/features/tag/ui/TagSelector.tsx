@@ -3,22 +3,20 @@
 import type { Tag } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
-import { CloseIcon, SearchIcon } from "@/shared/config";
+import { SearchIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
 
-interface TagEditorProps {
+interface TagSelectorProps {
   tags: Tag[];
   onEachTagClick: (tag: Tag) => void;
-  onEachTagRemove: (tag: Tag) => void;
   onAddNewTag: (tagName: string) => void;
   className?: string;
 }
 
-export const TagEditor: React.FC<TagEditorProps> = ({
+export const TagSelector: React.FC<TagSelectorProps> = ({
   tags,
   onEachTagClick,
-  onEachTagRemove,
   onAddNewTag,
   className = ""
 }) => {
@@ -35,7 +33,7 @@ export const TagEditor: React.FC<TagEditorProps> = ({
       className={`flex flex-col gap-4 rounded-sm border p-4 ${className}`}
     >
       {/* search input */}
-      <div className="flex w-full items-center justify-start gap-2">
+      <div className="flex items-center justify-start gap-2">
         <label htmlFor="search-tag" aria-label="tag 검색어로 찾기">
           <SearchIcon size={24} className="text-gray-300" />
         </label>
@@ -49,7 +47,7 @@ export const TagEditor: React.FC<TagEditorProps> = ({
 
       {/* Tag List */}
       {tags.length > 0 ? (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto">
           {searchedTags.map((tag) => (
             <li key={tag.name} className="flex items-center justify-between">
               <TagChip
@@ -57,14 +55,6 @@ export const TagEditor: React.FC<TagEditorProps> = ({
                 name={tag.name}
                 onClick={() => onEachTagClick(tag)}
               />
-              {/* Tag Remove Button */}
-              <button
-                aria-label={`${tag.name} 태그 제거하기`}
-                className="rounded-md p-2 text-gray-400 hover:bg-gray-200"
-                onClick={() => onEachTagRemove(tag)}
-              >
-                <CloseIcon />
-              </button>
             </li>
           ))}
         </ul>

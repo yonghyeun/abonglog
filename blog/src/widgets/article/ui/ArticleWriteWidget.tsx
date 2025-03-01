@@ -3,7 +3,7 @@
 import { ArticleTitleInput, MarkdownEditor, MarkdownRenderer } from "./write";
 import { useState } from "react";
 
-import { TagEditor } from "@/features/tag/ui/TagEditor";
+import { TagSelector } from "@/features/tag/ui";
 
 import {
   type Tag,
@@ -39,17 +39,14 @@ export const ArticleWriteWidget = () => {
           onChange={handleChangeTitle}
         />
         <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
-          {/* 태그 에디터 */}
+          {/* 태그 에디터 토글 */}
           <details open className="cursor-pointer">
             <summary className="text-gray-400">태그 선택</summary>
-            <TagEditor
+            <TagSelector
               className="absolute left-0 top-12"
               tags={unSelectedTags}
               onEachTagClick={(tag) => setSelectedTags([...selectedTags, tag])}
-              onEachTagRemove={(tag) =>
-                setSelectedTags(selectedTags.filter(({ id }) => id !== tag.id))
-              }
-              onAddNewTagAction={() => {}}
+              onAddNewTag={addNewTag}
             />
           </details>
           {/* 선택된 태그 리스트 */}
