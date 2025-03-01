@@ -12,20 +12,24 @@ interface TagEditorProps {
   onEachTagClick: (tag: Tag) => void;
   onEachTagRemove: (tag: Tag) => void;
   onAddNewTagAction: (tagName: string) => void;
+  className?: string;
 }
 
 export const TagEditor: React.FC<TagEditorProps> = ({
   tags,
   onEachTagClick,
   onEachTagRemove,
-  onAddNewTagAction
+  onAddNewTagAction,
+  className = ""
 }) => {
   const [text, handleChange] = useTransitionInput();
 
   const searchedTags = tags.filter(({ name }) => name.includes(text));
 
   return (
-    <section className="flex flex-col gap-4 rounded-sm border p-4">
+    <section
+      className={`flex flex-col gap-4 rounded-sm border p-4 ${className}`}
+    >
       {/* search input */}
       <div className="flex w-full items-center justify-start gap-2">
         <label htmlFor="search-tag" aria-label="tag 검색어로 찾기">
@@ -83,7 +87,7 @@ export const TagEditor: React.FC<TagEditorProps> = ({
         <input
           id="search-tag"
           className="rounded-lg bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-sky-blue"
-          placeholder="태그명을 입력해주세요"
+          placeholder="새로운 태그명을 입력해주세요"
           name="tag"
         />
         <Button variant="outlined" size="sm" type="submit">

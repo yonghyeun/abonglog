@@ -18,7 +18,6 @@ const meta: Meta<typeof TagEditor> = {
 
 내부에서 사용되는 데이터, 로직 모두 외부에서 주입받는 비제어 컴포넌트입니다. 
 
-
 ## 사용 예시 
 
 \`\`\`tsx
@@ -40,10 +39,11 @@ const MockTagEditor = () => {
     setTags(tags.filter(t => t.id !== tag.id));
   };
 
-  const handleAddNewTag = (formData: FormData) => {
+  const handleAddNewTag = (tagName: string) => {
     const newTag = {
       id: tags.length + 1,
-      name: formData.get("tag") as string
+      name: tagName,
+      created_at: new Date().toISOString()
     };
     setTags([...tags, newTag]);
   };
@@ -88,6 +88,12 @@ const MockTagEditor = () => {
     onAddNewTagAction: {
       description: "새 태그 추가 시 호출되는 함수. tag 이름을 인자로 받습니다.",
       action: "added"
+    },
+    className: {
+      description: "추가적인 CSS 클래스를 적용하기 위한 문자열",
+      control: {
+        type: "text"
+      }
     }
   }
 };
@@ -124,6 +130,7 @@ const MockTagEditor = () => {
       onEachTagClick={handleTagClick}
       onEachTagRemove={handleTagRemove}
       onAddNewTagAction={handleAddNewTag}
+      className="custom-class"
     />
   );
 };

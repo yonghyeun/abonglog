@@ -1,13 +1,10 @@
 "use client";
 
-import {
-  ArticleTagEditor,
-  ArticleTitleInput,
-  MarkdownEditor,
-  MarkdownRenderer
-} from "./write";
+import { ArticleTitleInput, MarkdownEditor, MarkdownRenderer } from "./write";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
+
+import { TagEditor } from "@/features/tag/ui/TagEditor";
 
 import { type Tag, getTags, tagQueryKey } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
@@ -44,16 +41,14 @@ export const ArticleWriteWidget = () => {
           {/* 태그 에디터 */}
           <details open className="cursor-pointer">
             <summary className="text-gray-400">태그 선택</summary>
-            <ArticleTagEditor
+            <TagEditor
               className="absolute left-0 top-12"
               tags={unSelectedTags}
               onEachTagClick={(tag) => setSelectedTags([...selectedTags, tag])}
               onEachTagRemove={(tag) =>
                 setSelectedTags(selectedTags.filter(({ id }) => id !== tag.id))
               }
-              onAddNewTagAction={(newTagName) => {
-                console.log(newTagName);
-              }}
+              onAddNewTagAction={() => {}}
             />
           </details>
           {/* 선택된 태그 리스트 */}
