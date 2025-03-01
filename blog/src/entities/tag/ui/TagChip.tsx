@@ -1,5 +1,5 @@
 import { tagStyleArray } from "../config";
-import { capitalizeFirstLetter } from "../lib";
+import { capitalizeFirstLetter, summarizeTextCode } from "../lib";
 import React from "react";
 
 interface TagProps
@@ -7,20 +7,16 @@ interface TagProps
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     "onClick" | "children"
   > {
-  tagId: number;
   name: string;
   onClick?: (tagName: string) => void;
 }
 
-export const TagChip: React.FC<TagProps> = ({
-  tagId,
-  name,
-  onClick,
-  ...props
-}) => {
+export const TagChip: React.FC<TagProps> = ({ name, onClick, ...props }) => {
   return (
     <button
-      className={`${tagStyleArray[tagId % tagStyleArray.length]} rounded-full px-4 py-1 text-sm`}
+      className={`${
+        tagStyleArray[summarizeTextCode(name) % tagStyleArray.length]
+      } rounded-full px-4 py-1 text-sm`}
       onClick={() => onClick?.(name)}
       {...props}
     >

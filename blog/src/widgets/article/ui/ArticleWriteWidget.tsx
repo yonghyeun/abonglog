@@ -81,11 +81,7 @@ const SelectedTagList: React.FC<SelectedTagListProps> = ({
     <ul className="flex flex-grow flex-wrap gap-2">
       {selectedTags.map((tag) => (
         <li key={`${tag.id}-selected-tagList`}>
-          <TagChip
-            name={tag.name}
-            tagId={tag.id}
-            onClick={() => onEachTagClick(tag)}
-          />
+          <TagChip name={tag.name} onClick={() => onEachTagClick(tag)} />
         </li>
       ))}
     </ul>

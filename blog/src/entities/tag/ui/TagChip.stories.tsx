@@ -5,12 +5,6 @@ const meta: Meta<typeof TagChip> = {
   title: "entities/tag/TagChip",
   component: TagChip,
   argTypes: {
-    tagId: {
-      control: {
-        type: "number"
-      },
-      description: "태그의 고유 ID (스타일 적용에 사용)"
-    },
     name: {
       control: {
         type: "text"
@@ -28,13 +22,9 @@ const meta: Meta<typeof TagChip> = {
 ## 개요
 \`TagChip\` 컴포넌트는 태그를 나타내는 버튼 컴포넌트입니다. 각 태그는 고유한 색상 스타일을 가지며, 클릭 시 지정된 콜백 함수를 호출합니다.
 
-## 파일 경로
-\`/c:/Users/ttddc/OneDrive/바탕 화면/github/abonglog/blog/src/entities/tag/ui/TagChip.tsx\`
-
 ## Props
 
 ### TagChipProps
-- \`tagId\` (number): 태그의 고유 ID. 색상 스타일을 결정하는 데 사용됩니다.
 - \`name\` (string): 태그 이름.
 - \`onClick\` (function)?: 태그 클릭 시 호출되는 함수. 태그 이름을 인자로 받습니다.
 - 기타 \`React.ButtonHTMLAttributes<HTMLButtonElement>\` 속성들을 상속받습니다.
@@ -51,9 +41,9 @@ const handleTagClick = (tagName: string) => {
 const ExampleComponent = () => {
   return (
     <div>
-      <TagChip tagId={0} name="javascript" onClick={handleTagClick} />
-      <TagChip tagId={1} name="react" onClick={handleTagClick} />
-      <TagChip tagId={2} name="typescript" onClick={handleTagClick} />
+      <TagChip name="javascript" onClick={handleTagClick} />
+      <TagChip name="react" onClick={handleTagClick} />
+      <TagChip name="typescript" onClick={handleTagClick} />
     </div>
   );
 };
@@ -62,7 +52,7 @@ const ExampleComponent = () => {
 ## 주요 기능
 
 ### 색상 스타일
-\`tagStyleArray\` 배열을 사용하여 태그 ID에 따라 고유한 색상 스타일을 적용합니다. 배열의 길이를 초과하는 경우, 모듈로 연산을 통해 색상을 순환합니다.
+\`tagStyleArray\` 배열을 사용하여 태그 이름에 따라 고유한 색상 스타일을 적용합니다. 배열의 길이를 초과하는 경우, 모듈로 연산을 통해 색상을 순환합니다.
 
 ### 첫 글자 대문자 변환
 \`capitalizeFirstLetter\` 함수를 사용하여 태그 이름의 첫 글자를 대문자로 변환합니다.
@@ -77,12 +67,14 @@ const ExampleComponent = () => {
 - \`font-semibold\`: 폰트 굵기
 
 ## 의존성
-- \`tagStyleArray\`: 태그 ID별 색상 스타일 배열
+- \`tagStyleArray\`: 태그 이름별 색상 스타일 배열
 - \`capitalizeFirstLetter\`: 문자열의 첫 글자를 대문자로 변환하는 함수
+- \`summarizeTextCode\`: 문자열의 각 문자의 유니코드 값을 합산하는 함수
 
 ## 참고
 - \`tagStyleArray\`는 \`../config\`에서 가져옵니다.
 - \`capitalizeFirstLetter\`는 \`../lib\`에서 가져옵니다.
+- \`summarizeTextCode\`는 \`../lib\`에서 가져옵니다.
         `
       }
     }
@@ -94,7 +86,6 @@ type Story = StoryObj<typeof TagChip>;
 
 export const Default: Story = {
   args: {
-    tagId: 0,
     name: "javascript",
     onClick: (tagName) => {
       console.log(`Clicked tag: ${tagName}`);
@@ -113,7 +104,6 @@ export const MultipleColors: Story = {
       {["react", "typescript", "nextjs", "tailwind"].map((name, index) => (
         <TagChip
           key={index}
-          tagId={index}
           name={name}
           onClick={(tagName) => console.log(`Clicked tag: ${tagName}`)}
         />

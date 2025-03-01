@@ -54,7 +54,6 @@ export const TagEditor: React.FC<TagEditorProps> = ({
             <li key={tag.name} className="flex items-center justify-between">
               <TagChip
                 key={tag.name}
-                tagId={tag.id}
                 name={tag.name}
                 onClick={() => onEachTagClick(tag)}
               />
