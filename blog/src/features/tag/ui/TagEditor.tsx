@@ -11,7 +11,7 @@ interface TagEditorProps {
   tags: Tag[];
   onEachTagClick: (tag: Tag) => void;
   onEachTagRemove: (tag: Tag) => void;
-  onAddNewTagAction: (tagName: string) => void;
+  onAddNewTag: (tagName: string) => void;
   className?: string;
 }
 
@@ -19,12 +19,16 @@ export const TagEditor: React.FC<TagEditorProps> = ({
   tags,
   onEachTagClick,
   onEachTagRemove,
-  onAddNewTagAction,
+  onAddNewTag,
   className = ""
 }) => {
-  const [text, handleChange] = useTransitionInput();
-
-  const searchedTags = tags.filter(({ name }) => name.includes(text));
+  // 태그 검색어
+  const [searchText, handleChangeSearchText] = useTransitionInput();
+  const searchedTags = tags.filter(({ name }) => name.includes(searchText));
+  // 태그 추가
+  const [newTagName, handleChangeNewTagName] = useTransitionInput();
+  const isAvailableNewTag =
+    newTagName.length > 0 && tags.every(({ name }) => name !== newTagName);
 
   return (
     <section
@@ -39,7 +43,7 @@ export const TagEditor: React.FC<TagEditorProps> = ({
           id="search-tag"
           className="flex-grow rounded-md bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-sky-blue"
           placeholder="태그명을 입력해주세요"
-          onChange={handleChange}
+          onChange={handleChangeSearchText}
         />
       </div>
 
@@ -76,9 +80,7 @@ export const TagEditor: React.FC<TagEditorProps> = ({
         className="flex items-end justify-start gap-2"
         onSubmit={(event) => {
           event.preventDefault();
-          const formData = new FormData(event.target as HTMLFormElement);
-
-          onAddNewTagAction(formData.get("tag") as string);
+          onAddNewTag(newTagName);
         }}
       >
         <label htmlFor="create-tag" className="sr-only">
@@ -89,8 +91,14 @@ export const TagEditor: React.FC<TagEditorProps> = ({
           className="rounded-lg bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-sky-blue"
           placeholder="새로운 태그명을 입력해주세요"
           name="tag"
+          onChange={handleChangeNewTagName}
         />
-        <Button variant="outlined" size="sm" type="submit">
+        <Button
+          variant="outlined"
+          size="sm"
+          type="submit"
+          disabled={!isAvailableNewTag}
+        >
           추가하기
         </Button>
       </form>

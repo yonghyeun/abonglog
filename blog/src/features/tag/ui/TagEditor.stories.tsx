@@ -53,7 +53,7 @@ const MockTagEditor = () => {
       tags={tags}
       onEachTagClick={handleTagClick}
       onEachTagRemove={handleTagRemove}
-      onAddNewTagAction={handleAddNewTag}
+      onAddNewTag={handleAddNewTag}
     />
   );
 };
@@ -63,7 +63,7 @@ const MockTagEditor = () => {
 - 태그 검색 및 선택
 - 선택된 태그 외부에서 주입 받은 액션 수행
 - 삭제 버튼 눌린 태그 외부에서 주입 받은 액션 수행
-- 새로운 태그 추가 되면 데이터 베이스에 해당 태그 추가
+- 새로운 태그 추가 버튼 눌릴 시 외부에서 주입 받은 액션 수행
 `
       }
     }
@@ -85,7 +85,7 @@ const MockTagEditor = () => {
         "태그 제거 시 호출되는 함수. 제거된 태그 객체를 인자로 받습니다.",
       action: "removed"
     },
-    onAddNewTagAction: {
+    onAddNewTag: {
       description: "새 태그 추가 시 호출되는 함수. tag 이름을 인자로 받습니다.",
       action: "added"
     },
@@ -129,7 +129,7 @@ const MockTagEditor = () => {
       tags={tags}
       onEachTagClick={handleTagClick}
       onEachTagRemove={handleTagRemove}
-      onAddNewTagAction={handleAddNewTag}
+      onAddNewTag={handleAddNewTag}
       className="custom-class"
     />
   );
