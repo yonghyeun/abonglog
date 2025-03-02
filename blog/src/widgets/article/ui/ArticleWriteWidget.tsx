@@ -5,9 +5,12 @@ import React from "react";
 
 import { useMarkdown } from "@/features/post/lib";
 import { MarkdownEditor } from "@/features/post/ui";
+import { useSeriesSelector } from "@/features/series/lib";
+import { SeriesSelector } from "@/features/series/ui";
 import { TagSelector } from "@/features/tag/ui";
 import { useTagSelector } from "@/features/tag/ui/lib";
 
+import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import {
   type Tag,
   useGetAllTags,
@@ -29,7 +32,9 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   defaultValue = ""
 }) => {
   const { data: allTags } = useGetAllTags();
+  const { data: allSeries } = useGetAllSeries();
   const { mutate: addNewTag } = usePostAddNewTag();
+  const { mutate: addNewSeries } = usePostAddNewSeries();
 
   const {
     markdown,
@@ -50,6 +55,13 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
     handleUnSelectTag
   } = useTagSelector();
 
+  const {
+    selectedSeries,
+    filterUnSelectedSeries,
+    handleSelectSeries,
+    handleUnSelectSeries
+  } = useSeriesSelector();
+
   return (
     <section className="media-padding-x mb-2 flex flex-col gap-2">
       <div className="flex h-screen">
@@ -66,7 +78,9 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
           <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
             {/* 태그 셀렉터 토글 */}
             <details className="cursor-pointer">
-              <summary className="text-gray-400">태그 선택</summary>
+              <summary className="text-sm text-gray-400 hover:text-sky-blue">
+                태그 선택
+              </summary>
               <TagSelector
                 className="absolute left-0 top-12 z-50"
                 tags={filterUnSelectedTags(allTags)}
@@ -78,7 +92,29 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
             <TagList tags={selectedTags} onEachTagClick={handleUnSelectTag} />
           </div>
 
-          <section className="flex justify-end p-2">
+          <section className="relative flex justify-between p-2 text-sm">
+            <div className="flex flex-grow gap-2">
+              {/* 시리즈 셀렉터 토글 */}
+              <details className="cursor-pointer">
+                <summary className="text-gray-400 hover:text-sky-blue">
+                  시리즈 목록
+                </summary>
+                <SeriesSelector
+                  className="absolute left-0 top-12 z-50"
+                  series={filterUnSelectedSeries(allSeries)}
+                  onEachSeriesClick={handleSelectSeries}
+                  onAddNewSeries={addNewSeries}
+                />
+              </details>
+              {/* 선택된 시리즈 명 */}
+              <p
+                className="flex-grow cursor-pointer text-ellipsis text-gray-600"
+                onClick={handleUnSelectSeries}
+              >
+                {selectedSeries?.name}
+              </p>
+            </div>
+
             {/* 이미지 업로드 인풋 */}
             <ImageUploadInput onChange={handleImageUpload} />
           </section>
@@ -135,7 +171,7 @@ const ImageUploadInput: React.FC<{
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }> = ({ onChange }) => {
   return (
-    <div className="text-sm text-gray-400">
+    <div className="text-gray-400">
       <label
         htmlFor="article-file-upload"
         className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"

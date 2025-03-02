@@ -27,6 +27,25 @@ export type Database = {
         };
         Relationships: [];
       };
+      series: {
+        // series 테이블 추가
+        Row: {
+          created_at: string;
+          id: number;
+          name: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          name: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          name?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
