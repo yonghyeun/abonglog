@@ -17,6 +17,7 @@ import { TagChip } from "@/entities/tag/ui";
 
 import { FileClipIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
+import { Button } from "@/shared/ui/Button";
 
 interface ArticleWriteWidgetProps {
   articleId: string;
@@ -50,54 +51,65 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   } = useTagSelector();
 
   return (
-    <section className="media-padding-x flex h-screen rounded-md">
-      {/* 글 작성 위젯 */}
-      <div className="flex h-full w-full flex-col p-2 md:w-1/2">
-        {/* 글 제목 */}
-        <ArticleTitleInput
-          placeholder="제목을 입력해주세요"
-          name="title"
-          type="text"
-          id="title"
-          onChange={handleChangeTitle}
-        />
-        <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
-          {/* 태그 셀렉터 토글 */}
-          <details className="cursor-pointer">
-            <summary className="text-gray-400">태그 선택</summary>
-            <TagSelector
-              className="absolute left-0 top-12 z-50"
-              tags={filterUnSelectedTags(allTags)}
-              onEachTagClick={handleSelectTag}
-              onAddNewTag={addNewTag}
-            />
-          </details>
-          {/* 선택된 태그 리스트 */}
-          <TagList tags={selectedTags} onEachTagClick={handleUnSelectTag} />
+    <section className="media-padding-x mb-2 flex flex-col gap-2">
+      <div className="flex h-screen">
+        {/* 글 작성 위젯 */}
+        <div className="flex h-full w-full flex-col p-2 md:w-1/2">
+          {/* 글 제목 */}
+          <ArticleTitleInput
+            placeholder="제목을 입력해주세요"
+            name="title"
+            type="text"
+            id="title"
+            onChange={handleChangeTitle}
+          />
+          <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
+            {/* 태그 셀렉터 토글 */}
+            <details className="cursor-pointer">
+              <summary className="text-gray-400">태그 선택</summary>
+              <TagSelector
+                className="absolute left-0 top-12 z-50"
+                tags={filterUnSelectedTags(allTags)}
+                onEachTagClick={handleSelectTag}
+                onAddNewTag={addNewTag}
+              />
+            </details>
+            {/* 선택된 태그 리스트 */}
+            <TagList tags={selectedTags} onEachTagClick={handleUnSelectTag} />
+          </div>
+
+          <section className="flex justify-end p-2">
+            {/* 이미지 업로드 인풋 */}
+            <ImageUploadInput onChange={handleImageUpload} />
+          </section>
+
+          {/* 마크다운 에디터 */}
+          <MarkdownEditor
+            className="flex-grow"
+            value={markdown}
+            ref={textAreaRef}
+            onPaste={handleImagePaste}
+            onChange={handleChangeMarkdown}
+            onKeyDown={handleKeyDownTextArea}
+          />
         </div>
-
-        <section className="flex justify-end p-2">
-          {/* 이미지 업로드 인풋 */}
-          <ImageUploadInput onChange={handleImageUpload} />
-        </section>
-
-        {/* 마크다운 에디터 */}
-        <MarkdownEditor
-          className="flex-grow"
-          value={markdown}
-          ref={textAreaRef}
-          onPaste={handleImagePaste}
-          onChange={handleChangeMarkdown}
-          onKeyDown={handleKeyDownTextArea}
+        {/* 마크다운 렌더러 */}
+        <section
+          className={
+            "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
+          }
+          dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
-      {/* 마크다운 렌더러 */}
-      <section
-        className={
-          "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
-        }
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+
+      <footer className="flex justify-end gap-2">
+        <Button variant="outlined" size="md">
+          임시 저장
+        </Button>
+        <Button variant="filled" size="md">
+          게시글 발행
+        </Button>
+      </footer>
     </section>
   );
 };
