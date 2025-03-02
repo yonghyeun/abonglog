@@ -30,7 +30,7 @@ export const TagSelector: React.FC<TagSelectorProps> = ({
 
   return (
     <section
-      className={`flex flex-col gap-4 rounded-sm border p-4 ${className}`}
+      className={`flex flex-col gap-4 rounded-lg border bg-primary p-4 ${className}`}
     >
       {/* search input */}
       <div className="flex items-center justify-start gap-2">

@@ -44,7 +44,7 @@ export const ArticleWriteWidget = () => {
           <details open className="cursor-pointer">
             <summary className="text-gray-400">태그 선택</summary>
             <TagSelector
-              className="absolute left-0 top-12"
+              className="absolute left-0 top-12 z-50"
               tags={unSelectedTags}
               onEachTagClick={(tag) => setSelectedTags([...selectedTags, tag])}
               onAddNewTag={addNewTag}
