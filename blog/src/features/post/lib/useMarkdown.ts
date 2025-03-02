@@ -1,4 +1,9 @@
 import { useRef, useState } from "react";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeStringfy from "rehype-stringify";
+import remarkParse from "remark-parse";
+import remark2rehype from "remark-rehype";
+import { unified } from "unified";
 
 import { compressImage } from "@/entities/image/lib";
 import { postArticleImage } from "@/entities/image/model";
@@ -6,7 +11,9 @@ import { postArticleImage } from "@/entities/image/model";
 import { SUPABASE_STORAGE_URL } from "@/shared/config";
 
 export const useMarkdown = (articleId: string, defaultValue?: string) => {
-  const [text, setText] = useState<string>(() => defaultValue || "");
+  const [markdown, setMarkdown] = useState<string>(() => defaultValue || "");
+  const [html, setHtml] = useState<string>("");
+
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
   /**
@@ -25,8 +32,8 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
     const selectionStart = textArea.selectionStart;
     const selectionEnd = textArea.selectionEnd;
 
-    setText(
-      `${text.slice(0, selectionStart)}[image](이미지 업로드 중...)${text.slice(
+    setMarkdown(
+      `${markdown.slice(0, selectionStart)}[image](이미지 업로드 중...)${markdown.slice(
         selectionEnd
       )}`
     );
@@ -45,8 +52,8 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
       .map(({ fullPath }) => `![image](${SUPABASE_STORAGE_URL}/${fullPath})`)
       .join("\n");
 
-    setText(
-      `${text.slice(0, selectionStart)}${imageMarkdownTexts}${text.slice(
+    setMarkdown(
+      `${markdown.slice(0, selectionStart)}${imageMarkdownTexts}${markdown.slice(
         selectionEnd
       )}`
     );
@@ -55,8 +62,63 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
   /**
    * textarea의 값이 변경 될 때 마다 text 상태를 변경 합니다.
    */
-  const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  const handleChangeMarkdown = async ({
+    target
+  }: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = target.value;
+
+    setMarkdown(text);
+
+    const vfileObject = await unified()
+      // 마크다운 텍스트를 AST 형태로 파싱 합니다.
+      .use(remarkParse)
+      // AST 형태로 파싱된 마크다운 텍스트를 HTML로 변환 합니다.
+      .use(remark2rehype)
+      // HTML로 변환된 AST를 문자열로 변환 합니다.
+      .use(rehypeStringfy)
+      // 코드 블럭을 예쁘게 표현하기 위한 설정을 추가 합니다.
+      .use(
+        rehypePrettyCode,
+
+        {
+          grid: true,
+          theme: "nord",
+          keepBackground: true,
+          bypassInlineCode: false,
+          defaultLang: {
+            block: "typescript"
+          },
+          filterMetaString: (str) => str.replace(/some-pattern/g, ""),
+          onVisitLine: (element) => {
+            console.log("Visiting line:", element);
+          },
+          onVisitHighlightedLine: (element, id) => {
+            console.log("Visiting highlighted line:", element, id);
+          },
+          onVisitHighlightedChars: (element, id) => {
+            console.log("Visiting highlighted chars:", element, id);
+          },
+          onVisitTitle: (element) => {
+            console.log("Visiting title:", element);
+          },
+          onVisitCaption: (element) => {
+            console.log("Visiting caption:", element);
+          }
+        }
+      )
+      .process(text);
+
+    // TODO : 추후 스타일링 할 때 css 설정하기
+    const html = `
+    <style>
+    p {
+      color : red;
+    }
+    </style>
+  ${vfileObject.toString()}
+    `;
+
+    setHtml(html);
   };
 
   /**
@@ -79,8 +141,8 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
       const selectionStart = textArea.selectionStart;
       const selectionEnd = textArea.selectionEnd;
 
-      setText(
-        `${text.slice(0, selectionStart)}${" ".repeat(TAB_SIZE)}${text.slice(selectionEnd)}`
+      setMarkdown(
+        `${markdown.slice(0, selectionStart)}${" ".repeat(TAB_SIZE)}${markdown.slice(selectionEnd)}`
       );
 
       setTimeout(() => {
@@ -116,8 +178,9 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
   };
 
   return {
-    text,
-    handleChangeText,
+    markdown,
+    html,
+    handleChangeMarkdown,
     handleKeyDownTextArea,
     handleImagePaste,
     textAreaRef,

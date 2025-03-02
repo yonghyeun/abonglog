@@ -1,7 +1,7 @@
 "use client";
 
-import { ArticleTitleInput, MarkdownRenderer } from "./write";
-import React, { useState } from "react";
+import { ArticleTitleInput } from "./write";
+import React from "react";
 
 import { useMarkdown } from "@/features/post/lib";
 import { MarkdownEditor } from "@/features/post/ui";
@@ -31,10 +31,11 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   const { mutate: addNewTag } = usePostAddNewTag();
 
   const {
-    text,
+    markdown,
+    html,
     textAreaRef,
     handleImagePaste,
-    handleChangeText,
+    handleChangeMarkdown,
     handleKeyDownTextArea,
     handleImageUpload
   } = useMarkdown(articleId, defaultValue);
@@ -83,15 +84,20 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
         {/* 마크다운 에디터 */}
         <MarkdownEditor
           className="flex-grow"
-          value={text}
+          value={markdown}
           ref={textAreaRef}
           onPaste={handleImagePaste}
-          onChange={handleChangeText}
+          onChange={handleChangeMarkdown}
           onKeyDown={handleKeyDownTextArea}
         />
       </div>
       {/* 마크다운 렌더러 */}
-      <MarkdownRenderer />
+      <section
+        className={
+          "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
+        }
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </section>
   );
 };
@@ -134,5 +140,22 @@ const ImageUploadInput: React.FC<{
         onChange={onChange}
       />
     </div>
+  );
+};
+
+interface MarkdownRendererProps {
+  html: string;
+  className?: string;
+}
+
+export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
+  html,
+  className
+}) => {
+  return (
+    <section
+      className={`p-2 text-sm ${className}`}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 };
