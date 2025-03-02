@@ -2,27 +2,31 @@ interface PostArticleImageResponse {
   status: number;
   message: string;
   data: {
-    url: string;
+    path: string;
     fullPath: string;
     id: string;
-  };
+  }[];
 }
 
-export const postArticleImage = async (file: File, articleId: string) => {
+export const postArticleImage = async (files: File[], articleId: string) => {
   const form = new FormData();
   form.append("id", articleId);
-  form.append("image", file);
+
+  files.forEach((file) => {
+    form.append("image", file);
+  });
 
   const response = await fetch("/api/article/image", {
     method: "POST",
     body: form
   });
 
-  const data = await response.json();
+  const { status, data, message } =
+    (await response.json()) as PostArticleImageResponse;
 
-  if (data.status > 200) {
-    throw new Error(data.message);
+  if (status > 200) {
+    throw new Error(message);
   }
 
-  return data as PostArticleImageResponse;
+  return data;
 };
