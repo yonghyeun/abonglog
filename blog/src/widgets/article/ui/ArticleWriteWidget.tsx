@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useMarkdown } from "@/features/post/lib";
 import { MarkdownEditor } from "@/features/post/ui";
 import { TagSelector } from "@/features/tag/ui";
+import { useTagSelector } from "@/features/tag/ui/lib";
 
 import {
   type Tag,
@@ -31,12 +32,13 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   const { handleImagePaste } = useMarkdown(articleId, defaultValue);
 
   const [title, handleChangeTitle] = useTransitionInput();
-  // tag editor 에서 선택된 태그들
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  // tag Editor 에서 선택되지 않은 태그들
-  const unSelectedTags = allTags.filter(
-    (tag) => !selectedTags.map(({ id }) => id).includes(tag.id)
-  );
+
+  const {
+    selectedTags,
+    filterUnSelectedTags,
+    handleSelectTag,
+    handleUnSelectTag
+  } = useTagSelector();
 
   return (
     <section className="media-padding-x flex h-screen rounded-md">
@@ -56,17 +58,15 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
             <summary className="text-gray-400">태그 선택</summary>
             <TagSelector
               className="absolute left-0 top-12 z-50"
-              tags={unSelectedTags}
-              onEachTagClick={(tag) => setSelectedTags([...selectedTags, tag])}
+              tags={filterUnSelectedTags(allTags)}
+              onEachTagClick={handleSelectTag}
               onAddNewTag={addNewTag}
             />
           </details>
           {/* 선택된 태그 리스트 */}
           <SelectedTagList
             selectedTags={selectedTags}
-            onEachTagClick={(tag) =>
-              setSelectedTags(selectedTags.filter(({ id }) => id !== tag.id))
-            }
+            onEachTagClick={handleUnSelectTag}
           />
         </div>
         <MarkdownEditor className="mt-4 flex-grow" onPaste={handleImagePaste} />
