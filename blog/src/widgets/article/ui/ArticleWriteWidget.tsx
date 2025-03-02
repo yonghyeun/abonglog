@@ -35,6 +35,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
     textAreaRef,
     handleImagePaste,
     handleChangeText,
+    handleKeyDownTextArea,
     handleImageUpload
   } = useMarkdown(articleId, defaultValue);
 
@@ -86,6 +87,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
           ref={textAreaRef}
           onPaste={handleImagePaste}
           onChange={handleChangeText}
+          onKeyDown={handleKeyDownTextArea}
         />
       </div>
       {/* 마크다운 렌더러 */}

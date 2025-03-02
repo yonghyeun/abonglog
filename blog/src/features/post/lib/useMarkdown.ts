@@ -60,6 +60,37 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
   };
 
   /**
+   * texArea 에서 다양한 키 다운 이벤트가 발생 했을 때
+   * 이벤트를 처리하는 함수를 정의 합니다.
+   */
+  const handleKeyDownTextArea = (
+    event: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      const textArea = textAreaRef.current;
+
+      if (!textArea) {
+        return;
+      }
+
+      const TAB_SIZE = 2;
+
+      const selectionStart = textArea.selectionStart;
+      const selectionEnd = textArea.selectionEnd;
+
+      setText(
+        `${text.slice(0, selectionStart)}${" ".repeat(TAB_SIZE)}${text.slice(selectionEnd)}`
+      );
+
+      setTimeout(() => {
+        textArea.selectionStart = selectionStart + TAB_SIZE;
+        textArea.selectionEnd = selectionStart + TAB_SIZE;
+      }, 0);
+    }
+  };
+
+  /**
    * textarea 에서 이미지를 붙여넣을 때 발생하는 이벤트를 처리 합니다.
    */
   const handleImagePaste = async (
@@ -87,6 +118,7 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
   return {
     text,
     handleChangeText,
+    handleKeyDownTextArea,
     handleImagePaste,
     textAreaRef,
     handleImageUpload
