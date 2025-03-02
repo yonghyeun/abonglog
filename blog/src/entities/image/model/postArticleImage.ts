@@ -1,22 +1,28 @@
-import { randomUUID } from "crypto";
+interface PostArticleImageResponse {
+  status: number;
+  message: string;
+  data: {
+    url: string;
+    fullPath: string;
+    id: string;
+  };
+}
 
-import { createBrowserSupabase } from "@/shared/utils";
+export const postArticleImage = async (file: File, articleId: string) => {
+  const form = new FormData();
+  form.append("id", articleId);
+  form.append("image", file);
 
-const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
+  const response = await fetch("/api/article/image", {
+    method: "POST",
+    body: form
+  });
 
-export const postArticleImage = async (file: File) => {
-  const supabase = createBrowserSupabase();
+  const data = await response.json();
 
-  const imageId = randomUUID();
-  const imageName = `${imageId}.${file.type.split("/")[1]}`;
-
-  const { data, error } = await supabase.storage
-    .from(ARTICLE_IMAGE_STORAGE_NAME)
-    .upload(`public/${ARTICLE_IMAGE_STORAGE_NAME}/${imageName}`, file);
-
-  if (error) {
-    throw error;
+  if (data.status > 200) {
+    throw new Error(data.message);
   }
 
-  return data;
+  return data as PostArticleImageResponse;
 };

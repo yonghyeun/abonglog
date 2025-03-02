@@ -1,8 +1,9 @@
 "use client";
 
 import { ArticleTitleInput, MarkdownRenderer } from "./write";
-import { useState } from "react";
+import React, { useState } from "react";
 
+import { useMarkdown } from "@/features/post/lib";
 import { MarkdownEditor } from "@/features/post/ui";
 import { TagSelector } from "@/features/tag/ui";
 
@@ -15,9 +16,19 @@ import { TagChip } from "@/entities/tag/ui";
 
 import { useTransitionInput } from "@/shared/lib";
 
-export const ArticleWriteWidget = () => {
+interface ArticleWriteWidgetProps {
+  articleId: string;
+  defaultValue?: string;
+}
+
+export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
+  articleId,
+  defaultValue = ""
+}) => {
   const { data: allTags } = useGetAllTags();
   const { mutate: addNewTag } = usePostAddNewTag();
+
+  const { handleImagePaste } = useMarkdown(articleId, defaultValue);
 
   const [title, handleChangeTitle] = useTransitionInput();
   // tag editor 에서 선택된 태그들
@@ -30,7 +41,7 @@ export const ArticleWriteWidget = () => {
   return (
     <section className="media-padding-x flex h-screen rounded-md">
       {/* 글 작성 위젯 */}
-      <div className="h-full w-full p-2 md:w-1/2">
+      <div className="flex h-full w-full flex-col p-2 md:w-1/2">
         {/* 글 제목 */}
         <ArticleTitleInput
           placeholder="제목을 입력해주세요"
@@ -58,7 +69,7 @@ export const ArticleWriteWidget = () => {
             }
           />
         </div>
-        <MarkdownEditor />
+        <MarkdownEditor className="mt-4 flex-grow" onPaste={handleImagePaste} />
       </div>
       {/* 마크다운 렌더러 위젯 */}
       <MarkdownRenderer />
