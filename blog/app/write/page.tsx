@@ -17,10 +17,12 @@ const WritePage = async () => {
     queryFn: getTags
   });
 
+  const randomArticleId = Math.floor(Math.random() * 10 ** 7).toString();
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={"loading..."}>
-        <ArticleWriteWidget />
+        <ArticleWriteWidget articleId={randomArticleId} />
       </Suspense>
     </HydrationBoundary>
   );

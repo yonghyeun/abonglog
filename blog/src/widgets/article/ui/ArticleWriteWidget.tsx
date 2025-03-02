@@ -1,9 +1,12 @@
 "use client";
 
-import { ArticleTitleInput, MarkdownEditor, MarkdownRenderer } from "./write";
-import { useState } from "react";
+import { ArticleTitleInput } from "./write";
+import React from "react";
 
+import { useMarkdown } from "@/features/post/lib";
+import { MarkdownEditor } from "@/features/post/ui";
 import { TagSelector } from "@/features/tag/ui";
+import { useTagSelector } from "@/features/tag/ui/lib";
 
 import {
   type Tag,
@@ -12,24 +15,44 @@ import {
 } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
+import { FileClipIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 
-export const ArticleWriteWidget = () => {
+interface ArticleWriteWidgetProps {
+  articleId: string;
+  defaultValue?: string;
+}
+
+export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
+  articleId,
+  defaultValue = ""
+}) => {
   const { data: allTags } = useGetAllTags();
   const { mutate: addNewTag } = usePostAddNewTag();
 
+  const {
+    markdown,
+    html,
+    textAreaRef,
+    handleImagePaste,
+    handleChangeMarkdown,
+    handleKeyDownTextArea,
+    handleImageUpload
+  } = useMarkdown(articleId, defaultValue);
+
   const [title, handleChangeTitle] = useTransitionInput();
-  // tag editor 에서 선택된 태그들
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  // tag Editor 에서 선택되지 않은 태그들
-  const unSelectedTags = allTags.filter(
-    (tag) => !selectedTags.map(({ id }) => id).includes(tag.id)
-  );
+
+  const {
+    selectedTags,
+    filterUnSelectedTags,
+    handleSelectTag,
+    handleUnSelectTag
+  } = useTagSelector();
 
   return (
     <section className="media-padding-x flex h-screen rounded-md">
       {/* 글 작성 위젯 */}
-      <div className="h-full w-full p-2 md:w-1/2">
+      <div className="flex h-full w-full flex-col p-2 md:w-1/2">
         {/* 글 제목 */}
         <ArticleTitleInput
           placeholder="제목을 입력해주세요"
@@ -39,48 +62,100 @@ export const ArticleWriteWidget = () => {
           onChange={handleChangeTitle}
         />
         <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
-          {/* 태그 에디터 토글 */}
-          <details open className="cursor-pointer">
+          {/* 태그 셀렉터 토글 */}
+          <details className="cursor-pointer">
             <summary className="text-gray-400">태그 선택</summary>
             <TagSelector
-              className="absolute left-0 top-12"
-              tags={unSelectedTags}
-              onEachTagClick={(tag) => setSelectedTags([...selectedTags, tag])}
+              className="absolute left-0 top-12 z-50"
+              tags={filterUnSelectedTags(allTags)}
+              onEachTagClick={handleSelectTag}
               onAddNewTag={addNewTag}
             />
           </details>
           {/* 선택된 태그 리스트 */}
-          <SelectedTagList
-            selectedTags={selectedTags}
-            onEachTagClick={(tag) =>
-              setSelectedTags(selectedTags.filter(({ id }) => id !== tag.id))
-            }
-          />
+          <TagList tags={selectedTags} onEachTagClick={handleUnSelectTag} />
         </div>
-        <MarkdownEditor />
+
+        <section className="flex justify-end p-2">
+          {/* 이미지 업로드 인풋 */}
+          <ImageUploadInput onChange={handleImageUpload} />
+        </section>
+
+        {/* 마크다운 에디터 */}
+        <MarkdownEditor
+          className="flex-grow"
+          value={markdown}
+          ref={textAreaRef}
+          onPaste={handleImagePaste}
+          onChange={handleChangeMarkdown}
+          onKeyDown={handleKeyDownTextArea}
+        />
       </div>
-      {/* 마크다운 렌더러 위젯 */}
-      <MarkdownRenderer />
+      {/* 마크다운 렌더러 */}
+      <section
+        className={
+          "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
+        }
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </section>
   );
 };
 
-interface SelectedTagListProps {
-  selectedTags: Tag[];
+interface TagListProps {
+  tags: Tag[];
   onEachTagClick: (tag: Tag) => void;
 }
 
-const SelectedTagList: React.FC<SelectedTagListProps> = ({
-  selectedTags,
-  onEachTagClick
-}) => {
+const TagList: React.FC<TagListProps> = ({ tags, onEachTagClick }) => {
   return (
     <ul className="flex flex-grow flex-wrap gap-2">
-      {selectedTags.map((tag) => (
+      {tags.map((tag) => (
         <li key={`${tag.id}-selected-tagList`}>
           <TagChip name={tag.name} onClick={() => onEachTagClick(tag)} />
         </li>
       ))}
     </ul>
+  );
+};
+
+const ImageUploadInput: React.FC<{
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ onChange }) => {
+  return (
+    <div className="text-sm text-gray-400">
+      <label
+        htmlFor="article-file-upload"
+        className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"
+      >
+        <FileClipIcon size={20} />
+        <span>파일 첨부</span>
+      </label>
+      <input
+        type="file"
+        multiple
+        className="sr-only"
+        id="article-file-upload"
+        name="image"
+        onChange={onChange}
+      />
+    </div>
+  );
+};
+
+interface MarkdownRendererProps {
+  html: string;
+  className?: string;
+}
+
+export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
+  html,
+  className
+}) => {
+  return (
+    <section
+      className={`p-2 text-sm ${className}`}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 };
