@@ -1,8 +1,9 @@
 "use client";
 
-import { ArticleTitleInput, MarkdownEditor, MarkdownRenderer } from "./write";
+import { ArticleTitleInput, MarkdownRenderer } from "./write";
 import { useState } from "react";
 
+import { MarkdownEditor } from "@/features/post/ui";
 import { TagSelector } from "@/features/tag/ui";
 
 import {
