@@ -36,31 +36,10 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   const { mutate: addNewTag } = usePostAddNewTag();
   const { mutate: addNewSeries } = usePostAddNewSeries();
 
-  const {
-    markdown,
-    html,
-    textAreaRef,
-    handleImagePaste,
-    handleChangeMarkdown,
-    handleKeyDownTextArea,
-    handleImageUpload
-  } = useMarkdown(articleId, defaultValue);
-
   const [title, handleChangeTitle] = useTransitionInput();
-
-  const {
-    selectedTags,
-    filterUnSelectedTags,
-    handleSelectTag,
-    handleUnSelectTag
-  } = useTagSelector();
-
-  const {
-    selectedSeries,
-    filterUnSelectedSeries,
-    handleSelectSeries,
-    handleUnSelectSeries
-  } = useSeriesSelector();
+  const markdownHook = useMarkdown(articleId, defaultValue);
+  const tagSelector = useTagSelector();
+  const seriesSelector = useSeriesSelector();
 
   return (
     <section className="media-padding-x mb-2 flex flex-col gap-2">
@@ -83,13 +62,16 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
               </summary>
               <TagSelector
                 className="absolute left-0 top-12 z-50"
-                tags={filterUnSelectedTags(allTags)}
-                onEachTagClick={handleSelectTag}
+                tags={tagSelector.filterUnSelectedTags(allTags)}
+                onEachTagClick={tagSelector.handleSelectTag}
                 onAddNewTag={addNewTag}
               />
             </details>
             {/* 선택된 태그 리스트 */}
-            <TagList tags={selectedTags} onEachTagClick={handleUnSelectTag} />
+            <TagList
+              tags={tagSelector.selectedTags}
+              onEachTagClick={tagSelector.handleUnSelectTag}
+            />
           </div>
 
           <section className="relative flex justify-between p-2 text-sm">
@@ -101,32 +83,32 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
                 </summary>
                 <SeriesSelector
                   className="absolute left-0 top-12 z-50"
-                  series={filterUnSelectedSeries(allSeries)}
-                  onEachSeriesClick={handleSelectSeries}
+                  series={seriesSelector.filterUnSelectedSeries(allSeries)}
+                  onEachSeriesClick={seriesSelector.handleSelectSeries}
                   onAddNewSeries={addNewSeries}
                 />
               </details>
               {/* 선택된 시리즈 명 */}
               <p
                 className="flex-grow cursor-pointer text-ellipsis text-gray-600"
-                onClick={handleUnSelectSeries}
+                onClick={seriesSelector.handleUnSelectSeries}
               >
-                {selectedSeries?.name}
+                {seriesSelector.selectedSeries?.name}
               </p>
             </div>
 
             {/* 이미지 업로드 인풋 */}
-            <ImageUploadInput onChange={handleImageUpload} />
+            <ImageUploadInput onChange={markdownHook.handleImageUpload} />
           </section>
 
           {/* 마크다운 에디터 */}
           <MarkdownEditor
             className="flex-grow"
-            value={markdown}
-            ref={textAreaRef}
-            onPaste={handleImagePaste}
-            onChange={handleChangeMarkdown}
-            onKeyDown={handleKeyDownTextArea}
+            value={markdownHook.markdown}
+            ref={markdownHook.textAreaRef}
+            onPaste={markdownHook.handleImagePaste}
+            onChange={markdownHook.handleChangeMarkdown}
+            onKeyDown={markdownHook.handleKeyDownTextArea}
           />
         </div>
         {/* 마크다운 렌더러 */}
@@ -134,7 +116,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
           className={
             "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
           }
-          dangerouslySetInnerHTML={{ __html: html }}
+          dangerouslySetInnerHTML={{ __html: markdownHook.html }}
         />
       </div>
 
