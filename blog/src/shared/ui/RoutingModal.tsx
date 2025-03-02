@@ -1,8 +1,8 @@
 "use client";
 
+import { CloseIcon } from "../config";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { IoMdClose } from "react-icons/io";
 
 interface RoutingModalProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -39,7 +39,7 @@ export const RoutingModal: React.FC<RoutingModalProps> = ({
             className="rounded-sm p-2 text-gray-600 hover:bg-gray-200"
             onClick={() => router.back()}
           >
-            <IoMdClose size="32" />
+            <CloseIcon size="32" />
           </button>
         </header>
         {children}

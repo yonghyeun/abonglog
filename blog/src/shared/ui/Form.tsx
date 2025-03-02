@@ -19,10 +19,11 @@ const Container: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return <div className="flex items-center gap-2">{children}</div>;
 };
 
-const Label: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = (
-  props
-) => {
-  return <label {...props} className="w-20 text-center font-semibold" />;
+const Label: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = ({
+  className = "",
+  ...props
+}) => {
+  return <label {...props} className={`${className} text-center`} />;
 };
 
 const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
@@ -31,7 +32,7 @@ const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
   return (
     <input
       {...props}
-      className="focus: rounded-md border border-bright-blue p-2 outline-none focus:outline-sky-blue"
+      className="rounded-lg border bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-sky-blue"
     />
   );
 };

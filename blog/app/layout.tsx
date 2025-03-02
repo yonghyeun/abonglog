@@ -1,13 +1,14 @@
 import "./globals.css";
 import { Noto_Sans } from "next/font/google";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { MdOutlineEmail } from "react-icons/md";
+
+import { ServiceProvider } from "@/app/ServiceProvider";
 
 import { SideBar } from "@/widgets/navigate/ui";
 
 import { getCurrentUserData } from "@/entities/user/model";
 
+import { GithubIcon, HumanIcon } from "@/shared/config";
 import { Profile } from "@/shared/ui/Profile";
 
 const notoSans = Noto_Sans({
@@ -22,14 +23,16 @@ interface RootLayoutProps {
 const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   return (
     <html className={notoSans.className}>
-      <body className="flex min-h-screen flex-col bg-primary">
-        <Header />
-        <main className="flex flex-grow flex-col">
-          {modal}
-          {children}
-        </main>
-        <Footer />
-      </body>
+      <ServiceProvider>
+        <body className="flex min-h-screen flex-col bg-primary">
+          <Header />
+          <main className="flex flex-grow flex-col">
+            {modal}
+            {children}
+          </main>
+          <Footer />
+        </body>
+      </ServiceProvider>
     </html>
   );
 };
@@ -48,17 +51,25 @@ const Header = async () => {
         <SideBar />
       </div>
       {user && (
-        <Link
-          className="flex items-end gap-2 rounded-md p-2 hover:bg-secondary"
-          href="/auth"
-        >
-          <Profile
-            size="sm"
-            src={`${user.profileUrl}`}
-            alt={`${user.email} 의 프로필 이미지`}
-          />
-          <p className="text-xs text-gray-400">{user.email}</p>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/write"
+            className="text-md p-2 text-gray-400 hover:bg-secondary"
+          >
+            글 쓰기
+          </Link>
+          <Link
+            className="flex items-end gap-2 rounded-md p-2 hover:bg-secondary"
+            href="/auth"
+          >
+            <Profile
+              size="sm"
+              src={`${user.profileUrl}`}
+              alt={`${user.email} 의 프로필 이미지`}
+            />
+            <p className="text-xs text-gray-400">{user.email}</p>
+          </Link>
+        </div>
       )}
     </header>
   );
@@ -81,11 +92,11 @@ const Footer = () => (
           href="https://github.com/yonghyeun"
           className="flex items-center gap-2 text-sm"
         >
-          <FaGithub />
+          <GithubIcon />
           Github
         </a>
         <span className="flex items-center gap-2 text-sm">
-          <MdOutlineEmail /> ttddcc119@naver.com
+          <HumanIcon /> ttddcc119@naver.com
         </span>
       </div>
     </div>

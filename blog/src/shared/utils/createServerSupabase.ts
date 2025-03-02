@@ -1,7 +1,7 @@
 "use server";
 
 import { SUPABASE_SERVICE_KEY, SUPABASE_URL } from "../config";
-import type { Database } from "./database.types";
+import type { Database } from "../model/database.types";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 

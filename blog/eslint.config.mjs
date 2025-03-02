@@ -28,9 +28,7 @@ const eslintConfig = [
       "unused-imports" // 사용되지 않는 import를 감지하고 제거하기 위한 플러그인
     ],
     rules: {
-      "@typescript-eslint/no-unused-vars": "error", // 사용되지 않는 변수를 에러로 표시
-      "unused-imports/no-unused-imports": "error", // 사용되지 않는 import를 에러로 표시
-      "unused-imports/no-unused-vars": [
+      "@typescript-eslint/no-unused-vars": [
         "error",
         {
           vars: "all", // 모든 변수를 검사
@@ -38,7 +36,8 @@ const eslintConfig = [
           args: "after-used", // 사용된 이후의 인수만 검사
           argsIgnorePattern: "^_" // "_"로 시작하는 인수는 무시
         }
-      ],
+      ], // 사용되지 않는 변수를 에러로 표시
+      "unused-imports/no-unused-imports": "error", // 사용되지 않는 import를 에러로 표시
       "prettier/prettier": "error" // Prettier 규칙을 ESLint에 추가하여 코드 스타일을 검사
     }
   })
