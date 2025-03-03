@@ -12,12 +12,8 @@ import { TagSelectToggle } from "@/features/tag/ui";
 
 import { usePostArticleThumbnail } from "@/entities/article/model";
 import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
-import {
-  type Tag,
-  useGetAllTags,
-  usePostAddNewTag
-} from "@/entities/tag/model";
-import { TagChip } from "@/entities/tag/ui";
+import { useGetAllTags, usePostAddNewTag } from "@/entities/tag/model";
+import { TagChipList } from "@/entities/tag/ui";
 
 import { BackwardIcon, FileClipIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
@@ -108,7 +104,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 onAddNewTag={addNewTag}
               />
               {/* 선택된 태그 리스트 */}
-              <TagList
+              <TagChipList
                 tags={tagSelectToggleHook.selectedTags}
                 onEachTagClick={tagSelectToggleHook.handleUnSelectTag}
               />
@@ -260,7 +256,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 <div className="aspect-video h-2/3 w-full bg-gray-200" />
               )}
               {/* 태그들 */}
-              <TagList tags={tagSelectToggleHook.selectedTags} />
+              <TagChipList tags={tagSelectToggleHook.selectedTags} />
               {/* 제목 & 시리즈 */}
               <div>
                 <h3>{title}</h3>
@@ -298,23 +294,6 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         </div>
       </section>
     </section>
-  );
-};
-
-interface TagListProps {
-  tags: Tag[];
-  onEachTagClick?: (tag: Tag) => void;
-}
-
-const TagList: React.FC<TagListProps> = ({ tags, onEachTagClick }) => {
-  return (
-    <ul className="flex flex-grow flex-wrap gap-2">
-      {tags.map((tag) => (
-        <li key={`${tag.id}-selected-tagList`}>
-          <TagChip name={tag.name} onClick={() => onEachTagClick?.(tag)} />
-        </li>
-      ))}
-    </ul>
   );
 };
 
