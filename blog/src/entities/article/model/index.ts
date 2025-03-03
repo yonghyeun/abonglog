@@ -1,10 +1,11 @@
-interface PostArticleImageResponse {
+export interface PostArticleImageResponse {
   status: number;
   message: string;
   data: {
     path: string;
     fullPath: string;
     id: string;
+    imageUrl: string;
   }[];
 }
 

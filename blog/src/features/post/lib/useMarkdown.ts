@@ -5,10 +5,8 @@ import remarkParse from "remark-parse";
 import remark2rehype from "remark-rehype";
 import { unified } from "unified";
 
+import { postArticleImage } from "@/entities/article/model";
 import { compressImage } from "@/entities/image/lib";
-import { postArticleImage } from "@/entities/image/model";
-
-import { SUPABASE_STORAGE_URL } from "@/shared/config";
 
 export const useMarkdown = (articleId: string, defaultValue?: string) => {
   const [markdown, setMarkdown] = useState<string>(() => defaultValue || "");
@@ -48,8 +46,7 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
     // 이미지를 표현하는 마크다운 문법을 추가 합니다.
 
     const imageMarkdownTexts = imageUrls
-      .flatMap((data) => data)
-      .map(({ fullPath }) => `![image](${SUPABASE_STORAGE_URL}/${fullPath})`)
+      .flatMap((data) => data.imageUrl)
       .join("\n");
 
     setMarkdown(

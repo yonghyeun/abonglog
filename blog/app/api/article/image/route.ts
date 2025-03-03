@@ -1,6 +1,9 @@
 import { randomUUID } from "crypto";
 import { type NextRequest, NextResponse } from "next/server";
 
+import type { PostArticleImageResponse } from "@/entities/article/model";
+
+import { SUPABASE_STORAGE_URL } from "@/shared/config";
 import { createServerSupabase } from "@/shared/utils";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
@@ -31,10 +34,13 @@ export const POST = async (req: NextRequest) => {
       images.map((file) => uploadImageAction(file, postId))
     );
 
-    return NextResponse.json({
+    return NextResponse.json<PostArticleImageResponse>({
       status: 200,
-      messag: "success",
-      data: imageUrls
+      message: "이미지 업로드에 성공했습니다.",
+      data: imageUrls.map((urlObj) => ({
+        ...urlObj,
+        imageUrl: `${SUPABASE_STORAGE_URL}/${urlObj.fullPath}`
+      }))
     });
   } catch (error) {
     console.log(error);

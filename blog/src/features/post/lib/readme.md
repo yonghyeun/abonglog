@@ -56,7 +56,7 @@ const MarkdownEditor: React.FC<{ articleId: string }> = ({ articleId }) => {
 
 > 두 개의 이미지 핸들러는 다음과 같은 파일들에 종속성을 갖습니다.
 >
-> - `@/entities/image/model`의 `postArticleImage` 함수
+> - `@/entities/article/model`의 `postArticleImage` 함수
 > - `@/entities/image/lib`의 `compressImage` 함수
 
 위 두 개의 핸들러는 이미지가 업로드되는 동안 `[image](이미지 업로드 중 ...)` 이란 텍스트가 표기되고 그 후 이미지 URL로 대체됩니다.
