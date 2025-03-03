@@ -10,6 +10,7 @@ import { SeriesSelectToggle } from "@/features/series/ui";
 import { useTagSelecToggle } from "@/features/tag/lib";
 import { TagSelectToggle } from "@/features/tag/ui";
 
+import { usePostArticleThumbnail } from "@/entities/article/model";
 import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import {
   type Tag,
@@ -33,11 +34,7 @@ const MOCK_MARKDOWN = `
 라랄ㄹ라 한잊 
 ㄹ라랄라 두입 
 
-![image1](https://bnhwpfqowipytfquprwl.supabase.co/storage/v1/object/article_image/public/7032161/4372c0de-fa6f-4309-9409-ea5825b4388c.png)
 
-![image2](https://bnhwpfqowipytfquprwl.supabase.co/storage/v1/object/article_image/public/7032161/eb0c2bcd-9953-4686-af49-08188d9b22b4.png)
-
-![asd](https://velog.velcdn.com/images/aejin24/post/e719ba84-beea-4ee5-a71a-c1ba653bb871/image.png)
 `;
 
 export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
@@ -51,6 +48,8 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   const { data: allSeries } = useGetAllSeries();
   const { mutate: addNewTag } = usePostAddNewTag();
   const { mutate: addNewSeries } = usePostAddNewSeries();
+  const { mutate: uploadNewThumbnail, isPending: isThumbnailUploading } =
+    usePostArticleThumbnail();
 
   const [title, handleChangeTitle] = useTransitionInput();
   const markdownHook = useMarkdown(articleId, MOCK_MARKDOWN);
@@ -71,6 +70,26 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
       return;
     }
     setStep(2);
+  };
+
+  const handleUploadThumbnail = ({
+    target
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    const files = target.files;
+
+    if (!files || !files.length) {
+      return;
+    }
+
+    uploadNewThumbnail(
+      {
+        file: files[0],
+        articleId
+      },
+      {
+        onSuccess: ({ imageUrl }) => setThumbnailUrl(imageUrl)
+      }
+    );
   };
 
   // step 1. 글 쓰기 페이지
@@ -176,32 +195,61 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
         <div className="flex w-full flex-col gap-4 md:w-1/2">
           {/* iamge input 컴포넌트 */}
           <div className="flex items-center gap-2 border-b py-2">
-            <ImageUploadInput onChange={() => {}} label="썸네일 첨부" />
-            <p className="flex-grow text-ellipsis text-sky-blue">
-              {thumbnailUrl}
+            <div className="flex-shrink-0 text-gray-400">
+              <label
+                htmlFor="article-thumbnail-upload"
+                className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"
+                aria-labelledby="article-thumbnail-upload"
+              >
+                <FileClipIcon size={20} />
+                <span aria-labelledby="article-thumbnail-upload">
+                  썸네일 등록
+                </span>
+              </label>
+              <input
+                type="file"
+                className="sr-only"
+                id="article-thumbnail-upload"
+                name="image"
+                onChange={handleUploadThumbnail}
+              />
+            </div>
+
+            <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-sky-blue">
+              {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
             </p>
           </div>
           {/* 사용된 image 선택 컴포넌트 */}
-          <ul className="flex-grow overflow-y-auto py-2">
-            <p className="text-gray-400">아티클에 사용된 이미지 목록</p>
-            <li className="grid grid-cols-3 gap-2">
-              {imageUrlsInMarkdown.map(({ src, alt }) => (
-                <Button
-                  variant="outlined"
-                  size="sm"
-                  key={src}
-                  className={`flex flex-col justify-between ${
-                    src === thumbnailUrl ? "border-sky-blue" : "border-gray-200"
-                  } `}
-                >
-                  {/* TODO 이미지 최적화 직접 구현하기 */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={src} alt={alt} className="w-full object-cover" />
-                  <p className="text-ellipsis text-sm text-gray-400">{alt}</p>
-                </Button>
-              ))}
-            </li>
-          </ul>
+
+          {imageUrlsInMarkdown.length > 0 ? (
+            <ul className="flex-grow overflow-y-auto py-2">
+              <p className="text-gray-400">아티클에 사용된 이미지 목록</p>
+              <li className="grid grid-cols-3 gap-2">
+                {imageUrlsInMarkdown.map(({ src, alt }) => (
+                  <Button
+                    variant="outlined"
+                    size="sm"
+                    key={src}
+                    onClick={() => setThumbnailUrl(src)}
+                    className={`flex flex-col justify-between ${
+                      src === thumbnailUrl
+                        ? "border-sky-blue"
+                        : "border-gray-200"
+                    } `}
+                  >
+                    {/* TODO 이미지 최적화 직접 구현하기 */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={src} alt={alt} className="w-full object-cover" />
+                    <p className="text-ellipsis text-sm text-gray-400">{alt}</p>
+                  </Button>
+                ))}
+              </li>
+            </ul>
+          ) : (
+            <p className="flex items-center justify-center rounded-lg border px-2 py-12 text-gray-600">
+              아티클에 사용된 이미지가 없습니다.
+            </p>
+          )}
         </div>
         {/* 소개글 등록 컴포넌트 */}
         <div className="flex-grow">2</div>
