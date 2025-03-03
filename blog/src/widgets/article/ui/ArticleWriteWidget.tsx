@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 
 import { useMarkdown } from "@/features/post/lib";
+import { findImageUrl } from "@/features/post/lib/findImageUrl";
 import { MarkdownEditor } from "@/features/post/ui";
 import { useSeriesSelectToggle } from "@/features/series/lib";
 import { SeriesSelectToggle } from "@/features/series/ui";
@@ -17,7 +18,7 @@ import {
 } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
-import { FileClipIcon } from "@/shared/config";
+import { BackwardIcon, FileClipIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
 
@@ -26,11 +27,25 @@ interface ArticleWriteWidgetProps {
   defaultValue?: string;
 }
 
+const MOCK_MARKDOWN = `
+룰루라라 입니다 
+
+라랄ㄹ라 한잊 
+ㄹ라랄라 두입 
+
+![image1](https://bnhwpfqowipytfquprwl.supabase.co/storage/v1/object/article_image/public/7032161/4372c0de-fa6f-4309-9409-ea5825b4388c.png)
+
+![image2](https://bnhwpfqowipytfquprwl.supabase.co/storage/v1/object/article_image/public/7032161/eb0c2bcd-9953-4686-af49-08188d9b22b4.png)
+
+![asd](https://velog.velcdn.com/images/aejin24/post/e719ba84-beea-4ee5-a71a-c1ba653bb871/image.png)
+`;
+
 export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   articleId,
   defaultValue = ""
 }) => {
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2>(2);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
   const { data: allTags } = useGetAllTags();
   const { data: allSeries } = useGetAllSeries();
@@ -38,10 +53,27 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   const { mutate: addNewSeries } = usePostAddNewSeries();
 
   const [title, handleChangeTitle] = useTransitionInput();
-  const markdownHook = useMarkdown(articleId, defaultValue);
+  const markdownHook = useMarkdown(articleId, MOCK_MARKDOWN);
   const tagSelectToggleHook = useTagSelecToggle();
   const seriesSelectToggleHook = useSeriesSelectToggle();
 
+  const imageUrlsInMarkdown = findImageUrl(markdownHook.markdown);
+
+  const handleStepPublish = () => {
+    if (
+      !title ||
+      !markdownHook.markdown ||
+      !tagSelectToggleHook.selectedTags.length ||
+      !seriesSelectToggleHook.selectedSeries
+    ) {
+      // TODO toast 로 변경
+      alert("필수 항목을 입력해 주세요");
+      return;
+    }
+    setStep(2);
+  };
+
+  // step 1. 글 쓰기 페이지
   if (step === 1) {
     return (
       <section className="media-padding-x">
@@ -90,7 +122,10 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
               </div>
 
               {/* 이미지 업로드 인풋 */}
-              <ImageUploadInput onChange={markdownHook.handleImageUpload} />
+              <ImageUploadInput
+                onChange={markdownHook.handleImageUpload}
+                label="파일 첨부"
+              />
             </section>
 
             {/* 마크다운 에디터 */}
@@ -116,7 +151,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
           <Button variant="outlined" size="md">
             임시 저장
           </Button>
-          <Button variant="filled" size="md" onClick={() => setStep(2)}>
+          <Button variant="filled" size="md" onClick={handleStepPublish}>
             게시글 발행
           </Button>
         </footer>
@@ -124,7 +159,55 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
     );
   }
 
-  return <section className="media-padding-x">2</section>;
+  //  step 2. 게시글 발행 페이지
+  return (
+    <section className="media-padding-x flex h-screen flex-col">
+      <header>
+        <button
+          className="rounded-lg p-2 text-gray-400 hover:bg-gray-200"
+          aria-label="글 쓰기 단계로 돌아가기"
+          onClick={() => setStep(1)}
+        >
+          <BackwardIcon size={24} />
+        </button>
+      </header>
+      <section className="flex w-full flex-grow flex-col gap-2 md:flex-row">
+        {/* 썸네일 등록 컴포넌트 */}
+        <div className="flex w-full flex-col gap-4 md:w-1/2">
+          {/* iamge input 컴포넌트 */}
+          <div className="flex items-center gap-2 border-b py-2">
+            <ImageUploadInput onChange={() => {}} label="썸네일 첨부" />
+            <p className="flex-grow text-ellipsis text-sky-blue">
+              {thumbnailUrl}
+            </p>
+          </div>
+          {/* 사용된 image 선택 컴포넌트 */}
+          <ul className="flex-grow overflow-y-auto py-2">
+            <p className="text-gray-400">아티클에 사용된 이미지 목록</p>
+            <li className="grid grid-cols-3 gap-2">
+              {imageUrlsInMarkdown.map(({ src, alt }) => (
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  key={src}
+                  className={`flex flex-col justify-between ${
+                    src === thumbnailUrl ? "border-sky-blue" : "border-gray-200"
+                  } `}
+                >
+                  {/* TODO 이미지 최적화 직접 구현하기 */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={alt} className="w-full object-cover" />
+                  <p className="text-ellipsis text-sm text-gray-400">{alt}</p>
+                </Button>
+              ))}
+            </li>
+          </ul>
+        </div>
+        {/* 소개글 등록 컴포넌트 */}
+        <div className="flex-grow">2</div>
+      </section>
+    </section>
+  );
 };
 
 interface TagListProps {
@@ -146,15 +229,17 @@ const TagList: React.FC<TagListProps> = ({ tags, onEachTagClick }) => {
 
 const ImageUploadInput: React.FC<{
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}> = ({ onChange }) => {
+  label: string;
+}> = ({ onChange, label }) => {
   return (
     <div className="text-gray-400">
       <label
         htmlFor="article-file-upload"
         className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"
+        aria-labelledby="article-file-upload"
       >
         <FileClipIcon size={20} />
-        <span>파일 첨부</span>
+        <span aria-labelledby="article-file-upload">{label}</span>
       </label>
       <input
         type="file"
