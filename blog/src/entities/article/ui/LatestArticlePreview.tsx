@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 
-interface LatestPostPreviewProps {
+interface LatestArticlePreviewProps {
   postId: number;
   title: string;
   description: string;
@@ -10,7 +10,7 @@ interface LatestPostPreviewProps {
   thumbnailUrl: string;
 }
 
-export const LatestPostPreview: React.FC<LatestPostPreviewProps> = ({
+export const LatestArticlePreview: React.FC<LatestArticlePreviewProps> = ({
   postId,
   title,
   thumbnailUrl,

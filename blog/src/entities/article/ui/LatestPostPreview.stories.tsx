@@ -1,9 +1,9 @@
-import { LatestPostPreview } from "./LatestPostPreview";
+import { LatestArticlePreview } from "./LatestArticlePreview";
 import { Meta, StoryObj } from "@storybook/react";
 
-const meta: Meta<typeof LatestPostPreview> = {
+const meta: Meta<typeof LatestArticlePreview> = {
   title: "entities/preview/LatestPostPreview",
-  component: LatestPostPreview,
+  component: LatestArticlePreview,
   argTypes: {
     postId: {
       control: {
@@ -39,7 +39,7 @@ const meta: Meta<typeof LatestPostPreview> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof LatestPostPreview>;
+type Story = StoryObj<typeof LatestArticlePreview>;
 
 export const Default: Story = {
   args: {
@@ -53,7 +53,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <section className="h-[30vh] w-screen">
-      <LatestPostPreview {...args} />
+      <LatestArticlePreview {...args} />
     </section>
   )
 };
