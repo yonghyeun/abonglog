@@ -1,4 +1,5 @@
 import Image, { ImageProps } from "next/image";
+import React from "react";
 
 interface ProfileProps extends ImageProps {
   size: keyof typeof profileSizeMap;
@@ -30,4 +31,10 @@ export const Profile: React.FC<ProfileProps> = ({
       />
     </div>
   );
+};
+
+export const AdminProfile: React.FC<Pick<ProfileProps, "size">> = ({
+  size
+}) => {
+  return <Profile size={size} src="/images/profile.jpg" alt="프로필 이미지" />;
 };

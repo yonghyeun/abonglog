@@ -7,7 +7,7 @@ import React from "react";
 // !TODO 위젯으로 변경해 사용하기
 // !Tag 컴포넌트 이용하기
 
-import { Profile } from "@/shared/ui/Profile";
+import { Profile } from "@/entities/user/ui";
 
 interface PostCardProps {
   postId: number;

@@ -1,8 +1,8 @@
-import { Profile } from "./Profile";
+import { AdminProfile, Profile } from "./Profile";
 import { Meta } from "@storybook/react";
 
 const meta: Meta<typeof Profile> = {
-  title: "shared/Profile",
+  title: "entitis/user/Profile",
   component: Profile,
   argTypes: {
     size: {
@@ -20,9 +20,9 @@ export default meta;
 export const Default = {
   render: () => (
     <div className="flex items-center gap-4 bg-secondary p-4">
-      <Profile size="sm" />
-      <Profile size="md" />
-      <Profile size="lg" />
+      <AdminProfile size="sm" />
+      <AdminProfile size="md" />
+      <AdminProfile size="lg" />
     </div>
   )
 };
