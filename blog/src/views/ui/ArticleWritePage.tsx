@@ -11,7 +11,7 @@ import { useTagSelecToggle } from "@/features/tag/lib";
 import { TagSelectToggle } from "@/features/tag/ui";
 
 import { usePostArticleThumbnail } from "@/entities/article/model";
-import { ImageUploadInput } from "@/entities/image/ui";
+import { ImageGrid, ImageUploadInput } from "@/entities/image/ui";
 import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import { useGetAllTags, usePostAddNewTag } from "@/entities/tag/model";
 import { TagChipList } from "@/entities/tag/ui";
@@ -203,29 +203,19 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
 
           {/* 사용된 image 선택 컴포넌트 */}
           {imageUrlsInMarkdown.length > 0 ? (
-            <ul className="flex-grow overflow-y-auto py-2">
-              <p className="text-gray-400">아티클에 사용된 이미지 목록</p>
-              <li className="grid grid-cols-3 gap-2">
-                {imageUrlsInMarkdown.map(({ src, alt }) => (
-                  <Button
-                    variant="outlined"
-                    size="sm"
-                    key={src}
-                    onClick={() => setThumbnailUrl(src)}
-                    className={`flex flex-col justify-between ${
-                      src === thumbnailUrl
-                        ? "border-sky-blue"
-                        : "border-gray-200"
-                    } `}
-                  >
-                    {/* TODO 이미지 최적화 직접 구현하기 */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={src} alt={alt} className="w-full object-cover" />
-                    <p className="text-ellipsis text-sm text-gray-400">{alt}</p>
-                  </Button>
+            <ImageGrid>
+              <ImageGrid.Title>아티클에 사용된 이미지들</ImageGrid.Title>
+              <ImageGrid.Container>
+                {imageUrlsInMarkdown.map((image, idx) => (
+                  <ImageGrid.Item
+                    key={idx}
+                    image={image}
+                    selectedImageUrl={thumbnailUrl}
+                    onSelectImage={setThumbnailUrl}
+                  />
                 ))}
-              </li>
-            </ul>
+              </ImageGrid.Container>
+            </ImageGrid>
           ) : (
             <p className="flex items-center justify-center rounded-lg border px-2 py-12 text-gray-600">
               아티클에 사용된 이미지가 없습니다.

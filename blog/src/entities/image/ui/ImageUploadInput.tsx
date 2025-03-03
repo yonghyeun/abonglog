@@ -14,7 +14,7 @@ export const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
   inputProps
 }) => {
   return (
-    <div className="text-gray-400">
+    <div className="flex-shrink-0 text-gray-400">
       <label
         htmlFor={id}
         className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"
