@@ -46,7 +46,7 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
     // 이미지를 표현하는 마크다운 문법을 추가 합니다.
 
     const imageMarkdownTexts = imageUrls
-      .flatMap((data) => data.imageUrl)
+      .flatMap(({ imageUrl }) => `![image](${imageUrl})`)
       .join("\n");
 
     setMarkdown(
