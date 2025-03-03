@@ -29,22 +29,14 @@ interface ArticleWriteWidgetProps {
   defaultValue?: string;
 }
 
-const MOCK_MARKDOWN = `
-룰루라라 입니다 
-
-라랄ㄹ라 한잊 
-ㄹ라랄라 두입 
-
-
-`;
-
 export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   articleId,
   defaultValue = ""
 }) => {
-  const [step, setStep] = useState<1 | 2>(2);
+  const [step, setStep] = useState<1 | 2>(1);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
+  const [title, handleChangeTitle] = useTransitionInput();
 
   const { data: allTags } = useGetAllTags();
   const { data: allSeries } = useGetAllSeries();
@@ -53,8 +45,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   const { mutate: uploadNewThumbnail, isPending: isThumbnailUploading } =
     usePostArticleThumbnail();
 
-  const [title, handleChangeTitle] = useTransitionInput();
-  const markdownHook = useMarkdown(articleId, MOCK_MARKDOWN);
+  const markdownHook = useMarkdown(articleId, defaultValue);
   const tagSelectToggleHook = useTagSelecToggle();
   const seriesSelectToggleHook = useSeriesSelectToggle();
 
@@ -169,11 +160,11 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
         </div>
 
         <footer className="mb-2 flex justify-end gap-2">
-          <Button variant="outlined" size="md">
+          <Button variant="outlined" size="sm">
             임시 저장
           </Button>
-          <Button variant="filled" size="md" onClick={handleStepPublish}>
-            게시글 발행
+          <Button variant="filled" size="sm" onClick={handleStepPublish}>
+            다음 단계
           </Button>
         </footer>
       </section>
@@ -216,13 +207,13 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
                 onChange={handleUploadThumbnail}
               />
             </div>
-
+            {/* 선택된 썸네일 주소 표현 컴포넌트 */}
             <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-sky-blue">
               {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
             </p>
           </div>
-          {/* 사용된 image 선택 컴포넌트 */}
 
+          {/* 사용된 image 선택 컴포넌트 */}
           {imageUrlsInMarkdown.length > 0 ? (
             <ul className="flex-grow overflow-y-auto py-2">
               <p className="text-gray-400">아티클에 사용된 이미지 목록</p>
@@ -256,6 +247,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
         {/* 소개글 등록 컴포넌트 */}
         <div className="flex flex-grow justify-center py-12">
           <div className="w-96">
+            {/* 아티클 카드 컴포넌트 */}
             <section className="flex aspect-video flex-col gap-2 rounded-lg border px-4 py-2 shadow-md transition-transform duration-200 hover:scale-105 hover:shadow-xl">
               {/* 이미지 컴포넌트 */}
               {thumbnailUrl ? (
@@ -268,26 +260,21 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
                 <div className="aspect-video h-2/3 w-full bg-gray-200" />
               )}
               {/* 태그들 */}
-              <TagList
-                tags={tagSelectToggleHook.selectedTags}
-                onEachTagClick={() => {}}
-              />
+              <TagList tags={tagSelectToggleHook.selectedTags} />
+              {/* 제목 & 시리즈 */}
               <div>
-                {/* 제목 */}
                 <h3>{title}</h3>
-                {/* 시리즈명 */}
                 <p className="text-sm text-gray-500">
                   {seriesSelectToggleHook.selectedSeries?.name}
                 </p>
               </div>
+              {/* 소개글 & 게시자 정보 */}
               <div className="flex flex-col gap-4 text-sm text-gray-500">
-                {/* 소개글 textarea */}
                 <textarea
                   className="resize-none border outline-none"
                   placeholder="아티클에 대한 소개글을 작성해 주세요"
                   onChange={({ target }) => setDescription(target.value)}
                 />
-                {/* 프로필 , 프로필명 , 작성시간 */}
                 <div className="flex gap-2">
                   <Profile
                     size="sm"
@@ -301,6 +288,12 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
                 </div>
               </div>
             </section>
+
+            <div className="flex justify-end">
+              <Button variant="filled" size="sm" className="mt-4">
+                게시글 발행하기
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -310,7 +303,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
 
 interface TagListProps {
   tags: Tag[];
-  onEachTagClick: (tag: Tag) => void;
+  onEachTagClick?: (tag: Tag) => void;
 }
 
 const TagList: React.FC<TagListProps> = ({ tags, onEachTagClick }) => {
@@ -318,7 +311,7 @@ const TagList: React.FC<TagListProps> = ({ tags, onEachTagClick }) => {
     <ul className="flex flex-grow flex-wrap gap-2">
       {tags.map((tag) => (
         <li key={`${tag.id}-selected-tagList`}>
-          <TagChip name={tag.name} onClick={() => onEachTagClick(tag)} />
+          <TagChip name={tag.name} onClick={() => onEachTagClick?.(tag)} />
         </li>
       ))}
     </ul>
@@ -351,24 +344,7 @@ const ImageUploadInput: React.FC<{
   );
 };
 
-interface MarkdownRendererProps {
-  html: string;
-  className?: string;
-}
-
-export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
-  html,
-  className
-}) => {
-  return (
-    <section
-      className={`p-2 text-sm ${className}`}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
-};
-
-export const ArticleTitleInput: React.FC<
+const ArticleTitleInput: React.FC<
   React.InputHTMLAttributes<HTMLInputElement>
 > = ({ id, ...props }) => {
   return (
