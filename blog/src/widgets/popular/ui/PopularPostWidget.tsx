@@ -3,19 +3,20 @@
 import { popularPostNavData } from "../config";
 import { useState } from "react";
 
-import { PostCard } from "@/entities/preview/ui";
+import { ArticlePreviewCard } from "@/widgets/article/ui";
 
 const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
-  postId: idx + 1,
+  articleId: idx + 1,
   title: "Lorem ipsum dolor",
+  seriesName: "React 심화 시리즈",
   description:
     "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum voluptates dolores, tempore optio modi sequi numquam at temporibus voluptatibus repudiandae ipsum aliquam ducimus ",
-  createdAt: new Date().toDateString(),
+  updatedAt: new Date().toDateString(),
   thumbnailUrl: "/images/latest_post_thumbnail.jpg",
   tags: [
-    { id: 1, name: "react" },
-    { id: 2, name: "Typescript" },
-    { id: 3, name: "jest" }
+    { id: 1, name: "react", created_at: new Date().toISOString() },
+    { id: 2, name: "Typescript", created_at: new Date().toISOString() },
+    { id: 3, name: "jest", created_at: new Date().toISOString() }
   ]
 }));
 
@@ -36,7 +37,7 @@ export const PopularPostWidget = () => {
       </div>
       <section className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
         {mockPopularPostData.map((data) => (
-          <PostCard {...data} key={data.postId} />
+          <ArticlePreviewCard {...data} key={data.articleId} />
         ))}
       </section>
     </section>

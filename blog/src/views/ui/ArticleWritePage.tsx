@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 
+import { ArticlePreviewCard } from "@/widgets/article/ui";
+
 import { useMarkdown } from "@/features/post/lib";
 import { findImageUrl } from "@/features/post/lib/findImageUrl";
 import { MarkdownEditor } from "@/features/post/ui";
@@ -19,7 +21,6 @@ import { TagChipList } from "@/entities/tag/ui";
 import { BackwardIcon, PenIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
-import { Profile } from "@/shared/ui/Profile";
 
 interface ArticleWritePageProps {
   articleId: string;
@@ -246,43 +247,14 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         <div className="flex flex-grow justify-center py-12">
           <div className="w-96">
             {/* 아티클 카드 컴포넌트 */}
-            <section className="flex aspect-video flex-col gap-2 rounded-lg border px-4 py-2 shadow-md transition-transform duration-200 hover:scale-105 hover:shadow-xl">
-              {/* 이미지 컴포넌트 */}
-              {thumbnailUrl ? (
-                <img
-                  src={thumbnailUrl}
-                  alt="article-thumbnail"
-                  className="aspect-video h-2/3 w-full object-cover"
-                />
-              ) : (
-                <div className="aspect-video h-2/3 w-full bg-gray-200" />
-              )}
-              {/* 태그들 */}
-              <TagChipList tags={tagSelectToggleHook.selectedTags} />
-              {/* 제목 & 시리즈 */}
-              <div>
-                <h3>{title}</h3>
-                <p className="text-sm text-gray-500">
-                  {seriesSelectToggleHook.selectedSeries?.name}
-                </p>
-              </div>
-              {/* 소개글 & 게시자 정보 */}
-              <div className="flex flex-col gap-4 text-sm text-gray-600">
-                <p>{description}</p>
-
-                <div className="flex gap-2">
-                  <Profile
-                    size="sm"
-                    src="/images/profile.jpg"
-                    alt="프로필 이미지"
-                  />
-                  <div className="text-xs">
-                    <p>yonghyeun</p>
-                    <p>{new Date().toLocaleString()}</p>
-                  </div>
-                </div>
-              </div>
-            </section>
+            <ArticlePreviewCard
+              thumbnailUrl={thumbnailUrl}
+              tags={tagSelectToggleHook.selectedTags}
+              seriesName={seriesSelectToggleHook.selectedSeries?.name || ""}
+              title={title}
+              description={description}
+              updatedAt={new Date().toLocaleDateString()}
+            />
 
             <div className="flex justify-end">
               <Button variant="filled" size="sm" className="mt-4">
