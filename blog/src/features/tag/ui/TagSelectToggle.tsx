@@ -22,7 +22,8 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
   const [newTagName, handleChangeNewTagName] = useTransitionInput();
 
   const isAvailableNewTag =
-    newTagName.length > 0 && tags.every(({ name }) => name !== newTagName);
+    newTagName.length > 0 &&
+    tags.every(({ name }) => name.toLowerCase() !== newTagName.toLowerCase());
 
   const filterTags = (tags: Tag[]) =>
     tags.filter(({ name }) =>

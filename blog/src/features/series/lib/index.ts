@@ -1,1 +1,1 @@
-export * from "./useSeriesSelector";
+export * from "./useSeriesSelectToggle";

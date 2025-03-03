@@ -1,19 +1,19 @@
-import { SeriesSelector } from "./SeriesSelector";
+import { SeriesSelectToggle } from "./SeriesSelectToggle";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 
 import { Series } from "@/entities/series/model";
 
-const meta: Meta<typeof SeriesSelector> = {
-  title: "features/series/SeriesSelector",
-  component: SeriesSelector,
+const meta: Meta<typeof SeriesSelectToggle> = {
+  title: "features/series/SeriesSelectToggle",
+  component: SeriesSelectToggle,
   parameters: {
     layout: "centered",
     docs: {
       description: {
         component: `
 ## 개요
-\`SeriesSelector\` 컴포넌트는 시리즈 목록을 관리하고 편집하기 위한 UI 컴포넌트입니다.
+\`SeriesSelectToggle\` 컴포넌트는 시리즈 목록을 관리하고 편집하기 위한 UI 컴포넌트입니다.
 사용자가 시리즈를 검색하거나 추가할 수 있으며, 선택된 시리즈 목록을 관리합니다.
 
 내부에서 사용되는 데이터와 비즈니스 로직은 모두 외부에서 주입받는 비제어 컴포넌트입니다.
@@ -21,10 +21,10 @@ const meta: Meta<typeof SeriesSelector> = {
 ## 사용 예시 
 
 \`\`\`tsx
-import { SeriesSelector } from '@/features/series/ui/SeriesSelector';
+import { SeriesSelectToggle } from '@/features/series/ui/SeriesSelectToggle';
 import { useState } from 'react';
 
-const MockSeriesSelector = () => {
+const MockSeriesSelectToggle = () => {
   const [series, setSeries] = useState<Series[]>([
     { id: 1, name: "JavaScript", created_at: new Date().toISOString() },
     { id: 2, name: "TypeScript", created_at: new Date().toISOString() },
@@ -45,11 +45,10 @@ const MockSeriesSelector = () => {
   };
 
   return (
-    <SeriesSelector
+    <SeriesSelectToggle
       series={series}
       onEachSeriesClick={handleSeriesClick}
       onAddNewSeries={handleAddNewSeries}
-      className="custom-class"
     />
   );
 };
@@ -79,19 +78,13 @@ const MockSeriesSelector = () => {
       description:
         "새 시리즈 추가 시 호출되는 함수. 시리즈 이름을 인자로 받습니다.",
       action: "added"
-    },
-    className: {
-      description: "추가적인 CSS 클래스를 적용하기 위한 문자열",
-      control: {
-        type: "text"
-      }
     }
   }
 };
 
 export default meta;
 
-const MockSeriesSelector = () => {
+const MockSeriesSelectToggle = () => {
   const [series, setSeries] = useState<Series[]>([
     { id: 1, name: "JavaScript", created_at: new Date().toISOString() },
     { id: 2, name: "TypeScript", created_at: new Date().toISOString() },
@@ -112,15 +105,16 @@ const MockSeriesSelector = () => {
   };
 
   return (
-    <SeriesSelector
-      series={series}
-      onEachSeriesClick={handleSeriesClick}
-      onAddNewSeries={handleAddNewSeries}
-      className="custom-class"
-    />
+    <div className="relative w-screen">
+      <SeriesSelectToggle
+        series={series}
+        onEachSeriesClick={handleSeriesClick}
+        onAddNewSeries={handleAddNewSeries}
+      />
+    </div>
   );
 };
 
-export const Default: StoryObj<typeof SeriesSelector> = {
-  render: () => <MockSeriesSelector />
+export const Default: StoryObj<typeof SeriesSelectToggle> = {
+  render: () => <MockSeriesSelectToggle />
 };

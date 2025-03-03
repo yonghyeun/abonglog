@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import type { Series } from "@/entities/series/model";
 
-export const useSeriesSelector = () => {
+export const useSeriesSelectToggle = () => {
   const [selectedSeries, setSelectedSeries] = useState<Series | null>();
 
   const handleSelectSeries = (series: Series) => {

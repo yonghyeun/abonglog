@@ -5,8 +5,8 @@ import React from "react";
 
 import { useMarkdown } from "@/features/post/lib";
 import { MarkdownEditor } from "@/features/post/ui";
-import { useSeriesSelector } from "@/features/series/lib";
-import { SeriesSelector } from "@/features/series/ui";
+import { useSeriesSelectToggle } from "@/features/series/lib";
+import { SeriesSelectToggle } from "@/features/series/ui";
 import { useTagSelecToggle } from "@/features/tag/lib";
 import { TagSelectToggle } from "@/features/tag/ui";
 
@@ -38,8 +38,8 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
 
   const [title, handleChangeTitle] = useTransitionInput();
   const markdownHook = useMarkdown(articleId, defaultValue);
-  const tagSelectToggle = useTagSelecToggle();
-  const seriesSelector = useSeriesSelector();
+  const tagSelectToggleHook = useTagSelecToggle();
+  const seriesSelectToggleHook = useSeriesSelectToggle();
 
   return (
     <section className="media-padding-x mb-2 flex flex-col gap-2">
@@ -55,38 +55,35 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
             onChange={handleChangeTitle}
           />
           <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
+            {/* 태그 셀렉트 토글 */}
             <TagSelectToggle
-              tags={tagSelectToggle.filterUnSelectedTags(allTags)}
-              onEachTagClick={tagSelectToggle.handleSelectTag}
+              tags={tagSelectToggleHook.filterUnSelectedTags(allTags)}
+              onEachTagClick={tagSelectToggleHook.handleSelectTag}
               onAddNewTag={addNewTag}
             />
             {/* 선택된 태그 리스트 */}
             <TagList
-              tags={tagSelectToggle.selectedTags}
-              onEachTagClick={tagSelectToggle.handleUnSelectTag}
+              tags={tagSelectToggleHook.selectedTags}
+              onEachTagClick={tagSelectToggleHook.handleUnSelectTag}
             />
           </div>
 
           <section className="relative flex justify-between p-2 text-sm">
             <div className="flex flex-grow gap-2">
-              {/* 시리즈 셀렉터 토글 */}
-              <details className="cursor-pointer">
-                <summary className="text-gray-400 hover:text-sky-blue">
-                  시리즈 목록
-                </summary>
-                <SeriesSelector
-                  className="absolute left-0 top-12 z-50"
-                  series={seriesSelector.filterUnSelectedSeries(allSeries)}
-                  onEachSeriesClick={seriesSelector.handleSelectSeries}
-                  onAddNewSeries={addNewSeries}
-                />
-              </details>
+              {/* 시리즈 셀렉트 토글 */}
+              <SeriesSelectToggle
+                series={seriesSelectToggleHook.filterUnSelectedSeries(
+                  allSeries
+                )}
+                onEachSeriesClick={seriesSelectToggleHook.handleSelectSeries}
+                onAddNewSeries={addNewSeries}
+              />
               {/* 선택된 시리즈 명 */}
               <p
-                className="flex-grow cursor-pointer text-ellipsis text-gray-600"
-                onClick={seriesSelector.handleUnSelectSeries}
+                className="flex-grow cursor-pointer text-ellipsis text-sky-blue"
+                onClick={seriesSelectToggleHook.handleUnSelectSeries}
               >
-                {seriesSelector.selectedSeries?.name}
+                {seriesSelectToggleHook.selectedSeries?.name}
               </p>
             </div>
 
