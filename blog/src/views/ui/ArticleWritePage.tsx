@@ -90,13 +90,21 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
           {/* 글 작성 위젯 */}
           <div className="flex h-full w-full flex-col p-2 md:w-1/2">
             {/* 글 제목 */}
-            <ArticleTitleInput
-              placeholder="제목을 입력해주세요"
-              name="title"
-              type="text"
-              id="title"
-              onChange={handleChangeTitle}
-            />
+            <div>
+              <label htmlFor="title" className="sr-only">
+                제목
+              </label>
+              <input
+                placeholder="제목을 입력해주세요"
+                name="title"
+                type="text"
+                id="title"
+                onChange={handleChangeTitle}
+                className="w-full p-2 text-3xl outline-none focus:outline-none"
+              />
+              <div className="h-2 w-32 bg-secondary" />
+            </div>
+
             <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
               {/* 태그 셀렉트 토글 */}
               <TagSelectToggle
@@ -110,7 +118,6 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 onEachTagClick={tagSelectToggleHook.handleUnSelectTag}
               />
             </div>
-
             <section className="relative flex justify-between p-2 text-sm">
               <div className="flex flex-grow gap-2">
                 {/* 시리즈 셀렉트 토글 */}
@@ -138,7 +145,6 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 }}
               />
             </section>
-
             {/* 마크다운 에디터 */}
             <MarkdownEditor
               className="flex-grow"
@@ -194,7 +200,6 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 onChange: handleUploadThumbnail
               }}
             />
-
             {/* 선택된 썸네일 주소 표현 컴포넌트 */}
             <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-sky-blue">
               {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
