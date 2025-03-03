@@ -1,7 +1,6 @@
 "use client";
 
-import { ArticleTitleInput } from "./write";
-import React from "react";
+import React, { useState } from "react";
 
 import { useMarkdown } from "@/features/post/lib";
 import { MarkdownEditor } from "@/features/post/ui";
@@ -31,6 +30,8 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   articleId,
   defaultValue = ""
 }) => {
+  const [step, setStep] = useState<1 | 2>(1);
+
   const { data: allTags } = useGetAllTags();
   const { data: allSeries } = useGetAllSeries();
   const { mutate: addNewTag } = usePostAddNewTag();
@@ -41,85 +42,89 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
   const tagSelectToggleHook = useTagSelecToggle();
   const seriesSelectToggleHook = useSeriesSelectToggle();
 
-  return (
-    <section className="media-padding-x mb-2 flex flex-col gap-2">
-      <div className="flex h-screen">
-        {/* 글 작성 위젯 */}
-        <div className="flex h-full w-full flex-col p-2 md:w-1/2">
-          {/* 글 제목 */}
-          <ArticleTitleInput
-            placeholder="제목을 입력해주세요"
-            name="title"
-            type="text"
-            id="title"
-            onChange={handleChangeTitle}
-          />
-          <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
-            {/* 태그 셀렉트 토글 */}
-            <TagSelectToggle
-              tags={tagSelectToggleHook.filterUnSelectedTags(allTags)}
-              onEachTagClick={tagSelectToggleHook.handleSelectTag}
-              onAddNewTag={addNewTag}
+  if (step === 1) {
+    return (
+      <section className="media-padding-x">
+        <div className="mb-2 flex h-screen">
+          {/* 글 작성 위젯 */}
+          <div className="flex h-full w-full flex-col p-2 md:w-1/2">
+            {/* 글 제목 */}
+            <ArticleTitleInput
+              placeholder="제목을 입력해주세요"
+              name="title"
+              type="text"
+              id="title"
+              onChange={handleChangeTitle}
             />
-            {/* 선택된 태그 리스트 */}
-            <TagList
-              tags={tagSelectToggleHook.selectedTags}
-              onEachTagClick={tagSelectToggleHook.handleUnSelectTag}
-            />
-          </div>
-
-          <section className="relative flex justify-between p-2 text-sm">
-            <div className="flex flex-grow gap-2">
-              {/* 시리즈 셀렉트 토글 */}
-              <SeriesSelectToggle
-                series={seriesSelectToggleHook.filterUnSelectedSeries(
-                  allSeries
-                )}
-                onEachSeriesClick={seriesSelectToggleHook.handleSelectSeries}
-                onAddNewSeries={addNewSeries}
+            <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
+              {/* 태그 셀렉트 토글 */}
+              <TagSelectToggle
+                tags={tagSelectToggleHook.filterUnSelectedTags(allTags)}
+                onEachTagClick={tagSelectToggleHook.handleSelectTag}
+                onAddNewTag={addNewTag}
               />
-              {/* 선택된 시리즈 명 */}
-              <p
-                className="flex-grow cursor-pointer text-ellipsis text-sky-blue"
-                onClick={seriesSelectToggleHook.handleUnSelectSeries}
-              >
-                {seriesSelectToggleHook.selectedSeries?.name}
-              </p>
+              {/* 선택된 태그 리스트 */}
+              <TagList
+                tags={tagSelectToggleHook.selectedTags}
+                onEachTagClick={tagSelectToggleHook.handleUnSelectTag}
+              />
             </div>
 
-            {/* 이미지 업로드 인풋 */}
-            <ImageUploadInput onChange={markdownHook.handleImageUpload} />
-          </section>
+            <section className="relative flex justify-between p-2 text-sm">
+              <div className="flex flex-grow gap-2">
+                {/* 시리즈 셀렉트 토글 */}
+                <SeriesSelectToggle
+                  series={seriesSelectToggleHook.filterUnSelectedSeries(
+                    allSeries
+                  )}
+                  onEachSeriesClick={seriesSelectToggleHook.handleSelectSeries}
+                  onAddNewSeries={addNewSeries}
+                />
+                {/* 선택된 시리즈 명 */}
+                <p
+                  className="flex-grow cursor-pointer text-ellipsis text-sky-blue"
+                  onClick={seriesSelectToggleHook.handleUnSelectSeries}
+                >
+                  {seriesSelectToggleHook.selectedSeries?.name}
+                </p>
+              </div>
 
-          {/* 마크다운 에디터 */}
-          <MarkdownEditor
-            className="flex-grow"
-            value={markdownHook.markdown}
-            ref={markdownHook.textAreaRef}
-            onPaste={markdownHook.handleImagePaste}
-            onChange={markdownHook.handleChangeMarkdown}
-            onKeyDown={markdownHook.handleKeyDownTextArea}
+              {/* 이미지 업로드 인풋 */}
+              <ImageUploadInput onChange={markdownHook.handleImageUpload} />
+            </section>
+
+            {/* 마크다운 에디터 */}
+            <MarkdownEditor
+              className="flex-grow"
+              value={markdownHook.markdown}
+              ref={markdownHook.textAreaRef}
+              onPaste={markdownHook.handleImagePaste}
+              onChange={markdownHook.handleChangeMarkdown}
+              onKeyDown={markdownHook.handleKeyDownTextArea}
+            />
+          </div>
+          {/* 마크다운 렌더러 */}
+          <section
+            className={
+              "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
+            }
+            dangerouslySetInnerHTML={{ __html: markdownHook.html }}
           />
         </div>
-        {/* 마크다운 렌더러 */}
-        <section
-          className={
-            "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
-          }
-          dangerouslySetInnerHTML={{ __html: markdownHook.html }}
-        />
-      </div>
 
-      <footer className="flex justify-end gap-2">
-        <Button variant="outlined" size="md">
-          임시 저장
-        </Button>
-        <Button variant="filled" size="md">
-          게시글 발행
-        </Button>
-      </footer>
-    </section>
-  );
+        <footer className="mb-2 flex justify-end gap-2">
+          <Button variant="outlined" size="md">
+            임시 저장
+          </Button>
+          <Button variant="filled" size="md" onClick={() => setStep(2)}>
+            게시글 발행
+          </Button>
+        </footer>
+      </section>
+    );
+  }
+
+  return <section className="media-padding-x">2</section>;
 };
 
 interface TagListProps {
@@ -177,5 +182,23 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       className={`p-2 text-sm ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
+  );
+};
+
+export const ArticleTitleInput: React.FC<
+  React.InputHTMLAttributes<HTMLInputElement>
+> = ({ id, ...props }) => {
+  return (
+    <div>
+      <label htmlFor={id} className="sr-only">
+        제목
+      </label>
+      <input
+        id={id}
+        {...props}
+        className="w-full p-2 text-3xl outline-none focus:outline-none"
+      />
+      <div className="h-2 w-32 bg-secondary" />
+    </div>
   );
 };
