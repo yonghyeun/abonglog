@@ -24,12 +24,12 @@ import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
 import { Profile } from "@/shared/ui/Profile";
 
-interface ArticleWriteWidgetProps {
+interface ArticleWritePageProps {
   articleId: string;
   defaultValue?: string;
 }
 
-export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
+export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   articleId,
   defaultValue = ""
 }) => {
