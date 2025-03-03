@@ -11,11 +11,12 @@ import { useTagSelecToggle } from "@/features/tag/lib";
 import { TagSelectToggle } from "@/features/tag/ui";
 
 import { usePostArticleThumbnail } from "@/entities/article/model";
+import { ImageUploadInput } from "@/entities/image/ui";
 import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import { useGetAllTags, usePostAddNewTag } from "@/entities/tag/model";
 import { TagChipList } from "@/entities/tag/ui";
 
-import { BackwardIcon, FileClipIcon } from "@/shared/config";
+import { BackwardIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
 import { Profile } from "@/shared/ui/Profile";
@@ -129,10 +130,12 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 </p>
               </div>
 
-              {/* 이미지 업로드 인풋 */}
               <ImageUploadInput
-                onChange={markdownHook.handleImageUpload}
-                label="파일 첨부"
+                id="article-file-upload"
+                labelTitle="이미지 업로드"
+                inputProps={{
+                  onChange: markdownHook.handleImageUpload
+                }}
               />
             </section>
 
@@ -184,25 +187,14 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         <div className="flex w-full flex-col gap-4 md:w-1/2">
           {/* iamge input 컴포넌트 */}
           <div className="flex items-center gap-2 border-b py-2">
-            <div className="flex-shrink-0 text-gray-400">
-              <label
-                htmlFor="article-thumbnail-upload"
-                className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"
-                aria-labelledby="article-thumbnail-upload"
-              >
-                <FileClipIcon size={20} />
-                <span aria-labelledby="article-thumbnail-upload">
-                  썸네일 등록
-                </span>
-              </label>
-              <input
-                type="file"
-                className="sr-only"
-                id="article-thumbnail-upload"
-                name="image"
-                onChange={handleUploadThumbnail}
-              />
-            </div>
+            <ImageUploadInput
+              id="article-thumbnail-upload"
+              labelTitle="썸네일 등록"
+              inputProps={{
+                onChange: handleUploadThumbnail
+              }}
+            />
+
             {/* 선택된 썸네일 주소 표현 컴포넌트 */}
             <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-sky-blue">
               {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
@@ -294,32 +286,6 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         </div>
       </section>
     </section>
-  );
-};
-
-const ImageUploadInput: React.FC<{
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-}> = ({ onChange, label }) => {
-  return (
-    <div className="text-gray-400">
-      <label
-        htmlFor="article-file-upload"
-        className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"
-        aria-labelledby="article-file-upload"
-      >
-        <FileClipIcon size={20} />
-        <span aria-labelledby="article-file-upload">{label}</span>
-      </label>
-      <input
-        type="file"
-        multiple
-        className="sr-only"
-        id="article-file-upload"
-        name="image"
-        onChange={onChange}
-      />
-    </div>
   );
 };
 
