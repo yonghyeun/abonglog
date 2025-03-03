@@ -7,8 +7,8 @@ import { useMarkdown } from "@/features/post/lib";
 import { MarkdownEditor } from "@/features/post/ui";
 import { useSeriesSelector } from "@/features/series/lib";
 import { SeriesSelector } from "@/features/series/ui";
-import { TagSelector } from "@/features/tag/ui";
-import { useTagSelector } from "@/features/tag/ui/lib";
+import { useTagSelecToggle } from "@/features/tag/lib";
+import { TagSelectToggle } from "@/features/tag/ui";
 
 import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import {
@@ -38,7 +38,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
 
   const [title, handleChangeTitle] = useTransitionInput();
   const markdownHook = useMarkdown(articleId, defaultValue);
-  const tagSelector = useTagSelector();
+  const tagSelectToggle = useTagSelecToggle();
   const seriesSelector = useSeriesSelector();
 
   return (
@@ -55,22 +55,15 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
             onChange={handleChangeTitle}
           />
           <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
-            {/* 태그 셀렉터 토글 */}
-            <details className="cursor-pointer">
-              <summary className="text-sm text-gray-400 hover:text-sky-blue">
-                태그 선택
-              </summary>
-              <TagSelector
-                className="absolute left-0 top-12 z-50"
-                tags={tagSelector.filterUnSelectedTags(allTags)}
-                onEachTagClick={tagSelector.handleSelectTag}
-                onAddNewTag={addNewTag}
-              />
-            </details>
+            <TagSelectToggle
+              tags={tagSelectToggle.filterUnSelectedTags(allTags)}
+              onEachTagClick={tagSelectToggle.handleSelectTag}
+              onAddNewTag={addNewTag}
+            />
             {/* 선택된 태그 리스트 */}
             <TagList
-              tags={tagSelector.selectedTags}
-              onEachTagClick={tagSelector.handleUnSelectTag}
+              tags={tagSelectToggle.selectedTags}
+              onEachTagClick={tagSelectToggle.handleUnSelectTag}
             />
           </div>
 

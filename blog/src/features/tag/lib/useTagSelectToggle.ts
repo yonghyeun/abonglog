@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import type { Tag } from "@/entities/tag/model";
 
-export const useTagSelector = () => {
+export const useTagSelecToggle = () => {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
   const handleSelectTag = (tag: Tag) => {
