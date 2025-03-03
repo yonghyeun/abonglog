@@ -16,7 +16,7 @@ import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import { useGetAllTags, usePostAddNewTag } from "@/entities/tag/model";
 import { TagChipList } from "@/entities/tag/ui";
 
-import { BackwardIcon } from "@/shared/config";
+import { BackwardIcon, PenIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
 import { Profile } from "@/shared/ui/Profile";
@@ -30,7 +30,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   articleId,
   defaultValue = ""
 }) => {
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2>(2);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
   const [title, handleChangeTitle] = useTransitionInput();
@@ -136,7 +136,6 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                   {seriesSelectToggleHook.selectedSeries?.name}
                 </p>
               </div>
-
               <ImageUploadInput
                 id="article-file-upload"
                 labelTitle="이미지 업로드"
@@ -189,10 +188,26 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         </button>
       </header>
       <section className="flex w-full flex-grow flex-col gap-2 md:flex-row">
-        {/* 썸네일 등록 컴포넌트 */}
         <div className="flex w-full flex-col gap-4 md:w-1/2">
-          {/* iamge input 컴포넌트 */}
-          <div className="flex items-center gap-2 border-b py-2">
+          {/* 아티클 소개글 등록 컴포넌트 */}
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="article-description"
+              className="flex cursor-pointer items-center gap-1 text-gray-400 hover:text-sky-blue"
+            >
+              <PenIcon size={18} />
+              <span>소개글 등록</span>
+            </label>
+            <textarea
+              id="article-description"
+              className="resize-none rounded-lg border p-2 text-gray-600 outline-none"
+              placeholder="아티클에 대한 소개글을 작성해 주세요"
+              onChange={({ target }) => setDescription(target.value)}
+            />
+          </div>
+
+          {/* 썸네일 등록 컴포넌트 */}
+          <div className="flex items-center gap-2">
             <ImageUploadInput
               id="article-thumbnail-upload"
               labelTitle="썸네일 등록"
@@ -223,11 +238,11 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             </ImageGrid>
           ) : (
             <p className="flex items-center justify-center rounded-lg border px-2 py-12 text-gray-600">
-              아티클에 사용된 이미지가 없습니다.
+              아티클 본문에서 사용된 이미지가 없습니다.
             </p>
           )}
         </div>
-        {/* 소개글 등록 컴포넌트 */}
+
         <div className="flex flex-grow justify-center py-12">
           <div className="w-96">
             {/* 아티클 카드 컴포넌트 */}
@@ -252,12 +267,9 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 </p>
               </div>
               {/* 소개글 & 게시자 정보 */}
-              <div className="flex flex-col gap-4 text-sm text-gray-500">
-                <textarea
-                  className="resize-none border outline-none"
-                  placeholder="아티클에 대한 소개글을 작성해 주세요"
-                  onChange={({ target }) => setDescription(target.value)}
-                />
+              <div className="flex flex-col gap-4 text-sm text-gray-600">
+                <p>{description}</p>
+
                 <div className="flex gap-2">
                   <Profile
                     size="sm"
@@ -281,23 +293,5 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         </div>
       </section>
     </section>
-  );
-};
-
-const ArticleTitleInput: React.FC<
-  React.InputHTMLAttributes<HTMLInputElement>
-> = ({ id, ...props }) => {
-  return (
-    <div>
-      <label htmlFor={id} className="sr-only">
-        제목
-      </label>
-      <input
-        id={id}
-        {...props}
-        className="w-full p-2 text-3xl outline-none focus:outline-none"
-      />
-      <div className="h-2 w-32 bg-secondary" />
-    </div>
   );
 };
