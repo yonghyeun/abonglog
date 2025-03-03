@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "jest": "jest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "db-type": "npx supabase gen types typescript --project-id bnhwpfqowipytfquprwl --schema public > ./src/shared/utils/database.types.ts"
@@ -36,6 +37,7 @@
     "@storybook/react": "^8.5.8",
     "@storybook/test": "^8.5.8",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -53,11 +55,13 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-storybook": "^0.11.3",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "jest": "^29.7.0",
     "postcss": "^8",
     "prettier": "^3.5.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "storybook": "^8.5.8",
     "tailwindcss": "^3.4.1",
+    "ts-jest": "^29.2.6",
     "typescript": "^5"
   },
   "eslintConfig": {
