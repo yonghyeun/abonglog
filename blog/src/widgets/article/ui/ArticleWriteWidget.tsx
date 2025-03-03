@@ -22,6 +22,7 @@ import { TagChip } from "@/entities/tag/ui";
 import { BackwardIcon, FileClipIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
+import { Profile } from "@/shared/ui/Profile";
 
 interface ArticleWriteWidgetProps {
   articleId: string;
@@ -43,6 +44,7 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
 }) => {
   const [step, setStep] = useState<1 | 2>(2);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [description, setDescription] = useState<string>("");
 
   const { data: allTags } = useGetAllTags();
   const { data: allSeries } = useGetAllSeries();
@@ -252,7 +254,55 @@ export const ArticleWriteWidget: React.FC<ArticleWriteWidgetProps> = ({
           )}
         </div>
         {/* 소개글 등록 컴포넌트 */}
-        <div className="flex-grow">2</div>
+        <div className="flex flex-grow justify-center py-12">
+          <div className="w-96">
+            <section className="flex aspect-video flex-col gap-2 rounded-lg border px-4 py-2 shadow-md transition-transform duration-200 hover:scale-105 hover:shadow-xl">
+              {/* 이미지 컴포넌트 */}
+              {thumbnailUrl ? (
+                <img
+                  src={thumbnailUrl}
+                  alt="article-thumbnail"
+                  className="aspect-video h-2/3 w-full object-cover"
+                />
+              ) : (
+                <div className="aspect-video h-2/3 w-full bg-gray-200" />
+              )}
+              {/* 태그들 */}
+              <TagList
+                tags={tagSelectToggleHook.selectedTags}
+                onEachTagClick={() => {}}
+              />
+              <div>
+                {/* 제목 */}
+                <h3>{title}</h3>
+                {/* 시리즈명 */}
+                <p className="text-sm text-gray-500">
+                  {seriesSelectToggleHook.selectedSeries?.name}
+                </p>
+              </div>
+              <div className="flex flex-col gap-4 text-sm text-gray-500">
+                {/* 소개글 textarea */}
+                <textarea
+                  className="resize-none border outline-none"
+                  placeholder="아티클에 대한 소개글을 작성해 주세요"
+                  onChange={({ target }) => setDescription(target.value)}
+                />
+                {/* 프로필 , 프로필명 , 작성시간 */}
+                <div className="flex gap-2">
+                  <Profile
+                    size="sm"
+                    src="/images/profile.jpg"
+                    alt="프로필 이미지"
+                  />
+                  <div className="text-xs">
+                    <p>yonghyeun</p>
+                    <p>{new Date().toLocaleString()}</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
       </section>
     </section>
   );
