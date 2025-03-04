@@ -14,6 +14,8 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  console.log(markdown);
+
   /**
    * uploadArticleImage 함수는 이미지 파일을 업로드 하고, 업로드가 완료되면
    * textArea 에서 선택된 위치에 이미지를 표현하는 마크다운 문법을 삽입하는 역할을 합니다.
@@ -146,6 +148,9 @@ export const useMarkdown = (articleId: string, defaultValue?: string) => {
         textArea.selectionStart = selectionStart + TAB_SIZE;
         textArea.selectionEnd = selectionStart + TAB_SIZE;
       }, 0);
+    }
+
+    if (event.key === "Enter") {
     }
   };
 

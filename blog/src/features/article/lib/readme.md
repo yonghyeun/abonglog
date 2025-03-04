@@ -8,7 +8,7 @@
 
 ```typescript
 import React from "react";
-import { useMarkdown } from "@/features/post/lib/useMarkdown";
+import { useMarkdown } from "@/features/article/lib";
 
 const MarkdownEditor: React.FC<{ articleId: string }> = ({ articleId }) => {
   const { markdown, html, handleChangeMarkdown, handleImagePaste, handleImageUpload, textAreaRef, handleKeyDownTextArea } = useMarkdown(articleId);

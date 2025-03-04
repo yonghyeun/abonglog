@@ -4,9 +4,9 @@ import React, { useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
-import { useMarkdown } from "@/features/post/lib";
-import { findImageUrl } from "@/features/post/lib/findImageUrl";
-import { MarkdownEditor } from "@/features/post/ui";
+import { useMarkdown } from "@/features/article/lib";
+import { findImageUrl } from "@/features/article/lib/findImageUrl";
+import { MarkdownEditor } from "@/features/article/ui";
 import { useSeriesSelectToggle } from "@/features/series/lib";
 import { SeriesSelectToggle } from "@/features/series/ui";
 import { useTagSelecToggle } from "@/features/tag/lib";
@@ -31,7 +31,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   articleId,
   defaultValue = ""
 }) => {
-  const [step, setStep] = useState<1 | 2>(2);
+  const [step, setStep] = useState<1 | 2>(1);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
   const [title, handleChangeTitle] = useTransitionInput();
