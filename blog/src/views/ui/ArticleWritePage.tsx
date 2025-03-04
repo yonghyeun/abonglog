@@ -23,7 +23,7 @@ import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
 
 interface ArticleWritePageProps {
-  articleId: string;
+  articleId: number;
   defaultValue?: string;
 }
 

@@ -25,7 +25,7 @@ const WritePage = async () => {
   ]);
 
   // TODO ISR 시 아티클 아이디 생성하기
-  const randomArticleId = Math.floor(Math.random() * 10 ** 7).toString();
+  const randomArticleId = Math.floor(Math.random() * 10 ** 7);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

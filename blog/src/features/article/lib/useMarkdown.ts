@@ -8,7 +8,7 @@ import { unified } from "unified";
 import { postArticleImage } from "@/entities/article/model";
 import { compressImage } from "@/entities/image/lib";
 
-export const useMarkdown = (articleId: string, defaultValue?: string) => {
+export const useMarkdown = (articleId: number, defaultValue?: string) => {
   const [markdown, setMarkdown] = useState<string>(() => defaultValue || "");
   const [html, setHtml] = useState<string>("");
 

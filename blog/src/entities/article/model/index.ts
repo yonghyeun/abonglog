@@ -2,7 +2,6 @@ import { ARTICLE_ENDPOINT } from "../config";
 import { useMutation } from "@tanstack/react-query";
 
 import { compressImage } from "@/entities/image/lib";
-import type { Tag } from "@/entities/tag/@x/article";
 
 export interface PostArticleImageResponse {
   status: number;
@@ -15,9 +14,9 @@ export interface PostArticleImageResponse {
   }[];
 }
 
-export const postArticleImage = async (files: File[], articleId: string) => {
+export const postArticleImage = async (files: File[], articleId: number) => {
   const form = new FormData();
-  form.append("id", articleId);
+  form.append("id", articleId.toString());
 
   files.forEach((file) => {
     form.append("image", file);
@@ -54,14 +53,14 @@ const postArticleThumbnail = async ({
   articleId
 }: {
   file: File;
-  articleId: string;
+  articleId: number;
 }) => {
   const compressedImage = await compressImage(file, {
     quantity: 2 ** 15
   });
   const formData = new FormData();
   formData.append("image", compressedImage);
-  formData.append("articleId", articleId);
+  formData.append("articleId", articleId.toString());
 
   const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_THUMBNAIL(), {
     method: "POST",
@@ -83,3 +82,16 @@ export const usePostArticleThumbnail = () => {
     mutationFn: postArticleThumbnail
   });
 };
+
+/**
+ * created_at , updated_at은 서버에서 자동으로 생성
+ */
+export interface PostNewArticleBody {
+  // articleId
+  id: number;
+  title: string;
+  content: string;
+  author: string;
+  seriesName: string;
+  description: string;
+}
