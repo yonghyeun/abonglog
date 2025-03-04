@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
@@ -34,6 +35,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   articleId,
   defaultValue = ""
 }) => {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
@@ -266,15 +268,23 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 size="sm"
                 className="mt-4"
                 onClick={() => {
-                  addNewArticle({
-                    title,
-                    content: markdownHook.markdown,
-                    id: articleId,
-                    author: "yonghyeun",
-                    seriesName: seriesSelectToggleHook.selectedSeries!.name,
-                    description,
-                    tags: tagSelectToggleHook.selectedTags
-                  });
+                  addNewArticle(
+                    {
+                      title,
+                      content: markdownHook.markdown,
+                      id: articleId,
+                      author: "yonghyeun",
+                      seriesName: seriesSelectToggleHook.selectedSeries!.name,
+                      description,
+                      tags: tagSelectToggleHook.selectedTags
+                    },
+                    {
+                      onSuccess: (data) => {
+                        alert(data.message);
+                        router.push("/");
+                      }
+                    }
+                  );
                 }}
               >
                 게시글 발행하기
