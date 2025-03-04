@@ -37,6 +37,11 @@ export const postArticleImage = async (files: File[], articleId: number) => {
   return data;
 };
 
+interface PostArticleThumbnailData {
+  file: File;
+  articleId: number;
+}
+
 export interface PostArticleThumbnailResponse {
   status: number;
   message: string;
@@ -51,10 +56,7 @@ export interface PostArticleThumbnailResponse {
 const postArticleThumbnail = async ({
   file,
   articleId
-}: {
-  file: File;
-  articleId: number;
-}) => {
+}: PostArticleThumbnailData) => {
   const compressedImage = await compressImage(file, {
     quantity: 2 ** 15
   });
@@ -86,7 +88,7 @@ export const usePostArticleThumbnail = () => {
 /**
  * created_at , updated_at은 서버에서 자동으로 생성
  */
-export interface PostNewArticleBody {
+export interface PostNewArticleData {
   // articleId
   id: number;
   title: string;
@@ -95,3 +97,34 @@ export interface PostNewArticleBody {
   seriesName: string;
   description: string;
 }
+
+interface PostNewArticleResponse {
+  status: number;
+  message: string;
+}
+
+const postNewArticle = async (body: PostNewArticleData) => {
+  const response = await fetch(ARTICLE_ENDPOINT.POST_NEW_ARTICLE(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  const { status, message } = (await response.json()) as PostNewArticleResponse;
+
+  if (status > 200) {
+    throw new Error(message);
+  }
+  return {
+    status,
+    message
+  };
+};
+
+export const usePostNewArticle = () => {
+  return useMutation({
+    mutationFn: postNewArticle
+  });
+};

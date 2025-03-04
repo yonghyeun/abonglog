@@ -12,7 +12,10 @@ import { SeriesSelectToggle } from "@/features/series/ui";
 import { useTagSelecToggle } from "@/features/tag/lib";
 import { TagSelectToggle } from "@/features/tag/ui";
 
-import { usePostArticleThumbnail } from "@/entities/article/model";
+import {
+  usePostArticleThumbnail,
+  usePostNewArticle
+} from "@/entities/article/model";
 import { ImageGrid, ImageUploadInput } from "@/entities/image/ui";
 import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import { useGetAllTags, usePostAddNewTag } from "@/entities/tag/model";
@@ -42,6 +45,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   const { mutate: addNewSeries } = usePostAddNewSeries();
   const { mutate: uploadNewThumbnail, isPending: isThumbnailUploading } =
     usePostArticleThumbnail();
+  const { mutate: addNewArticle } = usePostNewArticle();
 
   const markdownHook = useMarkdown(articleId, defaultValue);
   const tagSelectToggleHook = useTagSelecToggle();
@@ -257,7 +261,21 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             />
 
             <div className="flex justify-end">
-              <Button variant="filled" size="sm" className="mt-4">
+              <Button
+                variant="filled"
+                size="sm"
+                className="mt-4"
+                onClick={() => {
+                  addNewArticle({
+                    title,
+                    content: markdownHook.markdown,
+                    id: articleId,
+                    author: "yonghyeun",
+                    seriesName: seriesSelectToggleHook.selectedSeries!.name,
+                    description
+                  });
+                }}
+              >
                 게시글 발행하기
               </Button>
             </div>
