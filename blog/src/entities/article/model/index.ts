@@ -2,6 +2,7 @@ import { ARTICLE_ENDPOINT } from "../config";
 import { useMutation } from "@tanstack/react-query";
 
 import { compressImage } from "@/entities/image/lib";
+import { Tag } from "@/entities/tag/@x/article";
 
 export interface PostArticleImageResponse {
   status: number;
@@ -96,6 +97,7 @@ export interface PostNewArticleData {
   author: string;
   seriesName: string;
   description: string;
+  tags: Tag[];
 }
 
 interface PostNewArticleResponse {

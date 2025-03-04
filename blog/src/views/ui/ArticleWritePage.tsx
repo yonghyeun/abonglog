@@ -272,7 +272,8 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                     id: articleId,
                     author: "yonghyeun",
                     seriesName: seriesSelectToggleHook.selectedSeries!.name,
-                    description
+                    description,
+                    tags: tagSelectToggleHook.selectedTags
                   });
                 }}
               >

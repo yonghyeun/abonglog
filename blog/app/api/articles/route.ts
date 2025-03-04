@@ -4,23 +4,55 @@ import type { PostNewArticleData } from "@/entities/article/model";
 
 import { camelToSnake, createServerSupabase } from "@/shared/utils";
 
-export const POST = async (req: NextRequest) => {
-  const body = (await req.json()) as PostNewArticleData;
-
+const insertNewArticle = async (
+  newArticle: Omit<PostNewArticleData, "tags">,
+  supabase: Awaited<ReturnType<typeof createServerSupabase>>
+) => {
   const currentTimeStamp = new Date().toISOString();
-  const supabase = await createServerSupabase();
 
-  const { error } = await supabase.from("articles").insert({
-    ...camelToSnake(body),
+  return supabase.from("articles").insert({
+    ...camelToSnake(newArticle),
     created_at: currentTimeStamp,
     updated_at: currentTimeStamp
   });
+};
 
-  if (error) {
-    return NextResponse.json({
-      status: error.code,
-      message: error.message
-    });
+const inesrtArticleTags = async (
+  { id, tags }: Pick<PostNewArticleData, "tags" | "id">,
+  supabase: Awaited<ReturnType<typeof createServerSupabase>>
+) => {
+  return supabase.from("article_tags").insert(
+    tags.map(({ name }) => ({
+      tag_name: name,
+      article_id: id
+    }))
+  );
+};
+
+export const POST = async (req: NextRequest) => {
+  const { tags, ...articleData } = (await req.json()) as PostNewArticleData;
+  const supabase = await createServerSupabase();
+
+  const supabaseResponseArray = await Promise.all([
+    insertNewArticle(articleData, supabase),
+    inesrtArticleTags({ id: articleData.id, tags }, supabase)
+  ]);
+
+  const errorResponse = supabaseResponseArray.find(
+    (response) => !!response.error
+  );
+
+  if (errorResponse) {
+    return NextResponse.json(
+      {
+        status: errorResponse.error.code,
+        message: errorResponse.error.message
+      },
+      {
+        status: errorResponse.status,
+        statusText: errorResponse.statusText
+      }
+    );
   }
 
   return NextResponse.json({
