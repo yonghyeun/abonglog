@@ -12,18 +12,18 @@ export type Database = {
       article_tags: {
         Row: {
           article_id: number
-          id: number
-          tag_id: string
+          id: string
+          tag_name: string | null
         }
         Insert: {
-          article_id?: number
-          id: number
-          tag_id: string
+          article_id: number
+          id?: string
+          tag_name?: string | null
         }
         Update: {
           article_id?: number
-          id?: number
-          tag_id?: string
+          id?: string
+          tag_name?: string | null
         }
         Relationships: [
           {
@@ -34,11 +34,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "article_tags_tag_id_fkey"
-            columns: ["tag_id"]
+            foreignKeyName: "article_tags_tag_name_fkey"
+            columns: ["tag_name"]
             isOneToOne: false
             referencedRelation: "tags"
-            referencedColumns: ["id"]
+            referencedColumns: ["name"]
           },
         ]
       }
