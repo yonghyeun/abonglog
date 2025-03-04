@@ -1,6 +1,8 @@
+import { ARTICLE_ENDPOINT } from "../config";
 import { useMutation } from "@tanstack/react-query";
 
 import { compressImage } from "@/entities/image/lib";
+import type { Tag } from "@/entities/tag/@x/article";
 
 export interface PostArticleImageResponse {
   status: number;
@@ -21,7 +23,7 @@ export const postArticleImage = async (files: File[], articleId: string) => {
     form.append("image", file);
   });
 
-  const response = await fetch("/api/article/image", {
+  const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_IMAGE(), {
     method: "POST",
     body: form
   });
@@ -59,8 +61,9 @@ const postArticleThumbnail = async ({
   });
   const formData = new FormData();
   formData.append("image", compressedImage);
+  formData.append("articleId", articleId);
 
-  const response = await fetch(`/api/article/thumbnail/${articleId}`, {
+  const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_THUMBNAIL(), {
     method: "POST",
     body: formData
   });

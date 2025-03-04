@@ -7,10 +7,10 @@ import { SUPABASE_STORAGE_URL } from "@/shared/config";
 import { createServerSupabase } from "@/shared/utils";
 
 export const POST = async (req: NextRequest) => {
-  const url = new URL(req.url);
-  const articleId = url.pathname.split("/").pop();
+  const form = await req.formData();
 
-  const file = (await req.formData()).get("image") as File;
+  const articleId = form.get("articleId") as string;
+  const file = form.get("image") as File;
 
   const supabse = await createServerSupabase();
 
