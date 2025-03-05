@@ -110,7 +110,8 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         seriesName: seriesSelectToggleHook.selectedSeries.name,
         description,
         tags: tagSelectToggleHook.selectedTags,
-        status
+        status,
+        thumbnailUrl
       },
       {
         onSuccess: (data) => {

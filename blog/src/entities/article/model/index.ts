@@ -1,12 +1,13 @@
-import { ARTICLE_ENDPOINT } from "../config";
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import { ARTICLE_ENDPOINT, ITEM_PER_PAGE } from "../config";
+import { useMutation, useSuspenseInfiniteQuery } from "@tanstack/react-query";
 
 import { compressImage } from "@/entities/image/lib";
 import { Tag } from "@/entities/tag/@x/article";
 
 import { createBrowserSupabase } from "@/shared/model";
+import { snakeToCamel } from "@/shared/util";
 
-const ARTICLE_QUERY_KEY = {
+export const ARTICLE_QUERY_KEY = {
   default: ["article"]
 };
 
@@ -105,6 +106,7 @@ export interface PostNewArticleData {
   description: string;
   tags: Tag[];
   status: "published" | "draft";
+  thumbnailUrl: string | null;
 }
 
 interface PostNewArticleResponse {
@@ -138,24 +140,52 @@ export const usePostNewArticle = () => {
   });
 };
 
-interface GetArticleListParams {
-  series: string;
-}
+export const getArticleList = () => {
+  const queryKey = ARTICLE_QUERY_KEY.default;
 
-export const getArticleList = async ({ pageParam }: { pageParam: number }) => {
-  const supabase = createBrowserSupabase();
+  const queryFn = async ({ pageParam = 0 }) => {
+    const supabase = await createBrowserSupabase();
 
-  const data = await supabase
-    .from("articles")
-    .select("*")
-    .range(pageParam, pageParam + 10);
+    const { data, error } = await supabase
+      .from("articles")
+      .select(
+        `
+        id , title , author , 
+        series_name , description , 
+        status , updated_at, thumbnail_url,
+        article_tags(tag_name)
+      `
+      )
+      .eq("status", "published")
+      .range(pageParam, (pageParam + 1) * ITEM_PER_PAGE - 1)
+      .then(snakeToCamel);
+
+    if (error) {
+      throw error;
+    }
+
+    return {
+      data: data.map(({ articleTags, ...article }) => ({
+        tags: articleTags.map(({ tagName }) => tagName!),
+        ...article
+      })),
+      currentPage: pageParam
+    };
+  };
+
+  return {
+    queryKey,
+    queryFn,
+    initialPageParam: 0
+  };
 };
 
-export const useGetArticleList = () => {
-  return useInfiniteQuery({
-    queryKey: ARTICLE_QUERY_KEY.default,
-    queryFn: getArticleList,
-    initialPageParam: 1,
-    staleTime: 1000 * 60 * 60 * 24
+export const useGetInfiniteArticleList = (numOfTotalArticles: number) => {
+  return useSuspenseInfiniteQuery({
+    ...getArticleList(),
+    getNextPageParam: ({ currentPage }) =>
+      (currentPage + 1) * ITEM_PER_PAGE - 1 < numOfTotalArticles
+        ? currentPage + 1
+        : undefined
   });
 };
