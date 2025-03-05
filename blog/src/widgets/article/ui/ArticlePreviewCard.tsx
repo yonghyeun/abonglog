@@ -49,7 +49,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
           <AdminProfile size="sm" />
           <div className="text-xs">
             <p>yonghyeun</p>
-            <p>{updatedAt}</p>
+            <time>{new Date(updatedAt).toLocaleString()}</time>
           </div>
         </div>
       </div>
