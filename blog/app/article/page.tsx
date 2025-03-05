@@ -3,6 +3,7 @@ import {
   QueryClient,
   dehydrate
 } from "@tanstack/react-query";
+import Link from "next/link";
 
 import { ArticleListBySeriesPage, EveryArticlePage } from "@/views/article/ui";
 
@@ -60,6 +61,26 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   }
 
   // 찾는 시리즈가 없는 경우 404
+
+  return (
+    <section className="media-padding-x flex min-h-screen flex-col">
+      <section className="my-12 flex items-center justify-center">
+        <p className="text-[10rem] text-gray-400">Σ(°ロ°)</p>
+      </section>
+      <div className="flex flex-col items-center justify-center gap-4">
+        <h1>
+          아쉽게도 입력하신 <span className="text-bright-blue">{series}</span>는
+          존재하지 않는 시리즈 이름입니다.
+        </h1>
+        <Link
+          href="/"
+          className="rounded-xl border border-sky-blue bg-sky-blue px-8 py-4 text-white"
+        >
+          메인 페이지로 돌아가기
+        </Link>
+      </div>
+    </section>
+  );
 };
 
 export default ArticleListPage;
