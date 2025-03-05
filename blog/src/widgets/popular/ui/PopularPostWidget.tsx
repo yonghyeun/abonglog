@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
+import { Grid } from "@/shared/ui/Grid";
+
 const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
   articleId: idx + 1,
   title: "Lorem ipsum dolor",
@@ -14,9 +16,9 @@ const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
   updatedAt: new Date().toDateString(),
   thumbnailUrl: "/images/latest_post_thumbnail.jpg",
   tags: [
-    { id: 1, name: "react", created_at: new Date().toISOString() },
-    { id: 2, name: "Typescript", created_at: new Date().toISOString() },
-    { id: 3, name: "jest", created_at: new Date().toISOString() }
+    { id: "1", name: "react", created_at: new Date().toISOString() },
+    { id: "2", name: "Typescript", created_at: new Date().toISOString() },
+    { id: "3", name: "jest", created_at: new Date().toISOString() }
   ]
 }));
 
@@ -35,11 +37,13 @@ export const PopularPostWidget = () => {
         <h1 className="mb-2">인기글 모아보기</h1>
         <PopularNavigationBar popularMenu={popularMenu} onClick={handleClick} />
       </div>
-      <section className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+      <Grid>
         {mockPopularPostData.map((data) => (
-          <ArticlePreviewCard {...data} key={data.articleId} />
+          <Grid.Item key={data.articleId}>
+            <ArticlePreviewCard {...data} key={data.articleId} />
+          </Grid.Item>
         ))}
-      </section>
+      </Grid>
     </section>
   );
 };
