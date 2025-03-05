@@ -2,11 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleThumbnailResponse } from "@/entities/article/model";
 
-import {
-  attachIamgeUrl,
-  createImageConfig,
-  createServerSupabase
-} from "@/shared/utils";
+import { createServerSupabase } from "@/shared/model";
+import { attachIamgeUrl, createImageConfig } from "@/shared/utils";
 
 const uploadThumbnail = async (file: File, articleId: string) => {
   const supabase = await createServerSupabase();

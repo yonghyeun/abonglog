@@ -2,11 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import type { PostNewArticleData } from "@/entities/article/model";
 
-import {
-  camelToSnake,
-  createPostgressErrorResponse,
-  createServerSupabase
-} from "@/shared/utils";
+import { createServerSupabase } from "@/shared/model";
+import { camelToSnake, createPostgressErrorResponse } from "@/shared/utils";
 
 const insertNewArticle = async (
   newArticle: Omit<PostNewArticleData, "tags">,

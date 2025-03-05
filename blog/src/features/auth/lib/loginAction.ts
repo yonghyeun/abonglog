@@ -3,7 +3,7 @@
 import { AuthApiError, isAuthApiError } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
-import { createServerSupabase } from "@/shared/utils";
+import { createServerSupabase } from "@/shared/model";
 
 const LOGIN_ERROR_MESSAGES: Record<AuthApiError["status"], string> = {
   400: "이메일 또는 비밀번호가 올바르지 않습니다."

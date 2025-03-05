@@ -1,5 +1,6 @@
-import { createServerSupabase } from ".";
 import { type NextRequest, NextResponse } from "next/server";
+
+import { createServerSupabase } from "@/shared/model";
 
 export async function updateSession(request: NextRequest) {
   const supabaseResponse = NextResponse.next({

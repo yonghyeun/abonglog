@@ -10,8 +10,8 @@ import {
   useSuspenseQuery
 } from "@tanstack/react-query";
 
+import { createBrowserSupabase } from "@/shared/model";
 import type { Database } from "@/shared/model/database.types";
-import { createBrowserSupabase } from "@/shared/utils";
 
 export const seriesQueryKey = {
   default: ["series"]
