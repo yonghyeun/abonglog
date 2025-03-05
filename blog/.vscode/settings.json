@@ -7,7 +7,7 @@
     "typescript",
     "typescriptreact"
   ],
-  "fiels.eol": "\n",
+  "files.eol": "\n",
   "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
   "deno.unstable": [
