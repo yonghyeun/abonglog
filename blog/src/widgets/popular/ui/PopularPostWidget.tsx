@@ -28,7 +28,7 @@ export const PopularPostWidget = () => {
   };
 
   return (
-    <section className="media-padding-x mt-4 flex flex-col gap-4 py-4">
+    <section className="media-padding-x mt-4 flex flex-col gap-4 py-12">
       <div>
         <h1 className="mb-2">인기글 모아보기</h1>
         <PopularNavigationBar popularMenu={popularMenu} onClick={handleClick} />

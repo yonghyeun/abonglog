@@ -32,7 +32,7 @@ const MainPage = async () => {
       <PopularPostWidget />
 
       <Suspense fallback={<div>Loading...</div>}>
-        <section className="media-padding-x mt-4 gap-4 bg-secondary py-4">
+        <section className="media-padding-x mt-4 gap-4 bg-secondary py-12">
           <SeriesListWidget />
         </section>
       </Suspense>
