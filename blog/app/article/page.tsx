@@ -26,14 +26,14 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
     const queryClient = new QueryClient();
     await queryClient.prefetchInfiniteQuery(getArticleList());
 
-    const totalNumOfArticles = numOfSereisArray.reduce(
+    const numOfArticles = numOfSereisArray.reduce(
       (acc, cur) => acc + cur["numOfArticles"],
       0
     );
 
     return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <EveryArticlePage totalNumOfArticles={totalNumOfArticles} />
+        <EveryArticlePage numOfArticles={numOfArticles} />
       </HydrationBoundary>
     );
   }

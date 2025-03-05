@@ -18,15 +18,19 @@ export const ArticleListBySeriesPage: React.FC<
   const {
     data: { pages },
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
+    hasNextPage
   } = useGetInfiniteArticleListBySeries(seriesName, numOfArticles);
   const oberserverRef = useObserver(() => fetchNextPage());
 
   return (
     <section className="media-padding-x flex min-h-screen flex-col">
-      <header className="flex flex-col items-center justify-center">
-        <p className="text-gray-500">시리즈별로 모아보기</p>
-        <h1 className="text-bright-blue">{seriesName}</h1>
+      {/* header */}
+      <header className="flex justify-center">
+        <div className="flex items-center gap-2">
+          <h1 className="text-bright-blue">{seriesName}</h1>
+          <span className="text-gray-500">({numOfArticles})</span>
+        </div>
       </header>
       <main className="p-2">
         <Grid>
@@ -48,6 +52,12 @@ export const ArticleListBySeriesPage: React.FC<
         </Grid>
         {/* Infinite scroll observer */}
         <div ref={oberserverRef} />
+        {/* 모든 게시글을 가져오고 나면 */}
+        {!hasNextPage && (
+          <div className="flex items-center justify-center py-12 text-gray-400">
+            {seriesName}의 모든 게시글을 가져왔습니다.
+          </div>
+        )}
       </main>
     </section>
   );
