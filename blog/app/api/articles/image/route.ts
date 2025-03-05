@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import type { PostArticleImageResponse } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
-import { attachIamgeUrl, createImageConfig } from "@/shared/utils";
+import { attachIamgeUrl, createImageConfig } from "@/shared/route";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 
