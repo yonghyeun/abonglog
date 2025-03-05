@@ -98,6 +98,7 @@ export interface PostNewArticleData {
   seriesName: string;
   description: string;
   tags: Tag[];
+  status: "published" | "draft";
 }
 
 interface PostNewArticleResponse {

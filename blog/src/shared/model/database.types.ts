@@ -50,6 +50,7 @@ export type Database = {
           description: string
           id: number
           series_name: string
+          status: string
           title: string
           updated_at: string
         }
@@ -60,6 +61,7 @@ export type Database = {
           description: string
           id?: number
           series_name: string
+          status: string
           title: string
           updated_at: string
         }
@@ -70,6 +72,7 @@ export type Database = {
           description?: string
           id?: number
           series_name?: string
+          status?: string
           title?: string
           updated_at?: string
         }

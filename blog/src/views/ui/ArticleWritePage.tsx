@@ -89,6 +89,38 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
     );
   };
 
+  const handleSaveArticle = (status: "published" | "draft") => {
+    if (
+      !title ||
+      !markdownHook.markdown ||
+      !tagSelectToggleHook.selectedTags.length ||
+      !seriesSelectToggleHook.selectedSeries
+    ) {
+      // TODO toast 로 변경
+      alert("필수 항목을 입력해 주세요");
+      return;
+    }
+
+    addNewArticle(
+      {
+        title,
+        content: markdownHook.markdown,
+        id: articleId,
+        author: "yonghyeun",
+        seriesName: seriesSelectToggleHook.selectedSeries.name,
+        description,
+        tags: tagSelectToggleHook.selectedTags,
+        status
+      },
+      {
+        onSuccess: (data) => {
+          alert(data.message);
+          router.push("/");
+        }
+      }
+    );
+  };
+
   // step 1. 글 쓰기 페이지
   if (step === 1) {
     return (
@@ -171,7 +203,11 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         </div>
 
         <footer className="mb-2 flex justify-end gap-2">
-          <Button variant="outlined" size="sm">
+          <Button
+            variant="outlined"
+            size="sm"
+            onClick={() => handleSaveArticle("draft")}
+          >
             임시 저장
           </Button>
           <Button variant="filled" size="sm" onClick={handleStepPublish}>
@@ -267,36 +303,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 variant="filled"
                 size="sm"
                 className="mt-4"
-                onClick={() => {
-                  if (
-                    !title ||
-                    !markdownHook.markdown ||
-                    !tagSelectToggleHook.selectedTags.length ||
-                    !seriesSelectToggleHook.selectedSeries
-                  ) {
-                    // TODO toast 로 변경
-                    alert("필수 항목을 입력해 주세요");
-                    return;
-                  }
-
-                  addNewArticle(
-                    {
-                      title,
-                      content: markdownHook.markdown,
-                      id: articleId,
-                      author: "yonghyeun",
-                      seriesName: seriesSelectToggleHook.selectedSeries.name,
-                      description,
-                      tags: tagSelectToggleHook.selectedTags
-                    },
-                    {
-                      onSuccess: (data) => {
-                        alert(data.message);
-                        router.push("/");
-                      }
-                    }
-                  );
-                }}
+                onClick={() => handleSaveArticle("published")}
               >
                 게시글 발행하기
               </Button>

@@ -1,7 +1,14 @@
 {
-  "deno.enablePaths": [
-    "supabase/functions"
+  "editor.formatOnSave": true,
+  "edtior.defualtFormat": "esbenp.prettier-vscode",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
   ],
+  "files.eol": "\n",
+  "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",
