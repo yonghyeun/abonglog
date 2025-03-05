@@ -4,7 +4,7 @@ import {
   dehydrate
 } from "@tanstack/react-query";
 
-import { EveryArticlePage } from "@/views/article/ui";
+import { ArticleListBySeriesPage, EveryArticlePage } from "@/views/article/ui";
 
 import { getArticleList } from "@/entities/article/model";
 import { getSeriesList } from "@/entities/series/model";
@@ -44,19 +44,22 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
     (data) => data.seriesName === series
   );
 
-  // 검색한 시리즈가 없는 경우
-  if (!searchedSeries) {
+  // 검색한 시리즈가 있는 경우
+  if (searchedSeries) {
+    const numOfArticles = searchedSeries["numOfArticles"];
+    const queryClient = new QueryClient();
+
+    return (
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <ArticleListBySeriesPage
+          seriesName={series}
+          numOfArticles={numOfArticles}
+        />
+      </HydrationBoundary>
+    );
   }
 
-  return (
-    <section className="media-padding-x flex h-screen flex-col">
-      <header className="flex flex-col items-center justify-center">
-        <p className="text-gray-500">시리즈별로 모아보기</p>
-        <h1 className="text-bright-blue">{series}</h1>
-      </header>
-      <main className="flex-grow border"></main>
-    </section>
-  );
+  // 찾는 시리즈가 없는 경우 404
 };
 
 export default ArticleListPage;
