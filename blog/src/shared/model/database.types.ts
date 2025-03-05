@@ -51,6 +51,7 @@ export type Database = {
           id: number
           series_name: string
           status: string
+          thumbnail_url: string | null
           title: string
           updated_at: string
         }
@@ -62,6 +63,7 @@ export type Database = {
           id?: number
           series_name: string
           status: string
+          thumbnail_url?: string | null
           title: string
           updated_at: string
         }
@@ -73,6 +75,7 @@ export type Database = {
           id?: number
           series_name?: string
           status?: string
+          thumbnail_url?: string | null
           title?: string
           updated_at?: string
         }
