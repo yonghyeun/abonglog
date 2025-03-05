@@ -26,7 +26,8 @@ export const ArticleListBySeriesPage: React.FC<
   return (
     <section className="media-padding-x flex min-h-screen flex-col">
       {/* header */}
-      <header className="flex justify-center">
+      <header className="flex flex-col items-center">
+        <h3>시리즈별로 보기</h3>
         <div className="flex items-center gap-2">
           <h1 className="text-bright-blue">{seriesName}</h1>
           <span className="text-gray-500">({numOfArticles})</span>
