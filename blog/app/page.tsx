@@ -1,6 +1,15 @@
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate
+} from "@tanstack/react-query";
+import { Suspense } from "react";
+
 import { PopularPostWidget } from "@/widgets/popular/ui";
+import { SeriesListWidget } from "@/widgets/series/ui";
 
 import { LatestArticlePreview } from "@/entities/article/ui";
+import { getSeriesList } from "@/entities/series/model";
 
 const mockLatestPostPreviewProps = {
   postId: 1,
@@ -11,14 +20,23 @@ const mockLatestPostPreviewProps = {
   thumbnailUrl: "/images/latest_post_thumbnail.jpg"
 };
 
-const MainPage = () => {
+const MainPage = async () => {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(getSeriesList());
+
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       {/* Latest Post */}
       <LatestArticlePreview {...mockLatestPostPreviewProps} />
       {/* Popular */}
       <PopularPostWidget />
-    </>
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <section className="media-padding-x mt-4 gap-4 bg-secondary py-4">
+          <SeriesListWidget />
+        </section>
+      </Suspense>
+    </HydrationBoundary>
   );
 };
 

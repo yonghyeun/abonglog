@@ -12,6 +12,7 @@ import {
 
 import { createBrowserSupabase } from "@/shared/model";
 import type { Database } from "@/shared/model/database.types";
+import { snakeToCamel } from "@/shared/util";
 
 export const seriesQueryKey = {
   default: ["series"]
@@ -72,4 +73,29 @@ export const usePostAddNewSeries = () => {
       });
     }
   });
+};
+
+const SERIES_QUERY_KEY = {
+  default: ["series"]
+};
+
+export const getSeriesList = () => {
+  const queryKey = SERIES_QUERY_KEY.default;
+  const queryFn = async () => {
+    const supabase = await createBrowserSupabase();
+
+    const { data, error } = await supabase.from("series_articles").select("*");
+
+    if (error) {
+      throw error;
+    }
+
+    return snakeToCamel(data);
+  };
+
+  return { queryKey, queryFn };
+};
+
+export const useGetSeriesList = () => {
+  return useSuspenseQuery(getSeriesList());
 };
