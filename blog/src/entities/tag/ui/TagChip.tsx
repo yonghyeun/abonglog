@@ -16,7 +16,7 @@ export const TagChip: React.FC<TagProps> = ({ name, onClick, ...props }) => {
     <button
       className={`${
         tagStyleArray[summarizeTextCode(name) % tagStyleArray.length]
-      } rounded-full px-4 py-1 text-sm`}
+      } rounded-full px-4 py-1 text-xs`}
       onClick={() => onClick?.(name)}
       {...props}
     >

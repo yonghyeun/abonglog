@@ -7,9 +7,9 @@ import { ServiceProvider } from "@/app/ServiceProvider";
 import { SideBar } from "@/widgets/navigate/ui";
 
 import { getCurrentUserData } from "@/entities/user/model";
+import { Profile } from "@/entities/user/ui";
 
 import { GithubIcon, HumanIcon } from "@/shared/config";
-import { Profile } from "@/shared/ui/Profile";
 
 const notoSans = Noto_Sans({
   display: "swap"

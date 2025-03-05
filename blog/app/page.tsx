@@ -1,6 +1,6 @@
 import { PopularPostWidget } from "@/widgets/popular/ui";
 
-import { LatestPostPreview } from "@/entities/preview/ui";
+import { LatestArticlePreview } from "@/entities/article/ui";
 
 const mockLatestPostPreviewProps = {
   postId: 1,
@@ -15,7 +15,7 @@ const MainPage = () => {
   return (
     <>
       {/* Latest Post */}
-      <LatestPostPreview {...mockLatestPostPreviewProps} />
+      <LatestArticlePreview {...mockLatestPostPreviewProps} />
       {/* Popular */}
       <PopularPostWidget />
     </>
