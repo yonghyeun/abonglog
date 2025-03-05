@@ -268,13 +268,24 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 size="sm"
                 className="mt-4"
                 onClick={() => {
+                  if (
+                    !title ||
+                    !markdownHook.markdown ||
+                    !tagSelectToggleHook.selectedTags.length ||
+                    !seriesSelectToggleHook.selectedSeries
+                  ) {
+                    // TODO toast 로 변경
+                    alert("필수 항목을 입력해 주세요");
+                    return;
+                  }
+
                   addNewArticle(
                     {
                       title,
                       content: markdownHook.markdown,
                       id: articleId,
                       author: "yonghyeun",
-                      seriesName: seriesSelectToggleHook.selectedSeries!.name,
+                      seriesName: seriesSelectToggleHook.selectedSeries.name,
                       description,
                       tags: tagSelectToggleHook.selectedTags
                     },
