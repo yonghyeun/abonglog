@@ -2,8 +2,11 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleImageResponse } from "@/entities/article/model";
 
-import { SUPABASE_STORAGE_URL } from "@/shared/config";
-import { createImageConfig, createServerSupabase } from "@/shared/utils";
+import {
+  attachIamgeUrl,
+  createImageConfig,
+  createServerSupabase
+} from "@/shared/utils";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 
@@ -12,47 +15,37 @@ const uploadImageAction = async (file: File, postId: string) => {
 
   const { imageName } = createImageConfig(file);
 
-  const { data, error } = await supabase.storage
+  const response = await supabase.storage
     .from(ARTICLE_IMAGE_STORAGE_NAME)
     .upload(`public/${postId}/${imageName}`, file);
 
-  if (error) {
-    throw error;
-  }
-
-  return data;
+  return response;
 };
 
+/**
+ * TODO : 이미지 업로드에 실패한 URL 만 response 로 보내서 에러 처리하기
+ */
 export const POST = async (req: NextRequest) => {
-  try {
-    const formData = await req.formData();
-    const images = formData.getAll("image") as File[];
-    const postId = formData.get("id") as string;
-    const imageUrls = await Promise.all(
-      images.map((file) => uploadImageAction(file, postId))
-    );
+  const formData = await req.formData();
+  const images = formData.getAll("image") as File[];
+  const postId = formData.get("id") as string;
 
-    return NextResponse.json<PostArticleImageResponse>({
-      status: 200,
-      message: "이미지 업로드에 성공했습니다.",
-      data: imageUrls.map((urlObj) => ({
-        ...urlObj,
-        imageUrl: `${SUPABASE_STORAGE_URL}/${urlObj.fullPath}`
-      }))
+  const responseArray = await Promise.all(
+    images.map((file) => uploadImageAction(file, postId))
+  );
+
+  const uploadedImages = responseArray.filter((response) => !response.error);
+
+  if (uploadedImages.length < responseArray.length) {
+    return NextResponse.json({
+      status: 500,
+      message: "이미지 업로드에 실패했습니다."
     });
-  } catch (error) {
-    console.log(error);
-
-    const typedError = error as { statusCode?: number; message?: string };
-
-    return NextResponse.json(
-      {
-        status: typedError.statusCode || 500,
-        data: typedError.message || "예기치 못한 에러가 발생 했습니다."
-      },
-      {
-        status: typedError.statusCode || 500
-      }
-    );
   }
+
+  return NextResponse.json<PostArticleImageResponse>({
+    status: 200,
+    message: "이미지 업로드에 성공했습니다.",
+    data: uploadedImages.map(({ data }) => attachIamgeUrl(data))
+  });
 };

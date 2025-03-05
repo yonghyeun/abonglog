@@ -2,8 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleThumbnailResponse } from "@/entities/article/model";
 
-import { SUPABASE_STORAGE_URL } from "@/shared/config";
-import { createImageConfig, createServerSupabase } from "@/shared/utils";
+import {
+  attachIamgeUrl,
+  createImageConfig,
+  createServerSupabase
+} from "@/shared/utils";
+
+const uploadThumbnail = async (file: File, articleId: string) => {
+  const supabase = await createServerSupabase();
+
+  const { imageName } = createImageConfig(file);
+
+  const response = await supabase.storage
+    .from("article_thumbnail")
+    .upload(`${articleId}/${imageName}`, file);
+
+  return response;
+};
 
 export const POST = async (req: NextRequest) => {
   const form = await req.formData();
@@ -11,40 +26,17 @@ export const POST = async (req: NextRequest) => {
   const articleId = form.get("articleId") as string;
   const file = form.get("image") as File;
 
-  const supabse = await createServerSupabase();
+  const response = await uploadThumbnail(file, articleId);
 
-  const { imageName } = createImageConfig(file);
-
-  try {
-    const { data, error } = await supabse.storage
-      .from("article_thumbnail")
-      .upload(`${articleId}/${imageName}`, file);
-
-    if (error) {
-      throw error;
-    }
-
-    return NextResponse.json<PostArticleThumbnailResponse>({
-      status: 200,
-      message: "썸네일 업로드에 성공했습니다.",
-      data: {
-        ...data,
-        imageUrl: `${SUPABASE_STORAGE_URL}/${data.fullPath}`
-      }
+  if (response.error) {
+    return NextResponse.json({
+      status: 500,
+      message: "이미지 업로드에 실패했습니다."
     });
-  } catch (error) {
-    console.log(error);
-
-    const typedError = error as { statusCode?: number; message?: string };
-
-    return NextResponse.json(
-      {
-        status: typedError.statusCode || 500,
-        data: typedError.message || "예기치 못한 에러가 발생 했습니다."
-      },
-      {
-        status: typedError.statusCode || 500
-      }
-    );
   }
+  return NextResponse.json<PostArticleThumbnailResponse>({
+    status: 200,
+    message: "이미지 업로드에 성공했습니다.",
+    data: attachIamgeUrl(response.data)
+  });
 };
