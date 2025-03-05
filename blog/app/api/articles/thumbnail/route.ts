@@ -1,10 +1,9 @@
-import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleThumbnailResponse } from "@/entities/article/model";
 
 import { SUPABASE_STORAGE_URL } from "@/shared/config";
-import { createServerSupabase } from "@/shared/utils";
+import { createImageConfig, createServerSupabase } from "@/shared/utils";
 
 export const POST = async (req: NextRequest) => {
   const form = await req.formData();
@@ -14,8 +13,7 @@ export const POST = async (req: NextRequest) => {
 
   const supabse = await createServerSupabase();
 
-  const imageId = randomUUID();
-  const imageName = `${imageId}.${file.type.split("/")[1]}`;
+  const { imageName } = createImageConfig(file);
 
   try {
     const { data, error } = await supabse.storage

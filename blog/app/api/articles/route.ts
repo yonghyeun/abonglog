@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 import type { PostNewArticleData } from "@/entities/article/model";
 
-import { camelToSnake, createServerSupabase } from "@/shared/utils";
+import {
+  camelToSnake,
+  createPostgressErrorResponse,
+  createServerSupabase
+} from "@/shared/utils";
 
 const insertNewArticle = async (
   newArticle: Omit<PostNewArticleData, "tags">,
@@ -43,16 +47,7 @@ export const POST = async (req: NextRequest) => {
   );
 
   if (errorResponse) {
-    return NextResponse.json(
-      {
-        status: errorResponse.error.code,
-        message: errorResponse.error.message
-      },
-      {
-        status: errorResponse.status,
-        statusText: errorResponse.statusText
-      }
-    );
+    return NextResponse.json(...createPostgressErrorResponse(errorResponse));
   }
 
   return NextResponse.json({

@@ -1,18 +1,16 @@
-import { randomUUID } from "crypto";
 import { type NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleImageResponse } from "@/entities/article/model";
 
 import { SUPABASE_STORAGE_URL } from "@/shared/config";
-import { createServerSupabase } from "@/shared/utils";
+import { createImageConfig, createServerSupabase } from "@/shared/utils";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 
 const uploadImageAction = async (file: File, postId: string) => {
   const supabase = await createServerSupabase();
 
-  const imageId = randomUUID();
-  const imageName = `${imageId}.${file.type.split("/")[1]}`;
+  const { imageName } = createImageConfig(file);
 
   const { data, error } = await supabase.storage
     .from(ARTICLE_IMAGE_STORAGE_NAME)
