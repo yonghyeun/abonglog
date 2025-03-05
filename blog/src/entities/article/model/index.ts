@@ -8,7 +8,9 @@ import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
 export const ARTICLE_QUERY_KEY = {
-  default: ["article"]
+  default: ["article"] as const,
+  list_all: () => ["article", "all"] as const,
+  list_series: (seriesName: string) => ["article", seriesName] as const
 };
 
 export interface PostArticleImageResponse {
@@ -141,7 +143,7 @@ export const usePostNewArticle = () => {
 };
 
 export const getArticleList = () => {
-  const queryKey = ARTICLE_QUERY_KEY.default;
+  const queryKey = ARTICLE_QUERY_KEY.list_all();
 
   const queryFn = async ({ pageParam = 0 }) => {
     const supabase = await createBrowserSupabase();
@@ -186,6 +188,7 @@ export const useGetInfiniteArticleList = (numOfTotalArticles: number) => {
     getNextPageParam: ({ currentPage }) =>
       (currentPage + 1) * ITEM_PER_PAGE - 1 < numOfTotalArticles
         ? currentPage + 1
-        : undefined
+        : undefined,
+    staleTime: 1000 * 60 * 5
   });
 };

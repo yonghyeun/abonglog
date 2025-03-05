@@ -31,7 +31,7 @@ export const EveryArticlePage: React.FC<EveryArticlePageProps> = ({
           <span className="text-gray-500">({totalNumOfArticles})</span>
         </div>
       </header>
-      <section className="border">
+      <section className="p-2">
         <button onClick={fetchNextPage}>fetch</button>
         <Grid>
           {articles.map((article, idx) => (
