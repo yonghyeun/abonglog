@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useGetSeriesList } from "@/entities/series/model";
 import { SeriesItem } from "@/entities/series/ui";
 
@@ -11,7 +13,12 @@ export const SeriesListWidget = () => {
 
   return (
     <>
-      <h1 className="mb-2">시리즈 목록 보기</h1>
+      <h1 className="mb-2">시리즈별로 보기</h1>
+      <div className="flex justify-end">
+        <Link href="/article" className="text-gray-500 hover:text-bright-blue">
+          전체 게시글 보기
+        </Link>
+      </div>
 
       <Grid>
         {seriesList.map((data) => (
