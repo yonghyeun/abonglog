@@ -1,8 +1,14 @@
 import { ARTICLE_ENDPOINT } from "../config";
-import { useMutation } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 
 import { compressImage } from "@/entities/image/lib";
 import { Tag } from "@/entities/tag/@x/article";
+
+import { createBrowserSupabase } from "@/shared/model";
+
+const ARTICLE_QUERY_KEY = {
+  default: ["article"]
+};
 
 export interface PostArticleImageResponse {
   status: number;
@@ -129,5 +135,27 @@ const postNewArticle = async (body: PostNewArticleData) => {
 export const usePostNewArticle = () => {
   return useMutation({
     mutationFn: postNewArticle
+  });
+};
+
+interface GetArticleListParams {
+  series: string;
+}
+
+export const getArticleList = async ({ pageParam }: { pageParam: number }) => {
+  const supabase = createBrowserSupabase();
+
+  const data = await supabase
+    .from("articles")
+    .select("*")
+    .range(pageParam, pageParam + 10);
+};
+
+export const useGetArticleList = () => {
+  return useInfiniteQuery({
+    queryKey: ARTICLE_QUERY_KEY.default,
+    queryFn: getArticleList,
+    initialPageParam: 1,
+    staleTime: 1000 * 60 * 60 * 24
   });
 };
