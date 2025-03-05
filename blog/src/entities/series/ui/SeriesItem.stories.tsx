@@ -1,4 +1,4 @@
-import { SeriesItem, SeriesItemProps } from "./SeriesItem";
+import { SeriesItem } from "./SeriesItem";
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 

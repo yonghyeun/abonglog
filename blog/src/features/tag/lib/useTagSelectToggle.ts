@@ -9,8 +9,8 @@ export const useTagSelecToggle = () => {
     setSelectedTags((prev) => [...prev, tag]);
   };
 
-  const handleUnSelectTag = (tag: Tag) => {
-    setSelectedTags((prev) => prev.filter(({ id }) => id !== tag.id));
+  const handleUnSelectTag = (tagName: string) => {
+    setSelectedTags((prev) => prev.filter(({ name }) => name !== tagName));
   };
 
   const filterUnSelectedTags = (tags: Tag[]) => {

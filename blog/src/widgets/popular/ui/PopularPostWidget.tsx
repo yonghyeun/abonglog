@@ -15,11 +15,7 @@ const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
     "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum voluptates dolores, tempore optio modi sequi numquam at temporibus voluptatibus repudiandae ipsum aliquam ducimus ",
   updatedAt: new Date().toDateString(),
   thumbnailUrl: "/images/latest_post_thumbnail.jpg",
-  tags: [
-    { id: "1", name: "react", created_at: new Date().toISOString() },
-    { id: "2", name: "Typescript", created_at: new Date().toISOString() },
-    { id: "3", name: "jest", created_at: new Date().toISOString() }
-  ]
+  tags: ["react", "TS", "javascript"]
 }));
 
 type PopularMenu = "daily" | "weekly" | "monthly";

@@ -1,12 +1,11 @@
 import React from "react";
 
-import { Tag } from "@/entities/tag/model";
 import { TagChipList } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
 
 interface ArticlePreviewCardProps {
   thumbnailUrl: string | null;
-  tags: Tag[];
+  tags: string[];
   seriesName: string;
   title: string;
   description: string;

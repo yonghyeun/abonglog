@@ -153,7 +153,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               />
               {/* 선택된 태그 리스트 */}
               <TagChipList
-                tags={tagSelectToggleHook.selectedTags}
+                tags={tagSelectToggleHook.selectedTags.map(({ name }) => name)}
                 onEachTagClick={tagSelectToggleHook.handleUnSelectTag}
               />
             </div>
@@ -291,7 +291,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             {/* 아티클 카드 컴포넌트 */}
             <ArticlePreviewCard
               thumbnailUrl={thumbnailUrl}
-              tags={tagSelectToggleHook.selectedTags}
+              tags={tagSelectToggleHook.selectedTags.map(({ name }) => name)}
               seriesName={seriesSelectToggleHook.selectedSeries?.name || ""}
               title={title}
               description={description}
