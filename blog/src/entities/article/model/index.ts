@@ -159,7 +159,7 @@ export const getArticleList = () => {
       `
       )
       .eq("status", "published")
-      .range(pageParam, (pageParam + 1) * ITEM_PER_PAGE - 1)
+      .range(pageParam * ITEM_PER_PAGE, (pageParam + 1) * ITEM_PER_PAGE - 1)
       .then(snakeToCamel);
 
     if (error) {
@@ -189,6 +189,10 @@ export const useGetInfiniteArticleList = (numOfTotalArticles: number) => {
       (currentPage + 1) * ITEM_PER_PAGE - 1 < numOfTotalArticles
         ? currentPage + 1
         : undefined,
-    staleTime: 1000 * 60 * 5
+    staleTime: 1000 * 60 * 5,
+    select: ({ pages, pageParams }) => ({
+      pageParams,
+      pages: pages.flatMap((page) => page.data)
+    })
   });
 };
