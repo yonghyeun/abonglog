@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/shared/utils";
+import { createServerSupabase } from "@/shared/model";
 
 /**
  * 현재 인증된 사용자의 데이터를 가져오는 메소드

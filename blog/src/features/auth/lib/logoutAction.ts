@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerSupabase } from "@/shared/utils";
+import { createServerSupabase } from "@/shared/model";
 
 export const logoutAction = async () => {
   const supabase = await createServerSupabase();
