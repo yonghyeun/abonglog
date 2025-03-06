@@ -1,5 +1,9 @@
 import { ARTICLE_ENDPOINT, ITEM_PER_PAGE } from "../config";
-import { useMutation, useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseInfiniteQuery
+} from "@tanstack/react-query";
 
 import { compressImage } from "@/entities/image/lib";
 import { Tag } from "@/entities/tag/@x/article";
@@ -9,8 +13,11 @@ import { snakeToCamel } from "@/shared/util";
 
 export const ARTICLE_QUERY_KEY = {
   default: ["article"] as const,
-  list_all: () => ["article", "all"] as const,
-  list_series: (seriesName: string) => ["article", seriesName] as const
+  published: ["article", "published"] as const,
+  draft: ["article", "draft"] as const,
+  list_all: () => [...ARTICLE_QUERY_KEY.published, "all"] as const,
+  list_series: (seriesName: string) =>
+    [...ARTICLE_QUERY_KEY.published, seriesName] as const
 };
 
 export interface PostArticleImageResponse {
@@ -111,9 +118,12 @@ export interface PostNewArticleData {
   thumbnailUrl: string | null;
 }
 
-interface PostNewArticleResponse {
+export interface PostNewArticleResponse {
   status: number;
   message: string;
+  data: {
+    type: PostNewArticleData["status"];
+  };
 }
 
 const postNewArticle = async (body: PostNewArticleData) => {
@@ -125,20 +135,33 @@ const postNewArticle = async (body: PostNewArticleData) => {
     body: JSON.stringify(body)
   });
 
-  const { status, message } = (await response.json()) as PostNewArticleResponse;
+  const { status, message, data } =
+    (await response.json()) as PostNewArticleResponse;
 
   if (status > 200) {
     throw new Error(message);
   }
   return {
     status,
-    message
+    message,
+    data
   };
 };
 
 export const usePostNewArticle = () => {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: postNewArticle
+    mutationFn: postNewArticle,
+    onSuccess: ({ data: { type } }) => {
+      const queryKey =
+        type === "published"
+          ? ARTICLE_QUERY_KEY.published
+          : ARTICLE_QUERY_KEY.draft;
+
+      queryClient.invalidateQueries({
+        queryKey
+      });
+    }
   });
 };
 
