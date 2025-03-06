@@ -9,11 +9,11 @@ import { useGetInfiniteArticleList } from "@/entities/article/model";
 import { useObserver } from "@/shared/lib";
 import { Grid } from "@/shared/ui/Grid";
 
-interface EveryArticlePageProps {
+interface EveryArticleListPageProps {
   numOfArticles: number;
 }
 
-export const EveryArticlePage: React.FC<EveryArticlePageProps> = ({
+export const EveryArticleListPage: React.FC<EveryArticleListPageProps> = ({
   numOfArticles
 }) => {
   const {
@@ -22,10 +22,10 @@ export const EveryArticlePage: React.FC<EveryArticlePageProps> = ({
     fetchNextPage,
     hasNextPage
   } = useGetInfiniteArticleList(numOfArticles);
-  const oberserverRef = useObserver(() => fetchNextPage());
+  const observerRef = useObserver(() => fetchNextPage());
 
   return (
-    <section className="media-padding-x flex min-h-screen flex-col">
+    <>
       {/* header */}
       <header className="flex justify-center">
         <div className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export const EveryArticlePage: React.FC<EveryArticlePageProps> = ({
             </Grid.Item>
           ))}
 
-          {/* loading Skelecton */}
+          {/* loading Skeleton */}
           {isFetchingNextPage &&
             Array(6)
               .fill(0)
@@ -52,7 +52,7 @@ export const EveryArticlePage: React.FC<EveryArticlePageProps> = ({
               ))}
         </Grid>
         {/* Infinite scroll observer */}
-        <div ref={oberserverRef} />
+        <div ref={observerRef} />
         {/* 모든 게시글을 가져오고 나면 */}
         {!hasNextPage && (
           <div className="flex items-center justify-center py-12 text-gray-400">
@@ -60,6 +60,6 @@ export const EveryArticlePage: React.FC<EveryArticlePageProps> = ({
           </div>
         )}
       </section>
-    </section>
+    </>
   );
 };

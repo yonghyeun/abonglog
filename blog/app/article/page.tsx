@@ -1,8 +1,11 @@
 import { HydrationBoundary } from "@tanstack/react-query";
 import Link from "next/link";
 
-import { prefetechArticleList } from "@/views/article/model";
-import { ArticleListBySeriesPage, EveryArticlePage } from "@/views/article/ui";
+import { prefetchArticleList } from "@/views/article/model";
+import {
+  ArticleListBySeriesPage,
+  EveryArticleListPage
+} from "@/views/article/ui";
 
 import { getSeriesList } from "@/entities/series/model";
 
@@ -16,30 +19,30 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   searchParams
 }) => {
   const { series } = await searchParams;
-  const numOfSereisArray = await getSeriesList().queryFn();
+  const numOfSeriesArray = await getSeriesList().queryFn();
 
-  const searchedSeries = numOfSereisArray.find(
+  const searchedSeries = numOfSeriesArray.find(
     (data) => data.seriesName === series
   );
 
   // 전체보기인 경우
   if (series === undefined) {
-    const state = await prefetechArticleList();
-    const totalNumOfArticles = numOfSereisArray.reduce(
+    const state = await prefetchArticleList();
+    const totalNumOfArticles = numOfSeriesArray.reduce(
       (acc, cur) => acc + cur["numOfArticles"],
       0
     );
 
     return (
       <HydrationBoundary state={state}>
-        <EveryArticlePage numOfArticles={totalNumOfArticles} />
+        <EveryArticleListPage numOfArticles={totalNumOfArticles} />
       </HydrationBoundary>
     );
   }
 
   // 시리즈 별로 모아보기인 경우
   if (searchedSeries) {
-    const state = await prefetechArticleList(series);
+    const state = await prefetchArticleList(series);
     const numOfArticles = searchedSeries["numOfArticles"];
 
     return (
