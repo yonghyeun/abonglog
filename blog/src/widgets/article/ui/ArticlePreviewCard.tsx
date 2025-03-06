@@ -27,10 +27,10 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
         <img
           src={thumbnailUrl}
           alt="article-thumbnail"
-          className="aspect-video h-2/3 w-full object-cover"
+          className="aspect-video h-2/3 w-full rounded-lg object-cover"
         />
       ) : (
-        <div className="aspect-video h-2/3 w-full bg-gray-200" />
+        <div className="aspect-video h-2/3 w-full rounded-lg bg-gray-200" />
       )}
       {/* 태그 리스트 컴포넌트 */}
       <TagChipList tags={tags} />
