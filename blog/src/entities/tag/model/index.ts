@@ -14,8 +14,8 @@ import { createBrowserSupabase } from "@/shared/model";
 import type { Database } from "@/shared/model/database.types";
 
 export const tagQueryKey = {
-  default: ["tag"]
-} as const;
+  default: () => ["tags"] as const
+};
 
 export type Tag = Database["public"]["Tables"]["tags"]["Row"];
 
@@ -35,7 +35,7 @@ export const getTags = async () => {
  */
 export const useGetAllTags = () => {
   return useSuspenseQuery({
-    queryKey: tagQueryKey.default,
+    queryKey: tagQueryKey.default(),
     queryFn: getTags
   });
 };
@@ -68,7 +68,7 @@ export const usePostAddNewTag = () => {
     mutationFn: postAddNewTag,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: tagQueryKey.default
+        queryKey: tagQueryKey.default()
       });
     }
   });
