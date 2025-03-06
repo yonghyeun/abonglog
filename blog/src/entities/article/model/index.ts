@@ -179,6 +179,8 @@ export const getArticleList = (status: ArticleStatus) => {
         article_tags(tag_name)
       `
       )
+      .eq("status", status)
+      .order("updated_at", { ascending: false })
       .range(pageParam * ITEM_PER_PAGE, (pageParam + 1) * ITEM_PER_PAGE - 1)
       .then(snakeToCamel);
 
@@ -241,6 +243,7 @@ export const getArticleListBySeries = (
       )
       .eq("series_name", seriesName)
       .eq("status", status)
+      .order("updated_at", { ascending: false })
       .range(pageParam * ITEM_PER_PAGE, (pageParam + 1) * ITEM_PER_PAGE - 1)
       .then(snakeToCamel);
 
