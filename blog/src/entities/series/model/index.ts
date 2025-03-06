@@ -15,7 +15,7 @@ import type { Database } from "@/shared/model/database.types";
 import { snakeToCamel } from "@/shared/util";
 
 export const seriesQueryKey = {
-  default: ["series"]
+  default: () => ["series"] as const
 } as const;
 
 export type Series = Database["public"]["Tables"]["series"]["Row"];
@@ -36,7 +36,7 @@ export const getSeries = async () => {
  */
 export const useGetAllSeries = () => {
   return useSuspenseQuery({
-    queryKey: seriesQueryKey.default,
+    queryKey: seriesQueryKey.default(),
     queryFn: getSeries
   });
 };
@@ -69,7 +69,7 @@ export const usePostAddNewSeries = () => {
     mutationFn: postAddNewSeries,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: seriesQueryKey.default
+        queryKey: seriesQueryKey.default()
       });
     }
   });
