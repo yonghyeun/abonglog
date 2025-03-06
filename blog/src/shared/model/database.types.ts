@@ -51,6 +51,7 @@ export type Database = {
           id: number
           series_name: string
           status: string
+          thumbnail_url: string | null
           title: string
           updated_at: string
         }
@@ -62,6 +63,7 @@ export type Database = {
           id?: number
           series_name: string
           status: string
+          thumbnail_url?: string | null
           title: string
           updated_at: string
         }
@@ -73,6 +75,7 @@ export type Database = {
           id?: number
           series_name?: string
           status?: string
+          thumbnail_url?: string | null
           title?: string
           updated_at?: string
         }
@@ -95,6 +98,32 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      series_articles: {
+        Row: {
+          num_of_articles: number
+          series_name: string
+          updated_at: string
+        }
+        Insert: {
+          num_of_articles?: number
+          series_name: string
+          updated_at: string
+        }
+        Update: {
+          num_of_articles?: number
+          series_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "series_articles_series_name_fkey"
+            columns: ["series_name"]
+            isOneToOne: true
+            referencedRelation: "series"
+            referencedColumns: ["name"]
+          },
+        ]
       }
       tags: {
         Row: {

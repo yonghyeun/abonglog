@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import React, { Suspense } from "react";
 
-import { ArticleWritePage } from "@/views/ui/ArticleWritePage";
+import { ArticleWritePage } from "@/views/write/ui";
 
 import { getSeries, seriesQueryKey } from "@/entities/series/model";
 import { getTags, tagQueryKey } from "@/entities/tag/model";

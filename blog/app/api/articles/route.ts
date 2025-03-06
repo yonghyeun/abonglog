@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import type { PostNewArticleData } from "@/entities/article/model";
+import type {
+  PostNewArticleData,
+  PostNewArticleResponse
+} from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
 import { camelToSnake, createPostgressErrorResponse } from "@/shared/route";
@@ -70,8 +73,11 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(...createPostgressErrorResponse(errorResponse));
   }
 
-  return NextResponse.json({
+  return NextResponse.json<PostNewArticleResponse>({
     status: 200,
-    message: "아티클이 성공적으로 저장 되었습니다"
+    message: "아티클이 성공적으로 저장 되었습니다",
+    data: {
+      type: data.status
+    }
   });
 };

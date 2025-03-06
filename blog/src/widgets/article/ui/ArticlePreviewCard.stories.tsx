@@ -5,10 +5,10 @@ import { Tag } from "@/entities/tag/model";
 
 // 샘플 태그 데이터
 const sampleTags: Tag[] = [
-  { id: 1, name: "JavaScript", created_at: new Date().toISOString() },
-  { id: 2, name: "React", created_at: new Date().toISOString() },
-  { id: 3, name: "TypeScript", created_at: new Date().toISOString() },
-  { id: 4, name: "Next.js", created_at: new Date().toISOString() }
+  { id: "1", name: "JavaScript", created_at: new Date().toISOString() },
+  { id: "2", name: "React", created_at: new Date().toISOString() },
+  { id: "3", name: "TypeScript", created_at: new Date().toISOString() },
+  { id: "4", name: "Next.js", created_at: new Date().toISOString() }
 ];
 
 const meta: Meta<typeof ArticlePreviewCard> = {
