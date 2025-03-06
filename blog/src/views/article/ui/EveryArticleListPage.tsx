@@ -21,7 +21,7 @@ export const EveryArticleListPage: React.FC<EveryArticleListPageProps> = ({
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
-  } = useGetInfiniteArticleList(numOfArticles);
+  } = useGetInfiniteArticleList("published", numOfArticles);
   const observerRef = useObserver(() => fetchNextPage());
 
   return (

@@ -11,13 +11,15 @@ import { Tag } from "@/entities/tag/@x/article";
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
+export type ArticleStatus = "published" | "draft";
+
 export const ARTICLE_QUERY_KEY = {
-  default: ["article"] as const,
-  published: ["article", "published"] as const,
-  draft: ["article", "draft"] as const,
-  list_all: () => [...ARTICLE_QUERY_KEY.published, "all"] as const,
-  list_series: (seriesName: string) =>
-    [...ARTICLE_QUERY_KEY.published, seriesName] as const
+  default: (status: ArticleStatus) => ["article", status] as const,
+
+  list_all: (status: ArticleStatus) =>
+    [...ARTICLE_QUERY_KEY.default(status), "all"] as const,
+  list_series: (status: ArticleStatus, seriesName: string) =>
+    [...ARTICLE_QUERY_KEY.default(status), seriesName] as const
 };
 
 export interface PostArticleImageResponse {
@@ -114,7 +116,7 @@ export interface PostNewArticleData {
   seriesName: string;
   description: string;
   tags: Tag[];
-  status: "published" | "draft";
+  status: ArticleStatus;
   thumbnailUrl: string | null;
 }
 
@@ -153,11 +155,7 @@ export const usePostNewArticle = () => {
   return useMutation({
     mutationFn: postNewArticle,
     onSuccess: ({ data: { type } }) => {
-      const queryKey =
-        type === "published"
-          ? ARTICLE_QUERY_KEY.published
-          : ARTICLE_QUERY_KEY.draft;
-
+      const queryKey = ARTICLE_QUERY_KEY.default(type);
       queryClient.invalidateQueries({
         queryKey
       });
@@ -165,8 +163,8 @@ export const usePostNewArticle = () => {
   });
 };
 
-export const getArticleList = () => {
-  const queryKey = ARTICLE_QUERY_KEY.list_all();
+export const getArticleList = (status: ArticleStatus) => {
+  const queryKey = ARTICLE_QUERY_KEY.list_all(status);
 
   const queryFn = async ({ pageParam = 0 }) => {
     const supabase = await createBrowserSupabase();
@@ -181,7 +179,6 @@ export const getArticleList = () => {
         article_tags(tag_name)
       `
       )
-      .eq("status", "published")
       .range(pageParam * ITEM_PER_PAGE, (pageParam + 1) * ITEM_PER_PAGE - 1)
       .then(snakeToCamel);
 
@@ -205,9 +202,12 @@ export const getArticleList = () => {
   };
 };
 
-export const useGetInfiniteArticleList = (numOfTotalArticles: number) => {
+export const useGetInfiniteArticleList = (
+  status: ArticleStatus,
+  numOfTotalArticles: number
+) => {
   return useSuspenseInfiniteQuery({
-    ...getArticleList(),
+    ...getArticleList(status),
     getNextPageParam: ({ currentPage }) =>
       (currentPage + 1) * ITEM_PER_PAGE - 1 < numOfTotalArticles
         ? currentPage + 1
@@ -220,8 +220,11 @@ export const useGetInfiniteArticleList = (numOfTotalArticles: number) => {
   });
 };
 
-export const getArticleListBySeries = (seriesName: string) => {
-  const queryKey = ARTICLE_QUERY_KEY.list_series(seriesName);
+export const getArticleListBySeries = (
+  status: ArticleStatus,
+  seriesName: string
+) => {
+  const queryKey = ARTICLE_QUERY_KEY.list_series(status, seriesName);
 
   const queryFn = async ({ pageParam = 0 }) => {
     const supabase = await createBrowserSupabase();
@@ -237,7 +240,7 @@ export const getArticleListBySeries = (seriesName: string) => {
       `
       )
       .eq("series_name", seriesName)
-      .eq("status", "published")
+      .eq("status", status)
       .range(pageParam * ITEM_PER_PAGE, (pageParam + 1) * ITEM_PER_PAGE - 1)
       .then(snakeToCamel);
 
@@ -262,11 +265,12 @@ export const getArticleListBySeries = (seriesName: string) => {
 };
 
 export const useGetInfiniteArticleListBySeries = (
+  status: ArticleStatus,
   seriesName: string,
   numOfTotalArticles: number
 ) => {
   return useSuspenseInfiniteQuery({
-    ...getArticleListBySeries(seriesName),
+    ...getArticleListBySeries(status, seriesName),
     getNextPageParam: ({ currentPage }) =>
       (currentPage + 1) * ITEM_PER_PAGE - 1 < numOfTotalArticles
         ? currentPage + 1

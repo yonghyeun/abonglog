@@ -20,7 +20,7 @@ export const ArticleListBySeriesPage: React.FC<
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
-  } = useGetInfiniteArticleListBySeries(seriesName, numOfArticles);
+  } = useGetInfiniteArticleListBySeries("published", seriesName, numOfArticles);
   const observerRef = useObserver(() => fetchNextPage());
 
   return (

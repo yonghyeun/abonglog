@@ -27,7 +27,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
 
   // 전체보기인 경우
   if (series === undefined) {
-    const state = await prefetchArticleList();
+    const state = await prefetchArticleList("published");
     const totalNumOfArticles = numOfSeriesArray.reduce(
       (acc, cur) => acc + cur["numOfArticles"],
       0
@@ -42,7 +42,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
 
   // 시리즈 별로 모아보기인 경우
   if (searchedSeries) {
-    const state = await prefetchArticleList(series);
+    const state = await prefetchArticleList("published", series);
     const numOfArticles = searchedSeries["numOfArticles"];
 
     return (
