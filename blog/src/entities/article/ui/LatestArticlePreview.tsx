@@ -36,7 +36,11 @@ export const LatestArticlePreview: React.FC<LatestArticlePreviewProps> = ({
         </Link>
       </div>
       <div className="relative my-auto min-h-96 w-1/2">
-        <Image src={thumbnailUrl} alt={title} layout="fill" objectFit="cover" />
+        <img
+          src={thumbnailUrl}
+          alt={title}
+          className="h-full w-full rounded-md object-cover"
+        />
       </div>
     </section>
   );

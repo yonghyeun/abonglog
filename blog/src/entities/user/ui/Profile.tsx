@@ -1,7 +1,6 @@
-import Image, { ImageProps } from "next/image";
 import React from "react";
 
-interface ProfileProps extends ImageProps {
+interface ProfileProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   size: keyof typeof profileSizeMap;
 }
 
@@ -21,14 +20,7 @@ export const Profile: React.FC<ProfileProps> = ({
     <div
       className={`${profileSizeMap[size]} relative overflow-hidden rounded-full`}
     >
-      <Image
-        width={48}
-        height={48}
-        className="object-cover"
-        src={src}
-        alt={alt}
-        {...props}
-      />
+      <img className="object-cover" src={src} alt={alt} {...props} />
     </div>
   );
 };
