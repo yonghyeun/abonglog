@@ -1,1 +1,1 @@
-export * from "./prefetechArticleList";
+export * from "./prefetchArticleList";

@@ -41,7 +41,7 @@ export const ArticleListBySeriesPage: React.FC<
             </Grid.Item>
           ))}
 
-          {/* loading Skelecton */}
+          {/* loading Skeleton */}
           {isFetchingNextPage &&
             Array(6)
               .fill(0)

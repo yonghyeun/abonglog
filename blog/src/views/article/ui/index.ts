@@ -1,2 +1,2 @@
-export * from "./EveryArticlePage";
+export * from "./EveryArticleListPage";
 export * from "./ArticleListBySeriesPage";

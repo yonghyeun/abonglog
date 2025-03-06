@@ -5,7 +5,7 @@ import {
   getArticleListBySeries
 } from "@/entities/article/model";
 
-export const prefetechArticleList = async (seriesName?: string) => {
+export const prefetchArticleList = async (seriesName?: string) => {
   const queryClient = new QueryClient();
 
   if (seriesName !== undefined) {
