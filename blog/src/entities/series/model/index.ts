@@ -14,7 +14,7 @@ import { createBrowserSupabase } from "@/shared/model";
 import type { Database } from "@/shared/model/database.types";
 import { snakeToCamel } from "@/shared/util";
 
-export const seriesQueryKey = {
+export const SERIES_QUERY_KEY = {
   default: () => ["series"] as const
 } as const;
 
@@ -36,7 +36,7 @@ export const getSeries = async () => {
  */
 export const useGetAllSeries = () => {
   return useSuspenseQuery({
-    queryKey: seriesQueryKey.default(),
+    queryKey: SERIES_QUERY_KEY.default(),
     queryFn: getSeries
   });
 };
@@ -69,18 +69,15 @@ export const usePostAddNewSeries = () => {
     mutationFn: postAddNewSeries,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: seriesQueryKey.default()
+        queryKey: SERIES_QUERY_KEY.default()
       });
     }
   });
 };
 
-const SERIES_QUERY_KEY = {
-  default: ["series"]
-};
-
 export const getSeriesList = () => {
-  const queryKey = SERIES_QUERY_KEY.default;
+  const queryKey = SERIES_QUERY_KEY.default();
+
   const queryFn = async () => {
     const supabase = await createBrowserSupabase();
 
