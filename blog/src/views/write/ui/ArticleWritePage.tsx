@@ -20,11 +20,12 @@ import {
 import { ImageGrid, ImageUploadInput } from "@/entities/image/ui";
 import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
 import { useGetAllTags, usePostAddNewTag } from "@/entities/tag/model";
-import { TagChipList } from "@/entities/tag/ui";
+import { TagChip } from "@/entities/tag/ui";
 
 import { BackwardIcon, PenIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
+import { List } from "@/shared/ui/List";
 
 interface ArticleWritePageProps {
   articleId: number;
@@ -145,7 +146,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               <div className="h-2 w-32 bg-secondary" />
             </div>
 
-            <div className="relative mt-4 flex gap-2 rounded-md border bg-gray-100 p-2">
+            <div className="relative mt-4 flex items-center gap-2 rounded-md border bg-gray-100 p-2">
               {/* 태그 셀렉트 토글 */}
               <TagSelectToggle
                 tags={tagSelectToggleHook.filterUnSelectedTags(allTags)}
@@ -153,10 +154,16 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 onAddNewTag={addNewTag}
               />
               {/* 선택된 태그 리스트 */}
-              <TagChipList
-                tags={tagSelectToggleHook.selectedTags.map(({ name }) => name)}
-                onEachTagClick={tagSelectToggleHook.handleUnSelectTag}
-              />
+              <List.UnOrder>
+                {tagSelectToggleHook.selectedTags.map(({ name }) => (
+                  <List.Item
+                    key={name}
+                    onClick={() => tagSelectToggleHook.handleUnSelectTag(name)}
+                  >
+                    <TagChip>{name}</TagChip>
+                  </List.Item>
+                ))}
+              </List.UnOrder>
             </div>
             <section className="relative flex justify-between p-2 text-sm">
               <div className="flex flex-grow gap-2">

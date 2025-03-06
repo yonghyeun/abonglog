@@ -53,11 +53,9 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
           <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto">
             {filterTags(tags).map((tag) => (
               <li key={tag.name} className="flex items-center justify-between">
-                <TagChip
-                  key={tag.name}
-                  name={tag.name}
-                  onClick={() => onEachTagClick(tag)}
-                />
+                <TagChip key={tag.name} onClick={() => onEachTagClick(tag)}>
+                  {tag.name}
+                </TagChip>
               </li>
             ))}
           </ul>

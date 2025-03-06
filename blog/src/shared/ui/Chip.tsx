@@ -1,7 +1,4 @@
-/**
- * tag id 별 색상 스타일을 담은 배열
- */
-export const tagStyleArray = [
+const chipStyles = [
   "bg-sky-100 text-sky-500 hover:bg-sky-200",
   "bg-red-100 text-red-500 hover:bg-red-200",
   "bg-green-100 text-green-500 hover:bg-green-200",
@@ -23,3 +20,26 @@ export const tagStyleArray = [
   "bg-lime-100 text-lime-500 hover:bg-lime-200",
   "bg-teal-100 text-teal-500 hover:bg-teal-200"
 ] as const;
+
+interface ChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  theme: number;
+}
+
+export const Chip: React.FC<ChipProps> = ({
+  children,
+  theme,
+  className = "",
+  ...props
+}) => {
+  return (
+    <button
+      className={`${
+        chipStyles[(theme % chipStyles.length) - 1]
+      } rounded-full px-4 py-1 text-xs ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
