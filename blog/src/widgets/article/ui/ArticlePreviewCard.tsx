@@ -1,7 +1,9 @@
 import React from "react";
 
-import { TagChipList } from "@/entities/tag/ui";
+import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
+
+import { List } from "@/shared/ui/List";
 
 interface ArticlePreviewCardProps {
   thumbnailUrl: string | null;
@@ -32,8 +34,14 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
       ) : (
         <div className="aspect-video h-2/3 w-full rounded-lg bg-gray-200" />
       )}
-      {/* 태그 리스트 컴포넌트 */}
-      <TagChipList tags={tags} />
+      {/* 태그 리스트  */}
+      <List.UnOrder>
+        {tags.map((tag) => (
+          <List.Item key={tag}>
+            <TagChip>{tag}</TagChip>
+          </List.Item>
+        ))}
+      </List.UnOrder>
 
       {/* 글 제목과 시리즈 이름 */}
       <div>
