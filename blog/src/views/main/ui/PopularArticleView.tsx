@@ -4,13 +4,13 @@ import React, { Suspense, use, useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
-import { useGetPopularArticleList } from "@/entities/article/model/getPolularArticleList";
+import { useGetPopularArticleList } from "@/entities/article/model";
 
 import { Grid } from "@/shared/ui/Grid";
 
 type Period = "daily" | "weekly" | "monthly";
 
-export const PopularPostWidget = () => {
+export const PopularArticleView = () => {
   const [period, setPeriod] = useState<Period>("daily");
   const promise = useGetPopularArticleList(period).promise;
 
