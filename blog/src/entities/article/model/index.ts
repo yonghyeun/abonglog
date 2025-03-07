@@ -22,6 +22,11 @@ export const ARTICLE_QUERY_KEY = {
     [...ARTICLE_QUERY_KEY.default(status), seriesName] as const
 };
 
+export interface PostArticleImageRequest {
+  files: File[];
+  articleId: string;
+}
+
 export interface PostArticleImageResponse {
   status: number;
   message: string;
@@ -33,9 +38,13 @@ export interface PostArticleImageResponse {
   }[];
 }
 
-export const postArticleImage = async (files: File[], articleId: number) => {
+export const postArticleImage = async ({
+  files,
+  articleId
+}: PostArticleImageRequest) => {
   const form = new FormData();
-  form.append("id", articleId.toString());
+
+  form.append("articleId", articleId);
 
   files.forEach((file) => {
     form.append("image", file);
@@ -56,9 +65,9 @@ export const postArticleImage = async (files: File[], articleId: number) => {
   return data;
 };
 
-interface PostArticleThumbnailData {
+export interface PostArticleThumbnailRequest {
   file: File;
-  articleId: number;
+  articleId: string;
 }
 
 export interface PostArticleThumbnailResponse {
@@ -75,13 +84,14 @@ export interface PostArticleThumbnailResponse {
 const postArticleThumbnail = async ({
   file,
   articleId
-}: PostArticleThumbnailData) => {
+}: PostArticleThumbnailRequest) => {
   const compressedImage = await compressImage(file, {
     quantity: 2 ** 15
   });
+
   const formData = new FormData();
   formData.append("image", compressedImage);
-  formData.append("articleId", articleId.toString());
+  formData.append("articleId", articleId);
 
   const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_THUMBNAIL(), {
     method: "POST",

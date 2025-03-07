@@ -1,20 +1,29 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import type { PostArticleImageResponse } from "@/entities/article/model";
+import type {
+  PostArticleImageRequest,
+  PostArticleImageResponse
+} from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
 import { attachIamgeUrl, createImageConfig } from "@/shared/route";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 
-const uploadImageAction = async (file: File, postId: string) => {
+const uploadImageAction = async ({
+  file,
+  articleId
+}: {
+  file: File;
+  articleId: string;
+}) => {
   const supabase = await createServerSupabase();
 
   const { imageName } = createImageConfig(file);
 
   const response = await supabase.storage
     .from(ARTICLE_IMAGE_STORAGE_NAME)
-    .upload(`public/${postId}/${imageName}`, file);
+    .upload(`public/${articleId}/${imageName}`, file);
 
   return response;
 };
@@ -24,11 +33,13 @@ const uploadImageAction = async (file: File, postId: string) => {
  */
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
-  const images = formData.getAll("image") as File[];
-  const postId = formData.get("id") as string;
+  const images = formData.getAll("image") as PostArticleImageRequest["files"];
+  const articleId = formData.get(
+    "articleId"
+  ) as PostArticleImageRequest["articleId"];
 
   const responseArray = await Promise.all(
-    images.map((file) => uploadImageAction(file, postId))
+    images.map((file) => uploadImageAction({ file, articleId }))
   );
 
   const uploadedImages = responseArray.filter((response) => !response.error);

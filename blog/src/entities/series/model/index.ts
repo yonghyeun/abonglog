@@ -12,6 +12,7 @@ import {
 
 import { createBrowserSupabase } from "@/shared/model";
 import type { Database } from "@/shared/model/database.types";
+import { NonOptional } from "@/shared/type";
 import { snakeToCamel } from "@/shared/util";
 
 export const SERIES_QUERY_KEY = {
@@ -41,13 +42,18 @@ export const useGetAllSeries = () => {
   });
 };
 
-const postAddNewSeries = async (seriesName: string) => {
+type PostAddNewSeriesRequest = Pick<
+  NonOptional<Database["public"]["Tables"]["series"]["Insert"]>,
+  "name"
+>;
+
+const postAddNewSeries = async ({ name }: PostAddNewSeriesRequest) => {
   const supabase = await createBrowserSupabase();
   const created_at = new Date().toISOString();
 
   const { error } = await supabase
     .from("series")
-    .insert([{ name: seriesName, created_at }]);
+    .insert([{ name, created_at }]);
 
   if (error) {
     throw error;

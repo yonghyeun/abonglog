@@ -82,7 +82,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
     uploadNewThumbnail(
       {
         file: files[0],
-        articleId
+        articleId: articleId.toString()
       },
       {
         onSuccess: ({ imageUrl }) => setThumbnailUrl(imageUrl)
@@ -151,7 +151,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               <TagSelectToggle
                 tags={tagSelectToggleHook.filterUnSelectedTags(allTags)}
                 onEachTagClick={tagSelectToggleHook.handleSelectTag}
-                onAddNewTag={addNewTag}
+                onAddNewTag={(name) => addNewTag({ name })}
               />
               {/* 선택된 태그 리스트 */}
               <List.UnOrder>
@@ -173,7 +173,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                     allSeries
                   )}
                   onEachSeriesClick={seriesSelectToggleHook.handleSelectSeries}
-                  onAddNewSeries={addNewSeries}
+                  onAddNewSeries={(name) => addNewSeries({ name })}
                 />
                 {/* 선택된 시리즈 명 */}
                 <p

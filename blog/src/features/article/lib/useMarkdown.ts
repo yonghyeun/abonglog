@@ -14,8 +14,6 @@ export const useMarkdown = (articleId: number, defaultValue?: string) => {
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  console.log(markdown);
-
   /**
    * uploadArticleImage 함수는 이미지 파일을 업로드 하고, 업로드가 완료되면
    * textArea 에서 선택된 위치에 이미지를 표현하는 마크다운 문법을 삽입하는 역할을 합니다.
@@ -42,7 +40,10 @@ export const useMarkdown = (articleId: number, defaultValue?: string) => {
       files.map((file) => compressImage(file))
     );
 
-    const imageUrls = await postArticleImage(compressedFiles, articleId);
+    const imageUrls = await postArticleImage({
+      files: compressedFiles,
+      id: articleId.toString()
+    });
 
     // 이미지 업로드가 완료 되면 이전 이미지가 삽입된 selectionStart 와 selectionEnd 사이에
     // 이미지를 표현하는 마크다운 문법을 추가 합니다.

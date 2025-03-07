@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import type { PostArticleThumbnailResponse } from "@/entities/article/model";
+import type {
+  PostArticleThumbnailRequest,
+  PostArticleThumbnailResponse
+} from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
 import { attachIamgeUrl, createImageConfig } from "@/shared/route";
 
-const uploadThumbnail = async (file: File, articleId: string) => {
+const uploadThumbnail = async ({
+  file,
+  articleId
+}: PostArticleThumbnailRequest) => {
   const supabase = await createServerSupabase();
 
   const { imageName } = createImageConfig(file);
@@ -23,7 +29,7 @@ export const POST = async (req: NextRequest) => {
   const articleId = form.get("articleId") as string;
   const file = form.get("image") as File;
 
-  const response = await uploadThumbnail(file, articleId);
+  const response = await uploadThumbnail({ file, articleId });
 
   if (response.error) {
     return NextResponse.json({
