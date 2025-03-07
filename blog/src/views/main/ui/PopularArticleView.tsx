@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { Suspense, use, useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
@@ -102,7 +103,9 @@ const PopularArticleGrid: React.FC<PopularArticleGridProps> = ({ promise }) => {
     <Grid>
       {articleList.map((article) => (
         <Grid.Item key={article.id}>
-          <ArticlePreviewCard {...article} />
+          <Link href={`article/${article.id}`}>
+            <ArticlePreviewCard {...article} />
+          </Link>
         </Grid.Item>
       ))}
     </Grid>

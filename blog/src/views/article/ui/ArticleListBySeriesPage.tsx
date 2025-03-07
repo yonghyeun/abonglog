@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
 import { useGetInfiniteArticleListBySeries } from "@/entities/article/model";
@@ -37,7 +39,9 @@ export const ArticleListBySeriesPage: React.FC<
         <Grid>
           {pages.map((article) => (
             <Grid.Item key={article.id}>
-              <ArticlePreviewCard {...article} />
+              <Link href={`/article/${article.id}`}>
+                <ArticlePreviewCard {...article} />
+              </Link>
             </Grid.Item>
           ))}
 

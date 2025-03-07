@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
@@ -37,7 +38,9 @@ export const EveryArticleListPage: React.FC<EveryArticleListPageProps> = ({
         <Grid>
           {pages.map((article) => (
             <Grid.Item key={article.id}>
-              <ArticlePreviewCard {...article} />
+              <Link href={`/article/${article.id}`}>
+                <ArticlePreviewCard {...article} />
+              </Link>
             </Grid.Item>
           ))}
 
