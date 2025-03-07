@@ -6,7 +6,6 @@ import { useGetSeriesArticleList } from "@/entities/series/model";
 import { SeriesItem } from "@/entities/series/ui";
 
 import { Grid } from "@/shared/ui/Grid";
-import { HoverLink } from "@/shared/ui/HoverLink";
 
 export const SeriesListView = () => {
   const { data: seriesList } = useGetSeriesArticleList();
@@ -23,14 +22,14 @@ export const SeriesListView = () => {
       <Grid>
         {seriesList.map((data) => (
           <Grid.Item key={data.seriesName}>
-            <HoverLink
+            <Link
               href={{
                 pathname: "/article",
                 search: `?series=${data.seriesName}`
               }}
             >
               <SeriesItem {...data} />
-            </HoverLink>
+            </Link>
           </Grid.Item>
         ))}
       </Grid>
