@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 
-import { useGetSeriesList } from "@/entities/series/model";
+import { useGetSeriesArticleList } from "@/entities/series/model";
 import { SeriesItem } from "@/entities/series/ui";
 
 import { Grid } from "@/shared/ui/Grid";
 import { HoverLink } from "@/shared/ui/HoverLink";
 
 export const SeriesListWidget = () => {
-  const { data: seriesList } = useGetSeriesList();
+  const { data: seriesList } = useGetSeriesArticleList();
 
   return (
     <>

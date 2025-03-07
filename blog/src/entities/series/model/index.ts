@@ -21,25 +21,27 @@ export const SERIES_QUERY_KEY = {
 
 export type Series = Database["public"]["Tables"]["series"]["Row"];
 
-export const getSeries = async () => {
-  const supabase = createBrowserSupabase();
-  const { data, error } = await supabase.from("series").select("*");
+export const getSeriesList = () => {
+  const queryKey = SERIES_QUERY_KEY.default();
+  const queryFn = async () => {
+    const supabase = await createBrowserSupabase();
+    const { data, error } = await supabase.from("series").select("*");
 
-  if (error) {
-    throw error;
-  }
+    if (error) {
+      throw error;
+    }
 
-  return data;
+    return data;
+  };
+
+  return { queryKey, queryFn };
 };
 
 /**
  * useGetAllSeries 쿼리는 public.series 에 존재하는 모든 시리즈를 가져옵니다.
  */
-export const useGetAllSeries = () => {
-  return useSuspenseQuery({
-    queryKey: SERIES_QUERY_KEY.default(),
-    queryFn: getSeries
-  });
+export const useGetSeriesList = () => {
+  return useSuspenseQuery(getSeriesList());
 };
 
 type PostAddNewSeriesRequest = Pick<
@@ -81,7 +83,7 @@ export const usePostAddNewSeries = () => {
   });
 };
 
-export const getSeriesList = () => {
+export const getSeriesArticleList = () => {
   const queryKey = SERIES_QUERY_KEY.default();
 
   const queryFn = async () => {
@@ -99,6 +101,6 @@ export const getSeriesList = () => {
   return { queryKey, queryFn };
 };
 
-export const useGetSeriesList = () => {
-  return useSuspenseQuery(getSeriesList());
+export const useGetSeriesArticleList = () => {
+  return useSuspenseQuery(getSeriesArticleList());
 };

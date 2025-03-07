@@ -38,6 +38,7 @@ export interface PostArticleImageResponse {
   }[];
 }
 
+// TODO useMarkdown 훅 리팩토링 할 때 수정하기
 export const postArticleImage = async ({
   files,
   articleId
@@ -81,43 +82,45 @@ export interface PostArticleThumbnailResponse {
   };
 }
 
-const postArticleThumbnail = async ({
-  file,
-  articleId
-}: PostArticleThumbnailRequest) => {
-  const compressedImage = await compressImage(file, {
-    quantity: 2 ** 15
-  });
+const postArticleThumbnail = () => {
+  const mutationFn = async ({
+    file,
+    articleId
+  }: PostArticleThumbnailRequest) => {
+    const compressedImage = await compressImage(file, {
+      quantity: 2 ** 15
+    });
 
-  const formData = new FormData();
-  formData.append("image", compressedImage);
-  formData.append("articleId", articleId);
+    const formData = new FormData();
+    formData.append("image", compressedImage);
+    formData.append("articleId", articleId);
 
-  const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_THUMBNAIL(), {
-    method: "POST",
-    body: formData
-  });
+    const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_THUMBNAIL(), {
+      method: "POST",
+      body: formData
+    });
 
-  const { status, data, message } =
-    (await response.json()) as PostArticleThumbnailResponse;
+    const { status, data, message } =
+      (await response.json()) as PostArticleThumbnailResponse;
 
-  if (status > 200) {
-    throw new Error(message);
-  }
+    if (status > 200) {
+      throw new Error(message);
+    }
 
-  return data;
+    return data;
+  };
+
+  return { mutationFn };
 };
 
 export const usePostArticleThumbnail = () => {
-  return useMutation({
-    mutationFn: postArticleThumbnail
-  });
+  return useMutation(postArticleThumbnail());
 };
 
 /**
  * created_at , updated_at은 서버에서 자동으로 생성
  */
-export interface PostNewArticleData {
+export interface PostNewArticleRequest {
   // articleId
   id: number;
   title: string;
@@ -134,36 +137,40 @@ export interface PostNewArticleResponse {
   status: number;
   message: string;
   data: {
-    type: PostNewArticleData["status"];
+    type: PostNewArticleRequest["status"];
   };
 }
 
-const postNewArticle = async (body: PostNewArticleData) => {
-  const response = await fetch(ARTICLE_ENDPOINT.POST_NEW_ARTICLE(), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
+const postNewArticle = () => {
+  const mutationFn = async (body: PostNewArticleRequest) => {
+    const response = await fetch(ARTICLE_ENDPOINT.POST_NEW_ARTICLE(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
 
-  const { status, message, data } =
-    (await response.json()) as PostNewArticleResponse;
+    const { status, message, data } =
+      (await response.json()) as PostNewArticleResponse;
 
-  if (status > 200) {
-    throw new Error(message);
-  }
-  return {
-    status,
-    message,
-    data
+    if (status > 200) {
+      throw new Error(message);
+    }
+    return {
+      status,
+      message,
+      data
+    };
   };
+
+  return { mutationFn };
 };
 
 export const usePostNewArticle = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: postNewArticle,
+    ...postNewArticle(),
     onSuccess: ({ data: { type } }) => {
       const queryKey = ARTICLE_QUERY_KEY.default(type);
       queryClient.invalidateQueries({

@@ -42,7 +42,7 @@ export const useMarkdown = (articleId: number, defaultValue?: string) => {
 
     const imageUrls = await postArticleImage({
       files: compressedFiles,
-      id: articleId.toString()
+      articleId: articleId.toString()
     });
 
     // 이미지 업로드가 완료 되면 이전 이미지가 삽입된 selectionStart 와 selectionEnd 사이에

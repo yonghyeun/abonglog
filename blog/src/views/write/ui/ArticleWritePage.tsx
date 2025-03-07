@@ -18,8 +18,8 @@ import {
   usePostNewArticle
 } from "@/entities/article/model";
 import { ImageGrid, ImageUploadInput } from "@/entities/image/ui";
-import { useGetAllSeries, usePostAddNewSeries } from "@/entities/series/model";
-import { useGetAllTags, usePostAddNewTag } from "@/entities/tag/model";
+import { useGetSeriesList, usePostAddNewSeries } from "@/entities/series/model";
+import { useGetTagList, usePostAddNewTag } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { BackwardIcon, PenIcon } from "@/shared/config";
@@ -42,8 +42,8 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   const [description, setDescription] = useState<string>("");
   const [title, handleChangeTitle] = useTransitionInput();
 
-  const { data: allTags } = useGetAllTags();
-  const { data: allSeries } = useGetAllSeries();
+  const { data: tagList } = useGetTagList();
+  const { data: seriesList } = useGetSeriesList();
   const { mutate: addNewTag } = usePostAddNewTag();
   const { mutate: addNewSeries } = usePostAddNewSeries();
   const { mutate: uploadNewThumbnail, isPending: isThumbnailUploading } =
@@ -149,7 +149,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             <div className="relative mt-4 flex items-center gap-2 rounded-md border bg-gray-100 p-2">
               {/* 태그 셀렉트 토글 */}
               <TagSelectToggle
-                tags={tagSelectToggleHook.filterUnSelectedTags(allTags)}
+                tags={tagSelectToggleHook.filterUnSelectedTags(tagList)}
                 onEachTagClick={tagSelectToggleHook.handleSelectTag}
                 onAddNewTag={(name) => addNewTag({ name })}
               />
@@ -170,7 +170,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 {/* 시리즈 셀렉트 토글 */}
                 <SeriesSelectToggle
                   series={seriesSelectToggleHook.filterUnSelectedSeries(
-                    allSeries
+                    seriesList
                   )}
                   onEachSeriesClick={seriesSelectToggleHook.handleSelectSeries}
                   onAddNewSeries={(name) => addNewSeries({ name })}

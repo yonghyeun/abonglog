@@ -7,7 +7,7 @@ import {
   EveryArticleListPage
 } from "@/views/article/ui";
 
-import { getSeriesList } from "@/entities/series/model";
+import { getSeriesArticleList } from "@/entities/series/model";
 
 interface ArticleListPageProps {
   searchParams: {
@@ -19,7 +19,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   searchParams
 }) => {
   const { series } = await searchParams;
-  const numOfSeriesArray = await getSeriesList().queryFn();
+  const numOfSeriesArray = await getSeriesArticleList().queryFn();
 
   const searchedSeries = numOfSeriesArray.find(
     (data) => data.seriesName === series
