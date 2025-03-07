@@ -28,7 +28,7 @@ export interface PostArticleImageRequest {
 }
 
 export interface PostArticleImageResponse {
-  status: number;
+  code: number;
   message: string;
   data: {
     path: string;
@@ -56,10 +56,9 @@ export const postArticleImage = async ({
     body: form
   });
 
-  const { status, data, message } =
-    (await response.json()) as PostArticleImageResponse;
+  const { data, message } = (await response.json()) as PostArticleImageResponse;
 
-  if (status > 200) {
+  if (!response.ok) {
     throw new Error(message);
   }
 

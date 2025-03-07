@@ -42,18 +42,20 @@ export const POST = async (req: NextRequest) => {
     images.map((file) => uploadImageAction({ file, articleId }))
   );
 
-  const uploadedImages = responseArray.filter((response) => !response.error);
+  const errorResponse = responseArray.find((response) => !!response.error);
 
-  if (uploadedImages.length < responseArray.length) {
+  if (errorResponse) {
     return NextResponse.json({
-      status: 500,
-      message: "이미지 업로드에 실패했습니다."
+      code: 500,
+      message: errorResponse.error.message
     });
   }
 
+  const successResponses = responseArray.filter((response) => !!response.data);
+
   return NextResponse.json<PostArticleImageResponse>({
-    status: 200,
+    code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: uploadedImages.map(({ data }) => attachIamgeUrl(data))
+    data: successResponses.map(({ data }) => attachIamgeUrl(data))
   });
 };
