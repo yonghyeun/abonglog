@@ -1,35 +1,38 @@
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
+import { LatestArticlePreview } from "@/widgets/article/ui";
 import { PopularPostWidget } from "@/widgets/popular/ui";
 import { SeriesListWidget } from "@/widgets/series/ui";
 
-import { LatestArticlePreview } from "@/entities/article/ui";
+import {
+  getLatestArticle,
+  getPopularArticleList
+} from "@/entities/article/model";
 import { getSeriesArticleList } from "@/entities/series/model";
 
 import { prefetchQueryInServer } from "@/shared/model";
 
-const mockLatestPostPreviewProps = {
-  postId: 1,
-  title: "함수형 사고로 FSD 구조에서 레이어의 역할 이해하기 (feat : 리액트)",
-  description:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis alias, beatae tempora totam officia eum, dolorem illum possimus provident eaque cumque",
-  createdAt: new Date().toDateString(),
-  thumbnailUrl: "/images/latest_post_thumbnail.jpg"
-};
-
 const MainPage = async () => {
-  const seriesListState = await prefetchQueryInServer(getSeriesArticleList);
+  const mainPageState = await prefetchQueryInServer(
+    getSeriesArticleList,
+    getLatestArticle,
+    () => getPopularArticleList("daily")
+  );
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      {/* Latest Post */}
-      <LatestArticlePreview {...mockLatestPostPreviewProps} />
-      {/* Popular */}
-      <PopularPostWidget />
-
-      <HydrationBoundary state={seriesListState}>
-        <section className="media-padding-x mt-4 gap-4 bg-secondary py-12">
+      <HydrationBoundary state={mainPageState}>
+        {/* Latest Post */}
+        <section className="media-padding-x min-h-48 bg-secondary py-12">
+          <LatestArticlePreview />
+        </section>
+        {/* Popular */}
+        <section className="media-padding-x mt-4 flex flex-col gap-4 py-12">
+          <PopularPostWidget />
+        </section>
+        {/* Series List  */}
+        <section className="media-padding-x mt-4 bg-secondary py-12">
           <SeriesListWidget />
         </section>
       </HydrationBoundary>

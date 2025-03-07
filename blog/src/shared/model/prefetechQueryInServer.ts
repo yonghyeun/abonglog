@@ -5,8 +5,11 @@ import {
   dehydrate
 } from "@tanstack/react-query";
 
-type PrefetechQueryInServer = <T>(
-  ...callbacks: (() => { queryKey: QueryKey; queryFn: () => Promise<T> })[]
+type PrefetechQueryInServer = (
+  ...callbacks: (() => {
+    queryKey: QueryKey;
+    queryFn: () => Promise<unknown>;
+  })[]
 ) => Promise<DehydratedState>;
 
 /**

@@ -1,8 +1,10 @@
 import { ARTICLE_ENDPOINT, ITEM_PER_PAGE } from "../config";
+import { ARTICLE_QUERY_KEY, type ArticleStatus } from "./articleQueryKey";
 import {
   useMutation,
   useQueryClient,
-  useSuspenseInfiniteQuery
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery
 } from "@tanstack/react-query";
 
 import { compressImage } from "@/entities/image/lib";
@@ -11,16 +13,7 @@ import { Tag } from "@/entities/tag/@x/article";
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
-export type ArticleStatus = "published" | "draft";
-
-export const ARTICLE_QUERY_KEY = {
-  default: (status: ArticleStatus) => ["article", status] as const,
-
-  list_all: (status: ArticleStatus) =>
-    [...ARTICLE_QUERY_KEY.default(status), "all"] as const,
-  list_series: (status: ArticleStatus, seriesName: string) =>
-    [...ARTICLE_QUERY_KEY.default(status), seriesName] as const
-};
+export * from "./getPolularArticleList";
 
 export interface PostArticleImageRequest {
   files: File[];
@@ -300,4 +293,46 @@ export const useGetInfiniteArticleListBySeries = (
       pages: pages.flatMap((page) => page.data)
     })
   });
+};
+
+export const getLatestArticle = () => {
+  const queryKey = ARTICLE_QUERY_KEY.default("published");
+  const queryFn = async () => {
+    const supabase = createBrowserSupabase();
+    const { data, error } = await supabase
+      .from("articles")
+      .select(
+        `
+          id , title , author , 
+          series_name , description , 
+          status , updated_at, thumbnail_url,
+          article_tags(tag_name)
+        `
+      )
+      .eq("status", "published")
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .single()
+      .then(snakeToCamel);
+
+    if (error) {
+      throw error;
+    }
+
+    const { articleTags, ...article } = data;
+
+    return {
+      ...article,
+      tags: articleTags.map(({ tagName }) => tagName)
+    };
+  };
+
+  return {
+    queryKey,
+    queryFn
+  };
+};
+
+export const useGetLatestArticle = () => {
+  return useSuspenseQuery(getLatestArticle());
 };

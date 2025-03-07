@@ -5,10 +5,10 @@ import {
   dehydrate
 } from "@tanstack/react-query";
 
-type PrefetchInfiniteQueryInServer = <T>(
+type PrefetchInfiniteQueryInServer = (
   ...callbacks: (() => {
     queryKey: QueryKey;
-    queryFn: ({ pageParam }: { pageParam: number }) => Promise<T>;
+    queryFn: ({ pageParam }: { pageParam: number }) => Promise<unknown>;
     initialPageParam?: number;
   })[]
 ) => Promise<DehydratedState>;
