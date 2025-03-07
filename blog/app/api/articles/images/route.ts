@@ -6,7 +6,11 @@ import type {
 } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
-import { attachIamgeUrl, createImageConfig } from "@/shared/route";
+import {
+  attachIamgeUrl,
+  createImageConfig,
+  createStorageErrorResponse
+} from "@/shared/route";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 
@@ -42,18 +46,17 @@ export const POST = async (req: NextRequest) => {
     images.map((file) => uploadImageAction({ file, articleId }))
   );
 
-  const uploadedImages = responseArray.filter((response) => !response.error);
+  const errorResponse = responseArray.find((response) => !!response.error);
 
-  if (uploadedImages.length < responseArray.length) {
-    return NextResponse.json({
-      status: 500,
-      message: "이미지 업로드에 실패했습니다."
-    });
+  if (errorResponse) {
+    return NextResponse.json(createStorageErrorResponse(errorResponse.error));
   }
 
+  const successResponses = responseArray.filter((response) => !!response.data);
+
   return NextResponse.json<PostArticleImageResponse>({
-    status: 200,
+    code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: uploadedImages.map(({ data }) => attachIamgeUrl(data))
+    data: successResponses.map(({ data }) => attachIamgeUrl(data))
   });
 };
