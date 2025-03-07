@@ -2,15 +2,15 @@
 
 import React from "react";
 
-import type { Series } from "@/entities/series/model";
+import type { Sereis } from "@/entities/series/model";
 
 import { SearchIcon } from "@/shared/config";
 import { useTransitionInput } from "@/shared/lib";
 import { Selector } from "@/shared/ui/Selector";
 
 interface SereisSelectToggleProps {
-  series: Series[];
-  onEachSeriesClick: (series: Series) => void;
+  series: Sereis[];
+  onEachSeriesClick: (series: Sereis) => void;
   onAddNewSeries: (seriesName: string) => void;
 }
 
@@ -29,7 +29,7 @@ export const SeriesSelectToggle: React.FC<SereisSelectToggleProps> = ({
       ({ name }) => name.toLowerCase() !== newSeriesName.toLowerCase()
     );
 
-  const filterSeries = (seriesList: Series[]) =>
+  const filterSeries = (seriesList: Sereis[]) =>
     seriesList.filter(({ name }) =>
       name.toLowerCase().includes(searchText.toLowerCase())
     );

@@ -1,6 +1,5 @@
 "use client";
 
-import { popularPostNavData } from "../config";
 import React, { Suspense, use, useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
@@ -38,6 +37,15 @@ interface PopularNavigationBarProps {
   period: Period;
   onClick: (value: Period) => void;
 }
+
+const popularPostNavData = [
+  { name: "일간", value: "daily" },
+  {
+    name: "주간",
+    value: "weekly"
+  },
+  { name: "월간", value: "monthly" }
+] as const;
 
 export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
   period,

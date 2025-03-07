@@ -3,7 +3,7 @@ type CamelCase<S extends string> =
     ? `${Lowercase<P>}${Uppercase<C>}${CamelCase<Rest>}`
     : S;
 
-type SnakeToCamel<T> =
+export type SnakeToCamel<T> =
   T extends Array<infer U>
     ? Array<SnakeToCamel<U>>
     : T extends object
