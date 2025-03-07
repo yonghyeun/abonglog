@@ -43,7 +43,9 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
 
     return (
       <HydrationBoundary state={articleListState}>
-        <EveryArticleListPage numOfArticles={totalNumOfArticles} />
+        <section className="media-padding-x flex min-h-screen flex-col">
+          <EveryArticleListPage numOfArticles={totalNumOfArticles} />
+        </section>
       </HydrationBoundary>
     );
   }
@@ -56,10 +58,12 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
 
     return (
       <HydrationBoundary state={articleListState}>
-        <ArticleListBySeriesPage
-          seriesName={series}
-          numOfArticles={searchedSeries["numOfArticles"]}
-        />
+        <section className="media-padding-x flex min-h-screen flex-col">
+          <ArticleListBySeriesPage
+            seriesName={series}
+            numOfArticles={searchedSeries["numOfArticles"]}
+          />
+        </section>
       </HydrationBoundary>
     );
   }
