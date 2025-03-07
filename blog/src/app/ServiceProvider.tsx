@@ -13,7 +13,10 @@ export const ServiceProvider: React.FC<PropsWithChildren> = ({ children }) => {
       queries: {
         // hydration 이후 재요청을 방지하기 위해 최소한의 시간인
         // 30초만 staleTime 으로 설정합니다.
-        staleTime: 1000 * 30
+        staleTime: 1000 * 30,
+
+        // rendering 을 block 하지 않고 promise 형태로 쿼리문을 이용할 수 있도록 합니다.
+        experimental_prefetchInRender: true
       }
     }
   });

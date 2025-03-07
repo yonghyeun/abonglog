@@ -98,7 +98,7 @@ type Story = StoryObj<typeof ArticlePreviewCard>;
 export const Default: Story = {
   args: {
     thumbnailUrl: "https://picsum.photos/800/400",
-    tags: sampleTags.slice(0, 2),
+    tags: sampleTags.slice(0, 2).map(({ name }) => name),
     title: "React 컴포넌트 설계 패턴",
     seriesName: "React 심화 시리즈",
     description: "다양한 React 컴포넌트 설계 패턴을 소개합니다.",
@@ -118,7 +118,7 @@ export const Default: Story = {
 export const NoThumbnail: Story = {
   args: {
     thumbnailUrl: null,
-    tags: sampleTags.slice(0, 2),
+    tags: sampleTags.slice(0, 2).map(({ name }) => name),
     title: "React 컴포넌트 설계 패턴",
     seriesName: "React 심화 시리즈",
     description: "다양한 React 컴포넌트 설계 패턴을 소개합니다.",
@@ -156,7 +156,7 @@ export const NoTags: Story = {
 export const ManyTags: Story = {
   args: {
     thumbnailUrl: "https://picsum.photos/800/400",
-    tags: sampleTags,
+    tags: sampleTags.map(({ name }) => name),
     title: "다양한 태그를 포함한 게시물",
     seriesName: "개발 시리즈",
     description: "이 게시물에는 다양한 기술 관련 태그가 포함되어 있습니다.",
@@ -176,7 +176,7 @@ export const ManyTags: Story = {
 export const NoSeries: Story = {
   args: {
     thumbnailUrl: "https://picsum.photos/800/400",
-    tags: sampleTags.slice(0, 2),
+    tags: sampleTags.slice(0, 2).map(({ name }) => name),
     title: "시리즈에 포함되지 않은 게시물",
     seriesName: "",
     description:

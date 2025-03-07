@@ -1,32 +1,33 @@
 "use client";
 
-import { popularPostNavData } from "../config";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, use, useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
-import { useGetPopularArticleList } from "@/entities/article/model/getPolularArticleList";
+import { useGetPopularArticleList } from "@/entities/article/model";
 
 import { Grid } from "@/shared/ui/Grid";
 
 type Period = "daily" | "weekly" | "monthly";
 
-export const PopularPostWidget = () => {
+export const PopularArticleView = () => {
   const [period, setPeriod] = useState<Period>("daily");
-
-  const handleClick = (value: Period) => {
-    setPeriod(value);
-  };
+  const promise = useGetPopularArticleList(period).promise;
 
   return (
     <>
       <div>
         <h1 className="mb-2">인기글 모아보기</h1>
-        <PopularNavigationBar period={period} onClick={handleClick} />
+        <PopularNavigationBar
+          period={period}
+          onClick={(value: Period) => {
+            setPeriod(value);
+          }}
+        />
       </div>
 
       <Suspense fallback={<LoadingGrid />}>
-        <PopularArticleGrid period={period} />
+        <PopularArticleGrid promise={promise} />
       </Suspense>
     </>
   );
@@ -36,6 +37,15 @@ interface PopularNavigationBarProps {
   period: Period;
   onClick: (value: Period) => void;
 }
+
+const popularPostNavData = [
+  { name: "일간", value: "daily" },
+  {
+    name: "주간",
+    value: "weekly"
+  },
+  { name: "월간", value: "monthly" }
+] as const;
 
 export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
   period,
@@ -71,13 +81,22 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
 };
 
 interface PopularArticleGridProps {
-  period: "daily" | "weekly" | "monthly";
+  promise: Promise<{
+    articleList: {
+      id: number;
+      title: string;
+      author: string;
+      seriesName: string;
+      description: string;
+      updatedAt: string;
+      thumbnailUrl: string | null;
+      tags: string[];
+    }[];
+  }>;
 }
 
-const PopularArticleGrid: React.FC<PopularArticleGridProps> = ({ period }) => {
-  const {
-    data: { articleList }
-  } = useGetPopularArticleList(period);
+const PopularArticleGrid: React.FC<PopularArticleGridProps> = ({ promise }) => {
+  const { articleList } = use(promise);
 
   return (
     <Grid>
@@ -99,7 +118,7 @@ const LoadingGrid = () => {
             <div className="w-fill aspect-square animate-pulse rounded-lg bg-gray-100" />
           </Grid.Item>
         );
-      })}{" "}
+      })}
     </Grid>
   );
 };

@@ -8,7 +8,7 @@ import { SeriesItem } from "@/entities/series/ui";
 import { Grid } from "@/shared/ui/Grid";
 import { HoverLink } from "@/shared/ui/HoverLink";
 
-export const SeriesListWidget = () => {
+export const SeriesListView = () => {
   const { data: seriesList } = useGetSeriesArticleList();
 
   return (

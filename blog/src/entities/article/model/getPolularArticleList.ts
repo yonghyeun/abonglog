@@ -1,5 +1,5 @@
 import { ARTICLE_QUERY_KEY } from "./articleQueryKey";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
@@ -49,5 +49,5 @@ export const getPopularArticleList = (
 export const useGetPopularArticleList = (
   period: "daily" | "weekly" | "monthly"
 ) => {
-  return useSuspenseQuery(getPopularArticleList(period));
+  return useQuery(getPopularArticleList(period));
 };
