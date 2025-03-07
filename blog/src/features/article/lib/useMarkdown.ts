@@ -110,11 +110,6 @@ export const useMarkdown = (articleId: number, defaultValue?: string) => {
 
     // TODO : 추후 스타일링 할 때 css 설정하기
     const html = `
-    <style>
-    p {
-      color : red;
-    }
-    </style>
   ${vfileObject.toString()}
     `;
 
