@@ -32,7 +32,7 @@ const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
   return (
     <input
       {...props}
-      className="rounded-lg border bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-sky-blue"
+      className="border bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-blue-700"
     />
   );
 };

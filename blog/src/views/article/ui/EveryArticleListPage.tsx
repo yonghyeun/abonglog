@@ -30,7 +30,7 @@ export const EveryArticleListPage: React.FC<EveryArticleListPageProps> = ({
       {/* header */}
       <header className="flex justify-center">
         <div className="flex items-center gap-2">
-          <h1 className="text-bright-blue">전체 게시글 보기</h1>
+          <h1 className="text-blue-900">전체 게시글 보기</h1>
           <span className="text-gray-500">({numOfArticles})</span>
         </div>
       </header>
@@ -50,7 +50,7 @@ export const EveryArticleListPage: React.FC<EveryArticleListPageProps> = ({
               .fill(0)
               .map((_, idx) => (
                 <Grid.Item key={idx}>
-                  <div className="aspect-square animate-pulse rounded-lg bg-gray-200" />
+                  <div className="aspect-square animate-pulse bg-gray-200" />
                 </Grid.Item>
               ))}
         </Grid>

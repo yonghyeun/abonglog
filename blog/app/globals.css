@@ -7,14 +7,9 @@
 :root {
   --white: #ffffff;
   --secondary-white: #f0f0f0;
-  --hot-pink: #d90479;
-  --bright-blue: #056cf2;
-  --sky-blue: #0785f2;
-  --orange: #f29d35;
 
   --bg-primary: var(--white);
   --bg-secondary: var(--secondary-white);
-  --bg-tertiary: var(--bright-blue);
 }
 
 /* 글자 드래그 시 셀렉션 된 영역 배경 수정 */

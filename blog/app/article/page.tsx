@@ -80,12 +80,12 @@ const NotFound: React.FC<{ series: string }> = ({ series }) => (
     </section>
     <div className="flex flex-col items-center justify-center gap-4">
       <h1>
-        아쉽게도 입력하신 <span className="text-bright-blue">{series}</span>는
+        아쉽게도 입력하신 <span className="text-blue-700">{series}</span>는
         존재하지 않는 시리즈 이름입니다.
       </h1>
       <Link
         href="/"
-        className="rounded-xl border border-sky-blue bg-sky-blue px-8 py-4 text-white"
+        className="border border-blue-700 bg-blue-700 px-8 py-4 text-white"
       >
         메인 페이지로 돌아가기
       </Link>

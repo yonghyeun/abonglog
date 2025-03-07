@@ -31,7 +31,7 @@ export const ArticleListBySeriesPage: React.FC<
       <header className="flex flex-col items-center">
         <h3>시리즈별로 보기</h3>
         <div className="flex items-center gap-2">
-          <h1 className="text-bright-blue">{seriesName}</h1>
+          <h1 className="text-blue-900">{seriesName}</h1>
           <span className="text-gray-500">({numOfArticles})</span>
         </div>
       </header>
@@ -51,7 +51,7 @@ export const ArticleListBySeriesPage: React.FC<
               .fill(0)
               .map((_, idx) => (
                 <Grid.Item key={idx}>
-                  <div className="aspect-square animate-pulse rounded-lg bg-gray-200" />
+                  <div className="aspect-square animate-pulse bg-gray-200" />
                 </Grid.Item>
               ))}
         </Grid>

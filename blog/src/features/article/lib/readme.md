@@ -21,7 +21,7 @@ const MarkdownEditor: React.FC<{ articleId: string }> = ({ articleId }) => {
         onChange={handleChangeMarkdown}
         onPaste={handleImagePaste}
         onKeyDown={handleKeyDownTextArea}
-        className="rounded-lg border p-2 focus:outline-none"
+        className=" border p-2 focus:outline-none"
         placeholder="게시글 내용을 입력해 주세요"
         autoCorrect="off"
       />

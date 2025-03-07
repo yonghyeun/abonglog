@@ -13,7 +13,7 @@ type Story = StoryObj<typeof Form>;
 
 export const Default: Story = {
   render: () => (
-    <div className="rounded-md bg-secondary p-4">
+    <div className="bg-secondary p-4">
       <h1 className="mb-2">Form Component</h1>
       <Form>
         <Form.Container>

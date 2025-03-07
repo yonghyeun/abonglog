@@ -32,7 +32,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
 
   return (
     <details className="cursor-pointer">
-      <summary className="text-sm text-gray-400 hover:text-sky-blue">
+      <summary className="text-sm text-gray-400 hover:text-blue-700">
         태그 선택
       </summary>
       <Selector className="absolute left-0 top-12 z-50">

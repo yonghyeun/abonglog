@@ -17,7 +17,7 @@ export const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
     <div className="flex-shrink-0 text-gray-400">
       <label
         htmlFor={id}
-        className="flex cursor-pointer items-center gap-1 hover:text-sky-blue"
+        className="flex cursor-pointer items-center gap-1 hover:text-blue-700"
         {...labelProps}
       >
         <FileClipIcon size={20} />

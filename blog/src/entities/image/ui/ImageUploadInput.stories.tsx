@@ -108,7 +108,7 @@ export const CustomLabelStyle: Story = {
     labelTitle: "스타일 적용된 업로드",
     labelProps: {
       className:
-        "flex cursor-pointer items-center gap-1 bg-sky-blue/20 text-sky-blue px-4 py-2 rounded-md hover:bg-sky-blue/30 transition-colors"
+        "flex cursor-pointer items-center gap-1 bg-blue-700/20 text-blue-700 px-4 py-2  hover:bg-blue-700/30 transition-colors"
     },
     inputProps: {
       className: "hidden",

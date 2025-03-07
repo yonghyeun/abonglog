@@ -218,7 +218,7 @@ export const CustomStyling: Story = {
 
       return (
         <div style={{ width: "700px" }}>
-          <ImageGrid className="rounded-lg bg-gray-100 p-4">
+          <ImageGrid className="bg-gray-100 p-4">
             <ImageGrid.Title className="mb-4 font-bold text-gray-700">
               {selectedImage
                 ? `선택된 이미지: ${selectedImage.split("/").pop()}`
@@ -231,7 +231,7 @@ export const CustomStyling: Story = {
                   image={image}
                   selectedImageUrl={selectedImage}
                   onSelectImage={handleSelectImage}
-                  className="overflow-hidden rounded-lg shadow transition-shadow hover:shadow-md"
+                  className="overflow-hidden shadow transition-shadow hover:shadow-md"
                 />
               ))}
             </ImageGrid.Container>
