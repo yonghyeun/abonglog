@@ -173,7 +173,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                     allSeries
                   )}
                   onEachSeriesClick={seriesSelectToggleHook.handleSelectSeries}
-                  onAddNewSeries={addNewSeries}
+                  onAddNewSeries={(name) => addNewSeries({ name })}
                 />
                 {/* 선택된 시리즈 명 */}
                 <p
