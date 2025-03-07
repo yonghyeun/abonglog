@@ -7,7 +7,7 @@ import React, { Suspense } from "react";
 
 import { ArticleWritePage } from "@/views/write/ui";
 
-import { SERIES_QUERY_KEY, getSeries } from "@/entities/series/model";
+import { getSeriesList } from "@/entities/series/model";
 import { TAG_QUERY_KEY, getTags } from "@/entities/tag/model";
 
 const WritePage = async () => {
@@ -18,10 +18,7 @@ const WritePage = async () => {
       queryKey: TAG_QUERY_KEY.default(),
       queryFn: getTags
     }),
-    queryClient.prefetchQuery({
-      queryKey: SERIES_QUERY_KEY.default(),
-      queryFn: getSeries
-    })
+    queryClient.prefetchQuery(getSeriesList())
   ]);
 
   // TODO ISR 시 아티클 아이디 생성하기
