@@ -151,7 +151,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               <TagSelectToggle
                 tags={tagSelectToggleHook.filterUnSelectedTags(allTags)}
                 onEachTagClick={tagSelectToggleHook.handleSelectTag}
-                onAddNewTag={addNewTag}
+                onAddNewTag={(name) => addNewTag({ name })}
               />
               {/* 선택된 태그 리스트 */}
               <List.UnOrder>

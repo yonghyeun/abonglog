@@ -12,6 +12,7 @@ import {
 
 import { createBrowserSupabase } from "@/shared/model";
 import type { Database } from "@/shared/model/database.types";
+import { NonOptional } from "@/shared/type";
 
 export const TAG_QUERY_KEY = {
   default: () => ["tags"] as const
@@ -40,14 +41,13 @@ export const useGetAllTags = () => {
   });
 };
 
-const postAddNewTag = async (tagName: string) => {
+type PostAddNewTagRequest = NonOptional<Pick<Tag, "name">>;
+
+const postAddNewTag = async ({ name }: PostAddNewTagRequest) => {
   const supabase = await createBrowserSupabase();
   const created_at = new Date().toISOString();
 
-  const { error } = await supabase
-    .from("tags")
-    .insert([{ name: tagName, created_at }]);
-
+  const { error } = await supabase.from("tags").insert([{ name, created_at }]);
   if (error) {
     throw error;
   }
