@@ -28,13 +28,14 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   // 전체보기인 경우
   if (series === undefined) {
     const state = await prefetchArticleList("published");
+
     const totalNumOfArticles = numOfSeriesArray.reduce(
       (acc, cur) => acc + cur["numOfArticles"],
       0
     );
 
     return (
-      <HydrationBoundary state={state}>
+      <HydrationBoundary state={articleListState}>
         <EveryArticleListPage numOfArticles={totalNumOfArticles} />
       </HydrationBoundary>
     );
