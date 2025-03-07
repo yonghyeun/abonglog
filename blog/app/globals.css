@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -30,17 +30,14 @@ body {
 }
 
 h1 {
-  font-family: "Do Hyeon", sans-serif;
   font-size: 2rem;
   word-break: keep-all;
 }
 h2 {
-  font-family: "Do Hyeon", sans-serif;
   font-size: 1.5rem;
   word-break: keep-all;
 }
 h3 {
-  font-family: "Do Hyeon", sans-serif;
   font-size: 1.17rem;
   word-break: keep-all;
 }
