@@ -13,6 +13,8 @@ import { Tag } from "@/entities/tag/@x/article";
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
+export * from "./getPolularArticleList";
+
 export interface PostArticleImageRequest {
   files: File[];
   articleId: string;
