@@ -1,8 +1,4 @@
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate
-} from "@tanstack/react-query";
+import { HydrationBoundary } from "@tanstack/react-query";
 import React, { Suspense } from "react";
 
 import { ArticleWritePage } from "@/views/write/ui";
@@ -10,19 +6,16 @@ import { ArticleWritePage } from "@/views/write/ui";
 import { getSeriesList } from "@/entities/series/model";
 import { getTagList } from "@/entities/tag/model";
 
-const WritePage = async () => {
-  const queryClient = new QueryClient();
+import { prefetchQueryInServer } from "@/shared/model";
 
-  await Promise.all([
-    queryClient.prefetchQuery(getTagList()),
-    queryClient.prefetchQuery(getSeriesList())
-  ]);
+const WritePage = async () => {
+  const articleWriteState = prefetchQueryInServer(getTagList, getSeriesList);
 
   // TODO ISR 시 아티클 아이디 생성하기
   const randomArticleId = Math.floor(Math.random() * 10 ** 7);
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <HydrationBoundary state={articleWriteState}>
       <Suspense fallback={"loading..."}>
         <ArticleWritePage articleId={randomArticleId} />
       </Suspense>

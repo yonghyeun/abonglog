@@ -1,12 +1,13 @@
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
-import { prefetechSeriesList } from "@/views/main/model/prefetchSeriesList";
-
 import { PopularPostWidget } from "@/widgets/popular/ui";
 import { SeriesListWidget } from "@/widgets/series/ui";
 
 import { LatestArticlePreview } from "@/entities/article/ui";
+import { getSeriesArticleList } from "@/entities/series/model";
+
+import { prefetchQueryInServer } from "@/shared/model";
 
 const mockLatestPostPreviewProps = {
   postId: 1,
@@ -18,7 +19,7 @@ const mockLatestPostPreviewProps = {
 };
 
 const MainPage = async () => {
-  const seriesListState = await prefetechSeriesList();
+  const seriesListState = await prefetchQueryInServer(getSeriesArticleList);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

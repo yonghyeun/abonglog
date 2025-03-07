@@ -1,13 +1,18 @@
 import { HydrationBoundary } from "@tanstack/react-query";
 import Link from "next/link";
 
-import { prefetchArticleList } from "@/views/article/model";
 import {
   ArticleListBySeriesPage,
   EveryArticleListPage
 } from "@/views/article/ui";
 
+import {
+  getArticleList,
+  getArticleListBySeries
+} from "@/entities/article/model";
 import { getSeriesArticleList } from "@/entities/series/model";
+
+import { prefetchInfiniteQueryInServer } from "@/shared/model";
 
 interface ArticleListPageProps {
   searchParams: {
@@ -27,14 +32,17 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
 
   // 전체보기인 경우
   if (series === undefined) {
-    const state = await prefetchArticleList("published");
+    const articleListState = await prefetchInfiniteQueryInServer(() =>
+      getArticleList("published")
+    );
+
     const totalNumOfArticles = numOfSeriesArray.reduce(
       (acc, cur) => acc + cur["numOfArticles"],
       0
     );
 
     return (
-      <HydrationBoundary state={state}>
+      <HydrationBoundary state={articleListState}>
         <EveryArticleListPage numOfArticles={totalNumOfArticles} />
       </HydrationBoundary>
     );
@@ -42,14 +50,15 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
 
   // 시리즈 별로 모아보기인 경우
   if (searchedSeries) {
-    const state = await prefetchArticleList("published", series);
-    const numOfArticles = searchedSeries["numOfArticles"];
+    const articleListState = await prefetchInfiniteQueryInServer(() =>
+      getArticleListBySeries("published", series)
+    );
 
     return (
-      <HydrationBoundary state={state}>
+      <HydrationBoundary state={articleListState}>
         <ArticleListBySeriesPage
           seriesName={series}
-          numOfArticles={numOfArticles}
+          numOfArticles={searchedSeries["numOfArticles"]}
         />
       </HydrationBoundary>
     );
