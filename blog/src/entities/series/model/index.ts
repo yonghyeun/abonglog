@@ -81,7 +81,7 @@ export const usePostAddNewSeries = () => {
   });
 };
 
-export const getSeriesList = () => {
+export const getSeriesArticleList = () => {
   const queryKey = SERIES_QUERY_KEY.default();
 
   const queryFn = async () => {
@@ -99,6 +99,6 @@ export const getSeriesList = () => {
   return { queryKey, queryFn };
 };
 
-export const useGetSeriesList = () => {
-  return useSuspenseQuery(getSeriesList());
+export const useGetSeriesArticleList = () => {
+  return useSuspenseQuery(getSeriesArticleList());
 };
