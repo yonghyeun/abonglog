@@ -1,60 +1,48 @@
 "use client";
 
 import { popularPostNavData } from "../config";
-import { useState } from "react";
+import React, { Suspense, useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
+import { useGetPopularArticleList } from "@/entities/article/model/getPolularArticleList";
+
 import { Grid } from "@/shared/ui/Grid";
 
-const mockPopularPostData = Array.from({ length: 12 }, (_, idx) => ({
-  articleId: idx + 1,
-  title: "Lorem ipsum dolor",
-  seriesName: "React 심화 시리즈",
-  description:
-    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum voluptates dolores, tempore optio modi sequi numquam at temporibus voluptatibus repudiandae ipsum aliquam ducimus ",
-  updatedAt: new Date().toDateString(),
-  thumbnailUrl: "/images/latest_post_thumbnail.jpg",
-  tags: ["react", "TS", "javascript"]
-}));
-
-type PopularMenu = "daily" | "weekly" | "monthly";
+type Period = "daily" | "weekly" | "monthly";
 
 export const PopularPostWidget = () => {
-  const [popularMenu, setPopularMenu] = useState<PopularMenu>("daily");
+  const [period, setPeriod] = useState<Period>("daily");
 
-  const handleClick = (value: PopularMenu) => {
-    setPopularMenu(value);
+  const handleClick = (value: Period) => {
+    setPeriod(value);
   };
 
   return (
     <section className="media-padding-x mt-4 flex flex-col gap-4 py-12">
       <div>
         <h1 className="mb-2">인기글 모아보기</h1>
-        <PopularNavigationBar popularMenu={popularMenu} onClick={handleClick} />
+        <PopularNavigationBar period={period} onClick={handleClick} />
       </div>
-      <Grid>
-        {mockPopularPostData.map((data) => (
-          <Grid.Item key={data.articleId}>
-            <ArticlePreviewCard {...data} key={data.articleId} />
-          </Grid.Item>
-        ))}
-      </Grid>
+
+      <Suspense fallback={<LoadingGrid />}>
+        <PopularArticleGrid period={period} />
+      </Suspense>
     </section>
   );
 };
 
 interface PopularNavigationBarProps {
-  popularMenu: PopularMenu;
-  onClick: (value: PopularMenu) => void;
+  period: Period;
+  onClick: (value: Period) => void;
 }
 
 export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
-  popularMenu,
+  period,
   onClick
 }) => {
   const activeParamIndex = popularPostNavData.findIndex(
-    ({ value }) => value === popularMenu
+    ({ value }) => value === period
   );
 
   return (
@@ -63,7 +51,7 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
         {popularPostNavData.map(({ name, value }) => (
           <button
             key={value}
-            className={`${value === popularMenu ? "text-semibold text-sky-blue" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
+            className={`${value === period ? "text-semibold text-sky-blue" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
             onClick={() => onClick(value)}
           >
             {name}
@@ -79,5 +67,39 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
         />
       </div>
     </div>
+  );
+};
+
+interface PopularArticleGridProps {
+  period: "daily" | "weekly" | "monthly";
+}
+
+const PopularArticleGrid: React.FC<PopularArticleGridProps> = ({ period }) => {
+  const {
+    data: { articleList }
+  } = useGetPopularArticleList(period);
+
+  return (
+    <Grid>
+      {articleList.map((article) => (
+        <Grid.Item key={article.id}>
+          <ArticlePreviewCard {...article} />
+        </Grid.Item>
+      ))}
+    </Grid>
+  );
+};
+
+const LoadingGrid = () => {
+  return (
+    <Grid>
+      {Array.from({ length: 12 }, (_, idx) => {
+        return (
+          <Grid.Item key={idx}>
+            <div className="w-fill aspect-square animate-pulse rounded-lg bg-gray-100" />
+          </Grid.Item>
+        );
+      })}{" "}
+    </Grid>
   );
 };

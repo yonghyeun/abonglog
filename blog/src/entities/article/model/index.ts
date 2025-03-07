@@ -1,4 +1,5 @@
 import { ARTICLE_ENDPOINT, ITEM_PER_PAGE } from "../config";
+import { ARTICLE_QUERY_KEY, type ArticleStatus } from "./articleQueryKey";
 import {
   useMutation,
   useQueryClient,
@@ -11,17 +12,6 @@ import { Tag } from "@/entities/tag/@x/article";
 
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
-
-export type ArticleStatus = "published" | "draft";
-
-export const ARTICLE_QUERY_KEY = {
-  default: (status: ArticleStatus) => ["article", status] as const,
-
-  list_all: (status: ArticleStatus) =>
-    [...ARTICLE_QUERY_KEY.default(status), "all"] as const,
-  list_series: (status: ArticleStatus, seriesName: string) =>
-    [...ARTICLE_QUERY_KEY.default(status), seriesName] as const
-};
 
 export interface PostArticleImageRequest {
   files: File[];

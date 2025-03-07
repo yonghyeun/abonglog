@@ -6,6 +6,7 @@ import { PopularPostWidget } from "@/widgets/popular/ui";
 import { SeriesListWidget } from "@/widgets/series/ui";
 
 import { getLatestArticle } from "@/entities/article/model";
+import { getPopularArticleList } from "@/entities/article/model/getPolularArticleList";
 import { getSeriesArticleList } from "@/entities/series/model";
 
 import { prefetchQueryInServer } from "@/shared/model";
@@ -13,7 +14,8 @@ import { prefetchQueryInServer } from "@/shared/model";
 const MainPage = async () => {
   const mainPageState = await prefetchQueryInServer(
     getSeriesArticleList,
-    getLatestArticle
+    getLatestArticle,
+    () => getPopularArticleList("daily")
   );
 
   return (
