@@ -82,7 +82,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
     uploadNewThumbnail(
       {
         file: files[0],
-        articleId
+        articleId: articleId.toString()
       },
       {
         onSuccess: ({ imageUrl }) => setThumbnailUrl(imageUrl)

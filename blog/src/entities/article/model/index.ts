@@ -24,7 +24,7 @@ export const ARTICLE_QUERY_KEY = {
 
 export interface PostArticleImageRequest {
   files: File[];
-  id: string;
+  articleId: string;
 }
 
 export interface PostArticleImageResponse {
@@ -40,11 +40,11 @@ export interface PostArticleImageResponse {
 
 export const postArticleImage = async ({
   files,
-  id
+  articleId
 }: PostArticleImageRequest) => {
   const form = new FormData();
 
-  form.append("id", id);
+  form.append("articleId", articleId);
 
   files.forEach((file) => {
     form.append("image", file);
@@ -65,9 +65,9 @@ export const postArticleImage = async ({
   return data;
 };
 
-interface PostArticleThumbnailData {
+export interface PostArticleThumbnailRequest {
   file: File;
-  articleId: number;
+  articleId: string;
 }
 
 export interface PostArticleThumbnailResponse {
@@ -84,13 +84,14 @@ export interface PostArticleThumbnailResponse {
 const postArticleThumbnail = async ({
   file,
   articleId
-}: PostArticleThumbnailData) => {
+}: PostArticleThumbnailRequest) => {
   const compressedImage = await compressImage(file, {
     quantity: 2 ** 15
   });
+
   const formData = new FormData();
   formData.append("image", compressedImage);
-  formData.append("articleId", articleId.toString());
+  formData.append("articleId", articleId);
 
   const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_THUMBNAIL(), {
     method: "POST",
