@@ -6,7 +6,11 @@ import type {
 } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
-import { attachIamgeUrl, createImageConfig } from "@/shared/route";
+import {
+  attachIamgeUrl,
+  createImageConfig,
+  createStorageErrorResponse
+} from "@/shared/route";
 
 const uploadThumbnail = async ({
   file,
@@ -32,17 +36,9 @@ export const POST = async (req: NextRequest) => {
   const response = await uploadThumbnail({ file, articleId });
 
   if (response.error) {
-    return NextResponse.json(
-      {
-        code: 500,
-        message: response.error.message
-      },
-      {
-        status: 500,
-        statusText: response.error.message
-      }
-    );
+    return NextResponse.json(createStorageErrorResponse(response.error));
   }
+
   return NextResponse.json<PostArticleThumbnailResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",

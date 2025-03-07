@@ -6,7 +6,11 @@ import type {
 } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
-import { attachIamgeUrl, createImageConfig } from "@/shared/route";
+import {
+  attachIamgeUrl,
+  createImageConfig,
+  createStorageErrorResponse
+} from "@/shared/route";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 
@@ -45,16 +49,7 @@ export const POST = async (req: NextRequest) => {
   const errorResponse = responseArray.find((response) => !!response.error);
 
   if (errorResponse) {
-    return NextResponse.json(
-      {
-        code: 500,
-        message: errorResponse.error.message
-      },
-      {
-        status: 500,
-        statusText: errorResponse.error.message
-      }
-    );
+    return NextResponse.json(createStorageErrorResponse(errorResponse.error));
   }
 
   const successResponses = responseArray.filter((response) => !!response.data);
