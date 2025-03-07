@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import type {
-  PostNewArticleData,
+  PostNewArticleRequest,
   PostNewArticleResponse
 } from "@/entities/article/model";
 
@@ -9,7 +9,7 @@ import { createServerSupabase } from "@/shared/model";
 import { camelToSnake, createPostgressErrorResponse } from "@/shared/route";
 
 const upsertNewArticle = (
-  newArticle: Omit<PostNewArticleData, "tags">,
+  newArticle: Omit<PostNewArticleRequest, "tags">,
   supabase: Awaited<ReturnType<typeof createServerSupabase>>
 ) => {
   const currentTimeStamp = new Date().toISOString();
@@ -22,14 +22,14 @@ const upsertNewArticle = (
 };
 
 const deleteArticleTags = (
-  articleId: PostNewArticleData["id"],
+  articleId: PostNewArticleRequest["id"],
   supabsae: Awaited<ReturnType<typeof createServerSupabase>>
 ) => {
   return supabsae.from("article_tags").delete().eq("article_id", articleId);
 };
 
 const insertArticleTag = (
-  { id, tags }: Pick<PostNewArticleData, "tags" | "id">,
+  { id, tags }: Pick<PostNewArticleRequest, "tags" | "id">,
   supabase: Awaited<ReturnType<typeof createServerSupabase>>
 ) => {
   return supabase.from("article_tags").insert(
@@ -40,7 +40,10 @@ const insertArticleTag = (
   );
 };
 
-const uploadArticle = async ({ tags, ...articledata }: PostNewArticleData) => {
+const uploadArticle = async ({
+  tags,
+  ...articledata
+}: PostNewArticleRequest) => {
   const supabase = await createServerSupabase();
 
   const upsertNewArticleResponse = await upsertNewArticle(
@@ -66,7 +69,7 @@ const uploadArticle = async ({ tags, ...articledata }: PostNewArticleData) => {
 };
 
 export const POST = async (req: NextRequest) => {
-  const data = (await req.json()) as PostNewArticleData;
+  const data = (await req.json()) as PostNewArticleRequest;
   const errorResponse = await uploadArticle(data);
 
   if (errorResponse) {
