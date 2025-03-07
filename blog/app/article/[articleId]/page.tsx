@@ -1,3 +1,6 @@
+import "./article.styles.css";
+
+import { rehypeMarkdown } from "@/entities/article/lib";
 import { getArticleById } from "@/entities/article/model";
 import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
@@ -13,6 +16,8 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
 
   const { thumbnailUrl, tags, title, author, updatedAt, seriesName, content } =
     await getArticleById(articleId);
+
+  const html = await rehypeMarkdown(content);
 
   return (
     <section>
@@ -47,11 +52,14 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
         </div>
       </header>
 
-      <section className="media-padding-x flex min-h-screen border">
+      <section className="media-padding-x flex min-h-screen">
         {/* 본문 */}
-        {content}
+        <article
+          dangerouslySetInnerHTML={{ __html: html }}
+          className="w-full pb-32 lg:flex-grow"
+        />
         {/* 사이드바 */}
-        <aside className="hidden lg:block">1</aside>
+        {/* <aside className="hidden lg:block"></aside> */}
       </section>
     </section>
   );
