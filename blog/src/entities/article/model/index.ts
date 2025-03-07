@@ -22,6 +22,11 @@ export const ARTICLE_QUERY_KEY = {
     [...ARTICLE_QUERY_KEY.default(status), seriesName] as const
 };
 
+export interface PostArticleImageRequest {
+  files: File[];
+  id: string;
+}
+
 export interface PostArticleImageResponse {
   status: number;
   message: string;
@@ -33,9 +38,13 @@ export interface PostArticleImageResponse {
   }[];
 }
 
-export const postArticleImage = async (files: File[], articleId: number) => {
+export const postArticleImage = async ({
+  files,
+  id
+}: PostArticleImageRequest) => {
   const form = new FormData();
-  form.append("id", articleId.toString());
+
+  form.append("id", id);
 
   files.forEach((file) => {
     form.append("image", file);

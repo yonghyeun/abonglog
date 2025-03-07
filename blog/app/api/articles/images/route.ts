@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import type { PostArticleImageResponse } from "@/entities/article/model";
+import type {
+  PostArticleImageRequest,
+  PostArticleImageResponse
+} from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
 import { attachIamgeUrl, createImageConfig } from "@/shared/route";
@@ -24,8 +27,8 @@ const uploadImageAction = async (file: File, postId: string) => {
  */
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
-  const images = formData.getAll("image") as File[];
-  const postId = formData.get("id") as string;
+  const images = formData.getAll("image") as PostArticleImageRequest["files"];
+  const postId = formData.get("id") as PostArticleImageRequest["id"];
 
   const responseArray = await Promise.all(
     images.map((file) => uploadImageAction(file, postId))
