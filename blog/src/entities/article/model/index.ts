@@ -71,7 +71,7 @@ export interface PostArticleThumbnailRequest {
 }
 
 export interface PostArticleThumbnailResponse {
-  status: number;
+  code: number;
   message: string;
   data: {
     path: string;
@@ -99,10 +99,10 @@ const postArticleThumbnail = () => {
       body: formData
     });
 
-    const { status, data, message } =
+    const { data, message } =
       (await response.json()) as PostArticleThumbnailResponse;
 
-    if (status > 200) {
+    if (!response.ok) {
       throw new Error(message);
     }
 

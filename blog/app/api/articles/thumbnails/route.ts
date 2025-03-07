@@ -32,13 +32,19 @@ export const POST = async (req: NextRequest) => {
   const response = await uploadThumbnail({ file, articleId });
 
   if (response.error) {
-    return NextResponse.json({
-      status: 500,
-      message: "이미지 업로드에 실패했습니다."
-    });
+    return NextResponse.json(
+      {
+        code: 500,
+        message: response.error.message
+      },
+      {
+        status: 500,
+        statusText: response.error.message
+      }
+    );
   }
   return NextResponse.json<PostArticleThumbnailResponse>({
-    status: 200,
+    code: 200,
     message: "이미지 업로드에 성공했습니다.",
     data: attachIamgeUrl(response.data)
   });

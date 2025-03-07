@@ -45,10 +45,16 @@ export const POST = async (req: NextRequest) => {
   const errorResponse = responseArray.find((response) => !!response.error);
 
   if (errorResponse) {
-    return NextResponse.json({
-      code: 500,
-      message: errorResponse.error.message
-    });
+    return NextResponse.json(
+      {
+        code: 500,
+        message: errorResponse.error.message
+      },
+      {
+        status: 500,
+        statusText: errorResponse.error.message
+      }
+    );
   }
 
   const successResponses = responseArray.filter((response) => !!response.data);
