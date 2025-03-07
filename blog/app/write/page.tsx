@@ -8,16 +8,13 @@ import React, { Suspense } from "react";
 import { ArticleWritePage } from "@/views/write/ui";
 
 import { getSeriesList } from "@/entities/series/model";
-import { TAG_QUERY_KEY, getTags } from "@/entities/tag/model";
+import { getTagList } from "@/entities/tag/model";
 
 const WritePage = async () => {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: TAG_QUERY_KEY.default(),
-      queryFn: getTags
-    }),
+    queryClient.prefetchQuery(getTagList()),
     queryClient.prefetchQuery(getSeriesList())
   ]);
 

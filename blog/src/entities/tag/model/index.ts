@@ -20,25 +20,30 @@ export const TAG_QUERY_KEY = {
 
 export type Tag = Database["public"]["Tables"]["tags"]["Row"];
 
-export const getTags = async () => {
-  const supabase = createBrowserSupabase();
-  const { data, error } = await supabase.from("tags").select("*");
+export const getTagList = () => {
+  const queryKey = TAG_QUERY_KEY.default();
+  const queryFn = async () => {
+    const supabase = createBrowserSupabase();
+    const { data, error } = await supabase.from("tags").select("*");
 
-  if (error) {
-    throw error;
-  }
+    if (error) {
+      throw error;
+    }
 
-  return data;
+    return data;
+  };
+
+  return {
+    queryKey,
+    queryFn
+  };
 };
 
 /**
- * useGetAllTags 쿼리는 public.tags 에 존재하는 모든 태그를 가져옵니다.
+ * useGetTagList 쿼리는 public.tags 에 존재하는 모든 태그를 가져옵니다.
  */
-export const useGetAllTags = () => {
-  return useSuspenseQuery({
-    queryKey: TAG_QUERY_KEY.default(),
-    queryFn: getTags
-  });
+export const useGetTagList = () => {
+  return useSuspenseQuery(getTagList());
 };
 
 type PostAddNewTagRequest = NonOptional<Pick<Tag, "name">>;
