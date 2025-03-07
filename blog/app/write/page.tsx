@@ -9,7 +9,10 @@ import { getTagList } from "@/entities/tag/model";
 import { prefetchQueryInServer } from "@/shared/model";
 
 const WritePage = async () => {
-  const articleWriteState = prefetchQueryInServer(getTagList, getSeriesList);
+  const articleWriteState = await prefetchQueryInServer(
+    getTagList,
+    getSeriesList
+  );
 
   // TODO ISR 시 아티클 아이디 생성하기
   const randomArticleId = Math.floor(Math.random() * 10 ** 7);
