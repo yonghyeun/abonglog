@@ -20,7 +20,7 @@ export const SeriesListView = () => {
       </div>
 
       <Grid>
-        {seriesList.map((data, idx) => (
+        {seriesList.map((data) => (
           <Grid.Item key={data.seriesName}>
             <Link
               href={{
