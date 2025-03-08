@@ -2,7 +2,7 @@ import {
   createNestedHeadings,
   parsingHeading
 } from "@/features/article/lib/createNestedHeadings";
-import { ArticleSidebar } from "@/features/article/ui/ArticleSidebar";
+import { ArticleSidebar } from "@/features/article/ui";
 
 import { rehypeMarkdown } from "@/entities/article/lib";
 import { getArticleById } from "@/entities/article/model";
