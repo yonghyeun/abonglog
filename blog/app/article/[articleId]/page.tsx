@@ -1,5 +1,11 @@
 import "./article.styles.css";
 
+import {
+  createNestedHeadings,
+  parsingHeading
+} from "@/features/article/lib/createNestedHeadings";
+import { ArticleSidebar } from "@/features/article/ui/ArticleSidebar";
+
 import { rehypeMarkdown } from "@/entities/article/lib";
 import { getArticleById } from "@/entities/article/model";
 import { TagChip } from "@/entities/tag/ui";
@@ -52,14 +58,21 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
         </div>
       </header>
 
-      <section className="media-padding-x flex min-h-screen">
+      <section className="media-padding-x flex min-h-screen gap-2">
         {/* 본문 */}
         <article
           dangerouslySetInnerHTML={{ __html: html }}
           className="w-full pb-32 lg:flex-grow"
         />
         {/* 사이드바 */}
-        {/* <aside className="hidden lg:block"></aside> */}
+        <aside className="relative hidden text-gray-400 xl:block">
+          <div className="sticky top-32">
+            <ArticleSidebar
+              articleId={articleId}
+              headings={createNestedHeadings(parsingHeading(content))}
+            />
+          </div>
+        </aside>
       </section>
     </section>
   );
