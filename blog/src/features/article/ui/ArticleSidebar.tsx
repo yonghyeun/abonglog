@@ -1,5 +1,6 @@
 "use client";
 
+import { useArticleSidebar } from "../lib";
 import Link from "next/link";
 import React from "react";
 
@@ -16,16 +17,8 @@ export const ArticleSidebar: React.FC<ArticleSidebarProps> = ({
   headings,
   depth = 1
 }) => {
-  const handleClick = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    headingId: string
-  ) => {
-    event.preventDefault();
-    const element = document.getElementById(headingId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const { activeId, handleHeadingScroll, transformIdToSlug } =
+    useArticleSidebar();
 
   return (
     <ul className="pl-2">
@@ -41,17 +34,18 @@ export const ArticleSidebar: React.FC<ArticleSidebarProps> = ({
           );
         }
 
-        // rehype-slug 는  모든 특수문자를 제거하고 공백을 -로 변환하여 id 를 생성한다.
-        // 이에 따라 특수문자를 제외한 모든 문자를 제거하고 공백을 -로 변환하여 id를 생성한다.
-        const headingId = heading
-          .replace(/\s+/g, "-")
-          .replace(/[^\w\s가-힣-]/g, "");
+        const headingId = transformIdToSlug(heading);
 
         return (
           <li key={`${depth}-${index}-li`}>
             <Link
               href={`/article/${articleId}#${headingId}`}
-              onClick={(event) => handleClick(event, headingId)}
+              className={`transition-all duration-200 ${
+                activeId === headingId
+                  ? "font-bold text-blue-600"
+                  : "text-gray-500"
+              }`}
+              onClick={(event) => handleHeadingScroll(event, headingId)}
             >
               {heading}
             </Link>
