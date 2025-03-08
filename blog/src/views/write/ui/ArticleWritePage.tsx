@@ -70,8 +70,8 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               <ArticleWriteView.ArticleImageGrid />
             </div>
 
-            <div className="flex flex-grow justify-center py-12">
-              <div className="max-h-96 w-96">
+            <div className="flex h-fit flex-grow justify-center py-12">
+              <div className="w-96">
                 <ArticleWriteView.PreviewCard />
                 <div className="flex justify-end">
                   <ArticleWriteView.SubmitButton />
