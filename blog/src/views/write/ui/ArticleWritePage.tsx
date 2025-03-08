@@ -122,35 +122,37 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   // step 1. 글 쓰기 페이지
   if (step === 1) {
     return (
-      <ArticleWriteView>
-        <div className="mb-2 flex h-screen">
-          {/* 글 작성 위젯 */}
-          <div className="flex h-full w-full flex-col p-2 md:w-1/2">
-            {/* 글 제목 */}
-            <ArticleWriteView.TitleInput />
-            <ArticleWriteView.TagList />
-            <section className="relative flex justify-between p-2 text-sm">
-              <ArticleWriteView.SeriesList />
-              <ArticleWriteView.ImageUploadInput articleId={articleId} />
-            </section>
-            {/* 마크다운 에디터 */}
-            <ArticleWriteView.MarkdownEditor articleId={articleId} />
+      <ArticleWriteView articleId={articleId}>
+        <section className="media-padding-x">
+          <div className="mb-2 flex h-screen">
+            {/* 글 작성 위젯 */}
+            <div className="flex h-full w-full flex-col p-2 md:w-1/2">
+              {/* 글 제목 */}
+              <ArticleWriteView.TitleInput />
+              <ArticleWriteView.TagList />
+              <section className="relative flex justify-between p-2 text-sm">
+                <ArticleWriteView.SeriesList />
+                <ArticleWriteView.ImageUploadInput />
+              </section>
+              {/* 마크다운 에디터 */}
+              <ArticleWriteView.MarkdownEditor />
+            </div>
+            {/* 마크다운 렌더러 */}
+            <ArticleWriteView.MarkdownPreview />
           </div>
-          {/* 마크다운 렌더러 */}
-          <ArticleWriteView.MarkdownPreview />
-        </div>
-        <footer className="mb-2 flex justify-end gap-2">
-          <Button
-            variant="outlined"
-            size="sm"
-            onClick={() => handleSaveArticle("draft")}
-          >
-            임시 저장
-          </Button>
-          <Button variant="filled" size="sm" onClick={handleStepPublish}>
-            다음 단계
-          </Button>
-        </footer>
+          <footer className="mb-2 flex justify-end gap-2">
+            <ArticleWriteView.TempSaveButton />
+            <Button
+              variant="filled"
+              size="sm"
+              onClick={() => {
+                setStep(2);
+              }}
+            >
+              다음 단계
+            </Button>
+          </footer>
+        </section>
       </ArticleWriteView>
     );
   }

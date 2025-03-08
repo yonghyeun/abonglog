@@ -5,17 +5,22 @@ import {
   createArticleWriteStore,
   useArticleWriteStore
 } from "../model";
+import { useRouter } from "next/navigation";
 import React, { useContext, useRef } from "react";
 
 import { SeriesSelectToggle } from "@/widgets/series/ui";
 import { TagSelectToggle } from "@/widgets/tag/ui";
 
 import { rehypeMarkdown } from "@/entities/article/lib";
-import { usePostArticleImage } from "@/entities/article/model";
+import {
+  usePostArticleImage,
+  usePostNewArticle
+} from "@/entities/article/model";
 import { compressImage } from "@/entities/image/lib";
 import { ImageUploadInput as _ImageUploadInput } from "@/entities/image/ui";
 import { TagChip } from "@/entities/tag/ui";
 
+import { Button } from "@/shared/ui/Button";
 import { List } from "@/shared/ui/List";
 
 type ArticleWriteViewProps = {
@@ -31,17 +36,20 @@ type ArticleWriteViewProps = {
     description: string;
     thumbnailUrl: string;
   }>;
+
+  articleId: number;
 };
 
 const Wrapper: React.FC<React.PropsWithChildren<ArticleWriteViewProps>> = ({
   children,
-  initialState
+  initialState,
+  articleId
 }) => {
-  const store = createArticleWriteStore(initialState);
+  const store = createArticleWriteStore({ ...initialState, articleId });
 
   return (
     <ArticleWriteStoreContext value={store}>
-      <section className="media-padding-x h-screen">{children}</section>
+      {children}
     </ArticleWriteStoreContext>
   );
 };
@@ -125,12 +133,10 @@ const SeriesList = () => {
   );
 };
 
-interface ImageUploadProps {
-  articleId: number;
-}
-
-const ImageUploadInput: React.FC<ImageUploadProps> = ({ articleId }) => {
+const ImageUploadInput: React.FC = () => {
   const { mutate: uploadImage, isPending } = usePostArticleImage();
+
+  const articleId = useArticleWriteStore((state) => state.articleId);
   const setMarkdown = useArticleWriteStore((state) => state.setMarkdown);
 
   const blobImageStack = useRef<string[]>([]);
@@ -200,17 +206,14 @@ const ImageUploadInput: React.FC<ImageUploadProps> = ({ articleId }) => {
   );
 };
 
-interface MarkdownEditorProps {
-  articleId: number;
-}
-
-const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ articleId }) => {
+const MarkdownEditor = () => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const blobImageStack = useRef<string[]>([]);
 
   const { mutate: uploadImage } = usePostArticleImage();
 
   const markdown = useArticleWriteStore((state) => state.markdown);
+  const articleId = useArticleWriteStore((state) => state.articleId);
   const setMarkdown = useArticleWriteStore((state) => state.setMarkdown);
   const setHtml = useArticleWriteStore((state) => state.setHtml);
 
@@ -339,11 +342,56 @@ const MarkdownPreview = () => {
   );
 };
 
+const TempSaveButton = () => {
+  const router = useRouter();
+  const { mutate: addNewArticle } = usePostNewArticle();
+  const store = useContext(ArticleWriteStoreContext)!;
+
+  const handleSave = () => {
+    const {
+      title,
+      markdown,
+      selectedTags,
+      selectedSereis,
+      articleId,
+      thumbnailUrl,
+      description
+    } = store.getState();
+
+    addNewArticle(
+      {
+        title: title || `${articleId} 의 임시 저장된 글`,
+        content: markdown,
+        tags: selectedTags,
+        seriesName: selectedSereis,
+        status: "draft",
+        id: articleId,
+        author: "yonghyeun",
+        description,
+        thumbnailUrl
+      },
+      {
+        onSuccess: (data) => {
+          alert(data.message);
+          router.push("/");
+        }
+      }
+    );
+  };
+
+  return (
+    <Button variant="outlined" size="sm" onClick={handleSave}>
+      임시 저장
+    </Button>
+  );
+};
+
 export const ArticleWriteView = Object.assign(Wrapper, {
   TitleInput,
   TagList,
   SeriesList,
   ImageUploadInput,
   MarkdownEditor,
-  MarkdownPreview
+  MarkdownPreview,
+  TempSaveButton
 });

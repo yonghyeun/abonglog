@@ -8,6 +8,7 @@ interface ArticleWriteStoreState {
   selectedSereis: string;
   markdown: string;
   html: string;
+  articleId: number;
 
   // step 2 state
   description: string;
@@ -31,7 +32,8 @@ const ARTICLE_WRITE_INITIAL_STATE: ArticleWriteStoreState = {
   markdown: "",
   description: "",
   thumbnailUrl: "",
-  html: ""
+  html: "",
+  articleId: 0
 };
 
 export const createArticleWriteStore = (
