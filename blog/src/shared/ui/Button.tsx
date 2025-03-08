@@ -16,7 +16,8 @@ const buttonSizes = {
   lg: "px-8 py-4 text-lg"
 } as const;
 
-const buttonDefaultClassName = "transition-transform duration-50 font-semibold";
+const buttonDefaultClassName =
+  "rounded-md transition-transform duration-50 font-semibold";
 
 export const Button: React.FC<ButtonProps> = ({
   children,

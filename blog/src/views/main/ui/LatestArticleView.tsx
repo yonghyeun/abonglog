@@ -60,7 +60,7 @@ export const LatestArticleView = () => {
 
           <Link
             href={`/article/${id}`}
-            className="w-fit bg-blue-700 px-4 py-2 text-sm text-white hover:bg-blue-900"
+            className="w-fit rounded-md bg-blue-700 px-4 py-2 text-sm text-white hover:bg-blue-900"
             aria-label={`게시글 ${title}로 이동`}
           >
             게시글로 이동
