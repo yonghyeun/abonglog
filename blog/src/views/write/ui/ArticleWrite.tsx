@@ -55,7 +55,9 @@ const Wrapper: React.FC<React.PropsWithChildren<ArticleWriteViewProps>> = ({
   initialState,
   articleId
 }) => {
-  const store = createArticleWriteStore({ ...initialState, articleId });
+  const store = useRef(
+    createArticleWriteStore({ ...initialState, articleId })
+  ).current;
 
   return (
     <ArticleWriteStoreContext value={store}>

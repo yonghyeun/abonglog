@@ -20,7 +20,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
       {step === 1 ? (
         <section className="media-padding-x">
           <div className="mb-2 flex h-screen">
-            {/* 글 작성 위젯 */}
+            {/* 글 작성 */}
             <div className="flex h-full w-full flex-col p-2 md:w-1/2">
               {/* 글 제목 */}
               <ArticleWriteView.TitleInput />
@@ -32,7 +32,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               {/* 마크다운 에디터 */}
               <ArticleWriteView.MarkdownEditor />
             </div>
-            {/* 마크다운 렌더러 */}
+            {/* 마크다운 프리뷰어 */}
             <ArticleWriteView.MarkdownPreview />
           </div>
           <footer className="mb-2 flex justify-end gap-2">
