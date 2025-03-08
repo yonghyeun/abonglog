@@ -41,7 +41,7 @@ const Wrapper: React.FC<React.PropsWithChildren<ArticleWriteViewProps>> = ({
 
   return (
     <ArticleWriteStoreContext value={store}>
-      <section className="media-padding-x min-h-screen">{children}</section>
+      <section className="media-padding-x h-screen">{children}</section>
     </ArticleWriteStoreContext>
   );
 };
@@ -331,7 +331,9 @@ const MarkdownPreview = () => {
   const html = useArticleWriteStore((state) => state.html);
   return (
     <article
-      className={"hidden flex-grow border p-2 text-sm md:block md:w-1/2"}
+      className={
+        "hidden flex-grow overflow-auto border p-2 text-sm md:block md:w-1/2"
+      }
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
