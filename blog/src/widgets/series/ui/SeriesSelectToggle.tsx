@@ -25,6 +25,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
   } = useSeriesSelectToggle();
 
   const { data } = useGetSeriesList();
+
   const { mutate: onAddNewSeries } = usePostAddNewSeries();
 
   return (
