@@ -1,19 +1,17 @@
 import { useSeriesSelectToggle } from "../lib";
 
-import {
-  type Series,
-  useGetSeriesList,
-  usePostAddNewSeries
-} from "@/entities/series/model";
+import { type Series, usePostAddNewSeries } from "@/entities/series/model";
 
 import { SearchIcon } from "@/shared/config";
 import { Selector } from "@/shared/ui/Selector";
 
 interface SeriesSelectToggleProps {
+  seriesList: Series[];
   onEachSeriesClick: (series: Series) => void;
 }
 
 export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
+  seriesList,
   onEachSeriesClick
 }) => {
   const {
@@ -21,12 +19,11 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
     handleChangeNewSeriesName,
     handleChangeSearchText,
     isAvailableNewSeries,
-    filterSeearchedSeries
+    searchSeries
   } = useSeriesSelectToggle();
 
-  const { data } = useGetSeriesList();
-
   const { mutate: onAddNewSeries } = usePostAddNewSeries();
+  const searchedSeries = searchSeries(seriesList);
 
   return (
     <details className="cursor-pointer">
@@ -47,9 +44,9 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
           />
         </div>
         {/* Series List */}
-        {data.length > 0 ? (
+        {searchedSeries.length > 0 ? (
           <ol className="flex max-h-48 flex-col gap-2 overflow-y-auto">
-            {filterSeearchedSeries(data).map((series) => (
+            {searchedSeries.map((series) => (
               <li
                 key={series.name}
                 className="flex cursor-pointer list-disc items-center justify-between text-sm text-gray-600 hover:text-blue-700"
@@ -61,7 +58,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
           </ol>
         ) : (
           <div className="flex items-center justify-center px-2 py-4 text-gray-400">
-            현재 시리즈가 존재하지 않습니다.
+            현재 사용 가능한 시리즈가 존재하지 않습니다.
           </div>
         )}
 
@@ -78,7 +75,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
             placeholder="새로운 시리즈명을 입력해주세요"
             onChange={handleChangeNewSeriesName}
           />
-          <Selector.SubmitButton disabled={!isAvailableNewSeries(data)}>
+          <Selector.SubmitButton disabled={!isAvailableNewSeries(seriesList)}>
             시리즈 추가
           </Selector.SubmitButton>
         </Selector.Form>

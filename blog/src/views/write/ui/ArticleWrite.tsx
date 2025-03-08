@@ -25,6 +25,8 @@ import {
   ImageGrid,
   ImageUploadInput as _ImageUploadInput
 } from "@/entities/image/ui";
+import { useGetSeriesList } from "@/entities/series/model";
+import { useGetTagList } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { PenIcon } from "@/shared/config";
@@ -86,6 +88,7 @@ const TitleInput = () => {
 };
 
 const TagList = () => {
+  const { data } = useGetTagList();
   const selectedTags = useArticleWriteStore((state) => state.selectedTags);
   const setSelectedTags = useArticleWriteStore(
     (state) => state.setSelectedTags
@@ -98,6 +101,7 @@ const TagList = () => {
         onEachTagClick={(tag) => {
           setSelectedTags((prev) => [...prev, tag.name]);
         }}
+        tags={data.filter((tag) => !selectedTags.includes(tag.name))}
       />
       {/* 선택된 태그 리스트 */}
       <List.UnOrder>
@@ -117,6 +121,7 @@ const TagList = () => {
 };
 
 const SeriesList = () => {
+  const { data } = useGetSeriesList();
   const selectedSereis = useArticleWriteStore((state) => state.selectedSereis);
   const setSelectedSeries = useArticleWriteStore(
     (state) => state.setSelectedSeries
@@ -126,6 +131,7 @@ const SeriesList = () => {
     <div className="flex flex-grow gap-2">
       {/* 시리즈 셀렉트 토글 */}
       <SeriesSelectToggle
+        seriesList={data.filter((series) => series.name !== selectedSereis)}
         onEachSeriesClick={({ name }) => setSelectedSeries(name)}
       />
       {/* 선택된 시리즈 명 */}

@@ -2,21 +2,19 @@
 
 import { useTagSelectToggle } from "../lib/useTagSelectToggle";
 
-import {
-  type Tag,
-  useGetTagList,
-  usePostAddNewTag
-} from "@/entities/tag/model";
+import { type Tag, usePostAddNewTag } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { SearchIcon } from "@/shared/config";
 import { Selector } from "@/shared/ui/Selector";
 
 interface TagSelectToggleProps {
+  tags: Tag[];
   onEachTagClick: (tag: Tag) => void;
 }
 
 export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
+  tags,
   onEachTagClick
 }) => {
   const {
@@ -24,10 +22,11 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
     handleChangeNewTagName,
     handleChangeSearchText,
     isAvailableNewTag,
-    filterTags
+    searchTags
   } = useTagSelectToggle();
-  const { data } = useGetTagList();
   const { mutate: onAddNewTag } = usePostAddNewTag();
+
+  const searchedTag = searchTags(tags);
 
   return (
     <details className="cursor-pointer">
@@ -48,9 +47,9 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
           />
         </div>
         {/* Tag List */}
-        {data.length > 0 ? (
+        {searchedTag.length > 0 ? (
           <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto">
-            {filterTags(data).map((tag) => (
+            {searchedTag.map((tag) => (
               <li key={tag.name} className="flex items-center justify-between">
                 <TagChip key={tag.name} onClick={() => onEachTagClick(tag)}>
                   {tag.name}
@@ -60,7 +59,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
           </ul>
         ) : (
           <div className="flex items-center justify-center px-2 py-4 text-gray-400">
-            현재 태그가 존재하지 않습니다.
+            현재 사용 가능한 태그가 존재하지 않습니다.
           </div>
         )}
 
