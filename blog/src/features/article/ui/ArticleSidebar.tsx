@@ -37,7 +37,7 @@ export const ArticleSidebar: React.FC<ArticleSidebarProps> = ({
         const headingId = transformIdToSlug(heading);
 
         return (
-          <li key={`${depth}-${index}-li`}>
+          <li className="my-2" key={`${depth}-${index}-li`}>
             <Link
               href={`/article/${articleId}#${headingId}`}
               className={`transition-all duration-200 ${
