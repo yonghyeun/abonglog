@@ -9,7 +9,7 @@ interface SelectorProps {
 const Wrapper: React.FC<SelectorProps> = ({ children, className }) => {
   return (
     <section
-      className={`flex flex-col gap-4 rounded-lg border bg-primary p-4 ${className}`}
+      className={`flex flex-col gap-4 border bg-primary p-4 ${className}`}
     >
       {children}
     </section>
@@ -36,7 +36,7 @@ const Label: React.FC<LabelProps> = ({ className = "", value, ...props }) => {
 const Input: React.FC<SearchInputProps> = ({ ...props }) => {
   return (
     <input
-      className="flex-grow rounded-md bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-sky-blue"
+      className="flex-grow bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-blue-700"
       {...props}
     />
   );

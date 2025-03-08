@@ -146,7 +146,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               <div className="h-2 w-32 bg-secondary" />
             </div>
 
-            <div className="relative mt-4 flex items-center gap-2 rounded-md border bg-gray-100 p-2">
+            <div className="relative mt-4 flex items-center gap-2 border bg-gray-100 p-2">
               {/* 태그 셀렉트 토글 */}
               <TagSelectToggle
                 tags={tagSelectToggleHook.filterUnSelectedTags(tagList)}
@@ -177,7 +177,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
                 />
                 {/* 선택된 시리즈 명 */}
                 <p
-                  className="flex-grow cursor-pointer text-ellipsis text-sky-blue"
+                  className="flex-grow cursor-pointer text-ellipsis text-blue-700"
                   onClick={seriesSelectToggleHook.handleUnSelectSeries}
                 >
                   {seriesSelectToggleHook.selectedSeries?.name}
@@ -203,9 +203,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
           </div>
           {/* 마크다운 렌더러 */}
           <section
-            className={
-              "hidden flex-grow rounded-lg border p-2 text-sm md:block md:w-1/2"
-            }
+            className={"hidden flex-grow border p-2 text-sm md:block md:w-1/2"}
             dangerouslySetInnerHTML={{ __html: markdownHook.html }}
           />
         </div>
@@ -231,7 +229,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
     <section className="media-padding-x flex h-screen flex-col">
       <header>
         <button
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-200"
+          className="p-2 text-gray-400 hover:bg-gray-200"
           aria-label="글 쓰기 단계로 돌아가기"
           onClick={() => setStep(1)}
         >
@@ -244,14 +242,14 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
           <div className="flex flex-col gap-2">
             <label
               htmlFor="article-description"
-              className="flex cursor-pointer items-center gap-1 text-gray-400 hover:text-sky-blue"
+              className="flex cursor-pointer items-center gap-1 text-gray-400 hover:text-blue-700"
             >
               <PenIcon size={18} />
               <span>소개글 등록</span>
             </label>
             <textarea
               id="article-description"
-              className="resize-none rounded-lg border p-2 text-gray-600 outline-none"
+              className="resize-none border p-2 text-gray-600 outline-none"
               placeholder="아티클에 대한 소개글을 작성해 주세요"
               onChange={({ target }) => setDescription(target.value)}
             />
@@ -267,7 +265,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               }}
             />
             {/* 선택된 썸네일 주소 표현 컴포넌트 */}
-            <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-sky-blue">
+            <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-blue-700">
               {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
             </p>
           </div>
@@ -288,7 +286,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
               </ImageGrid.Container>
             </ImageGrid>
           ) : (
-            <p className="flex items-center justify-center rounded-lg border px-2 py-12 text-gray-600">
+            <p className="flex items-center justify-center border px-2 py-12 text-gray-600">
               아티클 본문에서 사용된 이미지가 없습니다.
             </p>
           )}

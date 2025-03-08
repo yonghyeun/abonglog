@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,14 +7,9 @@
 :root {
   --white: #ffffff;
   --secondary-white: #f0f0f0;
-  --hot-pink: #d90479;
-  --bright-blue: #056cf2;
-  --sky-blue: #0785f2;
-  --orange: #f29d35;
 
   --bg-primary: var(--white);
   --bg-secondary: var(--secondary-white);
-  --bg-tertiary: var(--bright-blue);
 }
 
 /* 글자 드래그 시 셀렉션 된 영역 배경 수정 */
@@ -30,17 +25,14 @@ body {
 }
 
 h1 {
-  font-family: "Do Hyeon", sans-serif;
   font-size: 2rem;
   word-break: keep-all;
 }
 h2 {
-  font-family: "Do Hyeon", sans-serif;
   font-size: 1.5rem;
   word-break: keep-all;
 }
 h3 {
-  font-family: "Do Hyeon", sans-serif;
   font-size: 1.17rem;
   word-break: keep-all;
 }

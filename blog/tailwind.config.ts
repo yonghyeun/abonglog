@@ -6,12 +6,7 @@ export default {
     extend: {
       backgroundColor: {
         primary: "var(--bg-primary)",
-        secondary: "var(--bg-secondary)",
-        tertiary: "var(--bg-tertiary)"
-      },
-      colors: {
-        "sky-blue": "var(--sky-blue)",
-        "bright-blue": "var(--bright-blue)"
+        secondary: "var(--bg-secondary)"
       }
     }
   },

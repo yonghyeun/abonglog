@@ -87,22 +87,6 @@ export const useMarkdown = (articleId: number, defaultValue?: string) => {
           bypassInlineCode: false,
           defaultLang: {
             block: "typescript"
-          },
-          filterMetaString: (str) => str.replace(/some-pattern/g, ""),
-          onVisitLine: (element) => {
-            console.log("Visiting line:", element);
-          },
-          onVisitHighlightedLine: (element, id) => {
-            console.log("Visiting highlighted line:", element, id);
-          },
-          onVisitHighlightedChars: (element, id) => {
-            console.log("Visiting highlighted chars:", element, id);
-          },
-          onVisitTitle: (element) => {
-            console.log("Visiting title:", element);
-          },
-          onVisitCaption: (element) => {
-            console.log("Visiting caption:", element);
           }
         }
       )
@@ -110,11 +94,6 @@ export const useMarkdown = (articleId: number, defaultValue?: string) => {
 
     // TODO : 추후 스타일링 할 때 css 설정하기
     const html = `
-    <style>
-    p {
-      color : red;
-    }
-    </style>
   ${vfileObject.toString()}
     `;
 

@@ -59,7 +59,7 @@ const Header = async () => {
             글 쓰기
           </Link>
           <Link
-            className="flex items-end gap-2 rounded-md p-2 hover:bg-secondary"
+            className="flex items-end gap-2 p-2 hover:bg-secondary"
             href="/auth"
           >
             <Profile
@@ -76,7 +76,7 @@ const Header = async () => {
 };
 
 const Footer = () => (
-  <footer className="media-padding-x bg-tertiary py-4 text-gray-200">
+  <footer className="media-padding-x bg-blue-700 py-4 text-gray-200">
     {/* introduce */}
     <div className="flex flex-col justify-between gap-4 md:flex-row">
       <div className="flex-grow">

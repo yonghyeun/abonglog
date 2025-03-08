@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { Suspense, use, useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
@@ -61,7 +62,7 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
         {popularPostNavData.map(({ name, value }) => (
           <button
             key={value}
-            className={`${value === period ? "text-semibold text-sky-blue" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
+            className={`${value === period ? "text-semibold text-blue-700" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
             onClick={() => onClick(value)}
           >
             {name}
@@ -70,7 +71,7 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
       </nav>
       <div className="relative mt-2 h-0.5 w-full bg-secondary">
         <div
-          className={`absolute h-0.5 w-1/3 bg-sky-blue transition-transform duration-200`}
+          className={`absolute h-0.5 w-1/3 bg-blue-700 transition-transform duration-200`}
           style={{
             transform: `translateX(${activeParamIndex * 100}%)`
           }}
@@ -102,7 +103,9 @@ const PopularArticleGrid: React.FC<PopularArticleGridProps> = ({ promise }) => {
     <Grid>
       {articleList.map((article) => (
         <Grid.Item key={article.id}>
-          <ArticlePreviewCard {...article} />
+          <Link href={`article/${article.id}`}>
+            <ArticlePreviewCard {...article} />
+          </Link>
         </Grid.Item>
       ))}
     </Grid>
@@ -115,7 +118,7 @@ const LoadingGrid = () => {
       {Array.from({ length: 12 }, (_, idx) => {
         return (
           <Grid.Item key={idx}>
-            <div className="w-fill aspect-square animate-pulse rounded-lg bg-gray-100" />
+            <div className="w-fill aspect-square animate-pulse bg-gray-100" />
           </Grid.Item>
         );
       })}

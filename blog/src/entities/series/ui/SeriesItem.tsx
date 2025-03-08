@@ -12,7 +12,7 @@ export const SeriesItem: React.FC<SeriesItemProps> = ({
   updatedAt
 }) => {
   return (
-    <div className="flex flex-grow flex-col gap-2 rounded-md border bg-primary p-4">
+    <div className="flex flex-grow flex-col gap-2 border bg-primary p-4">
       <div className="flex items-center gap-2">
         <h3>{seriesName}</h3>
         <span className="text-sm text-gray-400">({numOfArticles})</span>

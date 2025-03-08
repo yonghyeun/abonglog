@@ -27,7 +27,7 @@ export const LatestArticleView = () => {
       {/* preview */}
       <div className="flex w-full flex-col justify-between gap-2 sm:w-1/2">
         <div>
-          <p className="text-bright-blue">최근 게시글</p>
+          <p className="text-blue-900">최근 게시글</p>
           {/* 글 제목 */}
           <h2 className="text-3xl">{title}</h2>
           {/* 시리즈 제목 */}
@@ -60,7 +60,7 @@ export const LatestArticleView = () => {
 
           <Link
             href={`/article/${id}`}
-            className="w-fit rounded-md bg-sky-blue px-4 py-2 text-sm text-white hover:bg-bright-blue"
+            className="w-fit rounded-md bg-blue-700 px-4 py-2 text-sm text-white hover:bg-blue-900"
             aria-label={`게시글 ${title}로 이동`}
           >
             게시글로 이동
@@ -74,7 +74,7 @@ export const LatestArticleView = () => {
           <img
             src={thumbnailUrl}
             alt={`${title} 의 썸네일 이미지`}
-            className="h-full w-full rounded-lg object-cover"
+            className="h-full w-full object-cover"
           />
         ) : (
           // TODO 기본 이미지 생성하기
