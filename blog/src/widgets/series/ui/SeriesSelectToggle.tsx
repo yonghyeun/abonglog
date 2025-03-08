@@ -1,38 +1,31 @@
-"use client";
+import { useSeriesSelectToggle } from "../lib";
 
-import React from "react";
-
-import type { Sereis } from "@/entities/series/model";
+import {
+  type Series,
+  useGetSeriesList,
+  usePostAddNewSeries
+} from "@/entities/series/model";
 
 import { SearchIcon } from "@/shared/config";
-import { useTransitionInput } from "@/shared/lib";
 import { Selector } from "@/shared/ui/Selector";
 
-interface SereisSelectToggleProps {
-  series: Sereis[];
-  onEachSeriesClick: (series: Sereis) => void;
-  onAddNewSeries: (seriesName: string) => void;
+interface SeriesSelectToggleProps {
+  onEachSeriesClick: (series: Series) => void;
 }
 
-export const SeriesSelectToggle: React.FC<SereisSelectToggleProps> = ({
-  series,
-  onEachSeriesClick,
-  onAddNewSeries
+export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
+  onEachSeriesClick
 }) => {
-  // 시리즈 검색어
-  const [searchText, handleChangeSearchText] = useTransitionInput();
-  const [newSeriesName, handleChangeNewSeriesName] = useTransitionInput();
+  const {
+    newSeriesName,
+    handleChangeNewSeriesName,
+    handleChangeSearchText,
+    isAvailableNewSeries,
+    filterSeearchedSeries
+  } = useSeriesSelectToggle();
 
-  const isAvailableNewSeries =
-    newSeriesName.length > 0 &&
-    series.every(
-      ({ name }) => name.toLowerCase() !== newSeriesName.toLowerCase()
-    );
-
-  const filterSeries = (seriesList: Sereis[]) =>
-    seriesList.filter(({ name }) =>
-      name.toLowerCase().includes(searchText.toLowerCase())
-    );
+  const { data } = useGetSeriesList();
+  const { mutate: onAddNewSeries } = usePostAddNewSeries();
 
   return (
     <details className="cursor-pointer">
@@ -53,9 +46,9 @@ export const SeriesSelectToggle: React.FC<SereisSelectToggleProps> = ({
           />
         </div>
         {/* Series List */}
-        {series.length > 0 ? (
+        {data.length > 0 ? (
           <ol className="flex max-h-48 flex-col gap-2 overflow-y-auto">
-            {filterSeries(series).map((series) => (
+            {filterSeearchedSeries(data).map((series) => (
               <li
                 key={series.name}
                 className="flex cursor-pointer list-disc items-center justify-between text-sm text-gray-600 hover:text-blue-700"
@@ -74,7 +67,9 @@ export const SeriesSelectToggle: React.FC<SereisSelectToggleProps> = ({
         <Selector.Form
           onSubmit={(event) => {
             event.preventDefault();
-            onAddNewSeries(newSeriesName);
+            onAddNewSeries({
+              name: newSeriesName
+            });
           }}
         >
           <Selector.Label className="sr-only" value="새로운 시리즈 추가하기" />
@@ -82,7 +77,7 @@ export const SeriesSelectToggle: React.FC<SereisSelectToggleProps> = ({
             placeholder="새로운 시리즈명을 입력해주세요"
             onChange={handleChangeNewSeriesName}
           />
-          <Selector.SubmitButton disabled={!isAvailableNewSeries}>
+          <Selector.SubmitButton disabled={!isAvailableNewSeries(data)}>
             시리즈 추가
           </Selector.SubmitButton>
         </Selector.Form>

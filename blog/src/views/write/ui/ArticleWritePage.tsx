@@ -4,12 +4,11 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
+import { SeriesSelectToggle } from "@/widgets/series/ui";
 
 import { useMarkdown } from "@/features/article/lib";
 import { findImageUrl } from "@/features/article/lib/findImageUrl";
 import { MarkdownEditor } from "@/features/article/ui";
-import { useSeriesSelectToggle } from "@/features/series/lib";
-import { SeriesSelectToggle } from "@/features/series/ui";
 import { useTagSelecToggle } from "@/features/tag/lib";
 import { TagSelectToggle } from "@/features/tag/ui";
 
@@ -18,7 +17,7 @@ import {
   usePostNewArticle
 } from "@/entities/article/model";
 import { ImageGrid, ImageUploadInput } from "@/entities/image/ui";
-import { useGetSeriesList, usePostAddNewSeries } from "@/entities/series/model";
+import { Series } from "@/entities/series/model";
 import { useGetTagList, usePostAddNewTag } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
@@ -41,19 +40,16 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
   const [title, handleChangeTitle] = useTransitionInput();
+  const [selectedSeries, setSelectedSeries] = useState<Series | null>(null);
 
   const { data: tagList } = useGetTagList();
-  const { data: seriesList } = useGetSeriesList();
   const { mutate: addNewTag } = usePostAddNewTag();
-  const { mutate: addNewSeries } = usePostAddNewSeries();
   const { mutate: uploadNewThumbnail, isPending: isThumbnailUploading } =
     usePostArticleThumbnail();
   const { mutate: addNewArticle } = usePostNewArticle();
 
   const markdownHook = useMarkdown(articleId, defaultValue);
   const tagSelectToggleHook = useTagSelecToggle();
-  const seriesSelectToggleHook = useSeriesSelectToggle();
-
   const imageUrlsInMarkdown = findImageUrl(markdownHook.markdown);
 
   const handleStepPublish = () => {
@@ -61,7 +57,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
       !title ||
       !markdownHook.markdown ||
       !tagSelectToggleHook.selectedTags.length ||
-      !seriesSelectToggleHook.selectedSeries
+      !selectedSeries
     ) {
       // TODO toast 로 변경
       alert("필수 항목을 입력해 주세요");
@@ -95,7 +91,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
       !title ||
       !markdownHook.markdown ||
       !tagSelectToggleHook.selectedTags.length ||
-      !seriesSelectToggleHook.selectedSeries
+      !selectedSeries
     ) {
       // TODO toast 로 변경
       alert("필수 항목을 입력해 주세요");
@@ -108,7 +104,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
         content: markdownHook.markdown,
         id: articleId,
         author: "yonghyeun",
-        seriesName: seriesSelectToggleHook.selectedSeries.name,
+        seriesName: setSelectedSeries.name,
         description,
         tags: tagSelectToggleHook.selectedTags,
         status,
@@ -168,19 +164,15 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             <section className="relative flex justify-between p-2 text-sm">
               <div className="flex flex-grow gap-2">
                 {/* 시리즈 셀렉트 토글 */}
-                <SeriesSelectToggle
-                  series={seriesSelectToggleHook.filterUnSelectedSeries(
-                    seriesList
-                  )}
-                  onEachSeriesClick={seriesSelectToggleHook.handleSelectSeries}
-                  onAddNewSeries={(name) => addNewSeries({ name })}
-                />
+                <SeriesSelectToggle onEachSeriesClick={setSelectedSeries} />
                 {/* 선택된 시리즈 명 */}
                 <p
                   className="flex-grow cursor-pointer text-ellipsis text-blue-700"
-                  onClick={seriesSelectToggleHook.handleUnSelectSeries}
+                  onClick={() => {
+                    setSelectedSeries(null);
+                  }}
                 >
-                  {seriesSelectToggleHook.selectedSeries?.name}
+                  {selectedSeries?.name || "시리즈 선택"}
                 </p>
               </div>
               <ImageUploadInput
@@ -298,7 +290,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             <ArticlePreviewCard
               thumbnailUrl={thumbnailUrl}
               tags={tagSelectToggleHook.selectedTags.map(({ name }) => name)}
-              seriesName={seriesSelectToggleHook.selectedSeries?.name || ""}
+              seriesName={selectedSeries?.name || "시리즈 선택"}
               title={title}
               description={description}
               updatedAt={new Date().toLocaleDateString()}

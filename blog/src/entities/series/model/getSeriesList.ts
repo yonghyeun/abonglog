@@ -5,13 +5,13 @@ import { createBrowserSupabase } from "@/shared/model";
 import type { Database } from "@/shared/model/database.types";
 import { SnakeToCamel, snakeToCamel } from "@/shared/util";
 
-export type Sereis = SnakeToCamel<
+export type Series = SnakeToCamel<
   Database["public"]["Tables"]["series"]["Row"]
 >;
 
 export const getSeriesList = () => {
   const queryKey = SERIES_QUERY_KEY.default();
-  const queryFn = async (): Promise<Sereis[]> => {
+  const queryFn = async (): Promise<Series[]> => {
     const supabase = await createBrowserSupabase();
     const { data, error } = await supabase.from("series").select("*");
 
@@ -22,7 +22,7 @@ export const getSeriesList = () => {
     return snakeToCamel(data);
   };
 
-  return { queryKey, queryFn };
+  return { queryKey, queryFn, staleTime: 1000 * 60 * 60 * 24 * 7 };
 };
 
 /**
