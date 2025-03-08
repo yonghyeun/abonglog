@@ -5,12 +5,12 @@ import React, { useState } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 import { SeriesSelectToggle } from "@/widgets/series/ui";
+import { TagSelectToggle } from "@/widgets/tag/ui";
 
 import { useMarkdown } from "@/features/article/lib";
 import { findImageUrl } from "@/features/article/lib/findImageUrl";
 import { MarkdownEditor } from "@/features/article/ui";
 import { useTagSelecToggle } from "@/features/tag/lib";
-import { TagSelectToggle } from "@/features/tag/ui";
 
 import {
   usePostArticleThumbnail,
@@ -18,7 +18,7 @@ import {
 } from "@/entities/article/model";
 import { ImageGrid, ImageUploadInput } from "@/entities/image/ui";
 import { Series } from "@/entities/series/model";
-import { useGetTagList, usePostAddNewTag } from "@/entities/tag/model";
+import type { Tag } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { BackwardIcon, PenIcon } from "@/shared/config";
@@ -41,9 +41,8 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   const [description, setDescription] = useState<string>("");
   const [title, handleChangeTitle] = useTransitionInput();
   const [selectedSeries, setSelectedSeries] = useState<Series | null>(null);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
-  const { data: tagList } = useGetTagList();
-  const { mutate: addNewTag } = usePostAddNewTag();
   const { mutate: uploadNewThumbnail, isPending: isThumbnailUploading } =
     usePostArticleThumbnail();
   const { mutate: addNewArticle } = usePostNewArticle();
@@ -145,16 +144,20 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             <div className="relative mt-4 flex items-center gap-2 border bg-gray-100 p-2">
               {/* 태그 셀렉트 토글 */}
               <TagSelectToggle
-                tags={tagSelectToggleHook.filterUnSelectedTags(tagList)}
-                onEachTagClick={tagSelectToggleHook.handleSelectTag}
-                onAddNewTag={(name) => addNewTag({ name })}
+                onEachTagClick={(tag) => {
+                  setSelectedTags([...selectedTags, tag]);
+                }}
               />
               {/* 선택된 태그 리스트 */}
               <List.UnOrder>
-                {tagSelectToggleHook.selectedTags.map(({ name }) => (
+                {selectedTags.map(({ name }) => (
                   <List.Item
                     key={name}
-                    onClick={() => tagSelectToggleHook.handleUnSelectTag(name)}
+                    onClick={() =>
+                      setSelectedTags((prev) =>
+                        prev.filter((tag) => tag.name !== name)
+                      )
+                    }
                   >
                     <TagChip>{name}</TagChip>
                   </List.Item>

@@ -1,34 +1,33 @@
 "use client";
 
-import type { Tag } from "@/entities/tag/model";
+import { useTagSelectToggle } from "../lib/useTagSelectToggle";
+
+import {
+  type Tag,
+  useGetTagList,
+  usePostAddNewTag
+} from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { SearchIcon } from "@/shared/config";
-import { useTransitionInput } from "@/shared/lib";
 import { Selector } from "@/shared/ui/Selector";
 
 interface TagSelectToggleProps {
-  tags: Tag[];
   onEachTagClick: (tag: Tag) => void;
-  onAddNewTag: (tagName: string) => void;
 }
 
 export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
-  tags,
-  onEachTagClick,
-  onAddNewTag
+  onEachTagClick
 }) => {
-  const [searchText, handleChangeSearchText] = useTransitionInput();
-  const [newTagName, handleChangeNewTagName] = useTransitionInput();
-
-  const isAvailableNewTag =
-    newTagName.length > 0 &&
-    tags.every(({ name }) => name.toLowerCase() !== newTagName.toLowerCase());
-
-  const filterTags = (tags: Tag[]) =>
-    tags.filter(({ name }) =>
-      name.toLowerCase().includes(searchText.toLowerCase())
-    );
+  const {
+    newTagName,
+    handleChangeNewTagName,
+    handleChangeSearchText,
+    isAvailableNewTag,
+    filterTags
+  } = useTagSelectToggle();
+  const { data } = useGetTagList();
+  const { mutate: onAddNewTag } = usePostAddNewTag();
 
   return (
     <details className="cursor-pointer">
@@ -49,9 +48,9 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
           />
         </div>
         {/* Tag List */}
-        {tags.length > 0 ? (
+        {data.length > 0 ? (
           <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto">
-            {filterTags(tags).map((tag) => (
+            {filterTags(data).map((tag) => (
               <li key={tag.name} className="flex items-center justify-between">
                 <TagChip key={tag.name} onClick={() => onEachTagClick(tag)}>
                   {tag.name}
@@ -68,7 +67,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
         <Selector.Form
           onSubmit={(event) => {
             event.preventDefault();
-            onAddNewTag(newTagName);
+            onAddNewTag({ name: newTagName });
           }}
         >
           <Selector.Label className="sr-only" value="새로운 태그 추가하기" />
