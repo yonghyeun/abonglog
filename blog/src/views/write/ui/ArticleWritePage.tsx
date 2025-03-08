@@ -1,5 +1,6 @@
 "use client";
 
+import { ArticleWriteView } from "./ArticleWrite";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -121,88 +122,23 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
   // step 1. 글 쓰기 페이지
   if (step === 1) {
     return (
-      <section className="media-padding-x">
+      <ArticleWriteView>
         <div className="mb-2 flex h-screen">
           {/* 글 작성 위젯 */}
           <div className="flex h-full w-full flex-col p-2 md:w-1/2">
             {/* 글 제목 */}
-            <div>
-              <label htmlFor="title" className="sr-only">
-                제목
-              </label>
-              <input
-                placeholder="제목을 입력해주세요"
-                name="title"
-                type="text"
-                id="title"
-                onChange={handleChangeTitle}
-                className="w-full p-2 text-3xl outline-none focus:outline-none"
-              />
-              <div className="h-2 w-32 bg-secondary" />
-            </div>
-
-            <div className="relative mt-4 flex items-center gap-2 border bg-gray-100 p-2">
-              {/* 태그 셀렉트 토글 */}
-              <TagSelectToggle
-                onEachTagClick={(tag) => {
-                  setSelectedTags([...selectedTags, tag]);
-                }}
-              />
-              {/* 선택된 태그 리스트 */}
-              <List.UnOrder>
-                {selectedTags.map(({ name }) => (
-                  <List.Item
-                    key={name}
-                    onClick={() =>
-                      setSelectedTags((prev) =>
-                        prev.filter((tag) => tag.name !== name)
-                      )
-                    }
-                  >
-                    <TagChip>{name}</TagChip>
-                  </List.Item>
-                ))}
-              </List.UnOrder>
-            </div>
+            <ArticleWriteView.TitleInput />
+            <ArticleWriteView.TagList />
             <section className="relative flex justify-between p-2 text-sm">
-              <div className="flex flex-grow gap-2">
-                {/* 시리즈 셀렉트 토글 */}
-                <SeriesSelectToggle onEachSeriesClick={setSelectedSeries} />
-                {/* 선택된 시리즈 명 */}
-                <p
-                  className="flex-grow cursor-pointer text-ellipsis text-blue-700"
-                  onClick={() => {
-                    setSelectedSeries(null);
-                  }}
-                >
-                  {selectedSeries?.name || "시리즈 선택"}
-                </p>
-              </div>
-              <ImageUploadInput
-                id="article-file-upload"
-                labelTitle="이미지 업로드"
-                inputProps={{
-                  onChange: markdownHook.handleImageUpload
-                }}
-              />
+              <ArticleWriteView.SeriesList />
+              <ArticleWriteView.ImageUploadInput articleId={articleId} />
             </section>
             {/* 마크다운 에디터 */}
-            <MarkdownEditor
-              className="flex-grow"
-              value={markdownHook.markdown}
-              ref={markdownHook.textAreaRef}
-              onPaste={markdownHook.handleImagePaste}
-              onChange={markdownHook.handleChangeMarkdown}
-              onKeyDown={markdownHook.handleKeyDownTextArea}
-            />
+            <ArticleWriteView.MarkdownEditor articleId={articleId} />
           </div>
           {/* 마크다운 렌더러 */}
-          <section
-            className={"hidden flex-grow border p-2 text-sm md:block md:w-1/2"}
-            dangerouslySetInnerHTML={{ __html: markdownHook.html }}
-          />
+          <ArticleWriteView.MarkdownPreview />
         </div>
-
         <footer className="mb-2 flex justify-end gap-2">
           <Button
             variant="outlined"
@@ -215,7 +151,7 @@ export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
             다음 단계
           </Button>
         </footer>
-      </section>
+      </ArticleWriteView>
     );
   }
 

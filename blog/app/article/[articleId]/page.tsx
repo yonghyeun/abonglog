@@ -1,5 +1,3 @@
-import "./article.styles.css";
-
 import {
   createNestedHeadings,
   parsingHeading
