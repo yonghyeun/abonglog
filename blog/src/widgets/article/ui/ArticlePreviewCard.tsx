@@ -51,8 +51,8 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
 
       {/* 소개글 & 게시자 정보 */}
       <div className="flex flex-col gap-4 text-sm text-gray-600">
-        <p>{description}</p>
-
+        <p className="w-full break-words">{description}</p>
+        {/* break-words 추가 */}
         <div className="flex gap-2">
           <AdminProfile size="sm" />
           <div className="text-xs">

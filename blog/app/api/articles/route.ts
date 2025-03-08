@@ -34,7 +34,7 @@ const insertArticleTag = (
 ) => {
   return supabase.from("article_tags").insert(
     tags.map((tag) => ({
-      tag_name: tag.name,
+      tag_name: tag,
       article_id: id
     }))
   );

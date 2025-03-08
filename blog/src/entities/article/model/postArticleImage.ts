@@ -1,4 +1,5 @@
 import { ARTICLE_ENDPOINT } from "../config";
+import { useMutation } from "@tanstack/react-query";
 
 export interface PostArticleImageRequest {
   files: File[];
@@ -41,4 +42,10 @@ export const postArticleImage = async ({
   }
 
   return data;
+};
+
+export const usePostArticleImage = () => {
+  return useMutation({
+    mutationFn: postArticleImage
+  });
 };
