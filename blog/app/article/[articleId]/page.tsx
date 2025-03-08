@@ -1,5 +1,11 @@
 import "./article.styles.css";
 
+import {
+  createNestedHeadings,
+  parsingHeading
+} from "@/features/article/lib/createNestedHeadings";
+import { ArticleSidebar } from "@/features/article/ui/ArticleSidebar";
+
 import { rehypeMarkdown } from "@/entities/article/lib";
 import { getArticleById } from "@/entities/article/model";
 import { TagChip } from "@/entities/tag/ui";
@@ -59,7 +65,12 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
           className="w-full pb-32 lg:flex-grow"
         />
         {/* 사이드바 */}
-        {/* <aside className="hidden lg:block"></aside> */}
+        <aside className="hidden lg:block">
+          <ArticleSidebar
+            articleId={articleId}
+            headings={createNestedHeadings(parsingHeading(content))}
+          />
+        </aside>
       </section>
     </section>
   );
