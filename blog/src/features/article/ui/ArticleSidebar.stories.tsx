@@ -1,3 +1,7 @@
+import {
+  createNestedHeadings,
+  parsingHeading
+} from "../lib/createNestedHeadings";
 import { ArticleSidebar } from "./ArticleSidebar";
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
@@ -59,14 +63,18 @@ type Story = StoryObj<typeof ArticleSidebar>;
 
 export const Default: Story = {
   args: {
-    headings: [
-      "Heading 1",
-      "Heading 2",
-      ["Heading 2.1", ["Heading 2.1.1", "Heading 2.1.2"]],
-      ["Heading 2.2", ["Heading 2.2.1", ["Heading 2.2.1.1"], "Heading 2.2.2"]],
-      "Heading 3"
-    ],
-    depth: 1
+    headings: createNestedHeadings(
+      parsingHeading(`
+# Heading 1
+## Heading 2
+### Heading 3
+# Heading 4
+# Heading 5
+## Heading 6
+## Heading 7
+###Heading 8
+ `)
+    )
   },
   render: (args) => (
     <div className="p-4">
