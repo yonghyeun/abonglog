@@ -8,18 +8,26 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useContext, useRef } from "react";
 
+import { ArticlePreviewCard } from "@/widgets/article/ui";
 import { SeriesSelectToggle } from "@/widgets/series/ui";
 import { TagSelectToggle } from "@/widgets/tag/ui";
+
+import { findImageUrl } from "@/features/article/lib/findImageUrl";
 
 import { rehypeMarkdown } from "@/entities/article/lib";
 import {
   usePostArticleImage,
+  usePostArticleThumbnail,
   usePostNewArticle
 } from "@/entities/article/model";
 import { compressImage } from "@/entities/image/lib";
-import { ImageUploadInput as _ImageUploadInput } from "@/entities/image/ui";
+import {
+  ImageGrid,
+  ImageUploadInput as _ImageUploadInput
+} from "@/entities/image/ui";
 import { TagChip } from "@/entities/tag/ui";
 
+import { PenIcon } from "@/shared/config";
 import { Button } from "@/shared/ui/Button";
 import { List } from "@/shared/ui/List";
 
@@ -386,6 +394,186 @@ const TempSaveButton = () => {
   );
 };
 
+const DescriptionTextArea = () => {
+  const setDescription = useArticleWriteStore((state) => state.setDescription);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <label
+        htmlFor="article-description"
+        className="flex cursor-pointer items-center gap-1 text-gray-400 hover:text-blue-700"
+      >
+        <PenIcon size={18} />
+        <span>소개글 등록</span>
+      </label>
+      <textarea
+        id="article-description"
+        className="resize-none border p-2 text-gray-600 outline-none"
+        placeholder="아티클에 대한 소개글을 작성해 주세요"
+        onChange={({ target }) => setDescription(target.value)}
+      />
+    </div>
+  );
+};
+
+const ThumbnailUploadInput = () => {
+  const thumbnailUrl = useArticleWriteStore((state) => state.thumbnailUrl);
+  const { mutate: uploadNewThumbnail, isPending: isThumbnailUploading } =
+    usePostArticleThumbnail();
+  const articleId = useArticleWriteStore((state) => state.articleId);
+  const setThumbnailUrl = useArticleWriteStore(
+    (state) => state.setThumbnailUrl
+  );
+
+  const handleUploadThumbnail = ({
+    target
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    const files = target.files;
+
+    if (!files || !files.length) {
+      return;
+    }
+
+    uploadNewThumbnail(
+      {
+        file: files[0],
+        articleId: articleId.toString()
+      },
+      {
+        onSuccess: ({ imageUrl }) => setThumbnailUrl(imageUrl)
+      }
+    );
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <_ImageUploadInput
+        id="article-thumbnail-upload"
+        labelTitle="썸네일 등록"
+        inputProps={{
+          onChange: handleUploadThumbnail
+        }}
+      />
+      {/* 선택된 썸네일 주소 표현 컴포넌트 */}
+      <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-blue-700">
+        {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
+      </p>
+    </div>
+  );
+};
+
+const ArticleImageGrid = () => {
+  const markdown = useArticleWriteStore((state) => state.markdown);
+
+  const imageUrlsInMarkdown = findImageUrl(markdown);
+
+  const thumbnailUrl = useArticleWriteStore((state) => state.thumbnailUrl);
+  const setThumbnailUrl = useArticleWriteStore(
+    (state) => state.setThumbnailUrl
+  );
+
+  return (
+    <>
+      {imageUrlsInMarkdown.length > 0 ? (
+        <ImageGrid>
+          <ImageGrid.Title>아티클에 사용된 이미지들</ImageGrid.Title>
+          <ImageGrid.Container>
+            {imageUrlsInMarkdown.map((image, idx) => (
+              <ImageGrid.Item
+                key={idx}
+                image={image}
+                selectedImageUrl={thumbnailUrl}
+                onSelectImage={setThumbnailUrl}
+              />
+            ))}
+          </ImageGrid.Container>
+        </ImageGrid>
+      ) : (
+        <p className="flex items-center justify-center border px-2 py-12 text-gray-600">
+          아티클 본문에서 사용된 이미지가 없습니다.
+        </p>
+      )}
+    </>
+  );
+};
+
+const SubmitButton = () => {
+  const router = useRouter();
+  const { mutate: addNewArticle } = usePostNewArticle();
+  const store = useContext(ArticleWriteStoreContext)!;
+
+  const handleSaveArticle = () => {
+    const {
+      title,
+      markdown,
+      selectedTags,
+      selectedSereis,
+      articleId,
+      thumbnailUrl,
+      description
+    } = store.getState();
+
+    if (
+      !title ||
+      !markdown ||
+      !selectedTags.length ||
+      !selectedSereis ||
+      !thumbnailUrl ||
+      !description
+    ) {
+      alert("입력되지 않은 정보가 있습니다.");
+      return;
+    }
+
+    addNewArticle(
+      {
+        title: title,
+        content: markdown,
+        tags: selectedTags,
+        seriesName: selectedSereis,
+        status: "published",
+        id: articleId,
+        author: "yonghyeun",
+        description,
+        thumbnailUrl
+      },
+      {
+        onSuccess: (data) => {
+          alert(data.message);
+          router.push("/");
+        }
+      }
+    );
+  };
+
+  return (
+    <Button
+      variant="filled"
+      size="sm"
+      className="mt-4"
+      onClick={() => handleSaveArticle()}
+    >
+      게시글 발행하기
+    </Button>
+  );
+};
+
+const PreviewCard = () => {
+  const { title, selectedTags, selectedSereis, thumbnailUrl, description } =
+    useArticleWriteStore((state) => state);
+
+  return (
+    <ArticlePreviewCard
+      updatedAt={new Date().toLocaleString()}
+      title={title}
+      tags={selectedTags}
+      seriesName={selectedSereis}
+      thumbnailUrl={thumbnailUrl}
+      description={description}
+    />
+  );
+};
+
 export const ArticleWriteView = Object.assign(Wrapper, {
   TitleInput,
   TagList,
@@ -393,5 +581,10 @@ export const ArticleWriteView = Object.assign(Wrapper, {
   ImageUploadInput,
   MarkdownEditor,
   MarkdownPreview,
-  TempSaveButton
+  TempSaveButton,
+  DescriptionTextArea,
+  ThumbnailUploadInput,
+  ArticleImageGrid,
+  SubmitButton,
+  PreviewCard
 });
