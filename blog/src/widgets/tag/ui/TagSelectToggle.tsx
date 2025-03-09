@@ -21,7 +21,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
     newTagName,
     handleChangeNewTagName,
     handleChangeSearchText,
-    isAvailableNewTag,
+    isAvailableAddNewTag,
     searchTags
   } = useTagSelectToggle();
   const { mutate: onAddNewTag } = usePostAddNewTag();
@@ -74,7 +74,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
             placeholder="새로운 태그명을 입력해주세요"
             onChange={handleChangeNewTagName}
           />
-          <Selector.SubmitButton disabled={!isAvailableNewTag}>
+          <Selector.SubmitButton disabled={!isAvailableAddNewTag}>
             태그 추가
           </Selector.SubmitButton>
         </Selector.Form>

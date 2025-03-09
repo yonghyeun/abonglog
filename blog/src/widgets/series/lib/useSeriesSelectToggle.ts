@@ -6,7 +6,7 @@ export const useSeriesSelectToggle = () => {
   const [searchText, handleChangeSearchText] = useTransitionInput();
   const [newSeriesName, handleChangeNewSeriesName] = useTransitionInput();
 
-  const isAvailableNewSeries = (sereisList: Series[]) => {
+  const isAvailableAddNewSeries = (sereisList: Series[]) => {
     return (
       newSeriesName.length > 0 &&
       sereisList.every(
@@ -26,7 +26,7 @@ export const useSeriesSelectToggle = () => {
     newSeriesName,
     handleChangeSearchText,
     handleChangeNewSeriesName,
-    isAvailableNewSeries,
+    isAvailableAddNewSeries,
     searchSeries
   };
 };

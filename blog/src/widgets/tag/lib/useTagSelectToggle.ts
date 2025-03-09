@@ -6,7 +6,7 @@ export const useTagSelectToggle = () => {
   const [searchText, handleChangeSearchText] = useTransitionInput();
   const [newTagName, handleChangeNewTagName] = useTransitionInput();
 
-  const isAvailableNewTag = (tags: Tag[]) => {
+  const isAvailableAddNewTag = (tags: Tag[]) => {
     return (
       newTagName.length > 0 &&
       tags.every(({ name }) => name.toLowerCase() !== newTagName.toLowerCase())
@@ -24,7 +24,7 @@ export const useTagSelectToggle = () => {
     handleChangeSearchText,
     newTagName,
     handleChangeNewTagName,
-    isAvailableNewTag,
+    isAvailableAddNewTag,
     searchTags
   };
 };

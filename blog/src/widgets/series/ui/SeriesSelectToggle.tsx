@@ -18,7 +18,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
     newSeriesName,
     handleChangeNewSeriesName,
     handleChangeSearchText,
-    isAvailableNewSeries,
+    isAvailableAddNewSeries,
     searchSeries
   } = useSeriesSelectToggle();
 
@@ -75,7 +75,9 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
             placeholder="새로운 시리즈명을 입력해주세요"
             onChange={handleChangeNewSeriesName}
           />
-          <Selector.SubmitButton disabled={!isAvailableNewSeries(seriesList)}>
+          <Selector.SubmitButton
+            disabled={!isAvailableAddNewSeries(seriesList)}
+          >
             시리즈 추가
           </Selector.SubmitButton>
         </Selector.Form>
