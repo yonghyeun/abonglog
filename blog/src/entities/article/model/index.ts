@@ -6,3 +6,5 @@ export * from "./getArticleList";
 export * from "./getArticleListBySeries";
 export * from "./getLatestArticle";
 export * from "./getArticleById";
+export * from "./getArticleInfoPerSeries";
+export * from "./deleteArticle";

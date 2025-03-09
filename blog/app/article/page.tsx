@@ -7,10 +7,10 @@ import {
 } from "@/views/article/ui";
 
 import {
+  getArticleInfoPerSeries,
   getArticleList,
   getArticleListBySeries
 } from "@/entities/article/model";
-import { getSeriesArticleList } from "@/entities/series/model";
 
 import { prefetchInfiniteQueryInServer } from "@/shared/model";
 
@@ -24,7 +24,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   searchParams
 }) => {
   const { series } = await searchParams;
-  const numOfSeriesArray = await getSeriesArticleList().queryFn();
+  const numOfSeriesArray = await getArticleInfoPerSeries().queryFn();
 
   const searchedSeries = numOfSeriesArray.find(
     (data) => data.seriesName === series
