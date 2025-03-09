@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import type { PostNewArticleResponse } from "@/entities/article/model";
+import type { DeleteArticleResponse } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
 import { createPostgressErrorResponse } from "@/shared/route";
@@ -19,11 +19,14 @@ export const DELETE = async (req: NextRequest) => {
     return NextResponse.json(...createPostgressErrorResponse(response));
   }
 
-  return NextResponse.json<PostNewArticleResponse>({
-    status: 200,
-    message: "아티클이 성공적으로 삭제 되었습니다",
-    data: {
-      type: "published"
+  return NextResponse.json<DeleteArticleResponse>(
+    {
+      code: 201,
+      message: "아티클이 성공적으로 삭제 되었습니다"
+    },
+    {
+      status: response.status,
+      statusText: response.statusText
     }
-  });
+  );
 };

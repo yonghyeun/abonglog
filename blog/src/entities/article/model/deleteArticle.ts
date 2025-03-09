@@ -1,13 +1,9 @@
 import { ARTICLE_ENDPOINT } from "../config";
-import { ARTICLE_QUERY_KEY } from "./articleQueryKey";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
-interface DeleteArticleResponse {
+export interface DeleteArticleResponse {
   code: number;
   message: string;
-  data: {
-    type: "published" | "draft";
-  };
 }
 
 const deleteArticle = async (articleId: string) => {
@@ -24,13 +20,7 @@ const deleteArticle = async (articleId: string) => {
 };
 
 export const useDeleteArticle = () => {
-  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteArticle,
-    onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({
-        queryKey: ARTICLE_QUERY_KEY.default(data.type)
-      });
-    }
+    mutationFn: deleteArticle
   });
 };
