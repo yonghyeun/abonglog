@@ -19,11 +19,11 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
     handleChangeNewSeriesName,
     handleChangeSearchText,
     isAvailableAddNewSeries,
-    searchSeries
+    filterBySearchedText
   } = useSeriesSelectToggle();
 
   const { mutate: onAddNewSeries } = usePostAddNewSeries();
-  const searchedSeries = searchSeries(seriesList);
+  const searchedSeries = filterBySearchedText(seriesList);
 
   return (
     <details className="cursor-pointer">

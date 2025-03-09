@@ -22,11 +22,11 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
     handleChangeNewTagName,
     handleChangeSearchText,
     isAvailableAddNewTag,
-    searchTags
+    filterBySearchedText
   } = useTagSelectToggle();
   const { mutate: onAddNewTag } = usePostAddNewTag();
 
-  const searchedTag = searchTags(tags);
+  const searchedTag = filterBySearchedText(tags);
 
   return (
     <details className="cursor-pointer">

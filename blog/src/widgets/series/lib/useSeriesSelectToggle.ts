@@ -15,7 +15,7 @@ export const useSeriesSelectToggle = () => {
     );
   };
 
-  const searchSeries = (seriesList: Series[]) => {
+  const filterBySearchedText = (seriesList: Series[]) => {
     return seriesList.filter(({ name }) =>
       name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())
     );
@@ -27,6 +27,6 @@ export const useSeriesSelectToggle = () => {
     handleChangeSearchText,
     handleChangeNewSeriesName,
     isAvailableAddNewSeries,
-    searchSeries
+    filterBySearchedText
   };
 };

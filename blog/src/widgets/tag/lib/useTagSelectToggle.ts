@@ -13,7 +13,7 @@ export const useTagSelectToggle = () => {
     );
   };
 
-  const searchTags = (tags: Tag[]) => {
+  const filterBySearchedText = (tags: Tag[]) => {
     return tags.filter(({ name }) =>
       name.toLowerCase().includes(searchText.toLowerCase())
     );
@@ -25,6 +25,6 @@ export const useTagSelectToggle = () => {
     newTagName,
     handleChangeNewTagName,
     isAvailableAddNewTag,
-    searchTags
+    filterBySearchedText
   };
 };
