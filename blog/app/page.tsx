@@ -8,16 +8,16 @@ import {
 } from "@/views/main/ui";
 
 import {
+  getArticleInfoPerSeries,
   getLatestArticle,
   getPopularArticleList
 } from "@/entities/article/model";
-import { getSeriesArticleList } from "@/entities/series/model";
 
 import { prefetchQueryInServer } from "@/shared/model";
 
 const MainPage = async () => {
   const mainPageState = await prefetchQueryInServer(
-    getSeriesArticleList,
+    getArticleInfoPerSeries,
     getLatestArticle,
     () => getPopularArticleList("daily")
   );

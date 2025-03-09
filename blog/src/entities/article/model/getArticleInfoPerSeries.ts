@@ -1,11 +1,11 @@
-import { SERIES_QUERY_KEY } from "./seriesQueryKey";
+import { ARTICLE_QUERY_KEY } from "./articleQueryKey";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
-export const getSeriesArticleList = () => {
-  const queryKey = SERIES_QUERY_KEY.seriesArticle();
+export const getArticleInfoPerSeries = () => {
+  const queryKey = ARTICLE_QUERY_KEY.infoPerSeries();
 
   const queryFn = async () => {
     const supabase = await createBrowserSupabase();
@@ -22,6 +22,6 @@ export const getSeriesArticleList = () => {
   return { queryKey, queryFn };
 };
 
-export const useGetSeriesArticleList = () => {
-  return useSuspenseQuery(getSeriesArticleList());
+export const useGetArticleInfoPerSeries = () => {
+  return useSuspenseQuery(getArticleInfoPerSeries());
 };

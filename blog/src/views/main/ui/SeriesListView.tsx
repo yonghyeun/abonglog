@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 
-import { useGetSeriesArticleList } from "@/entities/series/model";
+import { useGetArticleInfoPerSeries } from "@/entities/article/model";
 import { SeriesItem } from "@/entities/series/ui";
 
 import { Grid } from "@/shared/ui/Grid";
 
 export const SeriesListView = () => {
-  const { data: seriesList } = useGetSeriesArticleList();
+  const { data: articleInfoList } = useGetArticleInfoPerSeries();
 
   return (
     <>
@@ -20,7 +20,7 @@ export const SeriesListView = () => {
       </div>
 
       <Grid>
-        {seriesList.map((data) => (
+        {articleInfoList.map((data) => (
           <Grid.Item key={data.seriesName}>
             <Link
               href={{
