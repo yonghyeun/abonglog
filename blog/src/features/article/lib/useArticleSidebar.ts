@@ -24,7 +24,6 @@ export const useArticleSidebar = () => {
     );
     const headings = document.querySelectorAll("h1, h2, h3");
 
-    console.log(headings);
     headings.forEach((heading) => observer.observe(heading));
 
     return () => {

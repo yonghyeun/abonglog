@@ -15,7 +15,7 @@ export interface PostNewArticleRequest {
   author: string;
   seriesName: string;
   description: string;
-  tags: Tag[];
+  tags: Tag["name"][];
   status: ArticleStatus;
   thumbnailUrl: string | null;
 }
