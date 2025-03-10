@@ -17,7 +17,9 @@ const TempArticleListPage = async () => {
 
   return (
     <HydrationBoundary state={tempArticleState}>
-      <TempArticleListView numOfArticles={numOfArticles} />
+      <section className="media-padding-x flex min-h-screen flex-col">
+        <TempArticleListView numOfArticles={numOfArticles} />
+      </section>
     </HydrationBoundary>
   );
 };

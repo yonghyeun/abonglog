@@ -29,6 +29,7 @@ export const AdminArticlePage: React.FC<ArticlePageProps> = async ({
       <header>
         {/* 썸네일 이미지 */}
         <img
+          // TODO 기본 이미지 url 추가하기
           src={thumbnailUrl!}
           alt={`${title} 의 썸네일`}
           className="h-96 w-full object-cover"
