@@ -1,11 +1,11 @@
 import { createServerSupabase } from "@/shared/model";
 
-export const getNumberOfArticles = async (series: string | null) => {
+export const getNumberOfArticles = async (series?: string) => {
   const supabase = await createServerSupabase();
 
   // 전체 보기인 경우
 
-  if (series === null) {
+  if (series === undefined) {
     const { count, error } = await supabase
       .from("articles")
       .select("id", { count: "exact" })

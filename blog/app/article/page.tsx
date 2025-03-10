@@ -9,7 +9,8 @@ import {
 import {
   getArticleInfoPerSeries,
   getArticleList,
-  getArticleListBySeries
+  getArticleListBySeries,
+  getNumberOfArticles
 } from "@/entities/article/model";
 
 import { prefetchInfiniteQueryInServer } from "@/shared/model";
@@ -24,7 +25,10 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   searchParams
 }) => {
   const { series } = await searchParams;
+  // TODO 에러바운더리 도입하면 해당 쿼리문 제거하기
   const numOfSeriesArray = await getArticleInfoPerSeries().queryFn();
+
+  const numOfArticles = await getNumberOfArticles(series);
 
   const searchedSeries = numOfSeriesArray.find(
     (data) => data.seriesName === series
@@ -36,15 +40,10 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
       getArticleList("published")
     );
 
-    const totalNumOfArticles = numOfSeriesArray.reduce(
-      (acc, cur) => acc + cur["numOfArticles"],
-      0
-    );
-
     return (
       <HydrationBoundary state={articleListState}>
         <section className="media-padding-x flex min-h-screen flex-col">
-          <EveryArticleListPage numOfArticles={totalNumOfArticles} />
+          <EveryArticleListPage numOfArticles={numOfArticles} />
         </section>
       </HydrationBoundary>
     );
@@ -61,7 +60,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
         <section className="media-padding-x flex min-h-screen flex-col">
           <ArticleListBySeriesPage
             seriesName={series}
-            numOfArticles={searchedSeries["numOfArticles"]}
+            numOfArticles={numOfArticles}
           />
         </section>
       </HydrationBoundary>
@@ -69,7 +68,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   }
 
   // 찾는 시리즈가 없는 경우 404
-
+  // TODO errorboundary 를 통해 404 페이지로 이동시키기
   return <NotFound series={series} />;
 };
 
