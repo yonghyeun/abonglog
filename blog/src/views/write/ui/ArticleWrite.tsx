@@ -153,7 +153,7 @@ const ImageUploadInput: React.FC = () => {
 
   const blobImageStack = useRef<string[]>([]);
 
-  const handleImageUplaod = async ({
+  const handleImageUpload = async ({
     target
   }: React.ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
@@ -210,7 +210,7 @@ const ImageUploadInput: React.FC = () => {
       id="article-file-upload"
       labelTitle="이미지 업로드"
       inputProps={{
-        onChange: handleImageUplaod,
+        onChange: handleImageUpload,
         disabled: isPending,
         multiple: true
       }}

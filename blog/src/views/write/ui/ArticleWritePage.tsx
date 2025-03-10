@@ -10,8 +10,8 @@ interface ArticleWritePageProps {
   initialState?: Partial<{
     // step 1 state
     title: string;
-    selectedTags: string[];
-    selectedSereis: string;
+    tags: string[];
+    seriesName: string;
     markdown: string;
     html: string;
 
