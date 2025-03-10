@@ -17,7 +17,7 @@ interface ArticleWritePageProps {
 
     // step 2 state
     description: string;
-    thumbnailUrl: string;
+    thumbnailUrl: string | null;
   }>;
 
   articleId: number;
