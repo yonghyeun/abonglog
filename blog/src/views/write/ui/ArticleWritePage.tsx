@@ -7,16 +7,30 @@ import { BackwardIcon } from "@/shared/config";
 import { Button } from "@/shared/ui/Button";
 
 interface ArticleWritePageProps {
+  initialState?: Partial<{
+    // step 1 state
+    title: string;
+    tags: string[];
+    seriesName: string;
+    markdown: string;
+    html: string;
+
+    // step 2 state
+    description: string;
+    thumbnailUrl: string | null;
+  }>;
+
   articleId: number;
 }
 
 export const ArticleWritePage: React.FC<ArticleWritePageProps> = ({
-  articleId
+  articleId,
+  initialState
 }) => {
   const [step, setStep] = useState<1 | 2>(1);
 
   return (
-    <ArticleWriteView articleId={articleId}>
+    <ArticleWriteView articleId={articleId} initialState={initialState}>
       {step === 1 ? (
         <section className="media-padding-x">
           <div className="mb-2 flex h-screen">

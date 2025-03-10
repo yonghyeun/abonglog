@@ -4,34 +4,36 @@ import { createStore, useStore } from "zustand";
 interface ArticleWriteStoreState {
   // step 1 state
   title: string;
-  selectedTags: string[];
-  selectedSereis: string;
-  markdown: string;
+  tags: string[];
+  seriesName: string;
+  content: string;
   html: string;
   articleId: number;
 
   // step 2 state
   description: string;
-  thumbnailUrl: string;
+  thumbnailUrl: string | null;
 }
 
 interface ArticleWriteStoreAction {
   setTitle: (title: string | ((state: string) => string)) => void;
-  setSelectedTags: (tags: string[] | ((state: string[]) => string[])) => void;
-  setSelectedSeries: (series: string | ((state: string) => string)) => void;
-  setMarkdown: (markdown: string | ((state: string) => string)) => void;
+  setTags: (tags: string[] | ((state: string[]) => string[])) => void;
+  setSeriesName: (series: string | ((state: string) => string)) => void;
+  setContent: (content: string | ((state: string) => string)) => void;
   setDescription: (description: string | ((state: string) => string)) => void;
-  setThumbnailUrl: (thumbnailUrl: string | ((state: string) => string)) => void;
+  setThumbnailUrl: (
+    thumbnailUrl: (string | null) | ((state: string | null) => string)
+  ) => void;
   setHtml: (html: string | ((state: string) => string)) => void;
 }
 
 const ARTICLE_WRITE_INITIAL_STATE: ArticleWriteStoreState = {
   title: "",
-  selectedTags: [],
-  selectedSereis: "",
-  markdown: "",
+  tags: [],
+  seriesName: "",
+  content: "",
   description: "",
-  thumbnailUrl: "",
+  thumbnailUrl: null,
   html: "",
   articleId: 0
 };
@@ -49,20 +51,20 @@ export const createArticleWriteStore = (
           typeof action === "function" ? action(get().title) : action;
         set({ title: newState });
       },
-      setSelectedTags: (action) => {
+      setTags: (action) => {
         const newState =
-          typeof action === "function" ? action(get().selectedTags) : action;
-        set({ selectedTags: newState });
+          typeof action === "function" ? action(get().tags) : action;
+        set({ tags: newState });
       },
-      setSelectedSeries: (action) => {
+      setSeriesName: (action) => {
         const newState =
-          typeof action === "function" ? action(get().selectedSereis) : action;
-        set({ selectedSereis: newState });
+          typeof action === "function" ? action(get().seriesName) : action;
+        set({ seriesName: newState });
       },
-      setMarkdown: (action) => {
+      setContent: (action) => {
         const newState =
-          typeof action === "function" ? action(get().markdown) : action;
-        set({ markdown: newState });
+          typeof action === "function" ? action(get().content) : action;
+        set({ content: newState });
       },
       setDescription: (action) => {
         const newState =

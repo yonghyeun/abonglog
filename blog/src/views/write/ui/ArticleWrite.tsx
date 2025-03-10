@@ -37,14 +37,14 @@ type ArticleWriteViewProps = {
   initialState?: Partial<{
     // step 1 state
     title: string;
-    selectedTags: string[];
-    selectedSereis: string;
-    markdown: string;
+    tags: string[];
+    seriesName: string;
+    content: string;
     html: string;
 
     // step 2 state
     description: string;
-    thumbnailUrl: string;
+    thumbnailUrl: string | null;
   }>;
 
   articleId: number;
@@ -91,10 +91,8 @@ const TitleInput = () => {
 
 const TagList = () => {
   const { data } = useGetTagList();
-  const selectedTags = useArticleWriteStore((state) => state.selectedTags);
-  const setSelectedTags = useArticleWriteStore(
-    (state) => state.setSelectedTags
-  );
+  const tags = useArticleWriteStore((state) => state.tags);
+  const setSelectedTags = useArticleWriteStore((state) => state.setTags);
 
   return (
     <div className="relative mt-4 flex items-center gap-2 border bg-gray-100 p-2">
@@ -103,11 +101,11 @@ const TagList = () => {
         onEachTagClick={(tag) => {
           setSelectedTags((prev) => [...prev, tag.name]);
         }}
-        tags={data.filter((tag) => !selectedTags.includes(tag.name))}
+        tags={data.filter((tag) => !tags.includes(tag.name))}
       />
       {/* 선택된 태그 리스트 */}
       <List.UnOrder>
-        {selectedTags.map((name) => (
+        {tags.map((name) => (
           <List.Item
             key={name}
             onClick={() =>
@@ -124,26 +122,24 @@ const TagList = () => {
 
 const SeriesList = () => {
   const { data } = useGetSeriesList();
-  const selectedSereis = useArticleWriteStore((state) => state.selectedSereis);
-  const setSelectedSeries = useArticleWriteStore(
-    (state) => state.setSelectedSeries
-  );
+  const seriesName = useArticleWriteStore((state) => state.seriesName);
+  const setSeriesName = useArticleWriteStore((state) => state.setSeriesName);
 
   return (
     <div className="flex flex-grow gap-2">
       {/* 시리즈 셀렉트 토글 */}
       <SeriesSelectToggle
-        seriesList={data.filter((series) => series.name !== selectedSereis)}
-        onEachSeriesClick={({ name }) => setSelectedSeries(name)}
+        seriesList={data.filter((series) => series.name !== seriesName)}
+        onEachSeriesClick={({ name }) => setSeriesName(name)}
       />
       {/* 선택된 시리즈 명 */}
       <p
         className="flex-grow cursor-pointer text-ellipsis text-blue-700"
         onClick={() => {
-          setSelectedSeries("");
+          setSeriesName("");
         }}
       >
-        {selectedSereis || ""}
+        {seriesName || ""}
       </p>
     </div>
   );
@@ -153,11 +149,11 @@ const ImageUploadInput: React.FC = () => {
   const { mutate: uploadImage, isPending } = usePostArticleImage();
 
   const articleId = useArticleWriteStore((state) => state.articleId);
-  const setMarkdown = useArticleWriteStore((state) => state.setMarkdown);
+  const setContent = useArticleWriteStore((state) => state.setContent);
 
   const blobImageStack = useRef<string[]>([]);
 
-  const handleImageUplaod = async ({
+  const handleImageUpload = async ({
     target
   }: React.ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
@@ -166,13 +162,13 @@ const ImageUploadInput: React.FC = () => {
       return;
     }
 
-    // API 요청 전 blob url 주소로 이미지를 미리 표현하기 위해 markdown 상태를 변경 합니다.
+    // API 요청 전 blob url 주소로 이미지를 미리 표현하기 위해 content 상태를 변경 합니다.
 
     blobImageStack.current = [...files].map(
       (file) => `![image](${URL.createObjectURL(file)})`
     );
 
-    setMarkdown((prev) => `${prev}\n${blobImageStack.current.join("\n")}`);
+    setContent((prev) => `${prev}\n${blobImageStack.current.join("\n")}`);
 
     const compressedFiles = await Promise.all(
       [...files].map((file) => compressImage(file))
@@ -186,7 +182,7 @@ const ImageUploadInput: React.FC = () => {
       // API 요청 성공 혹은 실패 후 마크다운 상태를 변경 합니다.
       {
         onSuccess: (data) => {
-          setMarkdown((prev) => {
+          setContent((prev) => {
             blobImageStack.current.forEach((blobUrl, index) => {
               prev = prev.replace(blobUrl, `![image](${data[index].imageUrl})`);
             });
@@ -196,7 +192,7 @@ const ImageUploadInput: React.FC = () => {
           });
         },
         onError: () => {
-          setMarkdown((prev) => {
+          setContent((prev) => {
             blobImageStack.current.forEach((blobUrl) => {
               prev = prev.replace(blobUrl, "이미지 업로드에 실패했습니다.");
             });
@@ -214,7 +210,7 @@ const ImageUploadInput: React.FC = () => {
       id="article-file-upload"
       labelTitle="이미지 업로드"
       inputProps={{
-        onChange: handleImageUplaod,
+        onChange: handleImageUpload,
         disabled: isPending,
         multiple: true
       }}
@@ -228,15 +224,15 @@ const MarkdownEditor = () => {
 
   const { mutate: uploadImage } = usePostArticleImage();
 
-  const markdown = useArticleWriteStore((state) => state.markdown);
+  const content = useArticleWriteStore((state) => state.content);
   const articleId = useArticleWriteStore((state) => state.articleId);
-  const setMarkdown = useArticleWriteStore((state) => state.setMarkdown);
+  const setContent = useArticleWriteStore((state) => state.setContent);
   const setHtml = useArticleWriteStore((state) => state.setHtml);
 
   const handleChangeMarkdown = async ({
     target
   }: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMarkdown(target.value);
+    setContent(target.value);
 
     const newHtml = await rehypeMarkdown(target.value);
     setHtml(newHtml);
@@ -262,9 +258,9 @@ const MarkdownEditor = () => {
       const selectionStart = textArea.selectionStart;
       const selectionEnd = textArea.selectionEnd;
 
-      setMarkdown(
-        (markdown) =>
-          `${markdown.slice(0, selectionStart)}${" ".repeat(TAB_SIZE)}${markdown.slice(selectionEnd)}`
+      setContent(
+        (content) =>
+          `${content.slice(0, selectionStart)}${" ".repeat(TAB_SIZE)}${content.slice(selectionEnd)}`
       );
 
       setTimeout(() => {
@@ -290,7 +286,7 @@ const MarkdownEditor = () => {
       (file) => `![image](${URL.createObjectURL(file)})`
     );
 
-    setMarkdown((prev) => `${prev}\n${blobImageStack.current.join("\n")}`);
+    setContent((prev) => `${prev}\n${blobImageStack.current.join("\n")}`);
 
     const compressedFiles = await Promise.all(
       [...files].map((file) => compressImage(file))
@@ -304,7 +300,7 @@ const MarkdownEditor = () => {
       // API 요청 성공 혹은 실패 후 마크다운 상태를 변경 합니다.
       {
         onSuccess: (data) => {
-          setMarkdown((prev) => {
+          setContent((prev) => {
             blobImageStack.current.forEach((blobUrl, index) => {
               prev = prev.replace(blobUrl, `![image](${data[index].imageUrl})`);
             });
@@ -316,7 +312,7 @@ const MarkdownEditor = () => {
           });
         },
         onError: () => {
-          setMarkdown((prev) => {
+          setContent((prev) => {
             blobImageStack.current.forEach((blobUrl) => {
               prev = prev.replace(blobUrl, "이미지 업로드에 실패했습니다.");
             });
@@ -337,7 +333,7 @@ const MarkdownEditor = () => {
       className="flex-grow resize-none border p-2 text-sm focus:outline-none"
       placeholder="게시글 내용을 입력해 주세요"
       autoCorrect="off"
-      value={markdown}
+      value={content}
       onChange={handleChangeMarkdown}
       onKeyDown={handleKeyDownTextArea}
       onPaste={handleImagePaste}
@@ -366,9 +362,9 @@ const TempSaveButton = () => {
   const handleSave = () => {
     const {
       title,
-      markdown,
-      selectedTags,
-      selectedSereis,
+      content,
+      tags,
+      seriesName,
       articleId,
       thumbnailUrl,
       description
@@ -377,9 +373,9 @@ const TempSaveButton = () => {
     addNewArticle(
       {
         title: title || `${articleId} 의 임시 저장된 글`,
-        content: markdown,
-        tags: selectedTags,
-        seriesName: selectedSereis,
+        content: content,
+        tags: tags,
+        seriesName: seriesName,
         status: "draft",
         id: articleId,
         author: "yonghyeun",
@@ -471,9 +467,9 @@ const ThumbnailUploadInput = () => {
 };
 
 const ArticleImageGrid = () => {
-  const markdown = useArticleWriteStore((state) => state.markdown);
+  const content = useArticleWriteStore((state) => state.content);
 
-  const imageUrlsInMarkdown = findImageUrl(markdown);
+  const imageUrlsInMarkdown = findImageUrl(content);
 
   const thumbnailUrl = useArticleWriteStore((state) => state.thumbnailUrl);
   const setThumbnailUrl = useArticleWriteStore(
@@ -513,9 +509,9 @@ const SubmitButton = () => {
   const handleSaveArticle = () => {
     const {
       title,
-      markdown,
-      selectedTags,
-      selectedSereis,
+      content,
+      tags,
+      seriesName,
       articleId,
       thumbnailUrl,
       description
@@ -523,9 +519,9 @@ const SubmitButton = () => {
 
     if (
       !title ||
-      !markdown ||
-      !selectedTags.length ||
-      !selectedSereis ||
+      !content ||
+      !tags.length ||
+      !seriesName ||
       !thumbnailUrl ||
       !description
     ) {
@@ -536,9 +532,9 @@ const SubmitButton = () => {
     addNewArticle(
       {
         title: title,
-        content: markdown,
-        tags: selectedTags,
-        seriesName: selectedSereis,
+        content: content,
+        tags: tags,
+        seriesName: seriesName,
         status: "published",
         id: articleId,
         author: "yonghyeun",
@@ -567,15 +563,15 @@ const SubmitButton = () => {
 };
 
 const PreviewCard = () => {
-  const { title, selectedTags, selectedSereis, thumbnailUrl, description } =
+  const { title, tags, seriesName, thumbnailUrl, description } =
     useArticleWriteStore((state) => state);
 
   return (
     <ArticlePreviewCard
       updatedAt={new Date().toLocaleString()}
       title={title}
-      tags={selectedTags}
-      seriesName={selectedSereis}
+      tags={tags}
+      seriesName={seriesName}
       thumbnailUrl={thumbnailUrl}
       description={description}
     />
