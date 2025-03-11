@@ -287,6 +287,10 @@ const MarkdownEditor = () => {
       .flatMap((dataTransferItem) => dataTransferItem.getAsFile())
       .filter((file) => !!file);
 
+    if (files.length === 0) {
+      return;
+    }
+
     blobImageStack.current = [...files].map(
       (file) => `![image](${URL.createObjectURL(file)})`
     );
