@@ -11,7 +11,7 @@ interface ArticleEditPageProps {
 const ArticleEditPage: React.FC<ArticleEditPageProps> = async ({ params }) => {
   const { articleId } = await params;
 
-  const articleData = await getArticleById(articleId);
+  const articleData = await getArticleById(articleId, null);
 
   return (
     <ArticleWritePage
