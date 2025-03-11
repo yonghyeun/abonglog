@@ -9,7 +9,7 @@ interface ArticlePageProps {
 
 const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   const { articleId } = await params;
-  const articleData = await getArticleById(articleId);
+  const articleData = await getArticleById(articleId, "published");
 
   const {
     data: { user }

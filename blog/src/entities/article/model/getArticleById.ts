@@ -7,23 +7,42 @@ import { snakeToCamel } from "@/shared/util";
 
 export const getArticleById = async (
   articleId: string,
-  status?: "published" | "draft"
+  status: "published" | "draft" | null
 ) => {
   const supabase = createBrowserSupabase();
 
-  const { data, error } = await supabase
-    .from("articles")
-    .select(
-      `
+  let selectArticleByIdResponse;
+
+  if (status === null) {
+    selectArticleByIdResponse = await supabase
+      .from("articles")
+      .select(
+        `
         id , title , author , 
         series_name , description , 
         status , updated_at, thumbnail_url,
         content, article_tags(tag_name)
       `
-    )
-    .eq("status", status || "published")
-    .eq("id", +articleId)
-    .single();
+      )
+      .eq("id", +articleId)
+      .single();
+  } else {
+    selectArticleByIdResponse = await supabase
+      .from("articles")
+      .select(
+        `
+        id , title , author , 
+        series_name , description , 
+        status , updated_at, thumbnail_url,
+        content, article_tags(tag_name)
+      `
+      )
+      .eq("status", status)
+      .eq("id", +articleId)
+      .single();
+  }
+
+  const { data, error } = selectArticleByIdResponse;
 
   if (error) {
     throw error;

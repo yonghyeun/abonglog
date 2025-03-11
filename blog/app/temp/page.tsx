@@ -1,6 +1,6 @@
 import { HydrationBoundary } from "@tanstack/react-query";
 
-import { TempArticleListView } from "@/views/article/ui/TempArticleListView";
+import { TempArticleListView } from "@/views/article/ui";
 
 import {
   getArticleList,
