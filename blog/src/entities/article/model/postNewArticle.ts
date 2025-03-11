@@ -58,10 +58,9 @@ export const usePostNewArticle = () => {
   const queryClient = useQueryClient();
   return useMutation({
     ...postNewArticle(),
-    onSuccess: ({ data: { type } }) => {
-      const queryKey = ARTICLE_QUERY_KEY.default(type);
+    onSuccess: (_, { status }) => {
       queryClient.invalidateQueries({
-        queryKey
+        queryKey: ARTICLE_QUERY_KEY.default(status)
       });
     }
   });
