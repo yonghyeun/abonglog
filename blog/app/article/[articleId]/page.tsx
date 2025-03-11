@@ -1,8 +1,5 @@
 import { AdminArticlePage, GuestArticlePage } from "@/views/[article]/ui";
 
-import { parsingHeading } from "@/features/article/lib/createNestedHeadings";
-
-import { rehypeMarkdown } from "@/entities/article/lib";
 import { getArticleById } from "@/entities/article/model";
 import { getAuthorizedUser } from "@/entities/user/model";
 
@@ -14,8 +11,6 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   const { articleId } = await params;
   const articleData = await getArticleById(articleId);
 
-  const html = await rehypeMarkdown(articleData.content);
-  const headings = parsingHeading(articleData.content);
   const {
     data: { user }
   } = await getAuthorizedUser();
@@ -25,9 +20,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
       <AdminArticlePage
         articleId={articleId}
         articleData={{
-          ...articleData,
-          headings,
-          html
+          ...articleData
         }}
       />
     );
@@ -37,9 +30,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
     <GuestArticlePage
       articleId={articleId}
       articleData={{
-        ...articleData,
-        headings,
-        html
+        ...articleData
       }}
     />
   );
