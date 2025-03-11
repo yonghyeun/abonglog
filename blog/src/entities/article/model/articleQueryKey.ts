@@ -3,6 +3,9 @@ export type ArticleStatus = "published" | "draft";
 export const ARTICLE_QUERY_KEY = {
   default: (status: ArticleStatus) => ["article", status] as const,
 
+  latestArticle: () =>
+    [...ARTICLE_QUERY_KEY.default("published"), "latestArticle"] as const,
+
   list_all: (status: ArticleStatus) =>
     [...ARTICLE_QUERY_KEY.default(status), "all"] as const,
   list_series: (status: ArticleStatus, seriesName: string) =>
