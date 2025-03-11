@@ -17,5 +17,5 @@ export const ARTICLE_QUERY_KEY = {
     [`popular article ${period}`] as const,
 
   infoPerSeries: () =>
-    [ARTICLE_QUERY_KEY.default("published"), "perSeries"] as const
+    [...ARTICLE_QUERY_KEY.default("published"), "perSeries"] as const
 };
