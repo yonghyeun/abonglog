@@ -3,13 +3,26 @@ export type ArticleStatus = "published" | "draft";
 export const ARTICLE_QUERY_KEY = {
   default: (status: ArticleStatus) => ["article", status] as const,
 
+  numberOfArticles: (status: ArticleStatus, series: string) =>
+    [
+      ...ARTICLE_QUERY_KEY.default(status),
+      "numberOfArticles",
+      { series }
+    ] as const,
+
   latestArticle: () =>
     [...ARTICLE_QUERY_KEY.default("published"), "latestArticle"] as const,
 
   list_all: (status: ArticleStatus) =>
-    [...ARTICLE_QUERY_KEY.default(status), "all"] as const,
-  list_series: (status: ArticleStatus, seriesName: string) =>
-    [...ARTICLE_QUERY_KEY.default(status), seriesName] as const,
+    [
+      ...ARTICLE_QUERY_KEY.default(status),
+      "list",
+      {
+        series: "all"
+      }
+    ] as const,
+  list_series: (status: ArticleStatus, series: string) =>
+    [...ARTICLE_QUERY_KEY.default(status), "list", { series }] as const,
 
   // 인기글 같은 경우엔 자주 invalidate 될 필요 없다.
   // 인기글의 invalidate 는 ISR과 GA 를 통해 변경하도록 한다.

@@ -13,7 +13,10 @@ import {
   getNumberOfArticles
 } from "@/entities/article/model";
 
-import { prefetchInfiniteQueryInServer } from "@/shared/model";
+import {
+  prefetchInfiniteQueryInServer,
+  prefetchQueryInServer
+} from "@/shared/model";
 
 interface ArticleListPageProps {
   searchParams: {
@@ -25,10 +28,13 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   searchParams
 }) => {
   const { series } = await searchParams;
+
   // TODO 에러바운더리 도입하면 해당 쿼리문 제거하기
   const numOfSeriesArray = await getArticleInfoPerSeries().queryFn();
 
-  const numOfArticles = await getNumberOfArticles(series);
+  const numOfArticlesState = await prefetchQueryInServer(() =>
+    getNumberOfArticles(series)
+  );
 
   const searchedSeries = numOfSeriesArray.find(
     (data) => data.seriesName === series
@@ -41,9 +47,14 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
     );
 
     return (
-      <HydrationBoundary state={articleListState}>
+      <HydrationBoundary
+        state={{
+          ...articleListState,
+          ...numOfArticlesState
+        }}
+      >
         <section className="media-padding-x flex min-h-screen flex-col">
-          <EveryArticleListPage numOfArticles={numOfArticles} />
+          <EveryArticleListPage />
         </section>
       </HydrationBoundary>
     );
@@ -56,12 +67,14 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
     );
 
     return (
-      <HydrationBoundary state={articleListState}>
+      <HydrationBoundary
+        state={{
+          ...articleListState,
+          ...numOfArticlesState
+        }}
+      >
         <section className="media-padding-x flex min-h-screen flex-col">
-          <ArticleListBySeriesPage
-            seriesName={series}
-            numOfArticles={numOfArticles}
-          />
+          <ArticleListBySeriesPage seriesName={series} />
         </section>
       </HydrationBoundary>
     );

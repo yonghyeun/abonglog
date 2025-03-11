@@ -1,40 +1,40 @@
 "use client";
 
 import Link from "next/link";
+import React, { Suspense } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
-import { useGetInfiniteArticleListBySeries } from "@/entities/article/model";
+import {
+  useGetInfiniteArticleListBySeries,
+  useGetNumberOfArticles
+} from "@/entities/article/model";
 
 import { useObserver } from "@/shared/lib";
 import { Grid } from "@/shared/ui/Grid";
 
 interface ArticleListBySeriesPageProps {
   seriesName: string;
-  numOfArticles: number;
 }
 
-export const ArticleListBySeriesPage: React.FC<
-  ArticleListBySeriesPageProps
-> = ({ seriesName, numOfArticles }) => {
+const ArticleList = ({
+  seriesName,
+  numOfArticles
+}: {
+  seriesName: string;
+  numOfArticles: number;
+}) => {
   const {
     data: { pages },
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
   } = useGetInfiniteArticleListBySeries("published", seriesName, numOfArticles);
+
   const observerRef = useObserver(() => fetchNextPage());
 
   return (
     <>
-      {/* header */}
-      <header className="flex flex-col items-center">
-        <h3>시리즈별로 보기</h3>
-        <div className="flex items-center gap-2">
-          <h1 className="text-blue-900">{seriesName}</h1>
-          <span className="text-gray-500">({numOfArticles})</span>
-        </div>
-      </header>
       <section className="p-2">
         <Grid>
           {pages.map((article) => (
@@ -65,5 +65,24 @@ export const ArticleListBySeriesPage: React.FC<
         )}
       </section>
     </>
+  );
+};
+
+export const ArticleListBySeriesPage: React.FC<
+  ArticleListBySeriesPageProps
+> = ({ seriesName }) => {
+  const { data: numOfArticles } = useGetNumberOfArticles(seriesName);
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <header className="flex flex-col items-center">
+        <h3>시리즈별로 보기</h3>
+        <div className="flex items-center gap-2">
+          <h1 className="text-blue-900">{seriesName}</h1>
+          <span className="text-gray-500">({numOfArticles})</span>
+        </div>
+      </header>
+      <ArticleList seriesName={seriesName} numOfArticles={numOfArticles} />
+    </Suspense>
   );
 };

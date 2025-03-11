@@ -1,21 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import React, { Suspense } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
-import { useGetInfiniteArticleList } from "@/entities/article/model";
+import {
+  useGetInfiniteArticleList,
+  useGetNumberOfTempArticles
+} from "@/entities/article/model";
 
 import { useObserver } from "@/shared/lib";
 import { Grid } from "@/shared/ui/Grid";
 
-interface TempArticleListViewProps {
-  numOfArticles: number;
-}
-
-export const TempArticleListView: React.FC<TempArticleListViewProps> = ({
-  numOfArticles
-}) => {
+const ArticleList = ({ numOfArticles }: { numOfArticles: number }) => {
   const {
     data: { pages },
     isFetchingNextPage,
@@ -27,13 +25,6 @@ export const TempArticleListView: React.FC<TempArticleListViewProps> = ({
 
   return (
     <>
-      {/* header */}
-      <header className="flex justify-center">
-        <div className="flex items-center gap-2">
-          <h1 className="text-blue-900">임시 저장된 모든 게시글 보기</h1>
-          <span className="text-gray-500">({numOfArticles})</span>
-        </div>
-      </header>
       <section className="p-2">
         <Grid>
           {pages.map((article) => (
@@ -64,5 +55,21 @@ export const TempArticleListView: React.FC<TempArticleListViewProps> = ({
         )}
       </section>
     </>
+  );
+};
+
+export const TempArticleListView = () => {
+  const { data: numOfArticles } = useGetNumberOfTempArticles();
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <header className="flex justify-center">
+        <div className="flex items-center gap-2">
+          <h1 className="text-blue-900">임시 저장된 모든 게시글 보기</h1>
+          <span className="text-gray-500">({numOfArticles})</span>
+        </div>
+      </header>
+      <ArticleList numOfArticles={numOfArticles} />
+    </Suspense>
   );
 };
