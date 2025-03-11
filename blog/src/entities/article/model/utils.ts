@@ -1,5 +1,11 @@
 import { parsingHeading, rehypeMarkdown } from "../lib";
 
+export const extractTagName = (articleTags: { tagName: string | null }[]) => {
+  return articleTags
+    .filter(({ tagName }) => !tagName)
+    .map(({ tagName }) => tagName);
+};
+
 export const transformArticleData = async <
   T extends { content: string; articleTags: { tagName: string | null }[] }
 >({
@@ -13,7 +19,7 @@ export const transformArticleData = async <
   return {
     html,
     headings,
-    tags: articleTags.map(({ tagName }) => tagName!),
+    tags: extractTagName(articleTags),
     ...data
   };
 };
