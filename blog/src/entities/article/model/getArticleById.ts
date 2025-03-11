@@ -5,58 +5,60 @@ import { parsingHeading } from "@/features/article/lib";
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
-export const getArticleById = async (
-  articleId: string,
+const ARTICLE_SELECT_FIELDS = `
+  id , title , author , 
+  series_name , description , 
+  status , updated_at, thumbnail_url,
+  content, article_tags(tag_name)
+`;
+
+const fetchArticleById = (
+  articleId: number,
   status: "published" | "draft" | null
 ) => {
   const supabase = createBrowserSupabase();
 
-  let selectArticleByIdResponse;
+  return status === null
+    ? supabase
+        .from("articles")
+        .select(ARTICLE_SELECT_FIELDS)
+        .eq("id", articleId)
+        .single()
+    : supabase
+        .from("articles")
+        .select(ARTICLE_SELECT_FIELDS)
+        .eq("status", status)
+        .eq("id", articleId)
+        .single();
+};
 
-  if (status === null) {
-    selectArticleByIdResponse = await supabase
-      .from("articles")
-      .select(
-        `
-        id , title , author , 
-        series_name , description , 
-        status , updated_at, thumbnail_url,
-        content, article_tags(tag_name)
-      `
-      )
-      .eq("id", +articleId)
-      .single();
-  } else {
-    selectArticleByIdResponse = await supabase
-      .from("articles")
-      .select(
-        `
-        id , title , author , 
-        series_name , description , 
-        status , updated_at, thumbnail_url,
-        content, article_tags(tag_name)
-      `
-      )
-      .eq("status", status)
-      .eq("id", +articleId)
-      .single();
-  }
+const transformArticleData = async <
+  T extends { content: string; articleTags: { tagName: string | null }[] }
+>({
+  content,
+  articleTags,
+  ...data
+}: T) => {
+  const html = await rehypeMarkdown(content);
+  const headings = parsingHeading(content);
 
-  const { data, error } = selectArticleByIdResponse;
+  return {
+    html,
+    headings,
+    tags: articleTags.map(({ tagName }) => tagName!),
+    ...data
+  };
+};
+
+export const getArticleById = async (
+  articleId: string,
+  status: "published" | "draft" | null
+) => {
+  const { data, error } = await fetchArticleById(Number(articleId), status);
 
   if (error) {
     throw error;
   }
 
-  const { articleTags, ...articleData } = snakeToCamel(data);
-
-  const html = await rehypeMarkdown(articleData.content);
-  const headings = parsingHeading(articleData.content);
-
-  return {
-    ...articleData,
-    headings,
-    html,
-    tags: articleTags.map(({ tagName }) => tagName!)
-  };
+  return transformArticleData(snakeToCamel(data));
 };
