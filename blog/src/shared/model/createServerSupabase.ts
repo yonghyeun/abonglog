@@ -43,3 +43,5 @@ export const createServerSupabase = async () => {
     }
   });
 };
+
+export type ServerSupabase = Awaited<ReturnType<typeof createServerSupabase>>;

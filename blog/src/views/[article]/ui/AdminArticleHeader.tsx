@@ -2,7 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 import { useDeleteArticle } from "@/entities/article/model";
@@ -21,8 +21,12 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   articleId
 }) => {
   const router = useRouter();
-  const { mutate: deleteArticle } = useDeleteArticle();
+  const pathname = usePathname();
   const queryClient = useQueryClient();
+
+  const isTempArticle = pathname.includes("temp");
+
+  const { mutate: deleteArticle } = useDeleteArticle();
 
   const handleDelete = () => {
     if (confirm("해당 게시글을 삭제하시겠습니까?")) {
@@ -30,7 +34,9 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
         onSuccess: () => {
           alert("게시글이 제거되었습니다.");
           queryClient.invalidateQueries({
-            queryKey: ARTICLE_QUERY_KEY.default("published")
+            queryKey: ARTICLE_QUERY_KEY.default(
+              isTempArticle ? "draft" : "published"
+            )
           });
           router.back();
         }
