@@ -25,6 +25,8 @@ export const getPopularArticleList = (
         `
       )
       .limit(12)
+      .eq("status", "published")
+      .order("updated_at", { ascending: false })
       .then(snakeToCamel);
 
     if (error) {
