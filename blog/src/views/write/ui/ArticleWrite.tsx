@@ -385,7 +385,7 @@ const TempSaveButton = () => {
       {
         onSuccess: (data) => {
           alert(data.message);
-          router.push("/");
+          router.push("/temp");
         }
       }
     );
