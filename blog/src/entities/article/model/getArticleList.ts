@@ -21,8 +21,7 @@ const fetchArticleList = (status: ArticleStatus, pageParam: number) => {
     .select(SELECT_ARTICLE_LIST_FIELDS)
     .eq("status", status)
     .order("updated_at", { ascending: false })
-    .range(pageParam * ITEM_PER_PAGE, (pageParam + 1) * ITEM_PER_PAGE - 1)
-    .then(snakeToCamel);
+    .range(pageParam * ITEM_PER_PAGE, (pageParam + 1) * ITEM_PER_PAGE - 1);
 };
 
 export const getArticleList = (status: ArticleStatus) => {
@@ -36,7 +35,7 @@ export const getArticleList = (status: ArticleStatus) => {
     }
 
     return {
-      data: data.map(({ articleTags, ...article }) => ({
+      data: snakeToCamel(data).map(({ articleTags, ...article }) => ({
         tags: extractTagName(articleTags),
         ...article
       })),
