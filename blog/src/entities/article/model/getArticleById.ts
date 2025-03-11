@@ -1,6 +1,4 @@
-import { rehypeMarkdown } from "../lib";
-
-import { parsingHeading } from "@/features/article/lib";
+import { transformArticleData } from "./utils";
 
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
@@ -30,24 +28,6 @@ const fetchArticleById = (
         .eq("status", status)
         .eq("id", articleId)
         .single();
-};
-
-const transformArticleData = async <
-  T extends { content: string; articleTags: { tagName: string | null }[] }
->({
-  content,
-  articleTags,
-  ...data
-}: T) => {
-  const html = await rehypeMarkdown(content);
-  const headings = parsingHeading(content);
-
-  return {
-    html,
-    headings,
-    tags: articleTags.map(({ tagName }) => tagName!),
-    ...data
-  };
 };
 
 export const getArticleById = async (
