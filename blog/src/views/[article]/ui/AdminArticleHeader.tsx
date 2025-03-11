@@ -1,12 +1,10 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 import { useDeleteArticle } from "@/entities/article/model";
-import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
 
 interface AdminArticleHeaderProps {
   articleId: string;
@@ -22,16 +20,12 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
 }) => {
   const router = useRouter();
   const { mutate: deleteArticle } = useDeleteArticle();
-  const queryClient = useQueryClient();
 
   const handleDelete = () => {
     if (confirm("해당 게시글을 삭제하시겠습니까?")) {
       deleteArticle(articleId, {
         onSuccess: () => {
           alert("게시글이 제거되었습니다.");
-          queryClient.invalidateQueries({
-            queryKey: ARTICLE_QUERY_KEY.default("published")
-          });
           router.back();
         }
       });
