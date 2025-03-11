@@ -1,3 +1,7 @@
+import { rehypeMarkdown } from "../lib";
+
+import { parsingHeading } from "@/features/article/lib";
+
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
@@ -27,8 +31,13 @@ export const getArticleById = async (
 
   const { articleTags, ...articleData } = snakeToCamel(data);
 
+  const html = await rehypeMarkdown(articleData.content);
+  const headings = parsingHeading(articleData.content);
+
   return {
     ...articleData,
+    headings,
+    html,
     tags: articleTags.map(({ tagName }) => tagName!)
   };
 };

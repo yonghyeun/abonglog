@@ -54,6 +54,12 @@ export const SideBar = () => {
                 시리즈 목록 보기
               </Link>
             </li>
+
+            <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-blue-900">
+              <Link href="/temp" className="py-2">
+                임시저장된 게시글 보기
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>

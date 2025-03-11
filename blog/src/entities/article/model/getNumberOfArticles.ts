@@ -1,49 +1,81 @@
-import { createServerSupabase } from "@/shared/model";
+import { ARTICLE_QUERY_KEY } from "./articleQueryKey";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-export const getNumberOfArticles = async (series?: string) => {
-  const supabase = await createServerSupabase();
+import { createBrowserSupabase } from "@/shared/model";
 
-  // 전체 보기인 경우
+export const getNumberOfArticles = (series?: string) => {
+  const queryKey = ARTICLE_QUERY_KEY.numberOfArticles(
+    "published",
+    series || "all"
+  );
 
-  if (series === undefined) {
+  const queryFn = async () => {
+    const supabase = await createBrowserSupabase();
+
+    // 전체 보기인 경우
+
+    if (series === undefined) {
+      const { count, error } = await supabase
+        .from("articles")
+        .select("id", { count: "exact" })
+        .eq("status", "published");
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return count ?? 0;
+    }
+
+    // 특정 시리즈가 존재하는 경우
+
     const { count, error } = await supabase
       .from("articles")
       .select("id", { count: "exact" })
-      .eq("status", "published");
+      .eq("status", "published")
+      .eq("series_name", series);
 
     if (error) {
       throw new Error(error.message);
     }
 
     return count ?? 0;
-  }
+  };
 
-  // 특정 시리즈가 존재하는 경우
-
-  const { count, error } = await supabase
-    .from("articles")
-    .select("id", { count: "exact" })
-    .eq("status", "published")
-    .eq("series_name", series);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return count ?? 0;
+  return {
+    queryKey,
+    queryFn
+  };
 };
 
-export const getNumberOfTempArticles = async () => {
-  const supabase = await createServerSupabase();
+export const getNumberOfTempArticles = () => {
+  const queryKey = ARTICLE_QUERY_KEY.numberOfArticles("draft", "all");
 
-  const { count, error } = await supabase
-    .from("articles")
-    .select("id", { count: "exact" })
-    .eq("status", "draft");
+  const queryFn = async () => {
+    const supabase = await createBrowserSupabase();
 
-  if (error) {
-    throw error;
-  }
+    const { count, error } = await supabase
+      .from("articles")
+      .select("id", { count: "exact" })
+      .eq("status", "draft");
 
-  return count ?? 0;
+    if (error) {
+      throw error;
+    }
+
+    return count ?? 0;
+  };
+
+  return {
+    queryKey,
+    queryFn
+  };
+};
+
+export const useGetNumberOfArticles = (series?: string) => {
+  return useSuspenseQuery(getNumberOfArticles(series));
+};
+
+export const useGetNumberOfTempArticles = () => {
+  return useSuspenseQuery(getNumberOfTempArticles());
 };

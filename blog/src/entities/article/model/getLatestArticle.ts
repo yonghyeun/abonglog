@@ -5,7 +5,7 @@ import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
 export const getLatestArticle = () => {
-  const queryKey = ARTICLE_QUERY_KEY.default("published");
+  const queryKey = ARTICLE_QUERY_KEY.latestArticle();
   const queryFn = async () => {
     const supabase = createBrowserSupabase();
     const { data, error } = await supabase

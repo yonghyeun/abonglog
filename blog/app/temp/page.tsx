@@ -7,18 +7,29 @@ import {
   getNumberOfTempArticles
 } from "@/entities/article/model";
 
-import { prefetchInfiniteQueryInServer } from "@/shared/model";
+import {
+  prefetchInfiniteQueryInServer,
+  prefetchQueryInServer
+} from "@/shared/model";
 
 const TempArticleListPage = async () => {
-  const numOfArticles = await getNumberOfTempArticles();
   const tempArticleState = await prefetchInfiniteQueryInServer(() =>
     getArticleList("draft")
   );
 
+  const numOfArticlesState = await prefetchQueryInServer(() =>
+    getNumberOfTempArticles()
+  );
+
   return (
-    <HydrationBoundary state={tempArticleState}>
+    <HydrationBoundary
+      state={{
+        ...tempArticleState,
+        ...numOfArticlesState
+      }}
+    >
       <section className="media-padding-x flex min-h-screen flex-col">
-        <TempArticleListView numOfArticles={numOfArticles} />
+        <TempArticleListView />
       </section>
     </HydrationBoundary>
   );
