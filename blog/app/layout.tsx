@@ -23,16 +23,16 @@ interface RootLayoutProps {
 const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   return (
     <html className={notoSans.className}>
-      <ServiceProvider>
-        <body className="flex min-h-screen flex-col bg-primary">
+      <body className="flex min-h-screen flex-col bg-primary">
+        <ServiceProvider>
           <Header />
           <main className="flex flex-grow flex-col">
             {modal}
             {children}
           </main>
           <Footer />
-        </body>
-      </ServiceProvider>
+        </ServiceProvider>
+      </body>
     </html>
   );
 };
