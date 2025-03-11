@@ -170,13 +170,29 @@ p {
 
 /* 코드블록 셋팅 */
 
-.pre-block > pre {
+.pre-block > code {
   margin: 0 0 1rem 0;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
-  padding: 2rem 1rem;
+  padding: 0 2rem 1rem 1rem;
   overflow: hidden;
   background-color: #212121;
   font-style: normal;
+  font-size: 1.1rem;
+}
+
+.pre-block > code:before {
+  content: attr(data-language);
+  color: #aaa;
+  text-align: right;
+  width: 100%;
+  display: block;
+  padding: 0.5rem 0;
+}
+
+/* 라인 줄 간격 설정 */
+.pre-block > code span {
+  letter-spacing: 0.02rem;
+  line-height: 1.5;
 }
 
 /* 라인 번호 설정 */

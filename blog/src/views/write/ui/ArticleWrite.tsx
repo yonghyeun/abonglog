@@ -6,7 +6,7 @@ import {
   useArticleWriteStore
 } from "../model";
 import { useRouter } from "next/navigation";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 import { SeriesSelectToggle } from "@/widgets/series/ui";
@@ -228,6 +228,9 @@ const MarkdownEditor = () => {
   const articleId = useArticleWriteStore((state) => state.articleId);
   const setContent = useArticleWriteStore((state) => state.setContent);
   const setHtml = useArticleWriteStore((state) => state.setHtml);
+  const setScrollOffset = useArticleWriteStore(
+    (state) => state.setScrollOffset
+  );
 
   const handleChangeMarkdown = async ({
     target
@@ -236,6 +239,8 @@ const MarkdownEditor = () => {
 
     const newHtml = await rehypeMarkdown(target.value);
     setHtml(newHtml);
+
+    setScrollOffset(target.scrollTop);
   };
 
   /**
@@ -281,6 +286,10 @@ const MarkdownEditor = () => {
       .filter(({ type }) => type.includes("image"))
       .flatMap((dataTransferItem) => dataTransferItem.getAsFile())
       .filter((file) => !!file);
+
+    if (files.length === 0) {
+      return;
+    }
 
     blobImageStack.current = [...files].map(
       (file) => `![image](${URL.createObjectURL(file)})`
@@ -344,12 +353,29 @@ const MarkdownEditor = () => {
 
 const MarkdownPreview = () => {
   const html = useArticleWriteStore((state) => state.html);
+  const scrollHeight = useArticleWriteStore((state) => state.scrollOffset);
+  const previewRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const preview = previewRef.current;
+
+    if (!preview) {
+      return;
+    }
+
+    preview.scrollTo({
+      top: scrollHeight,
+      behavior: "smooth"
+    });
+  }, [scrollHeight]);
+
   return (
     <article
       className={
         "hidden flex-grow overflow-auto border p-2 text-sm md:block md:w-1/2"
       }
       dangerouslySetInnerHTML={{ __html: html }}
+      ref={previewRef}
     />
   );
 };
