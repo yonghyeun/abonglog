@@ -55,9 +55,9 @@ export const TempArticleListView: React.FC<TempArticleListViewProps> = ({
               ))}
         </Grid>
         {/* Infinite scroll observer */}
-        <div ref={observerRef} />
-        {/* 모든 게시글을 가져오고 나면 */}
-        {!hasNextPage && (
+        {hasNextPage ? (
+          <div ref={observerRef} />
+        ) : (
           <div className="flex items-center justify-center py-12 text-gray-400">
             모든 임시 저장된 게시글을 가져왔습니다.
           </div>
