@@ -9,7 +9,7 @@ export const getArticleListBySeries = (
   status: ArticleStatus,
   seriesName: string
 ) => {
-  const queryKey = ARTICLE_QUERY_KEY.list_series(status, seriesName);
+  const queryKey = ARTICLE_QUERY_KEY.listSeries(status, seriesName);
 
   const queryFn = async ({ pageParam = 0 }) => {
     const supabase = await createBrowserSupabase();

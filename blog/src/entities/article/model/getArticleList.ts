@@ -6,7 +6,7 @@ import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
 export const getArticleList = (status: ArticleStatus) => {
-  const queryKey = ARTICLE_QUERY_KEY.list_all(status);
+  const queryKey = ARTICLE_QUERY_KEY.listAll(status);
 
   const queryFn = async ({ pageParam = 0 }) => {
     const supabase = await createBrowserSupabase();

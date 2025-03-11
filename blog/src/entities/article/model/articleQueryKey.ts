@@ -13,7 +13,7 @@ export const ARTICLE_QUERY_KEY = {
   latestArticle: () =>
     [...ARTICLE_QUERY_KEY.default("published"), "latestArticle"] as const,
 
-  list_all: (status: ArticleStatus) =>
+  listAll: (status: ArticleStatus) =>
     [
       ...ARTICLE_QUERY_KEY.default(status),
       "list",
@@ -21,7 +21,7 @@ export const ARTICLE_QUERY_KEY = {
         series: "all"
       }
     ] as const,
-  list_series: (status: ArticleStatus, series: string) =>
+  listSeries: (status: ArticleStatus, series: string) =>
     [...ARTICLE_QUERY_KEY.default(status), "list", { series }] as const,
 
   // 인기글 같은 경우엔 자주 invalidate 될 필요 없다.
