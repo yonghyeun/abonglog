@@ -7,6 +7,7 @@ import { RoutingModal } from "@/shared/ui/RoutingModal";
 
 const AuthModal = async () => {
   const user = await getCurrentUserData();
+
   return (
     <RoutingModal>{user ? <LogoutForm /> : <EmailLoginForm />}</RoutingModal>
   );

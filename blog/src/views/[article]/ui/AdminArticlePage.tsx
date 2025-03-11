@@ -28,11 +28,16 @@ export const AdminArticlePage: React.FC<ArticlePageProps> = async ({
     <section>
       <header>
         {/* 썸네일 이미지 */}
-        <img
-          src={thumbnailUrl!}
-          alt={`${title} 의 썸네일`}
-          className="h-96 w-full object-cover"
-        />
+        {thumbnailUrl ? (
+          <img
+            // TODO 기본 이미지 url 추가하기
+            src={thumbnailUrl}
+            alt={`${title} 의 썸네일`}
+            className="h-96 w-full object-cover"
+          />
+        ) : (
+          <div className="h-96 w-full bg-gray-200" />
+        )}
         <div className="mx-auto w-fit py-12">
           {/* 제목 */}
           <h1 className="text-center font-bold">{title}</h1>

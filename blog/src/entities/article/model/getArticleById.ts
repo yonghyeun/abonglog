@@ -1,7 +1,10 @@
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
-export const getArticleById = async (articleId: string) => {
+export const getArticleById = async (
+  articleId: string,
+  status?: "published" | "draft"
+) => {
   const supabase = createBrowserSupabase();
 
   const { data, error } = await supabase
@@ -14,7 +17,7 @@ export const getArticleById = async (articleId: string) => {
         content, article_tags(tag_name)
       `
     )
-    .eq("status", "published")
+    .eq("status", status || "published")
     .eq("id", +articleId)
     .single();
 
