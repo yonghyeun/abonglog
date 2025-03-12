@@ -68,15 +68,15 @@ export const OrderedList: Story = {
 export const UnorderedList: Story = {
   args: {
     children: (
-      <List.UnOrder>
+      <>
         <List.Item>Item 1</List.Item>
         <List.Item>Item 2</List.Item>
         <List.Item>Item 3</List.Item>
-      </List.UnOrder>
+      </>
     ),
     className: ""
   },
-  render: (args) => <List.UnOrder {...args} />
+  render: ({ children }) => <List.UnOrder>{children}</List.UnOrder>
 };
 
 export const CustomClass: Story = {
@@ -96,7 +96,7 @@ export const CustomClass: Story = {
 export const NestedList: Story = {
   args: {
     children: (
-      <List.Order>
+      <>
         <List.Item>
           <List.UnOrder>
             <List.Item>Nested Item 1</List.Item>
@@ -105,9 +105,9 @@ export const NestedList: Story = {
         </List.Item>
         <List.Item>Item 2</List.Item>
         <List.Item>Item 3</List.Item>
-      </List.Order>
+      </>
     ),
     className: ""
   },
-  render: (args) => <List.Order {...args} />
+  render: ({ children }) => <List.Order>{children}</List.Order>
 };

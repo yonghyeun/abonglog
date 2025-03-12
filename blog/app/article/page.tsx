@@ -18,9 +18,9 @@ import {
 } from "@/shared/model";
 
 interface ArticleListPageProps {
-  searchParams: {
+  searchParams: Promise<{
     series?: string;
-  };
+  }>;
 }
 
 const ArticleListPage: React.FC<ArticleListPageProps> = async ({

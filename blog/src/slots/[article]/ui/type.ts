@@ -1,4 +1,4 @@
-import { HeadingInfo } from "@/features/article/lib";
+import type { HeadingInfo } from "@/entities/article/lib";
 
 export interface ArticlePageProps {
   articleData: {

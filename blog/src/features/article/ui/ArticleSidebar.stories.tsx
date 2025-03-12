@@ -1,10 +1,9 @@
-import {
-  createNestedHeadings,
-  parsingHeading
-} from "../lib/createNestedHeadings";
+import { createNestedHeadings } from "../lib/createNestedHeadings";
 import { ArticleSidebar } from "./ArticleSidebar";
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
+
+import { parsingHeading } from "@/entities/article/lib";
 
 const meta: Meta<typeof ArticleSidebar> = {
   title: "features/article/ArticleSidebar",

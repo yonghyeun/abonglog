@@ -3,9 +3,9 @@ import { ArticleWriteSlot } from "@/slots/write/ui";
 import { getArticleById } from "@/entities/article/model";
 
 interface ArticleEditPageProps {
-  params: {
+  params: Promise<{
     articleId: string;
-  };
+  }>;
 }
 
 const ArticleEditPage: React.FC<ArticleEditPageProps> = async ({ params }) => {

@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Noto_Sans } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 import Link from "next/link";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
@@ -11,8 +11,9 @@ import { Profile } from "@/entities/user/ui";
 
 import { GithubIcon, HumanIcon } from "@/shared/config";
 
-const notoSans = Noto_Sans({
-  display: "swap"
+const notoSans = Noto_Sans_KR({
+  display: "swap",
+  subsets: ["latin"]
 });
 
 interface RootLayoutProps {
