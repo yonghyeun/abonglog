@@ -1,7 +1,6 @@
+import { ArticleWriteSlot } from "@/slots/write/ui";
 import { HydrationBoundary } from "@tanstack/react-query";
 import React, { Suspense } from "react";
-
-import { ArticleWritePage } from "@/views/write/ui";
 
 import { getSeriesList } from "@/entities/series/model";
 import { getTagList } from "@/entities/tag/model";
@@ -20,7 +19,7 @@ const WritePage = async () => {
   return (
     <HydrationBoundary state={articleWriteState}>
       <Suspense fallback={"loading..."}>
-        <ArticleWritePage articleId={randomArticleId} />
+        <ArticleWriteSlot articleId={randomArticleId} />
       </Suspense>
     </HydrationBoundary>
   );

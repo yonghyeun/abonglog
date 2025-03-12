@@ -1,4 +1,4 @@
-import { AdminArticlePage, GuestArticlePage } from "@/views/[article]/ui";
+import { AdminArticleSlot, GuestArticleSlot } from "@/slots/[article]/ui";
 
 import { getArticleById } from "@/entities/article/model";
 import { getAuthorizedUser } from "@/entities/user/model";
@@ -17,7 +17,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
 
   if (user) {
     return (
-      <AdminArticlePage
+      <AdminArticleSlot
         articleId={articleId}
         articleData={{
           ...articleData
@@ -27,7 +27,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   }
 
   return (
-    <GuestArticlePage
+    <GuestArticleSlot
       articleId={articleId}
       articleData={{
         ...articleData

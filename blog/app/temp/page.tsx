@@ -1,6 +1,5 @@
+import { TempArticleListSlot } from "@/slots/article/ui";
 import { HydrationBoundary } from "@tanstack/react-query";
-
-import { TempArticleListView } from "@/views/article/ui";
 
 import {
   getArticleList,
@@ -29,7 +28,7 @@ const TempArticleListPage = async () => {
       }}
     >
       <section className="media-padding-x flex min-h-screen flex-col">
-        <TempArticleListView />
+        <TempArticleListSlot />
       </section>
     </HydrationBoundary>
   );
