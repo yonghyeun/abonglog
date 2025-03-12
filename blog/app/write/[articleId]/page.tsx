@@ -1,4 +1,4 @@
-import { ArticleWriteSlot } from "@/views/write/ui";
+import { ArticleWriteSlot } from "@/slots/write/ui";
 
 import { getArticleById } from "@/entities/article/model";
 

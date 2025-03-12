@@ -6,20 +6,30 @@ import React, { Suspense } from "react";
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
 import {
-  useGetInfiniteArticleList,
-  useGetNumberOfTempArticles
+  useGetInfiniteArticleListBySeries,
+  useGetNumberOfArticles
 } from "@/entities/article/model";
 
 import { useObserver } from "@/shared/lib";
 import { Grid } from "@/shared/ui/Grid";
 
-const ArticleList = ({ numOfArticles }: { numOfArticles: number }) => {
+interface ArticleListBySeriesSlotProps {
+  seriesName: string;
+}
+
+const ArticleList = ({
+  seriesName,
+  numOfArticles
+}: {
+  seriesName: string;
+  numOfArticles: number;
+}) => {
   const {
     data: { pages },
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
-  } = useGetInfiniteArticleList("draft", numOfArticles);
+  } = useGetInfiniteArticleListBySeries("published", seriesName, numOfArticles);
 
   const observerRef = useObserver(() => fetchNextPage());
 
@@ -29,7 +39,7 @@ const ArticleList = ({ numOfArticles }: { numOfArticles: number }) => {
         <Grid>
           {pages.map((article) => (
             <Grid.Item key={article.id}>
-              <Link href={`/temp/${article.id}`}>
+              <Link href={`/article/${article.id}`}>
                 <ArticlePreviewCard {...article} />
               </Link>
             </Grid.Item>
@@ -50,7 +60,7 @@ const ArticleList = ({ numOfArticles }: { numOfArticles: number }) => {
           <div ref={observerRef} />
         ) : (
           <div className="flex items-center justify-center py-12 text-gray-400">
-            모든 임시 저장된 게시글을 가져왔습니다.
+            {seriesName}의 모든 게시글을 가져왔습니다.
           </div>
         )}
       </section>
@@ -58,18 +68,21 @@ const ArticleList = ({ numOfArticles }: { numOfArticles: number }) => {
   );
 };
 
-export const TempArticleListView = () => {
-  const { data: numOfArticles } = useGetNumberOfTempArticles();
+export const ArticleListBySeriesSlot: React.FC<
+  ArticleListBySeriesSlotProps
+> = ({ seriesName }) => {
+  const { data: numOfArticles } = useGetNumberOfArticles(seriesName);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <header className="flex justify-center">
+      <header className="flex flex-col items-center">
+        <h3>시리즈별로 보기</h3>
         <div className="flex items-center gap-2">
-          <h1 className="text-blue-900">임시 저장된 모든 게시글 보기</h1>
+          <h1 className="text-blue-900">{seriesName}</h1>
           <span className="text-gray-500">({numOfArticles})</span>
         </div>
       </header>
-      <ArticleList numOfArticles={numOfArticles} />
+      <ArticleList seriesName={seriesName} numOfArticles={numOfArticles} />
     </Suspense>
   );
 };

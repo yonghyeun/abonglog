@@ -1,11 +1,10 @@
+import {
+  LatestArticleSlot,
+  PopularArticleSlot,
+  SeriesListSlot
+} from "@/slots/main/ui";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
-
-import {
-  LatestArticleView,
-  PopularArticleView,
-  SeriesListView
-} from "@/views/main/ui";
 
 import {
   getArticleInfoPerSeries,
@@ -27,15 +26,15 @@ const MainPage = async () => {
       <HydrationBoundary state={mainPageState}>
         {/* Latest Post */}
         <section className="media-padding-x min-h-48 bg-secondary py-12">
-          <LatestArticleView />
+          <LatestArticleSlot />
         </section>
         {/* Popular */}
         <section className="media-padding-x mt-4 flex flex-col gap-4 py-12">
-          <PopularArticleView />
+          <PopularArticleSlot />
         </section>
         {/* Series List  */}
         <section className="media-padding-x mt-4 bg-secondary py-12">
-          <SeriesListView />
+          <SeriesListSlot />
         </section>
       </HydrationBoundary>
     </Suspense>

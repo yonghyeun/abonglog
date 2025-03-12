@@ -7,7 +7,7 @@ import { SeriesItem } from "@/entities/series/ui";
 
 import { Grid } from "@/shared/ui/Grid";
 
-export const SeriesListView = () => {
+export const SeriesListSlot = () => {
   const { data: articleInfoList } = useGetArticleInfoPerSeries();
 
   return (

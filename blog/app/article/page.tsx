@@ -1,10 +1,9 @@
+import {
+  ArticleListBySeriesSlot,
+  EveryArticleListSlot
+} from "@/slots/article/ui";
 import { HydrationBoundary } from "@tanstack/react-query";
 import Link from "next/link";
-
-import {
-  ArticleListBySeriesPage,
-  EveryArticleListPage
-} from "@/views/article/ui";
 
 import {
   getArticleInfoPerSeries,
@@ -54,7 +53,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
         }}
       >
         <section className="media-padding-x flex min-h-screen flex-col">
-          <EveryArticleListPage />
+          <EveryArticleListSlot />
         </section>
       </HydrationBoundary>
     );
@@ -74,7 +73,7 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
         }}
       >
         <section className="media-padding-x flex min-h-screen flex-col">
-          <ArticleListBySeriesPage seriesName={series} />
+          <ArticleListBySeriesSlot seriesName={series} />
         </section>
       </HydrationBoundary>
     );

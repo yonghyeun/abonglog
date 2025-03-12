@@ -8,7 +8,7 @@ import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
 
-export const GuestArticlePage: React.FC<ArticlePageProps> = async ({
+export const GuestArticleSlot: React.FC<ArticlePageProps> = async ({
   articleData,
   articleId
 }) => {

@@ -8,7 +8,7 @@ import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
 
-export const LatestArticleView = () => {
+export const LatestArticleSlot = () => {
   const {
     data: {
       id,

@@ -11,7 +11,7 @@ import { Grid } from "@/shared/ui/Grid";
 
 type Period = "daily" | "weekly" | "monthly";
 
-export const PopularArticleView = () => {
+export const PopularArticleSlot = () => {
   const [period, setPeriod] = useState<Period>("daily");
   const promise = useGetPopularArticleList(period).promise;
 

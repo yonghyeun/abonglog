@@ -6,30 +6,20 @@ import React, { Suspense } from "react";
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
 import {
-  useGetInfiniteArticleListBySeries,
+  useGetInfiniteArticleList,
   useGetNumberOfArticles
 } from "@/entities/article/model";
 
 import { useObserver } from "@/shared/lib";
 import { Grid } from "@/shared/ui/Grid";
 
-interface ArticleListBySeriesPageProps {
-  seriesName: string;
-}
-
-const ArticleList = ({
-  seriesName,
-  numOfArticles
-}: {
-  seriesName: string;
-  numOfArticles: number;
-}) => {
+const EveryArticleList = ({ numOfArticles }: { numOfArticles: number }) => {
   const {
     data: { pages },
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage
-  } = useGetInfiniteArticleListBySeries("published", seriesName, numOfArticles);
+  } = useGetInfiniteArticleList("published", numOfArticles);
 
   const observerRef = useObserver(() => fetchNextPage());
 
@@ -60,7 +50,7 @@ const ArticleList = ({
           <div ref={observerRef} />
         ) : (
           <div className="flex items-center justify-center py-12 text-gray-400">
-            {seriesName}의 모든 게시글을 가져왔습니다.
+            모든 게시글을 가져왔습니다.
           </div>
         )}
       </section>
@@ -68,21 +58,18 @@ const ArticleList = ({
   );
 };
 
-export const ArticleListBySeriesPage: React.FC<
-  ArticleListBySeriesPageProps
-> = ({ seriesName }) => {
-  const { data: numOfArticles } = useGetNumberOfArticles(seriesName);
+export const EveryArticleListSlot = () => {
+  const { data: numOfArticles } = useGetNumberOfArticles();
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <header className="flex flex-col items-center">
-        <h3>시리즈별로 보기</h3>
+      <header className="flex justify-center">
         <div className="flex items-center gap-2">
-          <h1 className="text-blue-900">{seriesName}</h1>
+          <h1 className="text-blue-900">전체 게시글 보기</h1>
           <span className="text-gray-500">({numOfArticles})</span>
         </div>
       </header>
-      <ArticleList seriesName={seriesName} numOfArticles={numOfArticles} />
+      <EveryArticleList numOfArticles={numOfArticles} />
     </Suspense>
   );
 };

@@ -1,7 +1,6 @@
+import { ArticleWriteSlot } from "@/slots/write/ui";
 import { HydrationBoundary } from "@tanstack/react-query";
 import React, { Suspense } from "react";
-
-import { ArticleWriteSlot } from "@/views/write/ui";
 
 import { getSeriesList } from "@/entities/series/model";
 import { getTagList } from "@/entities/tag/model";
