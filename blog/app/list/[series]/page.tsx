@@ -18,7 +18,7 @@ import {
 
 interface ArticleListPageProps {
   params: Promise<{
-    series?: string;
+    series: string;
   }>;
 }
 

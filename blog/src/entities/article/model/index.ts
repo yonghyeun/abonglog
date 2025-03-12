@@ -10,3 +10,4 @@ export * from "./getArticleInfoPerSeries";
 export * from "./deleteArticle";
 export * from "./getNumberOfArticles";
 export * from "./utils";
+export * from "./getArticleId";
