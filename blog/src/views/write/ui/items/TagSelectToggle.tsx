@@ -1,6 +1,6 @@
 "use client";
 
-import { useTagSelectToggle } from "../lib/useTagSelectToggle";
+import { useTagSelectToggle } from "../../lib";
 
 import { type Tag, usePostAddNewTag } from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";

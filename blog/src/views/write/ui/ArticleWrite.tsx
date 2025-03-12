@@ -5,12 +5,11 @@ import {
   createArticleWriteStore,
   useArticleWriteStore
 } from "../model";
-import { SeriesSelectToggle } from "./SeriesSelectToggle";
+import { SeriesSelectToggle, TagSelectToggle } from "./items";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
-import { TagSelectToggle } from "@/widgets/tag/ui";
 
 import { findImageUrl } from "@/features/article/lib/findImageUrl";
 
