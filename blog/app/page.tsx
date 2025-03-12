@@ -6,20 +6,29 @@ import {
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
+import { prefetechQueryWithCache } from "@/app/cache/lib";
+
 import {
   getArticleInfoPerSeries,
   getLatestArticle,
   getPopularArticleList
 } from "@/entities/article/model";
 
-import { prefetchQueryInServer } from "@/shared/model";
+const getMainPageState = async () => {
+  return prefetechQueryWithCache({
+    callbacks: [
+      getArticleInfoPerSeries,
+      getLatestArticle,
+      () => getPopularArticleList("daily")
+    ],
+    options: {
+      revalidate: 86400
+    }
+  });
+};
 
 const MainPage = async () => {
-  const mainPageState = await prefetchQueryInServer(
-    getArticleInfoPerSeries,
-    getLatestArticle,
-    () => getPopularArticleList("daily")
-  );
+  const mainPageState = await getMainPageState();
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

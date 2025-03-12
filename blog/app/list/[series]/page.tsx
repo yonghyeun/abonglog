@@ -5,16 +5,16 @@ import {
 import { HydrationBoundary } from "@tanstack/react-query";
 
 import {
+  prefetchInfiniteQueryWithCache,
+  prefetechQueryWithCache
+} from "@/app/cache/lib";
+
+import {
   getArticleList,
   getArticleListBySeries,
   getNumberOfArticles
 } from "@/entities/article/model";
 import { getSeriesList } from "@/entities/series/model";
-
-import {
-  prefetchInfiniteQueryInServer,
-  prefetchQueryInServer
-} from "@/shared/model";
 
 interface ArticleListPageProps {
   params: Promise<{
@@ -29,26 +29,31 @@ export async function generateStaticParams() {
 
 export const dynamicParams = false;
 
-const ArticleListPage: React.FC<ArticleListPageProps> = async ({ params }) => {
-  const series = decodeURIComponent((await params).series || "all");
+const getArticleListState = async (series: string) => {
+  return Promise.all([
+    prefetechQueryWithCache({
+      callbacks: [getNumberOfArticles]
+    }),
 
-  const numOfArticlesState = await prefetchQueryInServer(() =>
-    getNumberOfArticles(series)
-  );
+    prefetchInfiniteQueryWithCache({
+      callbacks: [
+        series === "all"
+          ? () => getArticleList("published")
+          : () => getArticleListBySeries("published", series)
+      ]
+    })
+  ]);
+};
+
+const ArticleListPage: React.FC<ArticleListPageProps> = async ({ params }) => {
+  const series = decodeURIComponent((await params).series);
+
+  const articleListState = await getArticleListState(series);
 
   // 전체보기인 경우
   if (series === "all") {
-    const articleListState = await prefetchInfiniteQueryInServer(() =>
-      getArticleList("published")
-    );
-
     return (
-      <HydrationBoundary
-        state={{
-          ...articleListState,
-          ...numOfArticlesState
-        }}
-      >
+      <HydrationBoundary state={articleListState}>
         <section className="media-padding-x flex min-h-screen flex-col">
           <EveryArticleListSlot />
         </section>
@@ -56,18 +61,8 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({ params }) => {
     );
   }
 
-  // 시리즈 별로 모아보기인 경우
-  const articleListState = await prefetchInfiniteQueryInServer(() =>
-    getArticleListBySeries("published", series)
-  );
-
   return (
-    <HydrationBoundary
-      state={{
-        ...articleListState,
-        ...numOfArticlesState
-      }}
-    >
+    <HydrationBoundary state={articleListState}>
       <section className="media-padding-x flex min-h-screen flex-col">
         <ArticleListBySeriesSlot seriesName={series} />
       </section>
