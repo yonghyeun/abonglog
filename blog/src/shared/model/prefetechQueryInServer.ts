@@ -21,6 +21,7 @@ export const prefetchQueryInServer: PrefetechQueryInServer = async (
   ...callbacks
 ) => {
   const queryClient = new QueryClient();
+  console.log("prefetechQueryInServer activated!");
 
   await Promise.all(
     callbacks.map((callback) => {
