@@ -1,7 +1,6 @@
 import { ImageUploadInput } from "./ImageUploadInput";
 import { action } from "@storybook/addon-actions";
 import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
 
 const meta: Meta<typeof ImageUploadInput> = {
   title: "Entities/Image/ImageUploadInput",
