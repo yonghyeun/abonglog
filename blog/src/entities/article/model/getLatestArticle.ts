@@ -1,38 +1,44 @@
 import { ARTICLE_QUERY_KEY } from "./articleQueryKey";
+import { extractTagName } from "./utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { createBrowserSupabase } from "@/shared/model";
 import { snakeToCamel } from "@/shared/util";
 
+const ARTICLE_SELECT_FIELDS = `
+  id, title, author, 
+  series_name, description, 
+  status, updated_at, thumbnail_url,
+  article_tags(tag_name)
+`;
+
+const fetchLatestArticle = () => {
+  const supabase = createBrowserSupabase();
+
+  return supabase
+    .from("articles")
+    .select(ARTICLE_SELECT_FIELDS)
+    .eq("status", "published")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .single();
+};
+
 export const getLatestArticle = () => {
   const queryKey = ARTICLE_QUERY_KEY.latestArticle();
+
   const queryFn = async () => {
-    const supabase = createBrowserSupabase();
-    const { data, error } = await supabase
-      .from("articles")
-      .select(
-        `
-          id , title , author , 
-          series_name , description , 
-          status , updated_at, thumbnail_url,
-          article_tags(tag_name)
-        `
-      )
-      .eq("status", "published")
-      .order("updated_at", { ascending: false })
-      .limit(1)
-      .single()
-      .then(snakeToCamel);
+    const { data, error } = await fetchLatestArticle();
 
     if (error) {
       throw error;
     }
 
-    const { articleTags, ...article } = data;
+    const { articleTags, ...articleData } = snakeToCamel(data);
 
     return {
-      ...article,
-      tags: articleTags.map(({ tagName }) => tagName)
+      tags: extractTagName(articleTags),
+      ...articleData
     };
   };
 

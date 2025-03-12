@@ -3,6 +3,21 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { createBrowserSupabase } from "@/shared/model";
 
+const fetchNumberOfArticles = (series?: string) => {
+  const supabase = createBrowserSupabase();
+
+  return series === undefined
+    ? supabase
+        .from("articles")
+        .select("id", { count: "exact" })
+        .eq("status", "published")
+    : supabase
+        .from("articles")
+        .select("id", { count: "exact" })
+        .eq("status", "published")
+        .eq("series_name", series);
+};
+
 export const getNumberOfArticles = (series?: string) => {
   const queryKey = ARTICLE_QUERY_KEY.numberOfArticles(
     "published",
@@ -10,33 +25,10 @@ export const getNumberOfArticles = (series?: string) => {
   );
 
   const queryFn = async () => {
-    const supabase = await createBrowserSupabase();
-
-    // 전체 보기인 경우
-
-    if (series === undefined) {
-      const { count, error } = await supabase
-        .from("articles")
-        .select("id", { count: "exact" })
-        .eq("status", "published");
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return count ?? 0;
-    }
-
-    // 특정 시리즈가 존재하는 경우
-
-    const { count, error } = await supabase
-      .from("articles")
-      .select("id", { count: "exact" })
-      .eq("status", "published")
-      .eq("series_name", series);
+    const { count, error } = await fetchNumberOfArticles(series);
 
     if (error) {
-      throw new Error(error.message);
+      throw error;
     }
 
     return count ?? 0;
@@ -52,13 +44,7 @@ export const getNumberOfTempArticles = () => {
   const queryKey = ARTICLE_QUERY_KEY.numberOfArticles("draft", "all");
 
   const queryFn = async () => {
-    const supabase = await createBrowserSupabase();
-
-    const { count, error } = await supabase
-      .from("articles")
-      .select("id", { count: "exact" })
-      .eq("status", "draft");
-
+    const { count, error } = await fetchNumberOfArticles();
     if (error) {
       throw error;
     }

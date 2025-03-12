@@ -8,7 +8,7 @@ export const getArticleInfoPerSeries = () => {
   const queryKey = ARTICLE_QUERY_KEY.infoPerSeries();
 
   const queryFn = async () => {
-    const supabase = await createBrowserSupabase();
+    const supabase = createBrowserSupabase();
 
     const { data, error } = await supabase.from("series_articles").select("*");
 
