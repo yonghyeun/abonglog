@@ -12,7 +12,8 @@ import { Profile } from "@/entities/user/ui";
 import { GithubIcon, HumanIcon } from "@/shared/config";
 
 const notoSans = Noto_Sans({
-  display: "swap"
+  display: "swap",
+  subsets: ["latin"]
 });
 
 interface RootLayoutProps {
