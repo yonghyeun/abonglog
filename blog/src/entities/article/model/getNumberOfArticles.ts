@@ -44,13 +44,7 @@ export const getNumberOfTempArticles = () => {
   const queryKey = ARTICLE_QUERY_KEY.numberOfArticles("draft", "all");
 
   const queryFn = async () => {
-    const supabase = await createBrowserSupabase();
-
-    const { count, error } = await supabase
-      .from("articles")
-      .select("id", { count: "exact" })
-      .eq("status", "draft");
-
+    const { count, error } = await fetchNumberOfArticles();
     if (error) {
       throw error;
     }
