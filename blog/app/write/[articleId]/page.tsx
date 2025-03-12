@@ -1,4 +1,4 @@
-import { ArticleWritePage } from "@/views/write/ui";
+import { ArticleWriteSlot } from "@/views/write/ui";
 
 import { getArticleById } from "@/entities/article/model";
 
@@ -14,7 +14,7 @@ const ArticleEditPage: React.FC<ArticleEditPageProps> = async ({ params }) => {
   const articleData = await getArticleById(articleId, null);
 
   return (
-    <ArticleWritePage
+    <ArticleWriteSlot
       articleId={+articleId}
       initialState={{
         ...articleData

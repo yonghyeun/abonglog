@@ -32,7 +32,7 @@ import { PenIcon } from "@/shared/config";
 import { Button } from "@/shared/ui/Button";
 import { List } from "@/shared/ui/List";
 
-type ArticleWriteViewProps = {
+type ArticleWriteProps = {
   initialState?: Partial<{
     // step 1 state
     title: string;
@@ -49,7 +49,7 @@ type ArticleWriteViewProps = {
   articleId: number;
 };
 
-const Wrapper: React.FC<React.PropsWithChildren<ArticleWriteViewProps>> = ({
+const Wrapper: React.FC<React.PropsWithChildren<ArticleWriteProps>> = ({
   children,
   initialState,
   articleId
@@ -603,7 +603,7 @@ const PreviewCard = () => {
   );
 };
 
-export const ArticleWriteView = Object.assign(Wrapper, {
+export const ArticleWrite = Object.assign(Wrapper, {
   TitleInput,
   TagList,
   SeriesList,
