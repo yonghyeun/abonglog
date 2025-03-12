@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-const ArticlePage = () => {
+const ListPage = () => {
   redirect("/list/all");
 };
 
-export default ArticlePage;
+export default ListPage;

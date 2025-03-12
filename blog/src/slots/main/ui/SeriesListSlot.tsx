@@ -22,12 +22,7 @@ export const SeriesListSlot = () => {
       <Grid>
         {articleInfoList.map((data) => (
           <Grid.Item key={data.seriesName}>
-            <Link
-              href={{
-                pathname: "/article",
-                search: `?series=${data.seriesName}`
-              }}
-            >
+            <Link href={`/list/${data.seriesName}`}>
               <SeriesItem {...data} />
             </Link>
           </Grid.Item>
