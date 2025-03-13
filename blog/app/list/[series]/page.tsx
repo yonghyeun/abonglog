@@ -30,9 +30,9 @@ export async function generateStaticParams() {
 export const dynamicParams = false;
 
 const getArticleListState = async (series: string) => {
-  return Promise.all([
+  const dehydrateStateArray = await Promise.all([
     prefetechQueryWithCache({
-      callbacks: [getNumberOfArticles]
+      callbacks: [() => getNumberOfArticles(series)]
     }),
 
     prefetchInfiniteQueryWithCache({
@@ -43,6 +43,11 @@ const getArticleListState = async (series: string) => {
       ]
     })
   ]);
+
+  return dehydrateStateArray.reduce((acc, cur) => ({
+    mutations: [...acc.mutations, ...cur.mutations],
+    queries: [...acc.queries, ...cur.queries]
+  }));
 };
 
 const ArticleListPage: React.FC<ArticleListPageProps> = async ({ params }) => {

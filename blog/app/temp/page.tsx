@@ -11,8 +11,8 @@ import {
   getNumberOfTempArticles
 } from "@/entities/article/model";
 
-const getTempArticleListState = () => {
-  return Promise.all([
+const getTempArticleListState = async () => {
+  const dehydrateStateArray = await Promise.all([
     prefetchInfiniteQueryWithCache({
       callbacks: [() => getArticleList("draft")]
     }),
@@ -20,6 +20,11 @@ const getTempArticleListState = () => {
       callbacks: [getNumberOfTempArticles]
     })
   ]);
+
+  return dehydrateStateArray.reduce((acc, cur) => ({
+    mutations: [...acc.mutations, ...cur.mutations],
+    queries: [...acc.queries, ...cur.queries]
+  }));
 };
 
 const TempArticleListPage = async () => {
