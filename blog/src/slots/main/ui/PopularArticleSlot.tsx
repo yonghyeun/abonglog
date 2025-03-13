@@ -18,7 +18,7 @@ export const PopularArticleSlot = () => {
   return (
     <>
       <div>
-        <h1 className="mb-2">인기글 모아보기</h1>
+        <h1 className="mb-2 text-primary">인기글 모아보기</h1>
         <PopularNavigationBar
           period={period}
           onClick={(value: Period) => {
@@ -62,16 +62,16 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
         {popularPostNavData.map(({ name, value }) => (
           <button
             key={value}
-            className={`${value === period ? "text-semibold text-blue-700" : ""} px-10 py-4 font-semibold transition-colors duration-200`}
+            className={`${value === period ? "text-semibold text-blue-500" : "text-primary"} px-10 py-4 font-semibold transition-colors duration-200`}
             onClick={() => onClick(value)}
           >
             {name}
           </button>
         ))}
       </nav>
-      <div className="relative mt-2 h-0.5 w-full bg-secondary">
+      <div className="relative mt-2 h-0.5 w-full bg-gray-200">
         <div
-          className={`absolute h-0.5 w-1/3 bg-blue-700 transition-transform duration-200`}
+          className={`absolute h-0.5 w-1/3 bg-blue-500 transition-transform duration-200`}
           style={{
             transform: `translateX(${activeParamIndex * 100}%)`
           }}
@@ -118,7 +118,7 @@ const LoadingGrid = () => {
       {Array.from({ length: 12 }, (_, idx) => {
         return (
           <Grid.Item key={idx}>
-            <div className="w-fill aspect-square animate-pulse bg-gray-100" />
+            <div className="w-fill bg-disabled-bg-color aspect-square animate-pulse" />
           </Grid.Item>
         );
       })}

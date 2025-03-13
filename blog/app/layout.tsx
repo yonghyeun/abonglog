@@ -82,7 +82,7 @@ const Header = async () => {
 };
 
 const Footer = () => (
-  <footer className="media-padding-x bg-blue-700 py-4 text-gray-200">
+  <footer className="media-padding-x py-4 text-secondary">
     {/* introduce */}
     <div className="flex flex-col justify-between gap-4 md:flex-row">
       <div className="flex-grow">
