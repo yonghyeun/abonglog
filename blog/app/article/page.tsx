@@ -13,6 +13,7 @@ import {
 } from "@/entities/article/model";
 
 import {
+  mergeDehydrateState,
   prefetchInfiniteQueryInServer,
   prefetchQueryInServer
 } from "@/shared/model";
@@ -23,6 +24,19 @@ interface ArticleListPageProps {
   }>;
 }
 
+const getArticleListState = async (series?: string) => {
+  const state = await Promise.all([
+    prefetchQueryInServer(() => getNumberOfArticles(series)),
+    prefetchInfiniteQueryInServer(
+      series === undefined
+        ? () => getArticleList("published")
+        : () => getArticleListBySeries("published", series)
+    )
+  ]);
+
+  return mergeDehydrateState(...state);
+};
+
 const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   searchParams
 }) => {
@@ -31,57 +45,29 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({
   // TODO 에러바운더리 도입하면 해당 쿼리문 제거하기
   const numOfSeriesArray = await getArticleInfoPerSeries().queryFn();
 
-  const numOfArticlesState = await prefetchQueryInServer(() =>
-    getNumberOfArticles(series)
-  );
-
   const searchedSeries = numOfSeriesArray.find(
     (data) => data.seriesName === series
   );
 
-  // 전체보기인 경우
-  if (series === undefined) {
-    const articleListState = await prefetchInfiniteQueryInServer(() =>
-      getArticleList("published")
-    );
+  if (!searchedSeries && series) {
+    // 찾는 시리즈가 없는 경우 404
+    // TODO errorboundary 를 통해 404 페이지로 이동시키기
+    return <NotFound series={series} />;
+  }
 
-    return (
-      <HydrationBoundary
-        state={{
-          ...articleListState,
-          ...numOfArticlesState
-        }}
-      >
-        <section className="media-padding-x flex min-h-screen flex-col">
+  const articleListState = await getArticleListState(series);
+
+  return (
+    <HydrationBoundary state={articleListState}>
+      <section className="media-padding-x flex min-h-screen flex-col">
+        {series === undefined ? (
           <EveryArticleListSlot />
-        </section>
-      </HydrationBoundary>
-    );
-  }
-
-  // 시리즈 별로 모아보기인 경우
-  if (searchedSeries) {
-    const articleListState = await prefetchInfiniteQueryInServer(() =>
-      getArticleListBySeries("published", series)
-    );
-
-    return (
-      <HydrationBoundary
-        state={{
-          ...articleListState,
-          ...numOfArticlesState
-        }}
-      >
-        <section className="media-padding-x flex min-h-screen flex-col">
+        ) : (
           <ArticleListBySeriesSlot seriesName={series} />
-        </section>
-      </HydrationBoundary>
-    );
-  }
-
-  // 찾는 시리즈가 없는 경우 404
-  // TODO errorboundary 를 통해 404 페이지로 이동시키기
-  return <NotFound series={series} />;
+        )}
+      </section>
+    </HydrationBoundary>
+  );
 };
 
 const NotFound: React.FC<{ series: string }> = ({ series }) => (
