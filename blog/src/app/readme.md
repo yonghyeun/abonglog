@@ -21,4 +21,3 @@ const queryClient = new QueryClient({
   }
 });
 ```
-
