@@ -39,25 +39,19 @@ export const SideBar = () => {
           </button>
         </div>
         {/* 목차 */}
-        <nav>
+        <nav className="text-secondary">
           <h3 className="mb-2 border-b">게시글 목록</h3>
           <ul className="flex flex-col gap-2">
-            <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-blue-900">
+            <li className="text-semibold flex items-center gap-2 hover:text-blue-500">
               <BooksIcon />
               <Link href="#" className="py-2">
                 전체 게시글 보기
               </Link>
             </li>
-            <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-blue-900">
+            <li className="text-semibold flex items-center gap-2 hover:text-blue-500">
               <LibraryIcon />
               <Link href="#" className="py-2">
                 시리즈 목록 보기
-              </Link>
-            </li>
-
-            <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-blue-900">
-              <Link href="/temp" className="py-2">
-                임시저장된 게시글 보기
               </Link>
             </li>
           </ul>
