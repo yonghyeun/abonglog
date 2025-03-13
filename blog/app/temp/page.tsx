@@ -7,26 +7,25 @@ import {
 } from "@/entities/article/model";
 
 import {
+  mergeDehydrateState,
   prefetchInfiniteQueryInServer,
   prefetchQueryInServer
 } from "@/shared/model";
 
-const TempArticleListPage = async () => {
-  const tempArticleState = await prefetchInfiniteQueryInServer(() =>
-    getArticleList("draft")
-  );
+const getTempArticleListState = async () => {
+  const state = await Promise.all([
+    prefetchInfiniteQueryInServer(() => getArticleList("draft")),
+    prefetchQueryInServer(() => getNumberOfTempArticles())
+  ]);
 
-  const numOfArticlesState = await prefetchQueryInServer(() =>
-    getNumberOfTempArticles()
-  );
+  return mergeDehydrateState(...state);
+};
+
+const TempArticleListPage = async () => {
+  const tempArticleListState = await getTempArticleListState();
 
   return (
-    <HydrationBoundary
-      state={{
-        ...tempArticleState,
-        ...numOfArticlesState
-      }}
-    >
+    <HydrationBoundary state={tempArticleListState}>
       <section className="media-padding-x flex min-h-screen flex-col">
         <TempArticleListSlot />
       </section>
