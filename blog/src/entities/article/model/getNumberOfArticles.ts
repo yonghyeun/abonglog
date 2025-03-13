@@ -18,11 +18,8 @@ const fetchNumberOfArticles = (series?: string) => {
         .eq("series_name", series);
 };
 
-export const getNumberOfArticles = (series?: string) => {
-  const queryKey = ARTICLE_QUERY_KEY.numberOfArticles(
-    "published",
-    series || "all"
-  );
+export const getNumberOfArticles = (series: string) => {
+  const queryKey = ARTICLE_QUERY_KEY.numberOfArticles("published", series);
 
   const queryFn = async () => {
     const { count, error } = await fetchNumberOfArticles(series);
@@ -58,7 +55,7 @@ export const getNumberOfTempArticles = () => {
   };
 };
 
-export const useGetNumberOfArticles = (series?: string) => {
+export const useGetNumberOfArticles = (series: string) => {
   return useSuspenseQuery(getNumberOfArticles(series));
 };
 

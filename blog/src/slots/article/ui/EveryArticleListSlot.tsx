@@ -59,7 +59,7 @@ const EveryArticleList = ({ numOfArticles }: { numOfArticles: number }) => {
 };
 
 export const EveryArticleListSlot = () => {
-  const { data: numOfArticles } = useGetNumberOfArticles();
+  const { data: numOfArticles } = useGetNumberOfArticles("all");
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
