@@ -38,6 +38,11 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
               isTempArticle ? "draft" : "published"
             )
           });
+
+          queryClient.invalidateQueries({
+            queryKey: ARTICLE_QUERY_KEY.popularDefault()
+          });
+
           router.back();
         }
       });

@@ -6,6 +6,7 @@ import {
   useArticleWriteStore
 } from "../model";
 import { SeriesSelectToggle, TagSelectToggle } from "./items";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef } from "react";
 
@@ -19,6 +20,7 @@ import {
   usePostArticleThumbnail,
   usePostNewArticle
 } from "@/entities/article/model";
+import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
 import { compressImage } from "@/entities/image/lib";
 import {
   ImageGrid,
@@ -530,6 +532,7 @@ const SubmitButton = () => {
   const router = useRouter();
   const { mutate: addNewArticle } = usePostNewArticle();
   const store = useContext(ArticleWriteStoreContext)!;
+  const queryClient = useQueryClient();
 
   const handleSaveArticle = () => {
     const {
@@ -569,6 +572,10 @@ const SubmitButton = () => {
       {
         onSuccess: (data) => {
           alert(data.message);
+
+          queryClient.invalidateQueries({
+            queryKey: ARTICLE_QUERY_KEY.popularDefault()
+          });
           router.push("/");
         }
       }
