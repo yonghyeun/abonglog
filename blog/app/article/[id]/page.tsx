@@ -1,7 +1,6 @@
-import { AdminArticleSlot, GuestArticleSlot } from "@/slots/[article]/ui";
+import { GuestArticleSlot } from "@/slots/[article]/ui";
 
 import { getArticleById, getArticleId } from "@/entities/article/model";
-import { getAuthorizedUser } from "@/entities/user/model";
 
 interface ArticlePageProps {
   params: Promise<{ id: string }>;
@@ -9,6 +8,8 @@ interface ArticlePageProps {
 
 export async function generateStaticParams() {
   const ids = await getArticleId("published");
+
+  console.log("generateStaticParams", ids);
 
   return ids.map(({ id }) => ({ id: String(id) }));
 }
@@ -19,20 +20,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   const { id } = await params;
   const articleData = await getArticleById(id, "published");
 
-  const {
-    data: { user }
-  } = await getAuthorizedUser();
-
-  if (user) {
-    return (
-      <AdminArticleSlot
-        articleId={id}
-        articleData={{
-          ...articleData
-        }}
-      />
-    );
-  }
+  console.log("funcking im re rendered");
 
   return (
     <GuestArticleSlot
