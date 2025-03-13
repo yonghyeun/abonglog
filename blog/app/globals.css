@@ -131,7 +131,6 @@ p {
   padding: 0.2rem 0.5rem;
   font-size: 0.9rem;
   border-radius: 4px;
-  overflow-x: auto;
 }
 
 .paragraph > .code-block {
@@ -208,7 +207,7 @@ p {
   margin: 0 0 1rem 0;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   padding: 0 2rem 1rem 1rem;
-  overflow: hidden;
+  overflow: scroll;
   background-color: #212121;
   font-style: normal;
   font-size: 1.1rem;
