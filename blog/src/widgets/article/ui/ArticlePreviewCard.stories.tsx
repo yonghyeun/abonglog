@@ -102,7 +102,7 @@ export const Default: Story = {
     title: "React 컴포넌트 설계 패턴",
     seriesName: "React 심화 시리즈",
     description: "다양한 React 컴포넌트 설계 패턴을 소개합니다.",
-    updatedAt: "2023년 5월 15일"
+    updatedAt: new Date().toISOString()
   },
   parameters: {
     docs: {
@@ -122,7 +122,7 @@ export const NoThumbnail: Story = {
     title: "React 컴포넌트 설계 패턴",
     seriesName: "React 심화 시리즈",
     description: "다양한 React 컴포넌트 설계 패턴을 소개합니다.",
-    updatedAt: "2023년 5월 15일"
+    updatedAt: new Date().toISOString()
   },
   parameters: {
     docs: {
@@ -141,7 +141,7 @@ export const NoTags: Story = {
     title: "태그 없는 게시물",
     seriesName: "기본 시리즈",
     description: "이 게시물에는 태그가 지정되지 않았습니다.",
-    updatedAt: "2023년 5월 15일"
+    updatedAt: new Date().toISOString()
   },
   parameters: {
     docs: {
@@ -160,7 +160,7 @@ export const ManyTags: Story = {
     title: "다양한 태그를 포함한 게시물",
     seriesName: "개발 시리즈",
     description: "이 게시물에는 다양한 기술 관련 태그가 포함되어 있습니다.",
-    updatedAt: "2023년 5월 15일"
+    updatedAt: new Date().toISOString()
   },
   parameters: {
     docs: {
@@ -181,7 +181,7 @@ export const NoSeries: Story = {
     seriesName: "",
     description:
       "이 게시물은 특정 시리즈에 포함되지 않은 독립적인 게시물입니다.",
-    updatedAt: "2023년 5월 15일"
+    updatedAt: new Date().toISOString()
   },
   parameters: {
     docs: {
