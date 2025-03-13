@@ -38,7 +38,12 @@ const eslintConfig = [
         }
       ], // 사용되지 않는 변수를 에러로 표시
       "unused-imports/no-unused-imports": "error", // 사용되지 않는 import를 에러로 표시
-      "prettier/prettier": "error" // Prettier 규칙을 ESLint에 추가하여 코드 스타일을 검사
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto"
+        }
+      ] // Prettier 규칙을 ESLint에 추가하여 코드 스타일을 검사
     }
   })
 ];
