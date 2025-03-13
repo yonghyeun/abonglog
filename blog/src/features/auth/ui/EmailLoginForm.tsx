@@ -14,7 +14,7 @@ export const EmailLoginForm = () => {
   } = useLoginAction();
 
   return (
-    <section className="flex flex-col gap-2 p-4">
+    <section className="flex flex-col gap-2 p-4 text-primary">
       <label htmlFor="abonglog-login-form">
         <h1 aria-labelledby="abonglog-login-form" className="text-center">
           abonglog Login
