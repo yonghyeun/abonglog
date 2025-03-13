@@ -5,7 +5,7 @@
     "@trivago/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss"
   ],
-  "endOfLine": "crlf",
+  "endOfLine": "lf",
   "trailingComma": "none",
   "importOrder": [
     "<THIRD_PARTY_MODULES>",
