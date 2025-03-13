@@ -27,11 +27,11 @@ export const LatestArticleSlot = () => {
       {/* preview */}
       <div className="flex w-full flex-col justify-between gap-2 sm:w-1/2">
         <div>
-          <p className="text-blue-900">최근 게시글</p>
+          <p className="text-blue-500">최근 게시글</p>
           {/* 글 제목 */}
           <h2 className="text-3xl">{title}</h2>
           {/* 시리즈 제목 */}
-          <p className="text-gray-500">{seriesName}</p>
+          <p className="text-secondary">{seriesName}</p>
           {/* 태그 리스트 */}
           <List.UnOrder>
             {tags.map((tag) => (
@@ -42,7 +42,7 @@ export const LatestArticleSlot = () => {
           </List.UnOrder>
         </div>
         {/* 글 설명 */}
-        <p className="h-24 text-ellipsis text-sm text-gray-600">
+        <p className="h-24 text-ellipsis text-sm text-secondary">
           {description}
         </p>
 
@@ -50,7 +50,7 @@ export const LatestArticleSlot = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <AdminProfile size="sm" />
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-secondary">
               <p>{author}</p>
               <time dateTime={new Date(updatedAt).toISOString()}>
                 {new Date(updatedAt).toLocaleString()}
@@ -74,7 +74,7 @@ export const LatestArticleSlot = () => {
           <img
             src={thumbnailUrl}
             alt={`${title} 의 썸네일 이미지`}
-            className="h-full w-full object-cover"
+            className="h-full w-full rounded-lg object-cover"
           />
         ) : (
           // TODO 기본 이미지 생성하기

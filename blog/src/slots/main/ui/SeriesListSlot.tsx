@@ -14,7 +14,7 @@ export const SeriesListSlot = () => {
     <>
       <h1 className="mb-2">시리즈별로 보기</h1>
       <div className="flex justify-end">
-        <Link href="/article" className="text-gray-500 hover:text-blue-900">
+        <Link href="/article" className="text-secondary hover:text-blue-500">
           전체 게시글 보기
         </Link>
       </div>

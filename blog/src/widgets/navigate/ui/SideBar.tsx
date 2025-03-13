@@ -13,14 +13,14 @@ export const SideBar = () => {
     <>
       {/* 사이드바 햄버거 */}
       <button
-        className="flex flex-col gap-1 p-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
+        className="flex flex-col gap-1 rounded-lg p-2 text-primary hover:bg-secondary focus:outline-none focus:ring focus:ring-blue-500 active:bg-secondary"
         aria-label="메뉴 열기"
         tabIndex={0}
         onClick={handleOpenSidebar}
       >
-        <span className="h-0.5 w-4 bg-gray-800"></span>
-        <span className="h-0.5 w-4 bg-gray-800"></span>
-        <span className="h-0.5 w-4 bg-gray-800"></span>
+        <span className="h-0.5 w-4 bg-gray-400"></span>
+        <span className="h-0.5 w-4 bg-gray-400"></span>
+        <span className="h-0.5 w-4 bg-gray-400"></span>
       </button>
 
       {/* 사이드바 컴포넌트 */}
@@ -39,25 +39,19 @@ export const SideBar = () => {
           </button>
         </div>
         {/* 목차 */}
-        <nav>
+        <nav className="text-secondary">
           <h3 className="mb-2 border-b">게시글 목록</h3>
           <ul className="flex flex-col gap-2">
-            <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-blue-900">
+            <li className="text-semibold flex items-center gap-2 hover:text-blue-500">
               <BooksIcon />
               <Link href="#" className="py-2">
                 전체 게시글 보기
               </Link>
             </li>
-            <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-blue-900">
+            <li className="text-semibold flex items-center gap-2 hover:text-blue-500">
               <LibraryIcon />
               <Link href="#" className="py-2">
                 시리즈 목록 보기
-              </Link>
-            </li>
-
-            <li className="text-semibold flex items-center gap-2 text-gray-600 hover:text-blue-900">
-              <Link href="/temp" className="py-2">
-                임시저장된 게시글 보기
               </Link>
             </li>
           </ul>

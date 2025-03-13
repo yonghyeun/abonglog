@@ -6,6 +6,8 @@ import { ServiceProvider } from "@/app/ServiceProvider";
 
 import { SideBar } from "@/widgets/navigate/ui";
 
+import { DarkModeToggle } from "@/features/utils/ui";
+
 import { getCurrentUserData } from "@/entities/user/model";
 import { Profile } from "@/entities/user/ui";
 
@@ -51,33 +53,36 @@ const Header = async () => {
         </h1>
         <SideBar />
       </div>
-      {user && (
-        <div className="flex items-center gap-2">
-          <Link
-            href="/write"
-            className="text-md p-2 text-gray-400 hover:bg-secondary"
-          >
-            글 쓰기
-          </Link>
-          <Link
-            className="flex items-end gap-2 p-2 hover:bg-secondary"
-            href="/auth"
-          >
-            <Profile
-              size="sm"
-              src={`${user.profileUrl}`}
-              alt={`${user.email} 의 프로필 이미지`}
-            />
-            <p className="text-xs text-gray-400">{user.email}</p>
-          </Link>
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        {user && (
+          <>
+            <Link
+              href="/write"
+              className="text-md p-2 text-gray-400 hover:bg-secondary"
+            >
+              글 쓰기
+            </Link>
+            <Link
+              className="flex items-end gap-2 p-2 hover:bg-secondary"
+              href="/auth"
+            >
+              <Profile
+                size="sm"
+                src={`${user.profileUrl}`}
+                alt={`${user.email} 의 프로필 이미지`}
+              />
+              <p className="text-xs text-gray-400">{user.email}</p>
+            </Link>
+          </>
+        )}
+        <DarkModeToggle />
+      </div>
     </header>
   );
 };
 
 const Footer = () => (
-  <footer className="media-padding-x bg-blue-700 py-4 text-gray-200">
+  <footer className="media-padding-x py-4 text-secondary">
     {/* introduce */}
     <div className="flex flex-col justify-between gap-4 md:flex-row">
       <div className="flex-grow">

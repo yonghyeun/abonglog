@@ -42,7 +42,7 @@ export const ArticleSidebar: React.FC<ArticleSidebarProps> = ({
               href={`/article/${articleId}#${headingId}`}
               className={`transition-all duration-200 ${
                 activeId === headingId
-                  ? "font-bold text-blue-600"
+                  ? "font-bold text-blue-500"
                   : "text-gray-500"
               }`}
               onClick={(event) => handleHeadingScroll(event, headingId)}
