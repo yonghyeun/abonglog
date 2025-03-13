@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Noto_Sans_KR } from "next/font/google";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
 
@@ -29,7 +30,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
           <Header />
           <main className="flex flex-grow flex-col">
             {modal}
-            {children}
+            <Suspense fallback={null}>{children}</Suspense>
           </main>
           <Footer />
         </ServiceProvider>
