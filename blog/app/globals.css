@@ -5,9 +5,22 @@
 :root {
   --white: #ffffff;
   --secondary-white: #f0f0f0;
+  --black: #000000;
+  --gray-dark: #1f2937;
 
   --bg-primary: var(--white);
   --bg-secondary: var(--secondary-white);
+  --bg-dark-primary: var(--black);
+  --bg-dark-secondary: var(--gray-dark);
+
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-quaternary: #d1d5db;
+  --text-dark-primary: #f9fafb;
+  --text-dark-secondary: #d1d5db;
+  --text-dark-tertiary: #9ca3af;
+  --text-dark-quaternary: #6b7280;
 }
 
 /* 글자 드래그 시 셀렉션 된 영역 배경 수정 */
@@ -16,19 +29,28 @@
 }
 
 .dark {
+  --bg-primary: var(--bg-dark-primary);
+  --bg-secondary: var(--bg-dark-secondary);
+  --text-primary: var(--text-dark-primary);
+  --text-secondary: var(--text-dark-secondary);
+  --text-tertiary: var(--text-dark-tertiary);
+  --text-quaternary: var(--text-dark-quaternary);
 }
 
 h1 {
   font-size: 2rem;
   word-break: keep-all;
+  color: var(--text-primary);
 }
 h2 {
   font-size: 1.5rem;
   word-break: keep-all;
+  color: var(--text-primary);
 }
 h3 {
   font-size: 1.17rem;
   word-break: keep-all;
+  color: var(--text-primary);
 }
 
 .media-padding-x {
