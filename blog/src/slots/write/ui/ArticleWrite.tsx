@@ -83,9 +83,8 @@ const TitleInput = () => {
         id="title"
         defaultValue={store?.getState().title}
         onChange={({ target }) => setTitle(target.value)}
-        className="w-full p-2 text-3xl outline-none focus:outline-none"
+        className="w-full rounded-md border bg-secondary p-2 text-3xl outline-none focus:outline-none"
       />
-      <div className="h-2 w-32 bg-secondary" />
     </div>
   );
 };
@@ -96,7 +95,7 @@ const TagList = () => {
   const setSelectedTags = useArticleWriteStore((state) => state.setTags);
 
   return (
-    <div className="relative mt-4 flex items-center gap-2 border bg-gray-100 p-2">
+    <div className="relative mt-4 flex items-center gap-2 rounded-md border bg-secondary p-2">
       {/* 태그 셀렉트 토글 */}
       <TagSelectToggle
         onEachTagClick={(tag) => {
@@ -340,7 +339,7 @@ const MarkdownEditor = () => {
 
   return (
     <textarea
-      className="flex-grow resize-none border p-2 text-sm focus:outline-none"
+      className="flex-grow resize-none rounded-md border bg-secondary p-2 text-sm text-primary focus:outline-none"
       placeholder="게시글 내용을 입력해 주세요"
       autoCorrect="off"
       value={content}
@@ -373,7 +372,7 @@ const MarkdownPreview = () => {
   return (
     <article
       className={
-        "hidden flex-grow overflow-auto border p-2 text-sm md:block md:w-1/2"
+        "hidden flex-grow overflow-auto rounded-md border p-2 text-sm text-primary md:block md:w-1/2"
       }
       dangerouslySetInnerHTML={{ __html: html }}
       ref={previewRef}
@@ -419,7 +418,7 @@ const TempSaveButton = () => {
   };
 
   return (
-    <Button variant="outlined" size="sm" onClick={handleSave}>
+    <Button variant="outlined" size="md" onClick={handleSave}>
       임시 저장
     </Button>
   );
@@ -432,14 +431,14 @@ const DescriptionTextArea = () => {
     <div className="flex flex-col gap-2">
       <label
         htmlFor="article-description"
-        className="flex cursor-pointer items-center gap-1 text-gray-400 hover:text-blue-700"
+        className="flex cursor-pointer items-center gap-1 text-secondary hover:text-blue-500"
       >
         <PenIcon size={18} />
         <span>소개글 등록</span>
       </label>
       <textarea
         id="article-description"
-        className="resize-none border p-2 text-gray-600 outline-none"
+        className="bourder-radius resize-none rounded-md border bg-secondary p-2 text-secondary outline-none"
         placeholder="아티클에 대한 소개글을 작성해 주세요"
         onChange={({ target }) => setDescription(target.value)}
       />
@@ -486,7 +485,7 @@ const ThumbnailUploadInput = () => {
         }}
       />
       {/* 선택된 썸네일 주소 표현 컴포넌트 */}
-      <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-blue-700">
+      <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-blue-500 text-secondary">
         {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
       </p>
     </div>
@@ -506,7 +505,7 @@ const ArticleImageGrid = () => {
   return (
     <>
       {imageUrlsInMarkdown.length > 0 ? (
-        <ImageGrid>
+        <ImageGrid className="rounded-md">
           <ImageGrid.Title>아티클에 사용된 이미지들</ImageGrid.Title>
           <ImageGrid.Container>
             {imageUrlsInMarkdown.map((image, idx) => (
@@ -520,7 +519,7 @@ const ArticleImageGrid = () => {
           </ImageGrid.Container>
         </ImageGrid>
       ) : (
-        <p className="flex items-center justify-center border px-2 py-12 text-gray-600">
+        <p className="flex items-center justify-center rounded-md border px-2 py-12 text-secondary">
           아티클 본문에서 사용된 이미지가 없습니다.
         </p>
       )}
@@ -585,9 +584,9 @@ const SubmitButton = () => {
   return (
     <Button
       variant="filled"
-      size="sm"
+      size="md"
       className="mt-4"
-      onClick={() => handleSaveArticle()}
+      onClick={handleSaveArticle}
     >
       게시글 발행하기
     </Button>

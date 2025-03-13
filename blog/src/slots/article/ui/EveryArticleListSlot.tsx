@@ -65,8 +65,8 @@ export const EveryArticleListSlot = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <header className="flex justify-center">
         <div className="flex items-center gap-2">
-          <h1 className="text-blue-900">전체 게시글 보기</h1>
-          <span className="text-gray-500">({numOfArticles})</span>
+          <h1 className="text-blue-500">전체 게시글 보기</h1>
+          <span className="text-secondary">({numOfArticles})</span>
         </div>
       </header>
       <EveryArticleList numOfArticles={numOfArticles} />

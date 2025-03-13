@@ -45,12 +45,12 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
 
       {/* 글 제목과 시리즈 이름 */}
       <div>
-        <h3 className="text-primary text-xl font-semibold">{title}</h3>
-        <p className="text-secondary text-sm">{seriesName}</p>
+        <h3 className="text-xl font-semibold text-primary">{title}</h3>
+        <p className="text-sm text-secondary">{seriesName}</p>
       </div>
 
       {/* 소개글 & 게시자 정보 */}
-      <div className="text-secondary flex flex-col gap-4 text-sm">
+      <div className="flex flex-col gap-4 text-sm text-secondary">
         <p className="w-full break-words">{description}</p>
         <div className="flex items-center gap-2">
           <AdminProfile size="sm" />

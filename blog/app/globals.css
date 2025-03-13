@@ -21,6 +21,10 @@
   --text-dark-secondary: #d1d5db;
   --text-dark-tertiary: #9ca3af;
   --text-dark-quaternary: #6b7280;
+
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-dark:
+    0 1px 3px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(255, 255, 255, 0.06);
 }
 
 /* 글자 드래그 시 셀렉션 된 영역 배경 수정 */
@@ -35,6 +39,8 @@
   --text-secondary: var(--text-dark-secondary);
   --text-tertiary: var(--text-dark-tertiary);
   --text-quaternary: var(--text-dark-quaternary);
+  --shadow:
+    0 1px 3px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(255, 255, 255, 0.06);
 }
 
 h1 {
@@ -55,6 +61,10 @@ h3 {
 
 .media-padding-x {
   @apply px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-40;
+}
+
+* {
+  border-color: var(--text-quaternary);
 }
 
 p {

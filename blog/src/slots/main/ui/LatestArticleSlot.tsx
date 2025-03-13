@@ -74,7 +74,7 @@ export const LatestArticleSlot = () => {
           <img
             src={thumbnailUrl}
             alt={`${title} 의 썸네일 이미지`}
-            className="h-full w-full object-cover"
+            className="h-full w-full rounded-lg object-cover"
           />
         ) : (
           // TODO 기본 이미지 생성하기

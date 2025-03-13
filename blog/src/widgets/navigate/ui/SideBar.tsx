@@ -13,14 +13,14 @@ export const SideBar = () => {
     <>
       {/* 사이드바 햄버거 */}
       <button
-        className="flex flex-col gap-1 p-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
+        className="flex flex-col gap-1 rounded-lg p-2 text-primary hover:bg-secondary focus:outline-none focus:ring focus:ring-blue-500 active:bg-secondary"
         aria-label="메뉴 열기"
         tabIndex={0}
         onClick={handleOpenSidebar}
       >
-        <span className="h-0.5 w-4 bg-gray-800"></span>
-        <span className="h-0.5 w-4 bg-gray-800"></span>
-        <span className="h-0.5 w-4 bg-gray-800"></span>
+        <span className="h-0.5 w-4 bg-gray-400"></span>
+        <span className="h-0.5 w-4 bg-gray-400"></span>
+        <span className="h-0.5 w-4 bg-gray-400"></span>
       </button>
 
       {/* 사이드바 컴포넌트 */}
