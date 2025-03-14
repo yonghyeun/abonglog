@@ -71,8 +71,8 @@ p {
 }
 
 /* 
- Markdown Renderer CSS 속성
-*/
+ * Markdown Renderer CSS 속성
+ */
 
 .heading-1,
 .heading-2,
@@ -115,6 +115,8 @@ p {
 .paragraph {
   margin-bottom: 1rem;
   color: var(--text-primary);
+  line-height: 1.7;
+  text-indent: 0.5rem;
 }
 
 .link {
@@ -128,7 +130,7 @@ p {
 .code-block {
   font-family: transparent;
   background-color: var(--bg-secondary);
-  padding: 0.2rem 0.5rem;
+  padding: 0.1rem 0.5rem;
   font-size: 0.9rem;
   border-radius: 4px;
 }
