@@ -29,7 +29,7 @@ interface ArticleWriteStoreAction {
   ) => void;
   setHtml: (html: string | ((state: string) => string)) => void;
 
-  setisPreviewNeedScroll: (
+  setIsPreviewNeedScroll: (
     isPreviewNeedScroll: boolean | ((state: boolean) => boolean)
   ) => void;
 }
@@ -89,7 +89,7 @@ export const createArticleWriteStore = (
           typeof action === "function" ? action(get().html) : action;
         set({ html: newState });
       },
-      setisPreviewNeedScroll: (action) => {
+      setIsPreviewNeedScroll: (action) => {
         const newState =
           typeof action === "function"
             ? action(get().isPreviewNeedScroll)

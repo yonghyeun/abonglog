@@ -229,7 +229,7 @@ const MarkdownEditor = () => {
   const setContent = useArticleWriteStore((state) => state.setContent);
   const setHtml = useArticleWriteStore((state) => state.setHtml);
   const setIsPreviewNeedScroll = useArticleWriteStore(
-    (state) => state.setisPreviewNeedScroll
+    (state) => state.setIsPreviewNeedScroll
   );
 
   const handleChangeMarkdown = async ({
