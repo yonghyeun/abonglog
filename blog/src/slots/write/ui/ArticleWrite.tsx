@@ -83,7 +83,7 @@ const TitleInput = () => {
         id="title"
         defaultValue={store?.getState().title}
         onChange={({ target }) => setTitle(target.value)}
-        className="w-full rounded-md border bg-secondary p-2 text-3xl outline-none focus:outline-none"
+        className="w-full rounded-md border bg-secondary p-2 text-3xl text-primary outline-none focus:outline-none"
       />
     </div>
   );
