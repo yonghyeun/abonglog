@@ -240,11 +240,11 @@ const MarkdownEditor = () => {
     const newHtml = await rehypeMarkdown(target.value);
     setHtml(newHtml);
 
-    const isWrittingAtBottom =
+    const isWritingAtBottom =
       target.value.length > content.length &&
       target.value.length === target.selectionStart;
 
-    setIsPreviewNeedScroll(isWrittingAtBottom);
+    setIsPreviewNeedScroll(isWritingAtBottom);
   };
 
   /**
