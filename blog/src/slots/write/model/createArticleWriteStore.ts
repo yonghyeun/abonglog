@@ -13,9 +13,6 @@ interface ArticleWriteStoreState {
   // step 2 state
   description: string;
   thumbnailUrl: string | null;
-
-  // utlity state
-  scrollOffset: number;
 }
 
 interface ArticleWriteStoreAction {
@@ -28,7 +25,6 @@ interface ArticleWriteStoreAction {
     thumbnailUrl: (string | null) | ((state: string | null) => string)
   ) => void;
   setHtml: (html: string | ((state: string) => string)) => void;
-  setScrollOffset: (height: number | ((state: number) => number)) => void;
 }
 
 const ARTICLE_WRITE_INITIAL_STATE: ArticleWriteStoreState = {
@@ -39,8 +35,7 @@ const ARTICLE_WRITE_INITIAL_STATE: ArticleWriteStoreState = {
   description: "",
   thumbnailUrl: null,
   html: "",
-  articleId: 0,
-  scrollOffset: 0
+  articleId: 0
 };
 
 export const createArticleWriteStore = (
@@ -86,12 +81,6 @@ export const createArticleWriteStore = (
         const newState =
           typeof action === "function" ? action(get().html) : action;
         set({ html: newState });
-      },
-
-      setScrollOffset: (action) => {
-        const newState =
-          typeof action === "function" ? action(get().scrollOffset) : action;
-        set({ scrollOffset: newState });
       }
     })
   );
