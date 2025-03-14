@@ -106,19 +106,12 @@ p {
   font-size: 1.25rem;
 }
 
-.heading-5 {
-  font-size: 1rem;
-}
-
-.heading-6 {
-  font-size: 1rem;
-}
-
 .paragraph {
   margin-bottom: 1rem;
   color: var(--text-primary);
   line-height: 1.7;
   text-indent: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .link {
@@ -133,7 +126,7 @@ p {
   font-family: transparent;
   background-color: var(--bg-secondary);
   padding: 0.1rem 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   border-radius: 4px;
 }
 
@@ -211,7 +204,7 @@ p {
   margin: 0 0 1rem 0;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   padding: 0 2rem 1rem 1rem;
-  overflow: scroll;
+  overflow: auto;
   background-color: #212121;
   font-style: normal;
   font-size: 1.1rem;
@@ -262,8 +255,7 @@ figcaption[data-rehype-pretty-code-title] {
   color: #ddd;
   background-color: #212121;
   display: inline-block;
-  padding-left: 1rem;
-  padding-right: 2.5rem;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
   border-radius: 1rem 1rem 0 0; /* 오른쪽 상단 모서리 반지름 증가 */
 }
 

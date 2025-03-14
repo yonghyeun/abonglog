@@ -343,7 +343,7 @@ const MarkdownEditor = () => {
 
   return (
     <textarea
-      className="flex-grow resize-none rounded-md border bg-secondary p-2 text-sm text-primary focus:outline-none"
+      className="flex-grow resize-none rounded-md border bg-secondary p-2 text-lg text-primary focus:outline-none"
       placeholder="게시글 내용을 입력해 주세요"
       autoCorrect="off"
       value={content}
