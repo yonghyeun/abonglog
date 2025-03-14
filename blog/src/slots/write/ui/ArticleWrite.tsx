@@ -419,6 +419,7 @@ const TempSaveButton = () => {
 };
 
 const DescriptionTextArea = () => {
+  const description = useArticleWriteStore((state) => state.description);
   const setDescription = useArticleWriteStore((state) => state.setDescription);
 
   return (
@@ -431,6 +432,7 @@ const DescriptionTextArea = () => {
         <span>소개글 등록</span>
       </label>
       <textarea
+        value={description}
         id="article-description"
         className="bourder-radius resize-none rounded-md border bg-secondary p-2 text-secondary outline-none"
         placeholder="아티클에 대한 소개글을 작성해 주세요"
