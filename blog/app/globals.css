@@ -135,7 +135,7 @@ p {
   border-radius: 4px;
 }
 
-.paragraph > .code-block {
+:not(.pre-block) > .code-block {
   border: 1px solid var(--text-quaternary);
 }
 
@@ -157,7 +157,7 @@ p {
 }
 
 .unordered-list {
-  list-style-type: square; /* ul 태그의 기본 불릿 스타일 */
+  list-style-type: disc; /* ul 태그의 기본 불릿 스타일 */
 }
 
 .ordered-list {
