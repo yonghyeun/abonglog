@@ -5,8 +5,8 @@
 :root {
   --white: #ffffff;
   --secondary-white: #f0f0f0;
-  --black: #000000;
-  --gray-dark: #121212;
+  --black: #161616;
+  --gray-dark: #212121;
 
   --bg-primary: var(--white);
   --bg-secondary: var(--secondary-white);
