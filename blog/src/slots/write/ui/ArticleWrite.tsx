@@ -434,7 +434,7 @@ const DescriptionTextArea = () => {
       <textarea
         value={description}
         id="article-description"
-        className="bourder-radius resize-none rounded-md border bg-secondary p-2 text-secondary outline-none"
+        className="border-radius resize-none rounded-md border bg-secondary p-2 text-secondary outline-none"
         placeholder="아티클에 대한 소개글을 작성해 주세요"
         onChange={({ target }) => setDescription(target.value)}
       />
