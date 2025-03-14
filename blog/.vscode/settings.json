@@ -27,5 +27,19 @@
   ],
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "vim.useCtrlKeys": true,
+  "vim.handleKeys": {
+    "<C-c>": true,
+    "<C-v>": true,
+    "<C-x>": true,
+    "<C-a>": true,
+    "<C-f>": true,
+    "<C-h>": true,
+    "<C-b>": true,
+    "<C-w>": true,
+    "<C-u>": true,
+    "<C-z>": true,
+    "<C-k>": true
   }
 }

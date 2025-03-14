@@ -1,3 +1,4 @@
+import { ProgressBar } from "./ProgressBar";
 import type { ArticlePageProps } from "./type";
 
 import { createNestedHeadings } from "@/features/article/lib/createNestedHeadings";
@@ -25,6 +26,7 @@ export const GuestArticleSlot: React.FC<ArticlePageProps> = async ({
 
   return (
     <section>
+      <ProgressBar />
       <header>
         {/* 썸네일 이미지 */}
         {thumbnailUrl ? (
