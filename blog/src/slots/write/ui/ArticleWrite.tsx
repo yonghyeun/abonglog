@@ -228,6 +228,9 @@ const MarkdownEditor = () => {
   const articleId = useArticleWriteStore((state) => state.articleId);
   const setContent = useArticleWriteStore((state) => state.setContent);
   const setHtml = useArticleWriteStore((state) => state.setHtml);
+  const setIsPreviewNeedScroll = useArticleWriteStore(
+    (state) => state.setisPreviewNeedScroll
+  );
 
   const handleChangeMarkdown = async ({
     target
@@ -236,6 +239,12 @@ const MarkdownEditor = () => {
 
     const newHtml = await rehypeMarkdown(target.value);
     setHtml(newHtml);
+
+    const isWrittingAtBottom =
+      target.value.length > content.length &&
+      target.value.length === target.selectionStart;
+
+    setIsPreviewNeedScroll(isWrittingAtBottom);
   };
 
   /**
@@ -349,11 +358,14 @@ const MarkdownEditor = () => {
 const MarkdownPreview = () => {
   const html = useArticleWriteStore((state) => state.html);
   const previewRef = useRef<HTMLDivElement | null>(null);
+  const isPreviewNeedScroll = useArticleWriteStore(
+    (state) => state.isPreviewNeedScroll
+  );
 
   useEffect(() => {
     const preview = previewRef.current;
 
-    if (!preview) {
+    if (!preview || !isPreviewNeedScroll) {
       return;
     }
 
@@ -361,7 +373,7 @@ const MarkdownPreview = () => {
       top: preview.scrollHeight,
       behavior: "smooth"
     });
-  });
+  }, [isPreviewNeedScroll]);
 
   return (
     <article

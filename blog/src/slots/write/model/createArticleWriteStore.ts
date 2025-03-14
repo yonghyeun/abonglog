@@ -13,6 +13,9 @@ interface ArticleWriteStoreState {
   // step 2 state
   description: string;
   thumbnailUrl: string | null;
+
+  // util state
+  isPreviewNeedScroll: boolean;
 }
 
 interface ArticleWriteStoreAction {
@@ -25,6 +28,10 @@ interface ArticleWriteStoreAction {
     thumbnailUrl: (string | null) | ((state: string | null) => string)
   ) => void;
   setHtml: (html: string | ((state: string) => string)) => void;
+
+  setisPreviewNeedScroll: (
+    isPreviewNeedScroll: boolean | ((state: boolean) => boolean)
+  ) => void;
 }
 
 const ARTICLE_WRITE_INITIAL_STATE: ArticleWriteStoreState = {
@@ -35,7 +42,8 @@ const ARTICLE_WRITE_INITIAL_STATE: ArticleWriteStoreState = {
   description: "",
   thumbnailUrl: null,
   html: "",
-  articleId: 0
+  articleId: 0,
+  isPreviewNeedScroll: true
 };
 
 export const createArticleWriteStore = (
@@ -76,11 +84,17 @@ export const createArticleWriteStore = (
           typeof action === "function" ? action(get().thumbnailUrl) : action;
         set({ thumbnailUrl: newState });
       },
-
       setHtml: (action) => {
         const newState =
           typeof action === "function" ? action(get().html) : action;
         set({ html: newState });
+      },
+      setisPreviewNeedScroll: (action) => {
+        const newState =
+          typeof action === "function"
+            ? action(get().isPreviewNeedScroll)
+            : action;
+        set({ isPreviewNeedScroll: newState });
       }
     })
   );
