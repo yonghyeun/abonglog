@@ -41,7 +41,7 @@ jobs:
           script: |
             const fs = require('fs');
             try {
-              const manifestPath = 'blog/.lighthouseci/manifest.json';
+              const manifestPath = 'blog/.lhci_reports/manifest.json';
               console.log('Looking for Lighthouse results at:', manifestPath);
               
               const results = JSON.parse(fs.readFileSync(manifestPath));
