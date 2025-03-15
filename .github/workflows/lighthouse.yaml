@@ -41,7 +41,7 @@ jobs:
           script: |
             const fs = require('fs');
             try {
-              const manifestPath = `${process.env.GITHUB_WORKSPACE}/blog/.lighthouseci/manifest.json`;
+              const manifestPath = 'blog/.lighthouseci/manifest.json';
               console.log('Looking for Lighthouse results at:', manifestPath);
               
               const results = JSON.parse(fs.readFileSync(manifestPath));
@@ -116,3 +116,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: ${{ steps.format_lighthouse_score.outputs.comments }}
+
