@@ -1,0 +1,38 @@
+[
+  {
+    "url": "http://localhost:3000/",
+    "isRepresentativeRun": false,
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_09-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_09-report.json",
+    "summary": {
+      "performance": 0.73,
+      "accessibility": 0.8,
+      "best-practices": 1,
+      "seo": 0.82
+    }
+  },
+  {
+    "url": "http://localhost:3000/",
+    "isRepresentativeRun": false,
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_34-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_34-report.json",
+    "summary": {
+      "performance": 0.8,
+      "accessibility": 0.8,
+      "best-practices": 1,
+      "seo": 0.82
+    }
+  },
+  {
+    "url": "http://localhost:3000/",
+    "isRepresentativeRun": true,
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_22-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_22-report.json",
+    "summary": {
+      "performance": 0.8,
+      "accessibility": 0.8,
+      "best-practices": 1,
+      "seo": 0.82
+    }
+  }
+]
