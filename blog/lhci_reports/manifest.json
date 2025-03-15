@@ -2,10 +2,10 @@
   {
     "url": "http://localhost:3000/",
     "isRepresentativeRun": false,
-    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_09-report.html",
-    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_09-report.json",
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_31_13-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_31_13-report.json",
     "summary": {
-      "performance": 0.73,
+      "performance": 0.76,
       "accessibility": 0.8,
       "best-practices": 1,
       "seo": 0.82
@@ -14,10 +14,10 @@
   {
     "url": "http://localhost:3000/",
     "isRepresentativeRun": false,
-    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_34-report.html",
-    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_34-report.json",
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_31_38-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_31_38-report.json",
     "summary": {
-      "performance": 0.8,
+      "performance": 0.79,
       "accessibility": 0.8,
       "best-practices": 1,
       "seo": 0.82
@@ -26,10 +26,10 @@
   {
     "url": "http://localhost:3000/",
     "isRepresentativeRun": true,
-    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_22-report.html",
-    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_00_22-report.json",
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_31_27-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_13_31_27-report.json",
     "summary": {
-      "performance": 0.8,
+      "performance": 0.79,
       "accessibility": 0.8,
       "best-practices": 1,
       "seo": 0.82
