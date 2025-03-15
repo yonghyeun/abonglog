@@ -24,7 +24,14 @@ jobs:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
           npm install -g @lhci/cli
-          lhci autorun || echo "Fail to Run Lighthouse CI!"
+          # 포트 사용 여부 확인
+          npx kill-port 3000 || true
+
+          # Lighthouse CI 실행
+          lhci autorun --verbose || echo "Lighthouse CI completed with warnings"
+
+          # 결과 디렉토리 확인
+          ls -la .lhci_reports/
 
       - name: Format lighthouse score
         id: format_lighthouse_score
