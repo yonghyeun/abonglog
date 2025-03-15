@@ -18,20 +18,13 @@ jobs:
         run: |
           npm ci
 
-      - name: Build
-        working-directory: ./blog
-        run: |
-          npm run build
-
       - name: Run Lighthouse CI
         working-directory: ./blog
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
           npm install -g @lhci/cli
-          lhci autorun --upload.target=temporary-public-storage || echo "Lighthouse CI completed with warnings"
-          echo "Checking Lighthouse CI results directory:"
-          ls -la .lighthouseci/
+          lhci autorun || echo "Fail to Run Lighthouse CI!"
 
       - name: Format lighthouse score
         id: format_lighthouse_score
