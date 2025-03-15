@@ -2,10 +2,10 @@
   {
     "url": "http://localhost:3000/",
     "isRepresentativeRun": false,
-    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_09_30_31-report.html",
-    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_09_30_31-report.json",
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\.lhci_reports\\_-2025_03_15_11_24_14-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\.lhci_reports\\_-2025_03_15_11_24_14-report.json",
     "summary": {
-      "performance": 0.79,
+      "performance": 0.76,
       "accessibility": 0.8,
       "best-practices": 1,
       "seo": 0.82
@@ -14,8 +14,8 @@
   {
     "url": "http://localhost:3000/",
     "isRepresentativeRun": false,
-    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_09_30_43-report.html",
-    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_09_30_43-report.json",
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\.lhci_reports\\_-2025_03_15_11_24_27-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\.lhci_reports\\_-2025_03_15_11_24_27-report.json",
     "summary": {
       "performance": 0.8,
       "accessibility": 0.8,
@@ -26,8 +26,8 @@
   {
     "url": "http://localhost:3000/",
     "isRepresentativeRun": true,
-    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_09_30_54-report.html",
-    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\lhci_reports\\_-2025_03_15_09_30_54-report.json",
+    "htmlPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\.lhci_reports\\_-2025_03_15_11_24_39-report.html",
+    "jsonPath": "C:\\Users\\ttddc\\OneDrive\\바탕 화면\\github\\abonglog\\blog\\.lhci_reports\\_-2025_03_15_11_24_39-report.json",
     "summary": {
       "performance": 0.8,
       "accessibility": 0.8,
