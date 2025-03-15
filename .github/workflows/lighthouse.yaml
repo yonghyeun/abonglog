@@ -18,11 +18,8 @@ jobs:
         run: |
           npm ci
 
-      - name: Build
-        run: |
-          npm run build
-
       - name: Run Lighthouse CI
+        working-directory: ./blog
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
