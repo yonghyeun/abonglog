@@ -18,6 +18,11 @@ jobs:
         run: |
           npm ci
 
+      - name: Build
+        working-directory: ./blog
+        run: |
+          npm run build
+
       - name: Run Lighthouse CI
         working-directory: ./blog
         env:
