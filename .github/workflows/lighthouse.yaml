@@ -23,13 +23,33 @@ jobs:
         run: |
           npm run build
 
+      # URL이 준비될 때까지 대기하고 Lighthouse 실행
       - name: Run Lighthouse CI
         working-directory: ./blog
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
           npm install -g @lhci/cli
-          lhci autorun || echo "Fail to Run Lighthouse CI!"
+
+          # 서버 시작
+          npm run start & 
+          echo "서버 시작 대기 중..."
+
+          # URL 준비 확인
+          timeout=60
+          while ! curl -s http://localhost:3000 > /dev/null; do
+            if [ $timeout -le 0 ]; then
+              echo "URL 준비 타임아웃"
+              exit 1
+            fi
+            echo "대기 중... ($timeout 초 남음)"
+            sleep 1
+            ((timeout--))
+          done
+          echo "URL 준비 완료!"
+
+          # Lighthouse CI 실행
+          lhci autorun || echo "Lighthouse CI completed with warnings"
 
       - name: Format lighthouse score
         id: format_lighthouse_score
@@ -37,50 +57,53 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-
             const fs = require('fs');
-            const results = JSON.parse(fs.readFileSync("/{Github Actions runner directory}/lhci_reports/manifest.json"));
-            let comments = "";
+            try {
+              const manifestPath = `${process.cwd()}/blog/.lighthouseci/manifest.json`;
+              console.log('Lighthouse 결과 파일 경로:', manifestPath);
+              
+              const results = JSON.parse(fs.readFileSync(manifestPath));
+              let comments = "";
 
-            results.forEach((result) => {
-              const { summary, jsonPath } = result;
-              const { audits } = details;
+              results.forEach((result) => {
+                const { summary } = result;
+                const details = JSON.parse(fs.readFileSync(result.jsonPath));
+                const { audits } = details;
+                
+                const formatResult = (res) => Math.round(res * 100);
+                Object.keys(summary).forEach(
+                  (key) => (summary[key] = formatResult(summary[key]))
+                );
 
-              const details = JSON.parse(fs.readFileSync(jsonPath));
-              const formatResult = (res) => Math.round(res * 100);
+                const score = (res) => (res >= 90 ? "🟢" : res >= 50 ? "🟠" : "🔴");
 
-              Object.keys(summary).forEach(
-                (key) => (summary[key] = formatResult(summary[key]))
-              );
+                const comment = [
+                  `⚡️ Lighthouse report!`,
+                  `| Category | Score |`,
+                  `| --- | --- |`,
+                  `| ${score(summary.performance)} Performance | ${summary.performance} |`,
+                ].join("\n");
 
-              # 점수가 색상으로 구분되는 방식 (https://web.dev/performance-scoring/#color-coding)
-              const score = (res) => (res >= 90 ? "🟢" : res >= 50 ? "🟠" : "🔴");
+                const detail = [
+                  `| Category | Score |`,
+                  `| --- | --- |`,
+                  `| ${score(
+                    audits["first-contentful-paint"].score * 100
+                  )} First Contentful Paint | ${
+                    audits["first-contentful-paint"].displayValue
+                  } |`,
+                ].join("\n");
+                comments += comment + "\n" + detail + "\n";
+              });
+              core.setOutput('comments', comments);
+            } catch (error) {
+              console.error('Lighthouse 결과 처리 중 오류:', error);
+              core.setFailed(error.message);
+            }
 
-              const comment = [
-                `⚡️ Lighthouse report!`,
-                `| Category | Score |`,
-                `| --- | --- |`,
-                `| ${score(summary.performance)} Performance | ${summary.performance} |`,
-              ].join("\n");
-
-              const detail = [
-                `| Category | Score |`,
-                `| --- | --- |`,
-                `| ${score(
-                  audits["first-contentful-paint"].score * 100
-                )} First Contentful Paint | ${
-                  audits["first-contentful-paint"].displayValue
-                } |`,
-              ].join("\n");
-              comments += comment + "\n" + detail + "\n";
-            });
-
-            core.setOutput('comments', comments)
-
-      - name: comment PR
+      - name: Comment PR
         uses: unsplash/comment-on-pr@v1.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: ${{ steps.format_lighthouse_score.outputs.comments}}
-
+          msg: ${{ steps.format_lighthouse_score.outputs.comments }}
