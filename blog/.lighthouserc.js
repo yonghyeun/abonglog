@@ -2,8 +2,8 @@ module.exports = {
   ci: {
     collect: {
       url: ["http://localhost:3000/"],
-      startServerCommand: "npm run start",
-      startServerReadyPattern: "ready on",
+      startServerCommand: "NODE_ENV=production npm run start",
+      startServerReadyPattern: "ready - started server on",
       startServerReadyTimeout: 60000,
       numberOfRuns: 3,
 
@@ -19,11 +19,11 @@ module.exports = {
       // TLS 인증서 오류를 무시하기 위한 Lighthouse 설정
 
       settings: {
-        skipAudits: [
-          "is-on-https",
-          "redirects-http",
-          "uses-http2",
-          "uses-long-cache-ttl"
+        onlyCategories: [
+          "performance",
+          "accessibility",
+          "best-practices",
+          "seo"
         ]
       }
     },
