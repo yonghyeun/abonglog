@@ -1,0 +1,93 @@
+name: Run lighthouse CI When Push
+on: [push]
+jobs:
+  lhci:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./blog
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 20.10.0
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.10.0
+
+      - name: Install packages
+        run: |
+          npm ci
+
+      - name: Build
+        run: |
+          npm run build
+
+      # URL이 준비될 때까지 대기하고 Lighthouse 실행
+      - name: Run Lighthouse CI
+        working-directory: ./blog
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun
+
+      - name: Format lighthouse score
+        id: format_lighthouse_score
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs');
+            try {
+              const manifestPath = `${process.cwd()}/blog/.lighthouseci/manifest.json`;
+              console.log('Lighthouse 결과 파일 경로:', manifestPath);
+              
+              const results = JSON.parse(fs.readFileSync(manifestPath));
+              let comments = "";
+
+              results.forEach((result) => {
+                const { summary } = result;
+                const details = JSON.parse(fs.readFileSync(result.jsonPath));
+                const { audits } = details;
+                
+                const formatResult = (res) => Math.round(res * 100);
+                Object.keys(summary).forEach(
+                  (key) => (summary[key] = formatResult(summary[key]))
+                );
+
+                const score = (res) => (res >= 90 ? "🟢" : res >= 50 ? "🟠" : "🔴");
+
+                const comment = [
+                  `⚡️ Lighthouse report!`,
+                  `| Category | Score |`,
+                  `| --- | --- |`,
+                  `| ${score(summary.performance)} Performance | ${summary.performance} |`,
+                ].join("\n");
+
+                const detail = [
+                  `| Category | Score |`,
+                  `| --- | --- |`,
+                  `| ${score(
+                    audits["first-contentful-paint"].score * 100
+                  )} First Contentful Paint | ${
+                    audits["first-contentful-paint"].displayValue
+                  } |`,
+                ].join("\n");
+                comments += comment + "\n" + detail + "\n";
+              });
+              core.setOutput('comments', comments);
+            } catch (error) {
+              console.error('Lighthouse 결과 처리 중 오류:', error);
+              core.setFailed(error.message);
+            }
+
+      - name: Comment PR
+        uses: unsplash/comment-on-pr@v1.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: ${{ steps.format_lighthouse_score.outputs.comments }}
+
