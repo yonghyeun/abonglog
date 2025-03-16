@@ -10,7 +10,7 @@ import remark2rehype from "remark-rehype";
 import { unified } from "unified";
 
 export const rehypeMarkdown = async (markdown: string) => {
-  const IS_DEVELOPENT = process.env.NODE_ENV === "development";
+  const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
   const vfileObject = await unified()
     // 마크다운 텍스트를 AST 형태로 파싱 합니다.
@@ -37,10 +37,10 @@ export const rehypeMarkdown = async (markdown: string) => {
     .use(rehypeReact, {
       createElement,
       Fragment,
-      jsx: !IS_DEVELOPENT,
+      jsx: !IS_DEVELOPMENT,
       jsxDEV: jsxDEV,
       components,
-      development: IS_DEVELOPENT,
+      development: IS_DEVELOPMENT,
       jsxRuntime: "automatic"
     })
     .process(markdown);
