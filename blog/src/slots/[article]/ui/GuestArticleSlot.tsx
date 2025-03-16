@@ -65,10 +65,7 @@ export const GuestArticleSlot: React.FC<ArticlePageProps> = async ({
 
       <section className="media-padding-x flex min-h-screen gap-2">
         {/* 본문 */}
-        <article
-          dangerouslySetInnerHTML={{ __html: html }}
-          className="w-full pb-32 lg:flex-grow"
-        />
+        <article className="w-full pb-32 lg:flex-grow">{html}</article>
         {/* 사이드바 */}
         <aside className="relative hidden text-gray-400 xl:block">
           <div className="sticky top-32">
