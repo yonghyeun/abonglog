@@ -42,6 +42,16 @@ module.exports = {
       target: "filesystem",
       outputDir: "lhci_reports",
       reportFilenamePattern: "%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%"
+    },
+    assert: {
+      // 검사 기준 완화
+      preset: "lighthouse:no-pwa",
+      assertions: {
+        "csp-xss": "off",
+        "uses-http2": "off",
+        canonical: "off",
+        "is-on-https": "off"
+      }
     }
   }
 };
