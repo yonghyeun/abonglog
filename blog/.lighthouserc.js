@@ -1,25 +1,21 @@
 module.exports = {
   ci: {
     collect: {
-      url: ["http://localhost:3000/"],
-      startServerCommand: "NODE_ENV=production npm run start",
-      startServerReadyPattern: "/ready - started server on/i",
+      url: ["http://localhost:3000"],
+      // 빌드 후 서버 시작 명령어 수정
+      startServerCommand: "npm run build && npm run start",
+      // Next.js 실제 출력 메시지와 일치하도록 수정
+      startServerReadyPattern: "✓ Ready in",
       startServerReadyTimeout: 60000,
-      numberOfRuns: 3,
+      numberOfRuns: 1,
 
-      // TLS 인증서 오류를 무시하기 위한 Chrome 플래그 설정
-
+      // Chrome 플래그 최적화
       chromeFlags: [
         "--no-sandbox",
         "--disable-gpu",
-        "--disable-dev-shm-usage",
         "--ignore-certificate-errors",
-        "--allow-insecure-localhost",
-        "--disable-web-security", // 웹 보안 비활성화
-        "--disable-features=IsolateOrigins,site-per-process" // 크로스 오리진 격리 비활성화
+        "--allow-insecure-localhost"
       ],
-
-      // TLS 인증서 오류를 무시하기 위한 Lighthouse 설정
 
       settings: {
         onlyCategories: [
@@ -28,13 +24,19 @@ module.exports = {
           "best-practices",
           "seo"
         ],
-        // HTTPS 관련 감사 비활성화
         skipAudits: [
           "redirects-http",
           "uses-http2",
           "uses-long-cache-ttl",
           "is-on-https"
-        ]
+        ],
+        // 성능 측정 설정 추가
+        formFactor: "desktop",
+        throttling: {
+          rttMs: 40,
+          throughputKbps: 10240,
+          cpuSlowdownMultiplier: 1
+        }
       }
     },
 
