@@ -4,6 +4,10 @@ jobs:
   lhci:
     name: Lighthouse CI
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./blog
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -14,12 +18,10 @@ jobs:
           node-version: 20.10.0
 
       - name: Install packages
-        working-directory: ./blog
         run: |
           npm ci
 
       - name: Build
-        working-directory: ./blog
         run: |
           npm run build
 

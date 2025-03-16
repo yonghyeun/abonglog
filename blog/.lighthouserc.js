@@ -3,7 +3,7 @@ module.exports = {
     collect: {
       url: ["http://localhost:3000/"],
       startServerCommand: "NODE_ENV=production npm run start",
-      startServerReadyPattern: "ready - started server on",
+      startServerReadyPattern: "/ready - started server on/i",
       startServerReadyTimeout: 60000,
       numberOfRuns: 3,
 
