@@ -8,7 +8,7 @@ import {
 import { SeriesSelectToggle, TagSelectToggle } from "./items";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useTransition } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
@@ -221,6 +221,7 @@ const ImageUploadInput: React.FC = () => {
 const MarkdownEditor = () => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const blobImageStack = useRef<string[]>([]);
+  const [_, startTransition] = useTransition();
 
   const { mutate: uploadImage } = usePostArticleImage();
 
@@ -238,7 +239,7 @@ const MarkdownEditor = () => {
     setContent(target.value);
 
     const newHtml = await rehypeMarkdown(target.value);
-    setHtml(newHtml);
+    startTransition(() => setHtml(newHtml));
 
     const isWritingAtBottom =
       target.value.length > content.length &&
@@ -362,6 +363,8 @@ const MarkdownPreview = () => {
     (state) => state.isPreviewNeedScroll
   );
 
+  console.log(html);
+
   useEffect(() => {
     const preview = previewRef.current;
 
@@ -380,9 +383,10 @@ const MarkdownPreview = () => {
       className={
         "hidden flex-grow overflow-auto rounded-md border p-2 text-sm text-primary md:block md:w-1/2"
       }
-      dangerouslySetInnerHTML={{ __html: html }}
       ref={previewRef}
-    />
+    >
+      {html}
+    </article>
   );
 };
 
