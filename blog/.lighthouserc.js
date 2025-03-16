@@ -3,7 +3,7 @@ module.exports = {
     collect: {
       url: ["http://localhost:3000"],
       // 빌드 후 서버 시작 명령어 수정
-      startServerCommand: "npm run build && npm run start",
+      startServerCommand: "npm run start",
       // Next.js 실제 출력 메시지와 일치하도록 수정
       startServerReadyPattern: "✓ Ready in",
       startServerReadyTimeout: 60000,
@@ -30,8 +30,6 @@ module.exports = {
           "uses-long-cache-ttl",
           "is-on-https"
         ],
-        // 성능 측정 설정 추가
-        formFactor: "desktop",
         throttling: {
           rttMs: 40,
           throughputKbps: 10240,
