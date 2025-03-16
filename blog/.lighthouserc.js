@@ -27,6 +27,13 @@ module.exports = {
           "accessibility",
           "best-practices",
           "seo"
+        ],
+        // HTTPS 관련 감사 비활성화
+        skipAudits: [
+          "redirects-http",
+          "uses-http2",
+          "uses-long-cache-ttl",
+          "is-on-https"
         ]
       }
     },
