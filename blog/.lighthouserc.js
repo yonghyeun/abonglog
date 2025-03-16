@@ -2,17 +2,23 @@ module.exports = {
   ci: {
     collect: {
       url: ["http://localhost:3000"],
-      // 빌드 후 서버 시작 명령어 수정
-      startServerCommand: "npm run start",
-      // Next.js 실제 출력 메시지와 일치하도록 수정
-      startServerReadyPattern: "✓ Ready in",
-      startServerReadyTimeout: 60000,
-      numberOfRuns: 1,
 
-      // Chrome 플래그 최적화
+      // 서버 시작 명령어 수정
+      startServerCommand: "NODE_ENV=production npm run start",
+
+      // 서버 준비 감지 설정
+      startServerReadyPattern: "✓ Ready in",
+      startServerReadyTimeout: 120000, // 타임아웃 증가
+
+      // 테스트 실행 횟수
+      numberOfRuns: 1,
+      port: 3000, // 포트 명시적 지정
+
+      // Chrome 설정
       chromeFlags: [
         "--no-sandbox",
         "--disable-gpu",
+        "--headless", // 헤드리스 모드 추가
         "--ignore-certificate-errors",
         "--allow-insecure-localhost"
       ],
