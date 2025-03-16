@@ -30,26 +30,7 @@ jobs:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
           npm install -g @lhci/cli
-
-          # 서버 시작
-          npm run start & 
-          echo "서버 시작 대기 중..."
-
-          # URL 준비 확인
-          timeout=60
-          while ! curl -s http://localhost:3000 > /dev/null; do
-            if [ $timeout -le 0 ]; then
-              echo "URL 준비 타임아웃"
-              exit 1
-            fi
-            echo "대기 중... ($timeout 초 남음)"
-            sleep 1
-            ((timeout--))
-          done
-          echo "URL 준비 완료!"
-
-          # Lighthouse CI 실행
-          lhci autorun || echo "Lighthouse CI completed with warnings"
+          lhci autorun
 
       - name: Format lighthouse score
         id: format_lighthouse_score
@@ -107,3 +88,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: ${{ steps.format_lighthouse_score.outputs.comments }}
+
