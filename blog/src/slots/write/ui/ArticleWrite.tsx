@@ -474,7 +474,7 @@ const ThumbnailUploadInput = () => {
 
     uploadNewThumbnail(
       {
-        file: files[0],
+        file: files[files.length - 1],
         articleId: articleId.toString()
       },
       {
