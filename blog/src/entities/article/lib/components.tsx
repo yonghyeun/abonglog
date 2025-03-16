@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { type LinkProps, default as _Link } from "next/link";
+import React, { FC } from "react";
 
 const Heading1: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   children,
@@ -56,13 +57,13 @@ const Paragraph: FC<React.HTMLAttributes<HTMLParagraphElement>> = ({
     {children}
   </p>
 );
-const Link: FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({
+const Link: FC<LinkProps & { children?: React.ReactNode }> = ({
   children,
   ...props
 }) => (
-  <Link {...props} className="link">
+  <_Link {...props} className="link">
     {children}
-  </Link>
+  </_Link>
 );
 const Blockquote: FC<React.BlockquoteHTMLAttributes<HTMLQuoteElement>> = ({
   children,
