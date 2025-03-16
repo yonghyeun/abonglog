@@ -11,9 +11,12 @@ module.exports = {
 
       chromeFlags: [
         "--no-sandbox",
+        "--disable-gpu",
+        "--disable-dev-shm-usage",
         "--ignore-certificate-errors",
         "--allow-insecure-localhost",
-        "--disable-gpu"
+        "--disable-web-security", // 웹 보안 비활성화
+        "--disable-features=IsolateOrigins,site-per-process" // 크로스 오리진 격리 비활성화
       ],
 
       // TLS 인증서 오류를 무시하기 위한 Lighthouse 설정

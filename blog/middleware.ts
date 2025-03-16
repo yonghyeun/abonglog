@@ -3,7 +3,9 @@ import { type NextRequest } from "next/server";
 import { updateSession } from "@/shared/route/supabaseMiddleware";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  const response = await updateSession(request);
+  response.headers.set("X-Robots-Tag", "all");
+  return response;
 }
 
 export const config = {
