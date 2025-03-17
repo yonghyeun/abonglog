@@ -24,7 +24,7 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   const pathname = usePathname();
   const queryClient = useQueryClient();
 
-  const isTempArticle = pathname.includes("temp");
+  const isTempArticle = pathname && pathname.includes("temp");
 
   const { mutate: deleteArticle } = useDeleteArticle();
 

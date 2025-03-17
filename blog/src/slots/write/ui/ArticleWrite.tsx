@@ -1,5 +1,6 @@
 "use client";
 
+import { useDebounce } from "../lib";
 import {
   ArticleWriteStoreContext,
   createArticleWriteStore,
@@ -8,7 +9,7 @@ import {
 import { SeriesSelectToggle, TagSelectToggle } from "./items";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useRef, useTransition } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
@@ -221,7 +222,6 @@ const ImageUploadInput: React.FC = () => {
 const MarkdownEditor = () => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const blobImageStack = useRef<string[]>([]);
-  const [_, startTransition] = useTransition();
 
   const { mutate: uploadImage } = usePostArticleImage();
 
@@ -232,20 +232,27 @@ const MarkdownEditor = () => {
   const setIsPreviewNeedScroll = useArticleWriteStore(
     (state) => state.setIsPreviewNeedScroll
   );
+  const setHtmlWithDebounce = useDebounce(async () => {
+    const target = textAreaRef.current;
+
+    if (!target) {
+      return;
+    }
+
+    const newHtml = await rehypeMarkdown(target.value);
+    setHtml(newHtml);
+
+    const isWritingAtBottom =
+      target.value.length >= content.length &&
+      target.value.length === target.selectionStart;
+
+    setIsPreviewNeedScroll(isWritingAtBottom);
+  }, 10);
 
   const handleChangeMarkdown = async ({
     target
   }: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(target.value);
-
-    const newHtml = await rehypeMarkdown(target.value);
-    startTransition(() => setHtml(newHtml));
-
-    const isWritingAtBottom =
-      target.value.length > content.length &&
-      target.value.length === target.selectionStart;
-
-    setIsPreviewNeedScroll(isWritingAtBottom);
   };
 
   /**
@@ -342,6 +349,10 @@ const MarkdownEditor = () => {
     );
   };
 
+  useEffect(() => {
+    setHtmlWithDebounce();
+  }, [content, setHtmlWithDebounce]);
+
   return (
     <textarea
       className="flex-grow resize-none rounded-md border bg-secondary p-2 text-lg text-primary focus:outline-none"
@@ -374,7 +385,7 @@ const MarkdownPreview = () => {
       top: preview.scrollHeight,
       behavior: "smooth"
     });
-  }, [isPreviewNeedScroll]);
+  }, [html, isPreviewNeedScroll]);
 
   return (
     <article

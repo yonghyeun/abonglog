@@ -1,6 +1,7 @@
 import { components } from "./components";
 import { Fragment, createElement } from "react";
 import { jsxDEV } from "react/jsx-dev-runtime";
+import { jsx, jsxs } from "react/jsx-runtime";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeReact from "rehype-react";
 import rehypeSlug from "rehype-slug";
@@ -37,8 +38,9 @@ export const rehypeMarkdown = async (markdown: string) => {
     .use(rehypeReact, {
       createElement,
       Fragment,
-      jsx: !IS_DEVELOPMENT,
+      jsx: jsx,
       jsxDEV: jsxDEV,
+      jsxs: jsxs,
       components,
       development: IS_DEVELOPMENT,
       jsxRuntime: "automatic"
