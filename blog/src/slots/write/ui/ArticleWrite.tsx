@@ -377,7 +377,6 @@ const MarkdownPreview = () => {
   useEffect(() => {
     const preview = previewRef.current;
 
-    console.log(isPreviewNeedScroll);
     if (!preview || !isPreviewNeedScroll) {
       return;
     }
