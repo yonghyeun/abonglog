@@ -9,12 +9,7 @@ export interface PostArticleImageRequest {
 export interface PostArticleImageResponse {
   code: number;
   message: string;
-  data: {
-    path: string;
-    fullPath: string;
-    id: string;
-    imageUrl: string;
-  }[];
+  data: string[];
 }
 
 // TODO useMarkdown 훅 리팩토링 할 때 수정하기

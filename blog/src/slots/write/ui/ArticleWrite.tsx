@@ -185,7 +185,7 @@ const ImageUploadInput: React.FC = () => {
         onSuccess: (data) => {
           setContent((prev) => {
             blobImageStack.current.forEach((blobUrl, index) => {
-              prev = prev.replace(blobUrl, `![image](${data[index].imageUrl})`);
+              prev = prev.replace(blobUrl, `![image](${data[index]})`);
             });
 
             blobImageStack.current = [];
@@ -323,7 +323,7 @@ const MarkdownEditor = () => {
         onSuccess: (data) => {
           setContent((prev) => {
             blobImageStack.current.forEach((blobUrl, index) => {
-              prev = prev.replace(blobUrl, `![image](${data[index].imageUrl})`);
+              prev = prev.replace(blobUrl, `![image](${data[index]})`);
             });
 
             textAreaRef.current!.value = prev;

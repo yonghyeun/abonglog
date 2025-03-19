@@ -3,6 +3,8 @@ import { uploadImage } from "@backend/image/model";
 import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
+import type { PostArticleImageResponse } from "@/entities/article/model";
+
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 const MAX_IMAGE_WIDTH = 1200;
 
@@ -44,7 +46,7 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
-  return NextResponse.json({
+  return NextResponse.json<PostArticleImageResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
     data: uris.map((uri) => `/api/${uri}`)
