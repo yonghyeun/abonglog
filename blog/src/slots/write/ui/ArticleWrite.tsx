@@ -491,7 +491,7 @@ const ThumbnailUploadInput = () => {
         articleId: articleId.toString()
       },
       {
-        onSuccess: ({ imageUrl }) => setThumbnailUrl(imageUrl)
+        onSuccess: setThumbnailUrl
       }
     );
   };

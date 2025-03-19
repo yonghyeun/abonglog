@@ -11,12 +11,7 @@ export interface PostArticleThumbnailRequest {
 export interface PostArticleThumbnailResponse {
   code: number;
   message: string;
-  data: {
-    path: string;
-    fullPath: string;
-    id: string;
-    imageUrl: string;
-  };
+  data: string;
 }
 
 const postArticleThumbnail = () => {
