@@ -47,7 +47,8 @@ const deleteUnusedImages = async (articleId: number, content: string) => {
   const usedImages = findImageUrl(content)
     .map(({ src }) => src)
     .filter((src) => src.startsWith("/api/"))
-    .map((url) => url.split("/").pop());
+    .map((url) => url.split("/").pop())
+    .filter((fileName) => fileName !== undefined);
 
   const { data: storedImageList } = await getImageList(
     "article_image",
