@@ -7,6 +7,7 @@ import React from "react";
 
 import { useDeleteArticle } from "@/entities/article/model";
 import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
+import { useSession } from "@/entities/user/model";
 
 interface AdminArticleHeaderProps {
   articleId: string;
@@ -20,13 +21,18 @@ interface AdminArticleHeaderProps {
 export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   articleId
 }) => {
+  const { user } = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
 
-  const isTempArticle = pathname && pathname.includes("temp");
-
   const { mutate: deleteArticle } = useDeleteArticle();
+
+  if (!user) {
+    return null;
+  }
+
+  const isTempArticle = pathname && pathname.includes("temp");
 
   const handleDelete = () => {
     if (confirm("해당 게시글을 삭제하시겠습니까?")) {
@@ -50,7 +56,7 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   };
 
   return (
-    <div className="mb-2 flex justify-end gap-2 pb-2 text-secondary">
+    <div className="media-padding-x flex justify-end gap-2 pb-2 text-secondary">
       <button className="hover:text-red-500" onClick={handleDelete}>
         글 삭제
       </button>

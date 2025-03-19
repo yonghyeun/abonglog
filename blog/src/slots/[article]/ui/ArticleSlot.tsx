@@ -1,3 +1,4 @@
+import { AdminArticleHeader } from "./AdminArticleHeader";
 import { ProgressBar } from "./ProgressBar";
 import type { ArticlePageProps } from "./type";
 
@@ -65,6 +66,8 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
           </div>
         </div>
       </header>
+
+      <AdminArticleHeader articleId={articleId} />
 
       <section className="media-padding-x flex min-h-screen gap-2">
         {/* 본문 */}

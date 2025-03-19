@@ -16,7 +16,7 @@ export async function generateStaticParams() {
     .select("id")
     .eq("status", "published");
 
-  return ids ? ids.map(({ id }) => ({ id })) : [];
+  return ids ? ids.map(({ id }) => ({ articleId: String(id) })) : [];
 }
 export const dynamic = "force-static";
 export const dynamicParams = false;

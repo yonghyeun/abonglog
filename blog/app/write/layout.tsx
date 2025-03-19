@@ -16,8 +16,6 @@ const WriteLayout: React.FC<PropsWithChildren> = ({ children }) => {
   }, [router, user]);
 
   if (!user) {
-    router.push("/auth");
-    // TODO 인증 관련 에러 페이지 생성하기
     return null;
   }
 
