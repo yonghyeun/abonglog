@@ -50,7 +50,7 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   };
 
   return (
-    <div className="mb-2 flex justify-end gap-2 border-b pb-2 text-secondary">
+    <div className="mb-2 flex justify-end gap-2 pb-2 text-secondary">
       <button className="hover:text-red-500" onClick={handleDelete}>
         글 삭제
       </button>

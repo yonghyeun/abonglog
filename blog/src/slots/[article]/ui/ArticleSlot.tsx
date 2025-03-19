@@ -1,4 +1,3 @@
-import { AdminArticleHeader } from "./AdminArticleHeader";
 import { ProgressBar } from "./ProgressBar";
 import type { ArticlePageProps } from "./type";
 
@@ -11,7 +10,7 @@ import { AdminProfile } from "@/entities/user/ui";
 import { List } from "@/shared/ui/List";
 import { Photo } from "@/shared/ui/Photo";
 
-export const AdminArticleSlot: React.FC<ArticlePageProps> = async ({
+export const ArticleSlot: React.FC<ArticlePageProps> = async ({
   articleData,
   articleId
 }) => {
@@ -30,7 +29,7 @@ export const AdminArticleSlot: React.FC<ArticlePageProps> = async ({
     <section>
       <ProgressBar />
       <header>
-        {/* 썸네일 헤더 이미지 */}
+        {/* 썸네일 이미지 */}
         {thumbnailUrl ? (
           <Photo
             src={thumbnailUrl}
@@ -67,23 +66,18 @@ export const AdminArticleSlot: React.FC<ArticlePageProps> = async ({
         </div>
       </header>
 
-      <section className="media-padding-x min-h-screen">
-        {/* 글 삭제 및 수정 헤더 */}
-        <AdminArticleHeader articleId={articleId} />
-
-        <section className="flex gap-2">
-          {/* 본문 */}
-          <article className="w-full pb-32 lg:flex-grow">{html}</article>
-          {/* 사이드바 */}
-          <aside className="relative hidden text-gray-400 xl:block">
-            <div className="sticky top-32">
-              <ArticleSidebar
-                articleId={articleId}
-                headings={createNestedHeadings(headings)}
-              />
-            </div>
-          </aside>
-        </section>
+      <section className="media-padding-x flex min-h-screen gap-2">
+        {/* 본문 */}
+        <article className="w-full pb-32 lg:flex-grow">{html}</article>
+        {/* 사이드바 */}
+        <aside className="relative hidden text-gray-400 xl:block">
+          <div className="sticky top-32">
+            <ArticleSidebar
+              articleId={articleId}
+              headings={createNestedHeadings(headings)}
+            />
+          </div>
+        </aside>
       </section>
     </section>
   );

@@ -1,4 +1,4 @@
-import { AdminArticleSlot } from "@/slots/[article]/ui";
+import { ArticleSlot } from "@/slots/[article]/ui";
 import React from "react";
 
 import { getArticleById } from "@/entities/article/model";
@@ -12,7 +12,7 @@ const TempArticlePage: React.FC<TempArticlePageProps> = async ({ params }) => {
   const articleData = await getArticleById(articleId, "draft");
 
   return (
-    <AdminArticleSlot
+    <ArticleSlot
       articleId={articleId}
       articleData={{
         ...articleData
