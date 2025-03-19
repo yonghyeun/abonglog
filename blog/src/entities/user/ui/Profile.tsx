@@ -20,7 +20,14 @@ export const Profile: React.FC<ProfileProps> = ({
     <picture
       className={`${profileSizeMap[size]} relative overflow-hidden rounded-full`}
     >
-      <img className="object-cover" src={src} alt={alt} {...props} />
+      <img
+        className="object-cover"
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        {...props}
+      />
     </picture>
   );
 };
