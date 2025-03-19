@@ -7,6 +7,7 @@ import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
+import { Photo } from "@/shared/ui/Photo";
 
 export const LatestArticleSlot = () => {
   const {
@@ -71,10 +72,14 @@ export const LatestArticleSlot = () => {
       {/* image */}
       <div className="aspect-video w-full sm:w-1/2">
         {thumbnailUrl ? (
-          <img
+          <Photo
             src={thumbnailUrl}
             alt={`${title} 의 썸네일 이미지`}
             className="h-full w-full rounded-lg object-cover"
+            srcSet={`${thumbnailUrl}?width=500 500w, ${thumbnailUrl}?width=800 800w, ${thumbnailUrl}?width=1000 1000w`}
+            sizes="(max-width: 600px) 500px, (max-width: 800px) 800px, 1000px"
+            priority={true}
+            preload={true}
           />
         ) : (
           // TODO 기본 이미지 생성하기
