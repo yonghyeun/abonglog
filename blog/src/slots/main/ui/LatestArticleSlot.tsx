@@ -79,7 +79,6 @@ export const LatestArticleSlot = () => {
             srcSet={`${thumbnailUrl}?width=500 500w, ${thumbnailUrl}?width=800 800w, ${thumbnailUrl}?width=1000 1000w`}
             sizes="(max-width: 600px) 500px, (max-width: 800px) 800px, 1000px"
             priority={true}
-            preload={true}
           />
         ) : (
           // TODO 기본 이미지 생성하기

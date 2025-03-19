@@ -17,11 +17,11 @@ export const Profile: React.FC<ProfileProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <picture
       className={`${profileSizeMap[size]} relative overflow-hidden rounded-full`}
     >
       <img className="object-cover" src={src} alt={alt} {...props} />
-    </div>
+    </picture>
   );
 };
 

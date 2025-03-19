@@ -9,7 +9,7 @@ import { SideBar } from "@/widgets/navigate/ui";
 import { DarkModeToggle } from "@/features/utils/ui";
 
 import { getCurrentUserData } from "@/entities/user/model";
-import { Profile } from "@/entities/user/ui";
+import { AdminProfile } from "@/entities/user/ui";
 
 import { GithubIcon, HumanIcon } from "@/shared/config";
 
@@ -66,11 +66,7 @@ const Header = async () => {
               className="flex items-end gap-2 p-2 hover:bg-secondary"
               href="/auth"
             >
-              <Profile
-                size="sm"
-                src={`${user.profileUrl}`}
-                alt={`${user.email} 의 프로필 이미지`}
-              />
+              <AdminProfile size="sm" />
               <p className="text-xs text-gray-400">{user.email}</p>
             </Link>
           </>

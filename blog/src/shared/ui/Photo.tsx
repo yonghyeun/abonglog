@@ -27,7 +27,6 @@ interface PhotoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   sizes: string;
   srcSet: string;
   priority?: boolean;
-  preload?: boolean;
 }
 
 export const Photo: React.FC<PhotoProps> = ({
@@ -36,7 +35,6 @@ export const Photo: React.FC<PhotoProps> = ({
   sizes,
   srcSet,
   priority = false,
-  preload = false,
   ...props
 }) => {
   const type = src.split(".").pop();
@@ -47,7 +45,7 @@ export const Photo: React.FC<PhotoProps> = ({
     );
   }
 
-  return preload ? (
+  return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -61,17 +59,5 @@ export const Photo: React.FC<PhotoProps> = ({
       />
       {priority && PhotoPreLoad(srcSet, sizes, type)}
     </>
-  ) : (
-    <picture>
-      <img
-        src={src}
-        alt={alt}
-        sizes={sizes}
-        srcSet={srcSet}
-        loading="lazy"
-        decoding="async"
-        {...props}
-      />
-    </picture>
   );
 };
