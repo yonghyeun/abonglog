@@ -66,30 +66,42 @@ const deleteUnusedImages = async (articleId: number, content: string) => {
     return { error: null };
   }
 
-  console.group(`🗑️ ${articleId} 저장 중 미사용 이미지 정리`);
-  console.log(`📸 ${articleId}번 글에 사용된 이미지: ${usedImages.length}개`);
-  console.log(
-    `💾 ${articleId}번 글에 저장된 이미지: ${storedImageList.length}개`
-  );
-
   const deleteUnusedImagesResponse = await deleteImages(
     "article_image",
     unusedImages.map((name) => `images/${articleId}/${name}`)
   );
 
-  if (
-    deleteUnusedImagesResponse.error &&
-    deleteUnusedImagesResponse.error.message
-  ) {
-    console.error(`❌ 에러 발생: ${deleteUnusedImagesResponse.error.message}`);
-  } else {
-    console.log(
-      `✅ ${articleId}번 글의 미사용 이미지 ${unusedImages.length}개 삭제 완료`
-    );
-  }
-  console.groupEnd();
-
   return deleteUnusedImagesResponse;
+};
+
+const deleteUnusedThumbnail = async (
+  articleId: number,
+  thumbnailUrl: string
+) => {
+  const { data: storedImageList } = await getImageList(
+    "article_thumbnail",
+    `thumbnails/${articleId}`
+  );
+
+  if (!storedImageList) {
+    return { error: null };
+  }
+
+  const thumbnailImageName = thumbnailUrl.split("/").pop();
+  const unusedThumbnails = storedImageList
+    .map(({ name }) => name)
+    .filter((name) => name !== thumbnailImageName);
+
+  if (unusedThumbnails.length === 0) {
+    return { error: null };
+  }
+
+  const deleteUnusedThumbnailResponse = await deleteImages(
+    "article_thumbnail",
+    unusedThumbnails.map((name) => `thumbnails/${articleId}/${name}`)
+  );
+
+  return deleteUnusedThumbnailResponse;
 };
 
 const uploadArticle = async ({
@@ -98,11 +110,13 @@ const uploadArticle = async ({
 }: PostNewArticleRequest) => {
   const supabase = await createServerSupabase();
 
-  const [upsertNewArticleResponse, deleteArticleImagesResponse] =
-    await Promise.all([
-      upsertNewArticle(articledata, supabase),
-      deleteUnusedImages(articledata.id, articledata.content)
-    ]);
+  const upsertArticleResponse = await Promise.all([
+    upsertNewArticle(articledata, supabase),
+    deleteUnusedImages(articledata.id, articledata.content),
+    articledata.thumbnailUrl
+      ? deleteUnusedThumbnail(articledata.id, articledata.thumbnailUrl)
+      : { error: null }
+  ]);
 
   const deleteArticleTagsResponse = await deleteArticleTags(
     articledata.id,
@@ -115,10 +129,9 @@ const uploadArticle = async ({
   );
 
   return [
-    upsertNewArticleResponse,
     deleteArticleTagsResponse,
     insertArticleTagResponse,
-    deleteArticleImagesResponse
+    ...upsertArticleResponse
   ];
 };
 
