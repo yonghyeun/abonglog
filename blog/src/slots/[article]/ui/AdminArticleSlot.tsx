@@ -9,6 +9,7 @@ import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
+import { Photo } from "@/shared/ui/Photo";
 
 export const AdminArticleSlot: React.FC<ArticlePageProps> = async ({
   articleData,
@@ -29,13 +30,16 @@ export const AdminArticleSlot: React.FC<ArticlePageProps> = async ({
     <section>
       <ProgressBar />
       <header>
-        {/* 썸네일 이미지 */}
+        {/* 썸네일 헤더 이미지 */}
         {thumbnailUrl ? (
-          <img
-            // TODO 기본 이미지 url 추가하기
+          <Photo
             src={thumbnailUrl}
             alt={`${title} 의 썸네일`}
-            className="h-96 w-full object-cover"
+            className="h-96 w-full object-contain"
+            srcSet={`${thumbnailUrl}?width=500 500w, ${thumbnailUrl}?width=800 800w, ${thumbnailUrl}?width=1000 1000w`}
+            sizes="(max-width: 500px) 100vw, (max-width: 800px) 800px, 1000px"
+            priority={true}
+            loading="eager"
           />
         ) : (
           <div className="h-96 w-full bg-gray-200" />
