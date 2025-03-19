@@ -39,6 +39,7 @@ export const AdminArticleSlot: React.FC<ArticlePageProps> = async ({
             srcSet={`${thumbnailUrl}?width=500 500w, ${thumbnailUrl}?width=800 800w, ${thumbnailUrl}?width=1000 1000w`}
             sizes="(max-width: 500px) 100vw, (max-width: 800px) 800px, 1000px"
             priority={true}
+            preload={true}
             loading="eager"
           />
         ) : (
