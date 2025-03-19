@@ -24,7 +24,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
   updatedAt
 }) => {
   return (
-    <section className="transition-bg h-full rounded-lg border shadow-md hover:bg-secondary hover:shadow-lg">
+    <section className="transition-bg flex h-full flex-col justify-between rounded-lg border shadow-md hover:bg-secondary hover:shadow-lg">
       {/* 이미지 컴포넌트 */}
       {thumbnailUrl ? (
         <Photo
@@ -55,15 +55,14 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
           </div>
           <p className="break-words text-sm text-secondary">{description}</p>
         </div>
-
-        {/* 소개글 & 게시자 정보 */}
-        <div className="flex flex-col gap-4 text-sm text-secondary">
-          <div className="flex items-center gap-2">
-            <AdminProfile size="sm" />
-            <div className="text-xs">
-              <p className="font-medium">yonghyeun</p>
-              <time>{new Date(updatedAt).toLocaleString()}</time>
-            </div>
+      </div>
+      {/* 소개글 & 게시자 정보 */}
+      <div className="flex flex-col gap-4 p-2 text-sm text-secondary">
+        <div className="flex items-center gap-2">
+          <AdminProfile size="sm" />
+          <div className="text-xs">
+            <p className="font-medium">yonghyeun</p>
+            <time>{new Date(updatedAt).toLocaleString()}</time>
           </div>
         </div>
       </div>

@@ -1,4 +1,7 @@
+import { deleteImages, getImageList } from "@backend/image/model";
 import { NextRequest, NextResponse } from "next/server";
+
+import { findImageUrl } from "@/features/article/lib/findImageUrl";
 
 import type {
   PostNewArticleRequest,
@@ -6,7 +9,7 @@ import type {
 } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/model";
-import { camelToSnake, createPostgressErrorResponse } from "@/shared/route";
+import { camelToSnake } from "@/shared/route";
 
 const upsertNewArticle = (
   newArticle: Omit<PostNewArticleRequest, "tags">,
@@ -40,44 +43,119 @@ const insertArticleTag = (
   );
 };
 
+const deleteUnusedImages = async (articleId: number, content: string) => {
+  const usedImages = findImageUrl(content)
+    .map(({ src }) => src)
+    .filter((src) => src.startsWith("/api/"))
+    .map((url) => url.split("/").pop())
+    .filter((fileName) => fileName !== undefined);
+
+  const { data: storedImageList } = await getImageList(
+    "article_image",
+    `images/${articleId}`
+  );
+
+  if (!storedImageList) {
+    return { error: null };
+  }
+
+  const unusedImages = storedImageList
+    .map(({ name }) => name)
+    .filter((name) => !usedImages.includes(name));
+
+  if (unusedImages.length === 0) {
+    return { error: null };
+  }
+
+  const deleteUnusedImagesResponse = await deleteImages(
+    "article_image",
+    unusedImages.map((name) => `images/${articleId}/${name}`)
+  );
+
+  return deleteUnusedImagesResponse;
+};
+
+const deleteUnusedThumbnail = async (
+  articleId: number,
+  thumbnailUrl: string
+) => {
+  const { data: storedImageList } = await getImageList(
+    "article_thumbnail",
+    `thumbnails/${articleId}`
+  );
+
+  if (!storedImageList) {
+    return { error: null };
+  }
+
+  const thumbnailImageName = thumbnailUrl.split("/").pop();
+  const unusedThumbnails = storedImageList
+    .map(({ name }) => name)
+    .filter((name) => name !== thumbnailImageName);
+
+  if (unusedThumbnails.length === 0) {
+    return { error: null };
+  }
+
+  const deleteUnusedThumbnailResponse = await deleteImages(
+    "article_thumbnail",
+    unusedThumbnails.map((name) => `thumbnails/${articleId}/${name}`)
+  );
+
+  return deleteUnusedThumbnailResponse;
+};
+
 const uploadArticle = async ({
   tags,
-  ...articledata
+  ...articleData
 }: PostNewArticleRequest) => {
   const supabase = await createServerSupabase();
 
-  const upsertNewArticleResponse = await upsertNewArticle(
-    articledata,
-    supabase
-  );
+  const upsertArticleResponse = await Promise.all([
+    upsertNewArticle(articleData, supabase),
+    deleteUnusedImages(articleData.id, articleData.content),
+    articleData.thumbnailUrl
+      ? deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl)
+      : { error: null }
+  ]);
 
   const deleteArticleTagsResponse = await deleteArticleTags(
-    articledata.id,
+    articleData.id,
     supabase
   );
 
   const insertArticleTagResponse = await insertArticleTag(
-    { id: articledata.id, tags },
+    { id: articleData.id, tags },
     supabase
   );
 
   return [
-    upsertNewArticleResponse,
     deleteArticleTagsResponse,
-    insertArticleTagResponse
-  ].find((response) => !!response.error);
+    insertArticleTagResponse,
+    ...upsertArticleResponse
+  ];
 };
 
 export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as PostNewArticleRequest;
-  const errorResponse = await uploadArticle(data);
+  const response = await uploadArticle(data);
 
-  if (errorResponse) {
-    return NextResponse.json(...createPostgressErrorResponse(errorResponse));
+  const error = response.map(({ error }) => error).find((error) => error);
+
+  if (error) {
+    return NextResponse.json(
+      {
+        code: 500,
+        message: error.message
+      },
+      {
+        status: 500
+      }
+    );
   }
 
   return NextResponse.json<PostNewArticleResponse>({
-    status: 200,
+    code: 200,
     message: "아티클이 성공적으로 저장 되었습니다",
     data: {
       type: data.status

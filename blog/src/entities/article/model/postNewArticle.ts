@@ -21,7 +21,7 @@ export interface PostNewArticleRequest {
 }
 
 export interface PostNewArticleResponse {
-  status: number;
+  code: number;
   message: string;
   data: {
     type: PostNewArticleRequest["status"];
@@ -38,14 +38,14 @@ const postNewArticle = () => {
       body: JSON.stringify(body)
     });
 
-    const { status, message, data } =
+    const { code, message, data } =
       (await response.json()) as PostNewArticleResponse;
 
-    if (status > 200) {
+    if (code > 200) {
       throw new Error(message);
     }
     return {
-      status,
+      code,
       message,
       data
     };
