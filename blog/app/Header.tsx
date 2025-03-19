@@ -6,11 +6,12 @@ import { SideBar } from "@/widgets/navigate/ui";
 
 import { DarkModeToggle } from "@/features/utils/ui";
 
-import { useSession } from "@/entities/user/model/useSession";
 import { AdminProfile } from "@/entities/user/ui";
 
+import { useSession } from "@/shared/model";
+
 export const Header = () => {
-  const { user } = useSession();
+  const user = useSession();
 
   return (
     <header className="media-padding-x flex items-center justify-between py-4">

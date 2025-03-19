@@ -2,10 +2,10 @@
 
 import { EmailLoginForm, LogoutForm } from "@/features/auth/ui";
 
-import { useSession } from "@/entities/user/model";
+import { useSession } from "@/shared/model";
 
 const LoginPage = () => {
-  const { user } = useSession();
+  const user = useSession();
 
   return (
     <section className="media-padding-x flex flex-grow flex-col items-center justify-center gap-4 bg-secondary">

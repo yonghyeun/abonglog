@@ -7,7 +7,8 @@ import React from "react";
 
 import { useDeleteArticle } from "@/entities/article/model";
 import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
-import { useSession } from "@/entities/user/model";
+
+import { useSession } from "@/shared/model";
 
 interface AdminArticleHeaderProps {
   articleId: string;
@@ -21,7 +22,7 @@ interface AdminArticleHeaderProps {
 export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   articleId
 }) => {
-  const { user } = useSession();
+  const user = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();

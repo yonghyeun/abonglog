@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
 
-import { useSession } from "@/entities/user/model";
+import { useSession } from "@/shared/model";
 
 const WriteLayout: React.FC<PropsWithChildren> = ({ children }) => {
-  const { user } = useSession();
+  const user = useSession();
   const router = useRouter();
 
   useEffect(() => {
