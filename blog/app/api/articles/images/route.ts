@@ -1,62 +1,64 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { resizeAndConvertToWebp } from "@backend/image/lib";
+import { uploadImage } from "@backend/image/model";
+import { randomUUID } from "crypto";
+import { NextRequest, NextResponse } from "next/server";
 
-import type {
-  PostArticleImageRequest,
-  PostArticleImageResponse
-} from "@/entities/article/model";
-
-import { createServerSupabase } from "@/shared/model";
-import {
-  attachIamgeUrl,
-  createImageConfig,
-  createStorageErrorResponse
-} from "@/shared/route";
+import type { PostArticleImageResponse } from "@/entities/article/model";
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
+const MAX_IMAGE_WIDTH = 1200;
 
-const uploadImageAction = async ({
-  file,
-  articleId
-}: {
-  file: File;
-  articleId: string;
-}) => {
-  const supabase = await createServerSupabase();
-
-  const { imageName } = createImageConfig(file);
-
-  const response = await supabase.storage
-    .from(ARTICLE_IMAGE_STORAGE_NAME)
-    .upload(`public/${articleId}/${imageName}`, file);
-
-  return response;
-};
-
-/**
- * TODO : 이미지 업로드에 실패한 URL 만 response 로 보내서 에러 처리하기
- */
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
-  const images = formData.getAll("image") as PostArticleImageRequest["files"];
-  const articleId = formData.get(
-    "articleId"
-  ) as PostArticleImageRequest["articleId"];
+  const images = formData.getAll("image") as File[];
+  const articleId = formData.get("articleId") as string;
 
-  const responseArray = await Promise.all(
-    images.map((file) => uploadImageAction({ file, articleId }))
+  const resizedImages = await Promise.all(
+    images.map(async (image) => {
+      if (image.type === "image/gif") {
+        return image;
+      }
+
+      const buffer = await image.arrayBuffer();
+      const resizedImage = await resizeAndConvertToWebp(
+        buffer,
+        MAX_IMAGE_WIDTH
+      );
+
+      return new File([resizedImage], `${image.name}.webp`, {
+        type: "image/webp"
+      });
+    })
   );
 
-  const errorResponse = responseArray.find((response) => !!response.error);
+  const urls = resizedImages.map((image) => {
+    const type = image.type.split("/")[1];
+    return `images/${articleId}/${randomUUID()}.${type}`;
+  });
 
-  if (errorResponse) {
-    return NextResponse.json(createStorageErrorResponse(errorResponse.error));
+  const response = await Promise.all(
+    urls.map((url, index) => {
+      return uploadImage(ARTICLE_IMAGE_STORAGE_NAME, url, resizedImages[index]);
+    })
+  );
+
+  const error = response.map(({ error }) => error).find((error) => !!error);
+
+  if (error) {
+    return NextResponse.json(
+      {
+        code: 500,
+        message: error.message
+      },
+      {
+        status: 500
+      }
+    );
   }
-
-  const successResponses = responseArray.filter((response) => !!response.data);
 
   return NextResponse.json<PostArticleImageResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: successResponses.map(({ data }) => attachIamgeUrl(data))
+    data: urls.map((url) => `/api/${url}`)
   });
 };

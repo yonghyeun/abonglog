@@ -1,31 +1,12 @@
+import { resizeAndConvertToWebp } from "@backend/image/lib";
+import { uploadImage } from "@backend/image/model";
+import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
-import type {
-  PostArticleThumbnailRequest,
-  PostArticleThumbnailResponse
-} from "@/entities/article/model";
+import type { PostArticleThumbnailResponse } from "@/entities/article/model";
 
-import { createServerSupabase } from "@/shared/model";
-import {
-  attachIamgeUrl,
-  createImageConfig,
-  createStorageErrorResponse
-} from "@/shared/route";
-
-const uploadThumbnail = async ({
-  file,
-  articleId
-}: PostArticleThumbnailRequest) => {
-  const supabase = await createServerSupabase();
-
-  const { imageName } = createImageConfig(file);
-
-  const response = await supabase.storage
-    .from("article_thumbnail")
-    .upload(`${articleId}/${imageName}`, file);
-
-  return response;
-};
+const ARTICLE_IMAGE_STORAGE_NAME = "article_thumbnail";
+const MAX_IMAGE_WIDTH = 1000;
 
 export const POST = async (req: NextRequest) => {
   const form = await req.formData();
@@ -33,15 +14,41 @@ export const POST = async (req: NextRequest) => {
   const articleId = form.get("articleId") as string;
   const file = form.get("image") as File;
 
-  const response = await uploadThumbnail({ file, articleId });
+  const resizedImage = await file
+    .arrayBuffer()
+    .then((buffer) => {
+      return resizeAndConvertToWebp(buffer, MAX_IMAGE_WIDTH);
+    })
+    .then(
+      (resizedImageBuffer) =>
+        new File([resizedImageBuffer], `${file.name}.webp`, {
+          type: "image/webp"
+        })
+    );
+
+  const url = `thumbnails/${articleId}/${randomUUID()}.webp`;
+
+  const response = await uploadImage(
+    ARTICLE_IMAGE_STORAGE_NAME,
+    url,
+    resizedImage
+  );
 
   if (response.error) {
-    return NextResponse.json(createStorageErrorResponse(response.error));
+    return NextResponse.json(
+      {
+        code: 500,
+        message: response.error.message
+      },
+      {
+        status: 500
+      }
+    );
   }
 
   return NextResponse.json<PostArticleThumbnailResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: attachIamgeUrl(response.data)
+    data: `/api/${url}`
   });
 };

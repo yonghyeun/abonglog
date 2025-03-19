@@ -1,6 +1,9 @@
 import { type LinkProps, default as _Link } from "next/link";
 import React, { FC } from "react";
 
+import { createBrowserSupabase } from "@/shared/model";
+import { Photo } from "@/shared/ui/Photo";
+
 const Heading1: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   children,
   ...props
@@ -161,10 +164,52 @@ const TableCell: FC<React.TdHTMLAttributes<HTMLTableCellElement>> = ({
     {children}
   </td>
 );
-const Image: FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ ...props }) => (
-  // eslint-disable-next-line @next/next/no-img-element
-  <img {...props} className="image" />
-);
+
+interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  src: string;
+  alt: string;
+}
+
+const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
+  const type = src.split(".").pop();
+  if (!type) {
+    throw new Error(
+      "적합한 이미지 경로가 아닙니다. 이미지 경로는 반드시 파일 확장자를 포함해야 합니다."
+    );
+  }
+
+  if (type === "gif") {
+    const supabase = createBrowserSupabase();
+    const [_, ...imagePath] = src.split("/");
+    const {
+      data: { publicUrl }
+    } = supabase.storage
+      .from("article_image")
+      .getPublicUrl(imagePath.join("/"));
+
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={publicUrl}
+        alt={alt}
+        {...props}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
+  return (
+    <Photo
+      src={src}
+      alt={alt}
+      sizes="(max-width: 500px) 100vw, (max-width: 800px) 800px, 1000px"
+      srcSet={`${src}?width=500 500w, ${src}?width=800 800w, ${src}?width=1000 1000w`}
+      className="mx-auto rounded-lg shadow-md"
+      {...props}
+    />
+  );
+};
 const Bold: FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
   ...props
@@ -211,7 +256,7 @@ export const components = {
   tr: TableRow,
   th: TableHeader,
   td: TableCell,
-  img: Image,
+  img: ArticlePhoto,
   strong: Bold,
   em: Italic,
   del: Strikethrough
