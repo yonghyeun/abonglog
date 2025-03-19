@@ -27,6 +27,7 @@ interface PhotoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   sizes: string;
   srcSet: string;
   priority?: boolean;
+  preload?: boolean;
 }
 
 export const Photo: React.FC<PhotoProps> = ({
@@ -34,7 +35,8 @@ export const Photo: React.FC<PhotoProps> = ({
   alt,
   sizes,
   srcSet,
-  priority,
+  priority = false,
+  preload = false,
   ...props
 }) => {
   const type = src.split(".").pop();
@@ -44,11 +46,32 @@ export const Photo: React.FC<PhotoProps> = ({
       "적합한 이미지 경로가 아닙니다. 이미지 경로는 반드시 파일 확장자를 포함해야 합니다."
     );
   }
-  return (
+
+  return preload ? (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} sizes={sizes} srcSet={srcSet} {...props} />
+      <img
+        src={src}
+        alt={alt}
+        sizes={sizes}
+        srcSet={srcSet}
+        loading="lazy"
+        decoding="async"
+        {...props}
+      />
       {priority && PhotoPreLoad(srcSet, sizes, type)}
     </>
+  ) : (
+    <picture>
+      <img
+        src={src}
+        alt={alt}
+        sizes={sizes}
+        srcSet={srcSet}
+        loading="lazy"
+        decoding="async"
+        {...props}
+      />
+    </picture>
   );
 };

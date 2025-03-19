@@ -199,15 +199,12 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
     );
   }
 
-  const srcSet = `${src}?width=500 500w, ${src}?width=800 800w, ${src}?width=1000 1000w`;
-  const sizes = "(max-width: 500px) 100vw, (max-width: 800px) 800px, 1000px";
-
   return (
     <Photo
       src={src}
       alt={alt}
-      sizes={sizes}
-      srcSet={srcSet}
+      sizes="(max-width: 500px) 100vw, (max-width: 800px) 800px, 1000px"
+      srcSet={`${src}?width=500 500w, ${src}?width=800 800w, ${src}?width=1000 1000w`}
       className="mx-auto rounded-lg shadow-md"
       {...props}
     />
