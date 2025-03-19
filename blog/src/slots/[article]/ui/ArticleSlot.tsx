@@ -67,7 +67,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
         </div>
       </header>
 
-      <AdminArticleHeader articleId={articleId} />
+      <AdminArticleHeader articleId={articleId} seriesName={seriesName} />
 
       <section className="media-padding-x flex min-h-screen gap-2">
         {/* 본문 */}

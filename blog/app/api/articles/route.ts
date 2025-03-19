@@ -1,9 +1,12 @@
+import { deleteArticle } from "@backend/article/model";
 import { deleteImages, getImageList } from "@backend/image/model";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 import { findImageUrl } from "@/features/article/lib/findImageUrl";
 
 import type {
+  DeleteArticleRequest,
   PostNewArticleRequest,
   PostNewArticleResponse
 } from "@/entities/article/model";
@@ -154,6 +157,13 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
+  revalidatePath("/");
+  revalidatePath("/article/list/all");
+  revalidatePath(`/article/${data.id}`);
+  if (data.seriesName) {
+    revalidatePath(`/article/list/${data.seriesName}`);
+  }
+
   return NextResponse.json<PostNewArticleResponse>({
     code: 200,
     message: "아티클이 성공적으로 저장 되었습니다",
@@ -161,4 +171,32 @@ export const POST = async (req: NextRequest) => {
       type: data.status
     }
   });
+};
+
+export const DELETE = async (req: NextRequest) => {
+  const { articleId, seriesName } = (await req.json()) as DeleteArticleRequest;
+
+  const error = await deleteArticle(articleId);
+
+  revalidatePath("/");
+  revalidatePath("/article/list/all");
+  revalidatePath(`/article/${articleId}`);
+  if (seriesName) {
+    revalidatePath(`/article/list/${seriesName}`);
+  }
+
+  return error
+    ? NextResponse.json(
+        {
+          code: 500,
+          message: error.message
+        },
+        {
+          status: 500
+        }
+      )
+    : NextResponse.json({
+        code: 200,
+        message: "게시글이 성공적으로 삭제되었습니다."
+      });
 };

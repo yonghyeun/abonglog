@@ -12,6 +12,7 @@ import { useSession } from "@/shared/model";
 
 interface AdminArticleHeaderProps {
   articleId: string;
+  seriesName?: string;
 }
 
 /**
@@ -20,7 +21,8 @@ interface AdminArticleHeaderProps {
  * 글삭제, 글 수정 기능이 존재 합니다.
  */
 export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
-  articleId
+  articleId,
+  seriesName
 }) => {
   const user = useSession();
   const router = useRouter();
@@ -37,22 +39,25 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
 
   const handleDelete = () => {
     if (confirm("해당 게시글을 삭제하시겠습니까?")) {
-      deleteArticle(articleId, {
-        onSuccess: () => {
-          alert("게시글이 제거되었습니다.");
-          queryClient.invalidateQueries({
-            queryKey: ARTICLE_QUERY_KEY.default(
-              isTempArticle ? "draft" : "published"
-            )
-          });
+      deleteArticle(
+        { articleId, seriesName },
+        {
+          onSuccess: () => {
+            alert("게시글이 제거되었습니다.");
+            queryClient.invalidateQueries({
+              queryKey: ARTICLE_QUERY_KEY.default(
+                isTempArticle ? "draft" : "published"
+              )
+            });
 
-          queryClient.invalidateQueries({
-            queryKey: ARTICLE_QUERY_KEY.popularDefault()
-          });
+            queryClient.invalidateQueries({
+              queryKey: ARTICLE_QUERY_KEY.popularDefault()
+            });
 
-          router.back();
+            router.back();
+          }
         }
-      });
+      );
     }
   };
 
