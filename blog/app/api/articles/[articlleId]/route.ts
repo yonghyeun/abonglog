@@ -1,3 +1,4 @@
+import { deleteImages, getImageList } from "@backend/image/model";
 import { NextRequest, NextResponse } from "next/server";
 
 import { type ServerSupabase, createServerSupabase } from "@/shared/model";
@@ -6,36 +7,22 @@ const deleteArticle = async (articleId: string, supabase: ServerSupabase) => {
   return supabase.from("articles").delete().eq("id", +articleId);
 };
 
-const deleteThumbnail = async (articleId: string, supabase: ServerSupabase) => {
-  const storageListResponse = await supabase.storage
-    .from("article_thumbnail")
-    .list(String(articleId));
+const deleteThumbnail = async (articleId: string) => {
+  const { data: thumbnailList } = await getImageList(
+    "article_thumbnail",
+    `thumbnails/${articleId}`
+  );
 
-  if (storageListResponse.error) {
-    return storageListResponse;
+  if (!thumbnailList || thumbnailList.length === 0) {
+    return null;
   }
 
-  const files = storageListResponse.data;
-
-  if (files.length > 0) {
-    const deleteThumbnailResponse = await supabase.storage
-      .from("article_thumbnail")
-      .remove(files.map((file) => `${articleId}/${file.name}`));
-
-    if (!deleteThumbnailResponse.error) {
-      console.log(
-        `🗑️  ${articleId}에서 사용한 썸네일을 삭제했습니다.\n` +
-          `🗂️  제거된 썸네일 목록:\n` +
-          deleteThumbnailResponse.data
-            .map((file) => `  - ${file.name}`)
-            .join("\n")
-      );
-    }
-
-    return deleteThumbnailResponse;
-  }
-
-  return null;
+  return deleteImages(
+    "article_thumbnail",
+    thumbnailList.map(
+      (thumbnail) => `thumbnails/${articleId}/${thumbnail.name}`
+    )
+  );
 };
 
 const deleteArticleTags = async (
@@ -45,34 +32,20 @@ const deleteArticleTags = async (
   return supabase.from("article_tags").delete().eq("article_id", +articleId);
 };
 
-const deleteArticleImages = async (
-  articleId: string,
-  supabase: ServerSupabase
-) => {
-  const articleImagesResponse = await supabase.storage
-    .from("article_image")
-    .list(`public/${articleId}`);
+const deleteArticleImages = async (articleId: string) => {
+  const { data: imageList } = await getImageList(
+    "article_image",
+    `images/${articleId}`
+  );
 
-  const files = articleImagesResponse.data || [];
-
-  if (files.length > 0) {
-    const deleteArticleImagesResponse = await supabase.storage
-      .from("article_image")
-      .remove(files.map((file) => `public/${articleId}/${file.name}`));
-
-    if (!deleteArticleImagesResponse.error) {
-      console.log(
-        `🗑️  ${articleId}에서 사용한 ${files.length}개의 이미지를 삭제했습니다.\n` +
-          `🗂️  제거된 이미지 파일 목록:\n` +
-          deleteArticleImagesResponse.data
-            .map((file) => `  - ${file.name}`)
-            .join("\n")
-      );
-    }
-
-    return deleteArticleImagesResponse;
+  if (!imageList || imageList.length === 0) {
+    return null;
   }
-  return null;
+
+  return deleteImages(
+    "article_image",
+    imageList.map((image) => `images/${articleId}/${image.name}`)
+  );
 };
 
 export const DELETE = async (req: NextRequest) => {
@@ -81,9 +54,9 @@ export const DELETE = async (req: NextRequest) => {
 
   const deleteResponse = await Promise.all([
     deleteArticle(articleId, supabase),
-    deleteThumbnail(articleId, supabase),
-    deleteArticleTags(articleId, supabase),
-    deleteArticleImages(articleId, supabase)
+    deleteThumbnail(articleId),
+    deleteArticleImages(articleId),
+    deleteArticleTags(articleId, supabase)
   ]);
 
   const errorResponse = deleteResponse.find(
