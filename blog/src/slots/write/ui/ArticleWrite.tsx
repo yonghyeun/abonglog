@@ -13,7 +13,7 @@ import React, { useContext, useEffect, useRef } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
-import { findImageUrl } from "@/features/article/lib/findImageUrl";
+import { findImageUrl } from "@/features/article/lib";
 
 import { rehypeMarkdown } from "@/entities/article/lib";
 import {
