@@ -31,14 +31,14 @@ export const POST = async (req: NextRequest) => {
     })
   );
 
-  const uris = resizedImages.map((image) => {
+  const urls = resizedImages.map((image) => {
     const type = image.type.split("/")[1];
     return `images/${articleId}/${randomUUID()}.${type}`;
   });
 
   const response = await Promise.all(
-    uris.map((uri, index) => {
-      return uploadImage(ARTICLE_IMAGE_STORAGE_NAME, uri, resizedImages[index]);
+    urls.map((url, index) => {
+      return uploadImage(ARTICLE_IMAGE_STORAGE_NAME, url, resizedImages[index]);
     })
   );
 
@@ -59,6 +59,6 @@ export const POST = async (req: NextRequest) => {
   return NextResponse.json<PostArticleImageResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: uris.map((uri) => `/api/${uri}`)
+    data: urls.map((url) => `/api/${url}`)
   });
 };

@@ -26,11 +26,11 @@ export const POST = async (req: NextRequest) => {
         })
     );
 
-  const uri = `thumbnails/${articleId}/${randomUUID()}.webp`;
+  const url = `thumbnails/${articleId}/${randomUUID()}.webp`;
 
   const response = await uploadImage(
     ARTICLE_IMAGE_STORAGE_NAME,
-    uri,
+    url,
     resizedImage
   );
 
@@ -49,6 +49,6 @@ export const POST = async (req: NextRequest) => {
   return NextResponse.json<PostArticleThumbnailResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: `/api/${uri}`
+    data: `/api/${url}`
   });
 };
