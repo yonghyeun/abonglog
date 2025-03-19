@@ -2,9 +2,24 @@ import { ArticleSlot } from "@/slots/[article]/ui";
 
 import { getArticleById } from "@/entities/article/model";
 
+import { createBrowserSupabase } from "@/shared/model";
+
 interface ArticlePageProps {
   params: Promise<{ articleId: string }>;
 }
+
+export async function generateStaticParams() {
+  const supabase = createBrowserSupabase();
+
+  const { data: ids } = await supabase
+    .from("articles")
+    .select("id")
+    .eq("status", "published");
+
+  return ids ? ids.map(({ id }) => ({ id })) : [];
+}
+export const dynamic = "force-static";
+export const dynamicParams = false;
 
 const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   const { articleId } = await params;

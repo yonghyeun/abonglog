@@ -14,6 +14,13 @@ import {
 
 import { prefetchQueryInServer } from "@/shared/model";
 
+export const dynamic = "force-static";
+export const revalidate = 86400; // 24 hours
+
+export async function generateStaticParams() {
+  return [];
+}
+
 const MainPage = async () => {
   const mainPageState = await prefetchQueryInServer(
     getArticleInfoPerSeries,
