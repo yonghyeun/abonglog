@@ -14,16 +14,26 @@ export const POST = async (req: NextRequest) => {
   const articleId = formData.get("articleId") as string;
 
   const resizedImages = await Promise.all(
-    images.map((image) => {
-      return image.type === "image/gif"
-        ? image
-        : resizeAndConvertToWebp(image, MAX_IMAGE_WIDTH);
+    images.map(async (image) => {
+      if (image.type === "image/gif") {
+        return image;
+      }
+
+      const buffer = await image.arrayBuffer();
+      const resizedImage = await resizeAndConvertToWebp(
+        buffer,
+        MAX_IMAGE_WIDTH
+      );
+
+      return new File([resizedImage], `${image.name}.webp`, {
+        type: "image/webp"
+      });
     })
   );
 
   const uris = resizedImages.map((image) => {
     const type = image.type.split("/")[1];
-    return `${articleId}/image/${randomUUID()}.${type}`;
+    return `images/${articleId}/${randomUUID()}.${type}`;
   });
 
   const response = await Promise.all(
