@@ -1,9 +1,11 @@
+"use client";
+
 import { EmailLoginForm, LogoutForm } from "@/features/auth/ui";
 
-import { getCurrentUserData } from "@/entities/user/model";
+import { useSession } from "@/entities/user/model";
 
-const LoginPage = async () => {
-  const user = await getCurrentUserData();
+const LoginPage = () => {
+  const { user } = useSession();
 
   return (
     <section className="media-padding-x flex flex-grow flex-col items-center justify-center gap-4 bg-secondary">

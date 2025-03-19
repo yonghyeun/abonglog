@@ -13,7 +13,6 @@ const WritePage = async () => {
     getSeriesList
   );
 
-  // TODO ISR 시 아티클 아이디 생성하기
   const randomArticleId = Math.floor(Math.random() * 10 ** 7);
 
   return (
