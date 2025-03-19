@@ -502,7 +502,8 @@ const ThumbnailUploadInput = () => {
         id="article-thumbnail-upload"
         labelTitle="썸네일 등록"
         inputProps={{
-          onChange: handleUploadThumbnail
+          onChange: handleUploadThumbnail,
+          accept: "image/webp,image/jpeg,image/png,image/avif"
         }}
       />
       {/* 선택된 썸네일 주소 표현 컴포넌트 */}
