@@ -106,25 +106,25 @@ const deleteUnusedThumbnail = async (
 
 const uploadArticle = async ({
   tags,
-  ...articledata
+  ...articleData
 }: PostNewArticleRequest) => {
   const supabase = await createServerSupabase();
 
   const upsertArticleResponse = await Promise.all([
-    upsertNewArticle(articledata, supabase),
-    deleteUnusedImages(articledata.id, articledata.content),
-    articledata.thumbnailUrl
-      ? deleteUnusedThumbnail(articledata.id, articledata.thumbnailUrl)
+    upsertNewArticle(articleData, supabase),
+    deleteUnusedImages(articleData.id, articleData.content),
+    articleData.thumbnailUrl
+      ? deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl)
       : { error: null }
   ]);
 
   const deleteArticleTagsResponse = await deleteArticleTags(
-    articledata.id,
+    articleData.id,
     supabase
   );
 
   const insertArticleTagResponse = await insertArticleTag(
-    { id: articledata.id, tags },
+    { id: articleData.id, tags },
     supabase
   );
 
