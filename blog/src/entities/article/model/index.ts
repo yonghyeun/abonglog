@@ -1,4 +1,4 @@
-export * from "./getPolularArticleList";
+export * from "./getPopularArticleList";
 export * from "./postArticleImage";
 export * from "./postArticleThumbnail";
 export * from "./postNewArticle";

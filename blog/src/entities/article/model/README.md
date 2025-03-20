@@ -15,7 +15,7 @@
 - `getArticleListBySeries.ts`: 시리즈별 아티클 목록 조회
 - `getLatestArticle.ts`: 최신 아티클 조회
 - `getNumberOfArticles.ts`: 아티클 수 조회
-- `getPolularArticleList.ts`: 인기 아티클 목록 조회
+- `getPopularArticleList.ts`: 인기 아티클 목록 조회
 - `getArticleInfoPerSeries.ts`: 시리즈별 아티클 정보 조회
 
 ## Delete
