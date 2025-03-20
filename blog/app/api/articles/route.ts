@@ -160,7 +160,7 @@ export const POST = async (req: NextRequest) => {
   revalidatePath("/");
   if (data.status === "published") {
     revalidatePath("/article/list/all");
-    revalidatePath(`/article/${data.seriesName}`);
+    revalidatePath(`/article/${encodeURI(data.seriesName)}`);
     revalidatePath(`/article/${data.id}`);
   }
 
@@ -180,8 +180,9 @@ export const DELETE = async (req: NextRequest) => {
 
   revalidatePath("/");
   revalidatePath(`/article/list/all`);
+  revalidatePath(`/article/${articleId}`);
   if (seriesName) {
-    revalidatePath(`/article/list/${seriesName}`);
+    revalidatePath(`/article/list/${encodeURI(seriesName)}`);
   }
 
   return error
