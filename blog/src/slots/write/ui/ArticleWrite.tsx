@@ -6,7 +6,8 @@ import {
   createArticleWriteStore,
   useArticleWriteStore
 } from "../model";
-import { SeriesSelectToggle, TagSelectToggle } from "./items";
+import { SeriesSelectToggle } from "./SeriesSelectToggle";
+import { TagSelectToggle } from "./TagSelectToggle";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef } from "react";
@@ -22,7 +23,6 @@ import {
   usePostNewArticle
 } from "@/entities/article/model";
 import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
-import { compressImage } from "@/entities/image/lib";
 import {
   ImageGrid,
   ImageUploadInput as _ImageUploadInput
@@ -171,13 +171,9 @@ const ImageUploadInput: React.FC = () => {
 
     setContent((prev) => `${prev}\n${blobImageStack.current.join("\n")}`);
 
-    const compressedFiles = await Promise.all(
-      [...files].map((file) => compressImage(file))
-    );
-
     uploadImage(
       {
-        files: compressedFiles,
+        files: [...files],
         articleId: articleId.toString()
       },
       // API 요청 성공 혹은 실패 후 마크다운 상태를 변경 합니다.
@@ -309,13 +305,9 @@ const MarkdownEditor = () => {
 
     setContent((prev) => `${prev}\n${blobImageStack.current.join("\n")}`);
 
-    const compressedFiles = await Promise.all(
-      [...files].map((file) => compressImage(file))
-    );
-
     uploadImage(
       {
-        files: compressedFiles,
+        files: [...files],
         articleId: articleId.toString()
       },
       // API 요청 성공 혹은 실패 후 마크다운 상태를 변경 합니다.

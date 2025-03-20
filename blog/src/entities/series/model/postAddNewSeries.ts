@@ -1,14 +1,11 @@
 import { SERIES_QUERY_KEY } from "./seriesQueryKey";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createBrowserSupabase } from "@/shared/model";
-import type { Database } from "@/shared/model/database.types";
-import { NonOptional } from "@/shared/type";
+import { createBrowserSupabase } from "@/shared/lib";
 
-type PostAddNewSeriesRequest = Pick<
-  NonOptional<Database["public"]["Tables"]["series"]["Insert"]>,
-  "name"
->;
+interface PostAddNewSeriesRequest {
+  name: string;
+}
 
 const postAddNewSeries = async ({ name }: PostAddNewSeriesRequest) => {
   const supabase = await createBrowserSupabase();

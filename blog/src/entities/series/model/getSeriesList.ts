@@ -1,7 +1,7 @@
 import { SERIES_QUERY_KEY } from "./seriesQueryKey";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 import type { Database } from "@/shared/model/database.types";
 import { SnakeToCamel, snakeToCamel } from "@/shared/util";
 

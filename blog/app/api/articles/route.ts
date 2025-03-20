@@ -5,6 +5,7 @@ import {
 } from "@backend/image/lib";
 import { deleteImages, getImageList } from "@backend/image/model";
 import { createErrorResponse, findError } from "@backend/shared/lib";
+import { camelToSnake } from "@backend/shared/lib";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,8 +15,7 @@ import type {
   PostNewArticleResponse
 } from "@/entities/article/model";
 
-import { createServerSupabase } from "@/shared/model";
-import { camelToSnake } from "@/shared/route";
+import { createServerSupabase } from "@/shared/lib";
 
 const upsertNewArticle = (
   newArticle: Omit<PostNewArticleRequest, "tags">,

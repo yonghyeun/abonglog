@@ -11,8 +11,8 @@ import {
 } from "@/entities/article/model";
 import { getSeriesList } from "@/entities/series/model";
 
+import { mergeDehydrateState } from "@/shared/lib";
 import {
-  mergeDehydrateState,
   prefetchInfiniteQueryInServer,
   prefetchQueryInServer
 } from "@/shared/model";

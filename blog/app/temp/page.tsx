@@ -6,8 +6,8 @@ import {
   getNumberOfTempArticles
 } from "@/entities/article/model";
 
+import { mergeDehydrateState } from "@/shared/lib";
 import {
-  mergeDehydrateState,
   prefetchInfiniteQueryInServer,
   prefetchQueryInServer
 } from "@/shared/model";

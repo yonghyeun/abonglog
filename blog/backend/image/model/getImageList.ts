@@ -1,6 +1,6 @@
 import type { ImageStorageName } from "./types";
 
-import { createServerSupabase } from "@/shared/model";
+import { createServerSupabase } from "@/shared/lib";
 
 export const getImageList = async (
   storageName: ImageStorageName,

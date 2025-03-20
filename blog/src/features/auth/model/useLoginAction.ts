@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 
 interface State {
   error: boolean;
