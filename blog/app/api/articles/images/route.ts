@@ -1,7 +1,9 @@
-import { resizeFilesAndConvertWebpFile } from "@backend/image/lib";
+import {
+  getImageStoragePath,
+  resizeFilesAndConvertWebpFile
+} from "@backend/image/lib";
 import { uploadImage } from "@backend/image/model";
 import { createErrorResponse } from "@backend/shared/utils";
-import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleImageResponse } from "@/entities/article/model";
@@ -19,14 +21,17 @@ export const POST = async (req: NextRequest) => {
     MAX_IMAGE_WIDTH
   );
 
-  const urls = resizedImages.map((image) => {
-    const type = image.type.split("/")[1];
-    return `images/${articleId}/${randomUUID()}.${type}`;
-  });
+  const storagePath = resizedImages.map((image) =>
+    getImageStoragePath(articleId, image.type.split(".")[1])
+  );
 
   const response = await Promise.all(
-    urls.map((url, index) => {
-      return uploadImage(ARTICLE_IMAGE_STORAGE_NAME, url, resizedImages[index]);
+    storagePath.map((path, index) => {
+      return uploadImage(
+        ARTICLE_IMAGE_STORAGE_NAME,
+        path,
+        resizedImages[index]
+      );
     })
   );
 
@@ -39,6 +44,6 @@ export const POST = async (req: NextRequest) => {
   return NextResponse.json<PostArticleImageResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: urls.map((url) => `/api/${url}`)
+    data: storagePath.map((path) => `/api/${path}`)
   });
 };
