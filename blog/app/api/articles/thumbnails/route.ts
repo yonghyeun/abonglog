@@ -1,7 +1,9 @@
-import { resizeFilesAndConvertWebpFile } from "@backend/image/lib";
+import {
+  getImageStoragePath,
+  resizeFilesAndConvertWebpFile
+} from "@backend/image/lib";
 import { uploadImage } from "@backend/image/model";
 import { createErrorResponse } from "@backend/shared/lib";
-import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleThumbnailResponse } from "@/entities/article/model";
@@ -15,17 +17,21 @@ export const POST = async (req: NextRequest) => {
   const articleId = form.get("articleId") as string;
   const file = form.get("image") as File;
 
-  const resizedImage = await resizeFilesAndConvertWebpFile(
+  const [resizedImage] = await resizeFilesAndConvertWebpFile(
     [file],
     MAX_IMAGE_WIDTH
   );
 
-  const url = `thumbnails/${articleId}/${randomUUID()}.webp`;
+  const url = getImageStoragePath(
+    "thumbnails",
+    articleId,
+    resizedImage.type.split("/")[1]
+  );
 
   const response = await uploadImage(
     ARTICLE_IMAGE_STORAGE_NAME,
     url,
-    resizedImage[0]
+    resizedImage
   );
 
   if (response.error) {
