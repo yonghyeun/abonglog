@@ -1,4 +1,4 @@
-import { resizeAndConvertToWebp } from "@backend/image/lib";
+import { resizeFilesAndConvertWebpFile } from "@backend/image/lib";
 import { uploadImage } from "@backend/image/model";
 import { createErrorResponse } from "@backend/shared/utils";
 import { randomUUID } from "crypto";
@@ -15,24 +15,17 @@ export const POST = async (req: NextRequest) => {
   const articleId = form.get("articleId") as string;
   const file = form.get("image") as File;
 
-  const resizedImage = await file
-    .arrayBuffer()
-    .then((buffer) => {
-      return resizeAndConvertToWebp(buffer, MAX_IMAGE_WIDTH);
-    })
-    .then(
-      (resizedImageBuffer) =>
-        new File([resizedImageBuffer], `${file.name}.webp`, {
-          type: "image/webp"
-        })
-    );
+  const resizedImage = await resizeFilesAndConvertWebpFile(
+    [file],
+    MAX_IMAGE_WIDTH
+  );
 
   const url = `thumbnails/${articleId}/${randomUUID()}.webp`;
 
   const response = await uploadImage(
     ARTICLE_IMAGE_STORAGE_NAME,
     url,
-    resizedImage
+    resizedImage[0]
   );
 
   if (response.error) {

@@ -1,4 +1,4 @@
-import { resizeAndConvertToWebp } from "@backend/image/lib";
+import { resizeFilesAndConvertWebpFile } from "@backend/image/lib";
 import { uploadImage } from "@backend/image/model";
 import { createErrorResponse } from "@backend/shared/utils";
 import { randomUUID } from "crypto";
@@ -14,22 +14,9 @@ export const POST = async (req: NextRequest) => {
   const images = formData.getAll("image") as File[];
   const articleId = formData.get("articleId") as string;
 
-  const resizedImages = await Promise.all(
-    images.map(async (image) => {
-      if (image.type === "image/gif") {
-        return image;
-      }
-
-      const buffer = await image.arrayBuffer();
-      const resizedImage = await resizeAndConvertToWebp(
-        buffer,
-        MAX_IMAGE_WIDTH
-      );
-
-      return new File([resizedImage], `${image.name}.webp`, {
-        type: "image/webp"
-      });
-    })
+  const resizedImages = await resizeFilesAndConvertWebpFile(
+    images,
+    MAX_IMAGE_WIDTH
   );
 
   const urls = resizedImages.map((image) => {
