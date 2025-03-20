@@ -158,10 +158,10 @@ export const POST = async (req: NextRequest) => {
   }
 
   revalidatePath("/");
-  revalidatePath("/article/list/all");
-  revalidatePath(`/article/${data.id}`);
-  if (data.seriesName) {
-    revalidatePath(`/article/list/${data.seriesName}`);
+  if (data.status === "published") {
+    revalidatePath("/article/list/all");
+    revalidatePath(`/article/${data.seriesName}`);
+    revalidatePath(`/article/${data.id}`);
   }
 
   return NextResponse.json<PostNewArticleResponse>({
@@ -179,8 +179,7 @@ export const DELETE = async (req: NextRequest) => {
   const error = await deleteArticle(articleId);
 
   revalidatePath("/");
-  revalidatePath("/article/list/all");
-  revalidatePath(`/article/${articleId}`);
+  revalidatePath(`/article/list/all`);
   if (seriesName) {
     revalidatePath(`/article/list/${seriesName}`);
   }
