@@ -1,7 +1,7 @@
 import { resizeAndConvertToWebp } from "@backend/image/lib";
+import { downloadImage } from "@backend/image/model";
+import { createErrorResponse } from "@backend/shared/lib";
 import { NextRequest, NextResponse } from "next/server";
-
-import { createServerSupabase } from "@/shared/model";
 
 const STORAGE_NAME = "article_thumbnail";
 const BASE_IMAGE_WIDTH = 1000;
@@ -16,46 +16,30 @@ export const GET = async (
 ) => {
   const { articleId, imageId } = await params;
 
-  const supabase = await createServerSupabase();
-
   const url = new URL(req.url);
   const width = new URLSearchParams(url.search).get("width") || "1000";
 
   const storagePath = getStoragePath(articleId, imageId);
 
-  const { data: imageData, error } = await supabase.storage
-    .from(STORAGE_NAME)
-    .download(storagePath);
+  const { data: imageData, error } = await downloadImage(
+    STORAGE_NAME,
+    storagePath
+  );
 
   if (error) {
-    return NextResponse.json(
-      {
-        code: 404,
-        message: "이미지를 찾을 수 없습니다."
-      },
-      {
-        status: 404
-      }
-    );
+    return createErrorResponse(error);
   }
 
   const contentType = imageData.type;
   if (contentType === "image/gif") {
-    return NextResponse.json(
-      {
-        code: 400,
-        message: "GIF 이미지는 리사이징할 수 없습니다."
-      },
-      {
-        status: 400
-      }
-    );
+    return createErrorResponse({
+      status: 400,
+      message: "GIF 이미지는 리사이징할 수 없습니다."
+    });
   }
 
-  const imageBuffer = await imageData.arrayBuffer();
-
   const resizedImage = await resizeAndConvertToWebp(
-    imageBuffer,
+    imageData,
     parseInt(width, 10) || BASE_IMAGE_WIDTH,
     100
   );

@@ -1,6 +1,9 @@
-import { resizeAndConvertToWebp } from "@backend/image/lib";
-import { uploadImage } from "@backend/image/model";
-import { randomUUID } from "crypto";
+import {
+  getImageStoragePath,
+  resizeFilesAndConvertWebpFile
+} from "@backend/image/lib";
+import { uploadMultipleImages } from "@backend/image/model";
+import { createErrorResponse, findError } from "@backend/shared/lib";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleImageResponse } from "@/entities/article/model";
@@ -10,55 +13,33 @@ const MAX_IMAGE_WIDTH = 1200;
 
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
+
   const images = formData.getAll("image") as File[];
   const articleId = formData.get("articleId") as string;
 
-  const resizedImages = await Promise.all(
-    images.map(async (image) => {
-      if (image.type === "image/gif") {
-        return image;
-      }
-
-      const buffer = await image.arrayBuffer();
-      const resizedImage = await resizeAndConvertToWebp(
-        buffer,
-        MAX_IMAGE_WIDTH
-      );
-
-      return new File([resizedImage], `${image.name}.webp`, {
-        type: "image/webp"
-      });
-    })
+  const resizedImages = await resizeFilesAndConvertWebpFile(
+    images,
+    MAX_IMAGE_WIDTH
   );
 
-  const urls = resizedImages.map((image) => {
-    const type = image.type.split("/")[1];
-    return `images/${articleId}/${randomUUID()}.${type}`;
-  });
-
-  const response = await Promise.all(
-    urls.map((url, index) => {
-      return uploadImage(ARTICLE_IMAGE_STORAGE_NAME, url, resizedImages[index]);
-    })
+  const storagePath = resizedImages.map((image) =>
+    getImageStoragePath("images", articleId, image.type.split(".")[1])
   );
 
-  const error = response.map(({ error }) => error).find((error) => !!error);
+  const response = await uploadMultipleImages(
+    storagePath.map((path, index) => ({ path, image: resizedImages[index] })),
+    ARTICLE_IMAGE_STORAGE_NAME
+  );
+
+  const error = findError(response);
 
   if (error) {
-    return NextResponse.json(
-      {
-        code: 500,
-        message: error.message
-      },
-      {
-        status: 500
-      }
-    );
+    return createErrorResponse(error);
   }
 
   return NextResponse.json<PostArticleImageResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: urls.map((url) => `/api/${url}`)
+    data: storagePath.map((path) => `/api/${path}`)
   });
 };

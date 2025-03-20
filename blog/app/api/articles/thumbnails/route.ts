@@ -1,6 +1,9 @@
-import { resizeAndConvertToWebp } from "@backend/image/lib";
+import {
+  getImageStoragePath,
+  resizeFilesAndConvertWebpFile
+} from "@backend/image/lib";
 import { uploadImage } from "@backend/image/model";
-import { randomUUID } from "crypto";
+import { createErrorResponse } from "@backend/shared/lib";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleThumbnailResponse } from "@/entities/article/model";
@@ -14,19 +17,16 @@ export const POST = async (req: NextRequest) => {
   const articleId = form.get("articleId") as string;
   const file = form.get("image") as File;
 
-  const resizedImage = await file
-    .arrayBuffer()
-    .then((buffer) => {
-      return resizeAndConvertToWebp(buffer, MAX_IMAGE_WIDTH);
-    })
-    .then(
-      (resizedImageBuffer) =>
-        new File([resizedImageBuffer], `${file.name}.webp`, {
-          type: "image/webp"
-        })
-    );
+  const [resizedImage] = await resizeFilesAndConvertWebpFile(
+    [file],
+    MAX_IMAGE_WIDTH
+  );
 
-  const url = `thumbnails/${articleId}/${randomUUID()}.webp`;
+  const url = getImageStoragePath(
+    "thumbnails",
+    articleId,
+    resizedImage.type.split("/")[1]
+  );
 
   const response = await uploadImage(
     ARTICLE_IMAGE_STORAGE_NAME,
@@ -35,15 +35,7 @@ export const POST = async (req: NextRequest) => {
   );
 
   if (response.error) {
-    return NextResponse.json(
-      {
-        code: 500,
-        message: response.error.message
-      },
-      {
-        status: 500
-      }
-    );
+    return createErrorResponse(response.error);
   }
 
   return NextResponse.json<PostArticleThumbnailResponse>({

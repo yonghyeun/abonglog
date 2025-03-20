@@ -1,9 +1,12 @@
 import { deleteArticle } from "@backend/article/model";
+import {
+  filterUnusedImageNames,
+  findStoredImageName
+} from "@backend/image/lib";
 import { deleteImages, getImageList } from "@backend/image/model";
+import { createErrorResponse, findError } from "@backend/shared/lib";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-
-import { findImageUrl } from "@/features/article/lib/findImageUrl";
 
 import type {
   DeleteArticleRequest,
@@ -47,35 +50,26 @@ const insertArticleTag = (
 };
 
 const deleteUnusedImages = async (articleId: number, content: string) => {
-  const usedImages = findImageUrl(content)
-    .map(({ src }) => src)
-    .filter((src) => src.startsWith("/api/"))
-    .map((url) => url.split("/").pop())
-    .filter((fileName) => fileName !== undefined);
-
-  const { data: storedImageList } = await getImageList(
+  const { data: storedImages } = await getImageList(
     "article_image",
     `images/${articleId}`
   );
+  const usedImages = findStoredImageName(content);
 
-  if (!storedImageList) {
+  if (!storedImages) {
     return { error: null };
   }
 
-  const unusedImages = storedImageList
-    .map(({ name }) => name)
-    .filter((name) => !usedImages.includes(name));
+  const unusedImageNames = filterUnusedImageNames(storedImages, usedImages);
 
-  if (unusedImages.length === 0) {
+  if (unusedImageNames.length === 0) {
     return { error: null };
   }
 
-  const deleteUnusedImagesResponse = await deleteImages(
+  return deleteImages(
     "article_image",
-    unusedImages.map((name) => `images/${articleId}/${name}`)
+    unusedImageNames.map((name) => `images/${articleId}/${name}`)
   );
-
-  return deleteUnusedImagesResponse;
 };
 
 const deleteUnusedThumbnail = async (
@@ -92,22 +86,19 @@ const deleteUnusedThumbnail = async (
   }
 
   const thumbnailImageName = thumbnailUrl.split("/").pop();
-  const unusedThumbnails = storedImageList
-    .map(({ name }) => name)
-    .filter((name) => name !== thumbnailImageName);
+  const unusedThumbnails = thumbnailImageName
+    ? filterUnusedImageNames(storedImageList, [thumbnailImageName])
+    : storedImageList;
 
   if (unusedThumbnails.length === 0) {
     return { error: null };
   }
 
-  const deleteUnusedThumbnailResponse = await deleteImages(
+  return deleteImages(
     "article_thumbnail",
     unusedThumbnails.map((name) => `thumbnails/${articleId}/${name}`)
   );
-
-  return deleteUnusedThumbnailResponse;
 };
-
 const uploadArticle = async ({
   tags,
   ...articleData
@@ -141,20 +132,12 @@ const uploadArticle = async ({
 
 export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as PostNewArticleRequest;
-  const response = await uploadArticle(data);
+  const responses = await uploadArticle(data);
 
-  const error = response.map(({ error }) => error).find((error) => error);
+  const error = findError(responses);
 
   if (error) {
-    return NextResponse.json(
-      {
-        code: 500,
-        message: error.message
-      },
-      {
-        status: 500
-      }
-    );
+    return createErrorResponse(error);
   }
 
   revalidatePath("/");
@@ -178,6 +161,10 @@ export const DELETE = async (req: NextRequest) => {
 
   const error = await deleteArticle(articleId);
 
+  if (error) {
+    return createErrorResponse(error);
+  }
+
   revalidatePath("/");
   revalidatePath(`/article/list/all`);
   revalidatePath(`/article/${articleId}`);
@@ -185,18 +172,8 @@ export const DELETE = async (req: NextRequest) => {
     revalidatePath(`/article/list/${encodeURI(seriesName)}`);
   }
 
-  return error
-    ? NextResponse.json(
-        {
-          code: 500,
-          message: error.message
-        },
-        {
-          status: 500
-        }
-      )
-    : NextResponse.json({
-        code: 200,
-        message: "게시글이 성공적으로 삭제되었습니다."
-      });
+  return NextResponse.json({
+    code: 200,
+    message: "게시글이 성공적으로 삭제되었습니다."
+  });
 };
