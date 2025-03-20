@@ -8,8 +8,11 @@ import React from "react";
 import { useDeleteArticle } from "@/entities/article/model";
 import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
 
+import { useSession } from "@/shared/model";
+
 interface AdminArticleHeaderProps {
   articleId: string;
+  seriesName?: string;
 }
 
 /**
@@ -18,39 +21,48 @@ interface AdminArticleHeaderProps {
  * 글삭제, 글 수정 기능이 존재 합니다.
  */
 export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
-  articleId
+  articleId,
+  seriesName
 }) => {
+  const user = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
 
-  const isTempArticle = pathname && pathname.includes("temp");
-
   const { mutate: deleteArticle } = useDeleteArticle();
+
+  if (!user) {
+    return null;
+  }
+
+  const isTempArticle = pathname && pathname.includes("temp");
 
   const handleDelete = () => {
     if (confirm("해당 게시글을 삭제하시겠습니까?")) {
-      deleteArticle(articleId, {
-        onSuccess: () => {
-          alert("게시글이 제거되었습니다.");
-          queryClient.invalidateQueries({
-            queryKey: ARTICLE_QUERY_KEY.default(
-              isTempArticle ? "draft" : "published"
-            )
-          });
+      deleteArticle(
+        { articleId, seriesName },
+        {
+          onSuccess: () => {
+            alert("게시글이 제거되었습니다.");
+            queryClient.invalidateQueries({
+              queryKey: ARTICLE_QUERY_KEY.default(
+                isTempArticle ? "draft" : "published"
+              )
+            });
 
-          queryClient.invalidateQueries({
-            queryKey: ARTICLE_QUERY_KEY.popularDefault()
-          });
+            queryClient.invalidateQueries({
+              queryKey: ARTICLE_QUERY_KEY.popularDefault()
+            });
 
-          router.back();
+            router.back();
+          }
         }
-      });
+      );
     }
   };
 
   return (
-    <div className="mb-2 flex justify-end gap-2 border-b pb-2 text-secondary">
+    <div className="media-padding-x flex justify-end gap-2 pb-2 text-secondary">
       <button className="hover:text-red-500" onClick={handleDelete}>
         글 삭제
       </button>

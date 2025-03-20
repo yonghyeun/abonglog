@@ -14,7 +14,10 @@ export const SeriesListSlot = () => {
     <>
       <h1 className="mb-2">시리즈별로 보기</h1>
       <div className="flex justify-end">
-        <Link href="/article" className="text-secondary hover:text-blue-500">
+        <Link
+          href="/article/list/all"
+          className="text-secondary hover:text-blue-500"
+        >
           전체 게시글 보기
         </Link>
       </div>
@@ -24,8 +27,7 @@ export const SeriesListSlot = () => {
           <Grid.Item key={data.seriesName}>
             <Link
               href={{
-                pathname: "/article",
-                search: `?series=${data.seriesName}`
+                pathname: `/article/list/${data.seriesName}`
               }}
             >
               <SeriesItem {...data} />

@@ -1,12 +1,13 @@
+"use client";
+
 import { EmailLoginForm } from "@/features/auth/ui";
 import { LogoutForm } from "@/features/auth/ui/LogoutForm";
 
-import { getCurrentUserData } from "@/entities/user/model";
-
+import { useSession } from "@/shared/model";
 import { RoutingModal } from "@/shared/ui/RoutingModal";
 
-const AuthModal = async () => {
-  const user = await getCurrentUserData();
+const AuthModal = () => {
+  const user = useSession();
 
   return (
     <RoutingModal>{user ? <LogoutForm /> : <EmailLoginForm />}</RoutingModal>

@@ -1,15 +1,8 @@
+import { Header } from "./Header";
 import "./globals.css";
 import { Noto_Sans_KR } from "next/font/google";
-import Link from "next/link";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
-
-import { SideBar } from "@/widgets/navigate/ui";
-
-import { DarkModeToggle } from "@/features/utils/ui";
-
-import { getCurrentUserData } from "@/entities/user/model";
-import { AdminProfile } from "@/entities/user/ui";
 
 import { GithubIcon, HumanIcon } from "@/shared/config";
 
@@ -37,43 +30,6 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
         </ServiceProvider>
       </body>
     </html>
-  );
-};
-
-const Header = async () => {
-  const user = await getCurrentUserData();
-
-  return (
-    <header className="media-padding-x flex items-center justify-between py-4">
-      <div className="flex items-center gap-2">
-        <h1>
-          <Link href="/" aria-labelledby="메인 페이지로 이동">
-            abonglog
-          </Link>
-        </h1>
-        <SideBar />
-      </div>
-      <div className="flex items-center gap-2">
-        {user && (
-          <>
-            <Link
-              href="/write"
-              className="text-md p-2 text-gray-400 hover:bg-secondary"
-            >
-              글 쓰기
-            </Link>
-            <Link
-              className="flex items-end gap-2 p-2 hover:bg-secondary"
-              href="/auth"
-            >
-              <AdminProfile size="sm" />
-              <p className="text-xs text-gray-400">{user.email}</p>
-            </Link>
-          </>
-        )}
-        <DarkModeToggle />
-      </div>
-    </header>
   );
 };
 

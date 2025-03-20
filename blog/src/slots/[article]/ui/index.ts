@@ -1,2 +1,1 @@
-export * from "./GuestArticleSlot";
-export * from "./AdminArticleSlot";
+export * from "./ArticleSlot";

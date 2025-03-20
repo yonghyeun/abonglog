@@ -1,6 +1,6 @@
 "use client";
 
-import { useLoginAction } from "../lib";
+import { useLoginAction } from "../model";
 import React from "react";
 
 import { Form } from "@/shared/ui/Form";

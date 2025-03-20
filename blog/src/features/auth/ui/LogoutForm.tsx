@@ -1,8 +1,12 @@
-import { logoutAction } from "../lib";
+"use client";
+
+import { useLogoutAction } from "../model/useLogoutAction";
 
 import { Button } from "@/shared/ui/Button";
 
 export const LogoutForm = () => {
+  const handleLogout = useLogoutAction();
+
   return (
     <section
       className="flex flex-col gap-4"
@@ -18,7 +22,7 @@ export const LogoutForm = () => {
         <form
           id="logout-form"
           aria-labelledby="logout-form-title"
-          action={logoutAction}
+          action={handleLogout}
         >
           <Button
             size="md"
