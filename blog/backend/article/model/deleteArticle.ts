@@ -9,7 +9,7 @@ const deleteThumbnail = async (articleId: string) => {
   );
 
   if (!thumbnailList || thumbnailList.length === 0) {
-    return null;
+    return { error: null };
   }
 
   return deleteImages(
@@ -53,10 +53,7 @@ export const deleteArticle = async (articleId: string) => {
     deleteArticleTags(articleId, supabase)
   ]);
 
-  const error = response
-    .filter((res) => !!res)
-    .map((res) => res.error)
-    .find((error) => !!error);
+  const error = response.map((res) => res.error).find((error) => !!error);
 
   return error;
 };
