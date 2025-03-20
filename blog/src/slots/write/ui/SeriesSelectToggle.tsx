@@ -1,4 +1,4 @@
-import { useSeriesSelectToggle } from "../../lib";
+import { useSeriesSelectToggle } from "../lib";
 
 import { type Series, usePostAddNewSeries } from "@/entities/series/model";
 
