@@ -1,6 +1,6 @@
 import { resizeFilesAndConvertWebpFile } from "@backend/image/lib";
 import { uploadImage } from "@backend/image/model";
-import { createErrorResponse } from "@backend/shared/utils";
+import { createErrorResponse } from "@backend/shared/lib";
 import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 

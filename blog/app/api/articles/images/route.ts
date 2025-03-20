@@ -2,8 +2,8 @@ import {
   getImageStoragePath,
   resizeFilesAndConvertWebpFile
 } from "@backend/image/lib";
-import { uploadImage } from "@backend/image/model";
-import { createErrorResponse } from "@backend/shared/utils";
+import { uploadMultipleImages } from "@backend/image/model";
+import { createErrorResponse, findError } from "@backend/shared/lib";
 import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleImageResponse } from "@/entities/article/model";
@@ -13,6 +13,7 @@ const MAX_IMAGE_WIDTH = 1200;
 
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
+
   const images = formData.getAll("image") as File[];
   const articleId = formData.get("articleId") as string;
 
@@ -25,17 +26,12 @@ export const POST = async (req: NextRequest) => {
     getImageStoragePath(articleId, image.type.split(".")[1])
   );
 
-  const response = await Promise.all(
-    storagePath.map((path, index) => {
-      return uploadImage(
-        ARTICLE_IMAGE_STORAGE_NAME,
-        path,
-        resizedImages[index]
-      );
-    })
+  const response = await uploadMultipleImages(
+    storagePath.map((path, index) => ({ path, image: resizedImages[index] })),
+    ARTICLE_IMAGE_STORAGE_NAME
   );
 
-  const error = response.map(({ error }) => error).find((error) => !!error);
+  const error = findError(response);
 
   if (error) {
     return createErrorResponse(error);

@@ -1,5 +1,5 @@
 import { resizeAndConvertToWebp } from "@backend/image/lib";
-import { createErrorResponse } from "@backend/shared/utils";
+import { createErrorResponse } from "@backend/shared/lib";
 import { NextRequest, NextResponse } from "next/server";
 
 import { createServerSupabase } from "@/shared/model";

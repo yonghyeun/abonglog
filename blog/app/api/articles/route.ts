@@ -1,6 +1,6 @@
 import { deleteArticle } from "@backend/article/model";
 import { deleteImages, getImageList } from "@backend/image/model";
-import { createErrorResponse } from "@backend/shared/utils";
+import { createErrorResponse } from "@backend/shared/lib";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
