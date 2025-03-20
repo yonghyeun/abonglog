@@ -26,8 +26,6 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   const { articleId } = await params;
   const articleData = await getArticleById(articleId, "published");
 
-  console.log("fucking im rerener");
-
   return (
     <ArticleSlot
       articleId={articleId}
