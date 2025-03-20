@@ -1,5 +1,6 @@
 import { resizeAndConvertToWebp } from "@backend/image/lib";
 import { uploadImage } from "@backend/image/model";
+import { createErrorResponse } from "@backend/shared/utils";
 import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -35,15 +36,7 @@ export const POST = async (req: NextRequest) => {
   );
 
   if (response.error) {
-    return NextResponse.json(
-      {
-        code: 500,
-        message: response.error.message
-      },
-      {
-        status: 500
-      }
-    );
+    return createErrorResponse(response.error);
   }
 
   return NextResponse.json<PostArticleThumbnailResponse>({

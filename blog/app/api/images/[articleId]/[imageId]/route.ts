@@ -1,4 +1,5 @@
 import { resizeAndConvertToWebp } from "@backend/image/lib";
+import { createErrorResponse } from "@backend/shared/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 import { createServerSupabase } from "@/shared/model";
@@ -34,15 +35,7 @@ export const GET = async (
     .download(storagePath);
 
   if (error) {
-    return NextResponse.json(
-      {
-        code: 404,
-        message: "이미지를 찾을 수 없습니다."
-      },
-      {
-        status: 404
-      }
-    );
+    return createErrorResponse(error);
   }
 
   const contentType = imageData.type;

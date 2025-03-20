@@ -1,5 +1,6 @@
 import { deleteArticle } from "@backend/article/model";
 import { deleteImages, getImageList } from "@backend/image/model";
+import { createErrorResponse } from "@backend/shared/utils";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -146,15 +147,7 @@ export const POST = async (req: NextRequest) => {
   const error = response.map(({ error }) => error).find((error) => error);
 
   if (error) {
-    return NextResponse.json(
-      {
-        code: 500,
-        message: error.message
-      },
-      {
-        status: 500
-      }
-    );
+    return createErrorResponse(error);
   }
 
   revalidatePath("/");
@@ -178,6 +171,10 @@ export const DELETE = async (req: NextRequest) => {
 
   const error = await deleteArticle(articleId);
 
+  if (error) {
+    return createErrorResponse(error);
+  }
+
   revalidatePath("/");
   revalidatePath(`/article/list/all`);
   revalidatePath(`/article/${articleId}`);
@@ -185,18 +182,8 @@ export const DELETE = async (req: NextRequest) => {
     revalidatePath(`/article/list/${encodeURI(seriesName)}`);
   }
 
-  return error
-    ? NextResponse.json(
-        {
-          code: 500,
-          message: error.message
-        },
-        {
-          status: 500
-        }
-      )
-    : NextResponse.json({
-        code: 200,
-        message: "게시글이 성공적으로 삭제되었습니다."
-      });
+  return NextResponse.json({
+    code: 200,
+    message: "게시글이 성공적으로 삭제되었습니다."
+  });
 };
