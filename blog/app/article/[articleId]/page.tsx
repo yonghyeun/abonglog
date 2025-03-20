@@ -8,6 +8,9 @@ interface ArticlePageProps {
   params: Promise<{ articleId: string }>;
 }
 
+export const dynamic = "force-static";
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const supabase = createBrowserSupabase();
 
@@ -18,12 +21,12 @@ export async function generateStaticParams() {
 
   return ids ? ids.map(({ id }) => ({ articleId: String(id) })) : [];
 }
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   const { articleId } = await params;
   const articleData = await getArticleById(articleId, "published");
+
+  console.log("fucking im rerener");
 
   return (
     <ArticleSlot
