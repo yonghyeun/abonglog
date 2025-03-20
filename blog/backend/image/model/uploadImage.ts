@@ -12,7 +12,7 @@ export const uploadImage = async (
 
 type UploadMultipleImages = (
   images: { path: string; image: File }[],
-  stroageName: string
+  storageName: string
 ) => Promise<Awaited<ReturnType<typeof uploadImage>>[]>;
 
 export const uploadMultipleImages: UploadMultipleImages = (
