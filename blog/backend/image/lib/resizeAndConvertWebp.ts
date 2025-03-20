@@ -1,17 +1,19 @@
 import sharp from "sharp";
 
 type ResizeAndConvertToWebp = (
-  imageBuffer: ArrayBuffer,
+  file: Blob,
   targetWidth: number,
   quality?: number
 ) => Promise<Buffer<ArrayBufferLike>>;
 
 export const resizeAndConvertToWebp: ResizeAndConvertToWebp = async (
-  imageBuffer,
+  file,
   targetWidth,
   quality = 80
 ) => {
-  return sharp(imageBuffer)
+  const arrayBuffer = await file.arrayBuffer();
+
+  return sharp(arrayBuffer)
     .resize(targetWidth, null, {
       fit: "inside",
       withoutEnlargement: true

@@ -51,10 +51,8 @@ export const GET = async (
     );
   }
 
-  const imageBuffer = await imageData.arrayBuffer();
-
   const resizedImage = await resizeAndConvertToWebp(
-    imageBuffer,
+    imageData,
     parseInt(width, 10) || BASE_IMAGE_WIDTH,
     100
   );
