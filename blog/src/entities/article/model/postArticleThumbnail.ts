@@ -1,8 +1,6 @@
 import { ARTICLE_ENDPOINT } from "../config";
 import { useMutation } from "@tanstack/react-query";
 
-import { compressImage } from "@/entities/image/lib";
-
 export interface PostArticleThumbnailRequest {
   file: File;
   articleId: string;
@@ -19,12 +17,8 @@ const postArticleThumbnail = () => {
     file,
     articleId
   }: PostArticleThumbnailRequest) => {
-    const compressedImage = await compressImage(file, {
-      quantity: 2 ** 15
-    });
-
     const formData = new FormData();
-    formData.append("image", compressedImage);
+    formData.append("image", file);
     formData.append("articleId", articleId);
 
     const response = await fetch(ARTICLE_ENDPOINT.POST_ARTICLE_THUMBNAIL(), {
