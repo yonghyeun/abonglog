@@ -2,7 +2,7 @@ import { ARTICLE_QUERY_KEY } from "./articleQueryKey";
 import { extractTagName } from "./utils";
 import { useQuery } from "@tanstack/react-query";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 import { snakeToCamel } from "@/shared/util";
 
 const SELECT_POPULAR_ARTICLE_FIELDS = `

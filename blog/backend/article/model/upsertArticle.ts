@@ -2,7 +2,7 @@ import { camelToSnake } from "@backend/shared/lib";
 
 import type { PostNewArticleRequest } from "@/entities/article/model";
 
-import { createServerSupabase } from "@/shared/model";
+import { createServerSupabase } from "@/shared/lib";
 
 export const upsertArticle = async (
   newArticle: Omit<PostNewArticleRequest, "tags">

@@ -15,7 +15,7 @@ import type {
   PostNewArticleResponse
 } from "@/entities/article/model";
 
-import { createServerSupabase } from "@/shared/model";
+import { createServerSupabase } from "@/shared/lib";
 
 const upsertNewArticle = (
   newArticle: Omit<PostNewArticleRequest, "tags">,

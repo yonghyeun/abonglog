@@ -3,7 +3,7 @@ import { ARTICLE_QUERY_KEY, type ArticleStatus } from "./articleQueryKey";
 import { extractTagName } from "./utils";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 import { snakeToCamel } from "@/shared/util";
 
 const SELECT_ARTICLE_LIST_FIELDS = `

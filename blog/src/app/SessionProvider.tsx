@@ -1,7 +1,7 @@
 import { User } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 import { SessionContext } from "@/shared/model";
 
 export const SessionProvider: React.FC<React.PropsWithChildren> = ({

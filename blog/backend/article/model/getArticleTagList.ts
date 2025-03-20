@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/shared/model";
+import { createServerSupabase } from "@/shared/lib";
 
 export const getArticleTagList = async (articleId: number) => {
   const supabase = await createServerSupabase();

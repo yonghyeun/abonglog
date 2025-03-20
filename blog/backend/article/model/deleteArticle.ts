@@ -1,15 +1,15 @@
 import { deleteImages, getImageList } from "@backend/image/model";
 
-import { type ServerSupabase, createServerSupabase } from "@/shared/model";
+import { type ServerSupabase, createServerSupabase } from "@/shared/lib";
 
 const deleteThumbnail = async (articleId: string) => {
-  const { data: thumbnailList } = await getImageList(
+  const { data: thumbnailList, error: getImageListError } = await getImageList(
     "article_thumbnail",
     `thumbnails/${articleId}`
   );
 
   if (!thumbnailList || thumbnailList.length === 0) {
-    return { error: null };
+    return { error: getImageListError };
   }
 
   return deleteImages(
@@ -53,7 +53,10 @@ export const deleteArticle = async (articleId: string) => {
     deleteArticleTags(articleId, supabase)
   ]);
 
-  const error = response.map((res) => res.error).find((error) => !!error);
+  const error = response
+    .filter((res) => !!res)
+    .map((res) => res.error)
+    .find((error) => !!error);
 
   return error;
 };

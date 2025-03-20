@@ -1,7 +1,7 @@
 import { type LinkProps, default as _Link } from "next/link";
 import React, { FC } from "react";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 import { Photo } from "@/shared/ui/Photo";
 
 const Heading1: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({

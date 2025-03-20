@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 
 export const useLogoutAction = () => {
   const supabase = createBrowserSupabase();

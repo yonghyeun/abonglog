@@ -2,7 +2,7 @@ import { ArticleSlot } from "@/slots/[article]/ui";
 
 import { getArticleById } from "@/entities/article/model";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 
 interface ArticlePageProps {
   params: Promise<{ articleId: string }>;

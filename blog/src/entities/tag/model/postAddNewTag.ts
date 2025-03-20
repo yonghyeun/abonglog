@@ -1,7 +1,7 @@
 import { TAG_QUERY_KEY } from "./tagQueryKey";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 
 interface PostAddNewTagRequest {
   name: string;

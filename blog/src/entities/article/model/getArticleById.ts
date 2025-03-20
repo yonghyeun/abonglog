@@ -1,7 +1,7 @@
 import { parsingHeading, rehypeMarkdown } from "../lib";
 import { extractTagName } from "./utils";
 
-import { createBrowserSupabase } from "@/shared/model";
+import { createBrowserSupabase } from "@/shared/lib";
 import { snakeToCamel } from "@/shared/util";
 
 const ARTICLE_SELECT_FIELDS = `

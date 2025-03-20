@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/shared/model";
+import { createServerSupabase } from "@/shared/lib";
 
 export const uploadImage = async (
   storageName: string,
