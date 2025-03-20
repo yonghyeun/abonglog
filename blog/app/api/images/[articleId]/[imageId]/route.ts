@@ -1,8 +1,7 @@
 import { resizeAndConvertToWebp } from "@backend/image/lib";
+import { downloadImage } from "@backend/image/model";
 import { createErrorResponse } from "@backend/shared/lib";
 import { NextRequest, NextResponse } from "next/server";
-
-import { createServerSupabase } from "@/shared/model";
 
 const STORAGE_NAME = "article_image";
 const BASE_IMAGE_WIDTH = 1000;
@@ -23,16 +22,15 @@ export const GET = async (
 ) => {
   const { articleId, imageId } = await params;
 
-  const supabase = await createServerSupabase();
-
   const url = new URL(req.url);
   const width = new URLSearchParams(url.search).get("width") || "1000";
 
   const storagePath = getStoragePath(articleId, imageId);
 
-  const { data: imageData, error } = await supabase.storage
-    .from(STORAGE_NAME)
-    .download(storagePath);
+  const { data: imageData, error } = await downloadImage(
+    STORAGE_NAME,
+    storagePath
+  );
 
   if (error) {
     return createErrorResponse(error);
