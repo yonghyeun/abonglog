@@ -1,6 +1,7 @@
 import { AdminArticleHeader } from "./AdminArticleHeader";
 import { ProgressBar } from "./ProgressBar";
 import type { ArticlePageProps } from "./type";
+import Image from "next/image";
 
 import { createNestedHeadings } from "@/features/article/lib/createNestedHeadings";
 import { ArticleSidebar } from "@/features/article/ui";
@@ -9,7 +10,6 @@ import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
-import { Photo } from "@/shared/ui/Photo";
 
 export const ArticleSlot: React.FC<ArticlePageProps> = async ({
   articleData,
@@ -32,13 +32,13 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
       <header>
         {/* 썸네일 이미지 */}
         {thumbnailUrl ? (
-          <Photo
+          <Image
             src={thumbnailUrl}
             alt={`${title} 의 썸네일`}
             className="h-96 w-full object-contain"
-            srcSet={`${thumbnailUrl}?width=500 500w, ${thumbnailUrl}?width=800 800w, ${thumbnailUrl}?width=1000 1000w`}
-            sizes="(max-width: 500px) 100vw, (max-width: 800px) 800px, 1000px"
-            loading="eager"
+            width={1000}
+            height={500}
+            priority={true}
           />
         ) : (
           <div className="h-96 w-full bg-gray-200" />
