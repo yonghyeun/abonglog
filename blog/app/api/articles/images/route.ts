@@ -10,7 +10,7 @@ import type { PostArticleImageResponse } from "@/entities/article/model";
 
 import { SUPABASE_STORAGE_URL } from "@/shared/config";
 
-const MAX_IMAGE_WIDTH = 1200;
+const MAX_IMAGE_WIDTH = 3840;
 
 const ARTICLE_IMAGE_STORAGE_NAME = "article_image";
 const IMAGE_PATH = `${SUPABASE_STORAGE_URL}/public/${ARTICLE_IMAGE_STORAGE_NAME}`;
