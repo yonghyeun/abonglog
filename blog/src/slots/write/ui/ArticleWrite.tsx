@@ -10,7 +10,7 @@ import { SeriesSelectToggle } from "./SeriesSelectToggle";
 import { TagSelectToggle } from "./TagSelectToggle";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useCallback, useContext, useEffect, useRef } from "react";
 
 import { ArticlePreviewCard } from "@/widgets/article/ui";
 
@@ -388,11 +388,10 @@ const MarkdownPreview = () => {
 };
 
 const TempSaveButton = () => {
-  const router = useRouter();
   const { mutate: addNewArticle } = usePostNewArticle();
   const store = useContext(ArticleWriteStoreContext)!;
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     const {
       title,
       content,
@@ -418,11 +417,16 @@ const TempSaveButton = () => {
       {
         onSuccess: (data) => {
           alert(data.message);
-          router.push("/temp");
         }
       }
     );
-  };
+  }, [addNewArticle, store]);
+
+  useEffect(() => {
+    const interval = setInterval(handleSave, 1000 * 60 * 5);
+
+    return () => clearInterval(interval);
+  }, [handleSave]);
 
   return (
     <Button variant="outlined" size="md" onClick={handleSave}>
