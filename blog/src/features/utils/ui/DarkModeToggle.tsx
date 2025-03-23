@@ -4,11 +4,15 @@ import { useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 
 export const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    () =>
+      localStorage.getItem("abonglog-theme") === "dark" ||
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle("dark");
+    setIsDarkMode(!isDarkMode);
     localStorage.setItem("abonglog-theme", isDarkMode ? "light" : "dark");
   };
 
