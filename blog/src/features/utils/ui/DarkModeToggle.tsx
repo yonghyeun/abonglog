@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 
 export const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(
-    () =>
-      localStorage.getItem("abonglog-theme") === "dark" ||
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const localStorageSavedTheme = localStorage.getItem("abonglog-theme");
+    const userPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    const isDarkMode = localStorageSavedTheme === "dark" || userPrefersDark;
+    setIsDarkMode(isDarkMode);
+  }, []);
 
   const toggleDarkMode = () => {
     document.documentElement.classList.toggle("dark");
