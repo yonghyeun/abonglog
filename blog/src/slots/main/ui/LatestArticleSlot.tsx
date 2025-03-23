@@ -78,6 +78,7 @@ export const LatestArticleSlot = () => {
             className="h-full w-full rounded-lg object-cover"
             priority={true}
             layout="fill"
+            quality={100}
           />
         ) : (
           // TODO 기본 이미지 생성하기

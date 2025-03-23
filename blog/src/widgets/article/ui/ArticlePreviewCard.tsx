@@ -1,10 +1,10 @@
+import Image from "next/image";
 import React from "react";
 
 import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
-import { Photo } from "@/shared/ui/Photo";
 
 interface ArticlePreviewCardProps {
   thumbnailUrl: string | null;
@@ -27,12 +27,14 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
     <section className="transition-bg flex h-full flex-col justify-between rounded-lg border shadow-md hover:bg-secondary hover:shadow-lg">
       {/* 이미지 컴포넌트 */}
       {thumbnailUrl ? (
-        <Photo
+        <Image
+          src={thumbnailUrl}
           alt={`${title}의 썸네일 이미지`}
           className="aspect-video w-full rounded-t-lg object-cover"
-          src={thumbnailUrl}
-          srcSet={`${thumbnailUrl}?width=300 300w, ${thumbnailUrl}?width=600 600w`}
-          sizes="(max-width: 600px) 100vw, 600px"
+          width={300}
+          height={169}
+          sizes="(max-width: 500px) 300px, 600px"
+          quality={100}
         />
       ) : (
         <div className="aspect-video w-full rounded-t-lg bg-gray-200" />
