@@ -77,7 +77,7 @@ export const LatestArticleSlot = () => {
             alt={`${title} 의 썸네일 이미지`}
             className="h-full w-full rounded-lg object-cover"
             priority={true}
-            layout="fill"
+            fill
             quality={100}
           />
         ) : (
