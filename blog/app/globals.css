@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "VictorMono";
+  src: url("/assets/fonts/VictorMono-Regular.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --white: #ffffff;
   --secondary-white: #f0f0f0;
@@ -208,6 +216,7 @@ p {
   background-color: #212121;
   font-style: normal;
   font-size: 1.1rem;
+  font-family: "VictorMono", transparent;
 }
 
 .pre-block > code:before {
