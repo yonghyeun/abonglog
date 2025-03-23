@@ -3,6 +3,8 @@ import "./globals.css";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
 
+import { DarkModeInitializeScript } from "@/features/utils/ui";
+
 import { GithubIcon, HumanIcon } from "@/shared/config";
 
 interface RootLayoutProps {
@@ -12,8 +14,9 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   return (
-    <html>
+    <html suppressHydrationWarning>
       <body className="flex min-h-screen flex-col bg-primary">
+        <DarkModeInitializeScript />
         <ServiceProvider>
           <Header />
           <main className="flex flex-grow flex-col">
