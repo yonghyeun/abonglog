@@ -29,7 +29,7 @@ interface PhotoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   priority?: boolean;
 }
 
-export const Photo: React.FC<PhotoProps> = ({
+export const CustomImage: React.FC<PhotoProps> = ({
   src,
   alt,
   sizes,

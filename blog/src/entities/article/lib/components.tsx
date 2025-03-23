@@ -2,7 +2,7 @@ import { type LinkProps, default as _Link } from "next/link";
 import React, { FC } from "react";
 
 import { createBrowserSupabase } from "@/shared/lib";
-import { Photo } from "@/shared/ui/Photo";
+import { CustomImage } from "@/shared/ui/CustomImage";
 
 const Heading1: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   children,
@@ -200,7 +200,7 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
   }
 
   return (
-    <Photo
+    <CustomImage
       src={src}
       alt={alt}
       sizes="(max-width: 500px) 100vw, (max-width: 800px) 800px, 1000px"
