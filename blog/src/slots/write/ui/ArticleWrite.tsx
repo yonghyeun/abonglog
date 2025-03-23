@@ -281,10 +281,6 @@ const MarkdownEditor = () => {
         textArea.selectionEnd = selectionStart + TAB_SIZE;
       }, 0);
     }
-
-    // TODO 리팩토링 후 엔터처리 하기
-    if (event.key === "Enter") {
-    }
   };
 
   const handleImagePaste = async (

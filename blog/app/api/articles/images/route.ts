@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
   );
 
   const storagePath = resizedImages.map((image) =>
-    getImageStoragePath("images", articleId, image.type.split(".")[1])
+    getImageStoragePath("images", articleId, image.type.split("/")[1])
   );
 
   const response = await uploadMultipleImages(
