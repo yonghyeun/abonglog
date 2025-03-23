@@ -7,26 +7,19 @@ export const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    const savedMode = localStorage.getItem("abonglog-theme");
-    if (savedMode) {
-      setIsDarkMode(savedMode === "dark");
-      if (savedMode === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }
+    const localStorageSavedTheme = localStorage.getItem("abonglog-theme");
+    const userPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    const isDarkMode = localStorageSavedTheme === "dark" || userPrefersDark;
+    setIsDarkMode(isDarkMode);
   }, []);
 
   const toggleDarkMode = () => {
-    const newMode = isDarkMode ? "light" : "dark";
+    document.documentElement.classList.toggle("dark");
     setIsDarkMode(!isDarkMode);
-    if (newMode === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("abonglog-theme", newMode);
+    localStorage.setItem("abonglog-theme", isDarkMode ? "light" : "dark");
   };
 
   return (
