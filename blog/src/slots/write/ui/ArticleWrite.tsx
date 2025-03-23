@@ -388,7 +388,6 @@ const MarkdownPreview = () => {
 };
 
 const TempSaveButton = () => {
-  const router = useRouter();
   const { mutate: addNewArticle } = usePostNewArticle();
   const store = useContext(ArticleWriteStoreContext)!;
 
@@ -418,7 +417,6 @@ const TempSaveButton = () => {
       {
         onSuccess: (data) => {
           alert(data.message);
-          router.push("/temp");
         }
       }
     );
