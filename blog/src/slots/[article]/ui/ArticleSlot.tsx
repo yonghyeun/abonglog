@@ -35,7 +35,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
           <Image
             src={thumbnailUrl}
             alt={`${title} 의 썸네일`}
-            className="h-96 w-full object-contain"
+            className="h-96 w-full object-cover"
             width={1080}
             height={500}
             priority={true}
