@@ -2,7 +2,11 @@ import Head from "next/head";
 import React from "react";
 import ReactDOM from "react-dom";
 
-const PhotoPreLoad = (srcSet: string, sizes: string, imageType: string) => {
+const CustomImagePreload = (
+  srcSet: string,
+  sizes: string,
+  imageType: string
+) => {
   if (ReactDOM.preload) {
     ReactDOM.preload(srcSet, {
       as: "image",
@@ -29,7 +33,7 @@ interface PhotoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   priority?: boolean;
 }
 
-export const Photo: React.FC<PhotoProps> = ({
+export const CustomImage: React.FC<PhotoProps> = ({
   src,
   alt,
   sizes,
@@ -57,7 +61,7 @@ export const Photo: React.FC<PhotoProps> = ({
         decoding="async"
         {...props}
       />
-      {priority && PhotoPreLoad(srcSet, sizes, type)}
+      {priority && CustomImagePreload(srcSet, sizes, type)}
     </>
   );
 };
