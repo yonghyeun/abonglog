@@ -1,15 +1,9 @@
 import { Header } from "./Header";
 import "./globals.css";
-import { Noto_Sans_KR } from "next/font/google";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
 
 import { GithubIcon, HumanIcon } from "@/shared/config";
-
-const notoSans = Noto_Sans_KR({
-  display: "swap",
-  subsets: ["latin"]
-});
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -18,7 +12,7 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   return (
-    <html className={notoSans.className}>
+    <html>
       <body className="flex min-h-screen flex-col bg-primary">
         <ServiceProvider>
           <Header />
