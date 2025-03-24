@@ -5,7 +5,6 @@ import Image from "next/image";
 
 import { createNestedHeadings } from "@/features/article/lib/createNestedHeadings";
 import { ArticleSidebar } from "@/features/article/ui";
-import { DarkModeToggle } from "@/features/utils/ui";
 
 import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
@@ -81,7 +80,6 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
               articleId={articleId}
               headings={createNestedHeadings(headings)}
             />
-            <DarkModeToggle />
           </div>
         </aside>
       </section>
