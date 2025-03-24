@@ -75,7 +75,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
         <article className="w-full pb-32 lg:flex-grow">{html}</article>
         {/* 사이드바 */}
         <aside className="relative hidden text-gray-400 xl:block">
-          <div className="sticky top-32">
+          <div className="sticky top-32 flex flex-col items-end gap-2">
             <ArticleSidebar
               articleId={articleId}
               headings={createNestedHeadings(headings)}
