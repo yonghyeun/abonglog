@@ -96,6 +96,7 @@ p {
   border-bottom: 1px solid var(--text-quaternary);
   padding-bottom: 0.5rem;
   color: var(--text-primary);
+  width: fit-content;
 }
 
 .heading-1 {
@@ -144,11 +145,15 @@ p {
 
 .blockquote {
   border-left: 4px solid var(--text-tertiary);
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  padding: 1rem 0.5rem;
   margin: 1rem 0;
   font-style: italic;
   background-color: var(--bg-secondary);
   border-radius: 8px;
+}
+
+.blockquote p {
+  margin: 0;
 }
 
 .unordered-list,
@@ -157,6 +162,7 @@ p {
   margin: 1rem 0;
   color: var(--text-primary);
   border-left: 1px solid var(--text-quaternary);
+  font-size: 1.2rem;
 }
 
 .unordered-list {
