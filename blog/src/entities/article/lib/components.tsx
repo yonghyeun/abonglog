@@ -171,6 +171,8 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
+  const randomImageId = Math.floor(Math.random() * 100000);
+
   if (!src.startsWith(SUPABASE_STORAGE_URL)) {
     return (
       <span className="flex flex-col">
@@ -182,11 +184,11 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
           loading="lazy"
           decoding="async"
           className="mx-auto w-fit min-w-[50%] rounded-lg"
-          aria-describedby={`caption-${alt}`}
+          aria-describedby={`caption-${randomImageId}`}
         />
         <span
           className="block text-center text-secondary"
-          id={`caption-${alt}`}
+          id={`caption-${randomImageId}`}
         >
           {alt}
         </span>
@@ -204,10 +206,13 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
         height={630}
         className="mx-auto w-fit min-w-[50%] rounded-lg"
         sizes="(max-width: 1200px) 100vw, 1200px"
-        aria-describedby={`caption-${alt}`}
+        aria-describedby={`caption-${randomImageId}`}
         quality={100}
       />
-      <span className="block text-center text-secondary" id={`caption-${alt}`}>
+      <span
+        className="block text-center text-secondary"
+        id={`caption-${randomImageId}`}
+      >
         {alt}
       </span>
     </span>
