@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import { createNestedHeadings } from "@/features/article/lib/createNestedHeadings";
 import { ArticleSidebar } from "@/features/article/ui";
+import { DarkModeToggle } from "@/features/utils/ui";
 
 import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
@@ -75,11 +76,12 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
         <article className="w-full pb-32 lg:flex-grow">{html}</article>
         {/* 사이드바 */}
         <aside className="relative hidden text-gray-400 xl:block">
-          <div className="sticky top-32">
+          <div className="sticky top-32 flex flex-col items-end gap-2">
             <ArticleSidebar
               articleId={articleId}
               headings={createNestedHeadings(headings)}
             />
+            <DarkModeToggle />
           </div>
         </aside>
       </section>
