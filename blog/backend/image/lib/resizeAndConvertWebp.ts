@@ -9,7 +9,7 @@ type ResizeAndConvertToWebp = (
 export const resizeAndConvertToWebp: ResizeAndConvertToWebp = async (
   file,
   targetWidth,
-  quality = 80
+  quality = 100
 ) => {
   const arrayBuffer = await file.arrayBuffer();
 
@@ -18,6 +18,9 @@ export const resizeAndConvertToWebp: ResizeAndConvertToWebp = async (
       fit: "inside",
       withoutEnlargement: true
     })
-    .webp({ quality })
+    .webp({
+      quality,
+      lossless: true
+    })
     .toBuffer();
 };

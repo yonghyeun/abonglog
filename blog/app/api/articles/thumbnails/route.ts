@@ -8,8 +8,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 import type { PostArticleThumbnailResponse } from "@/entities/article/model";
 
+import { SUPABASE_STORAGE_URL } from "@/shared/config";
+
 const ARTICLE_IMAGE_STORAGE_NAME = "article_thumbnail";
-const MAX_IMAGE_WIDTH = 1000;
+const IMAGE_PATH = `${SUPABASE_STORAGE_URL}/public/${ARTICLE_IMAGE_STORAGE_NAME}`;
+
+const MAX_IMAGE_WIDTH = 1600;
 
 export const POST = async (req: NextRequest) => {
   const form = await req.formData();
@@ -41,6 +45,6 @@ export const POST = async (req: NextRequest) => {
   return NextResponse.json<PostArticleThumbnailResponse>({
     code: 200,
     message: "이미지 업로드에 성공했습니다.",
-    data: `/api/${url}`
+    data: `${IMAGE_PATH}/${url}`
   });
 };
