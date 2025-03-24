@@ -1,11 +1,18 @@
 import { Header } from "./Header";
 import "./globals.css";
+import { IBM_Plex_Sans_KR } from "next/font/google";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
 
 import { DarkModeInitializeScript } from "@/features/utils/ui";
 
 import { GithubIcon, HumanIcon } from "@/shared/config";
+
+const IBMPlex = IBM_Plex_Sans_KR({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["500", "600", "700"]
+});
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -14,7 +21,7 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
   return (
-    <html suppressHydrationWarning>
+    <html suppressHydrationWarning className={IBMPlex.className}>
       <body className="flex min-h-screen flex-col bg-primary">
         <DarkModeInitializeScript />
         <ServiceProvider>
