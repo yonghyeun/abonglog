@@ -35,12 +35,12 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
           <HydrationBoundary state={sidebarState}>
             <Suspense fallback={null}>
               <Header />
+              <main className="flex flex-grow flex-col">
+                {modal}
+                {children}
+              </main>
             </Suspense>
           </HydrationBoundary>
-          <main className="flex flex-grow flex-col">
-            {modal}
-            {children}
-          </main>
           <Footer />
         </ServiceProvider>
       </body>

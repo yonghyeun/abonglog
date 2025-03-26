@@ -7,7 +7,6 @@ import { HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 import {
-  getArticleInfoPerSeries,
   getLatestArticle,
   getPopularArticleList
 } from "@/entities/article/model";
@@ -22,10 +21,8 @@ export async function generateStaticParams() {
 }
 
 const MainPage = async () => {
-  const mainPageState = await prefetchQueryInServer(
-    getArticleInfoPerSeries,
-    getLatestArticle,
-    () => getPopularArticleList("daily")
+  const mainPageState = await prefetchQueryInServer(getLatestArticle, () =>
+    getPopularArticleList("daily")
   );
 
   return (
