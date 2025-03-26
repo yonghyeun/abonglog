@@ -3,11 +3,17 @@
 import { useSidebar } from "../lib";
 import Link from "next/link";
 
-import { BackwardIcon, BooksIcon, LibraryIcon } from "@/shared/config";
+import { useGetArticleMetaListPerSeries } from "@/entities/article/model";
+import { AdminProfile } from "@/entities/user/ui";
+
+import { BackwardIcon, LibraryIcon } from "@/shared/config";
+import { useSession } from "@/shared/model";
 
 export const SideBar = () => {
   const { isOpen, sideBarRef, handleOpenSidebar, handleCloseSidebar } =
     useSidebar();
+  const { data } = useGetArticleMetaListPerSeries();
+  const user = useSession();
 
   return (
     <>
@@ -25,37 +31,76 @@ export const SideBar = () => {
 
       {/* 사이드바 컴포넌트 */}
       <aside
-        className={`absolute left-0 top-0 min-h-80 min-w-96 px-2 py-4 ${isOpen ? "" : "-translate-x-full"} z-50 bg-primary shadow-md transition-transform duration-300`}
+        className={`absolute left-0 top-0 flex max-h-screen min-h-80 max-w-[80%] flex-col justify-between gap-4 overflow-y-auto bg-primary px-4 pb-1 pt-4 ${isOpen ? "" : "-translate-x-full"} z-50 rounded-r-lg shadow-md transition-transform duration-300`}
         ref={sideBarRef}
       >
-        {/* 사이드바 헤더 */}
-        <div className="flex items-center justify-end">
-          <button
-            onClick={handleCloseSidebar}
-            aria-label="메뉴 닫기"
-            className="p-2 hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
-          >
-            <BackwardIcon size="24" />
-          </button>
+        <div>
+          {/* 사이드바 헤더 */}
+          <div className="mb-4 flex items-center justify-between">
+            <h1>abonglog</h1>
+            <button
+              onClick={handleCloseSidebar}
+              aria-label="메뉴 닫기"
+              className="p-2 text-primary hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
+            >
+              <BackwardIcon size="24" />
+            </button>
+          </div>
+          {/* 목차 */}
+          <nav className="text-primary">
+            <ul>
+              {Object.entries(data).map(
+                ([seriesName, articleMetaList], index) => (
+                  <li key={index} className="flex flex-col gap-1">
+                    <p
+                      key={index}
+                      className="flex w-fit items-center gap-2 text-2xl font-bold text-primary"
+                    >
+                      <LibraryIcon />
+                      {seriesName}
+                    </p>
+                    <ul className="flex flex-col gap-2 text-secondary">
+                      {articleMetaList.map(({ title, id }) => (
+                        <li key={id} className="ml-4 list-disc">
+                          <Link
+                            href={`/article/${id}`}
+                            className="hover:text-blue-500"
+                            onClick={handleCloseSidebar}
+                          >
+                            {title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )
+              )}
+            </ul>
+          </nav>
         </div>
-        {/* 목차 */}
-        <nav className="text-secondary">
-          <h3 className="mb-2 border-b">게시글 목록</h3>
-          <ul className="flex flex-col gap-2">
-            <li className="text-semibold flex items-center gap-2 hover:text-blue-500">
-              <BooksIcon />
-              <Link href="#" className="py-2">
-                전체 게시글 보기
-              </Link>
-            </li>
-            <li className="text-semibold flex items-center gap-2 hover:text-blue-500">
-              <LibraryIcon />
-              <Link href="#" className="py-2">
-                시리즈 목록 보기
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        {user && (
+          <div className="flex flex-col justify-between border-t-2 sm:flex-row">
+            <Link
+              href="/write"
+              className="text-md p-2 text-gray-400 hover:bg-secondary"
+            >
+              글 쓰기
+            </Link>
+            <Link
+              className="text-md p-2 text-gray-400 hover:bg-secondary"
+              href="/temp"
+            >
+              임시저장 게시글 목록
+            </Link>
+            <Link
+              className="flex items-end gap-2 p-2 hover:bg-secondary"
+              href="/auth"
+            >
+              <AdminProfile size="sm" />
+              <p className="text-xs text-gray-400">{user.email}</p>
+            </Link>
+          </div>
+        )}
       </aside>
     </>
   );
