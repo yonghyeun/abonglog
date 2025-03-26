@@ -40,6 +40,10 @@ export const dynamic = "force-static";
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
+  if (process.env.NODE_ENV === "development") {
+    return [];
+  }
+
   const seriesList = await getSeriesList()
     .queryFn()
     .then((data) => data.map(({ name }) => name));
