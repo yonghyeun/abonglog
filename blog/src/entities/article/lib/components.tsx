@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { type LinkProps, default as _Link } from "next/link";
 import React, { FC } from "react";
 
 import { SUPABASE_STORAGE_URL } from "@/shared/config";
@@ -60,13 +59,12 @@ const Paragraph: FC<React.HTMLAttributes<HTMLParagraphElement>> = ({
     {children}
   </p>
 );
-const Link: FC<LinkProps & { children?: React.ReactNode }> = ({
-  children,
-  ...props
-}) => (
-  <_Link {...props} className="link">
+const Link: FC<
+  React.HTMLAttributes<HTMLAnchorElement> & { children?: React.ReactNode }
+> = ({ children, ...props }) => (
+  <a {...props} className="link" target="_blank" rel="noopener noreferrer">
     {children}
-  </_Link>
+  </a>
 );
 const Blockquote: FC<React.BlockquoteHTMLAttributes<HTMLQuoteElement>> = ({
   children,

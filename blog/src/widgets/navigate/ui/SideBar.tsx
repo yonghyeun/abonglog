@@ -54,7 +54,7 @@ export const SideBar = () => {
                   <li key={index} className="flex flex-col gap-1">
                     <p
                       key={index}
-                      className="flex w-fit items-center gap-2 text-2xl text-primary"
+                      className="flex w-fit items-center gap-2 text-xl text-primary"
                     >
                       <LibraryIcon />
                       {seriesName}
