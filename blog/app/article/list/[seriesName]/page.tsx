@@ -40,6 +40,10 @@ export const dynamic = "force-static";
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
+  if (process.env.NODE_ENV === "development") {
+    return [];
+  }
+
   const seriesList = await getSeriesList()
     .queryFn()
     .then((data) => data.map(({ name }) => name));
@@ -49,19 +53,6 @@ export async function generateStaticParams() {
 
 const ArticleListPage: React.FC<ArticleListPageProps> = async ({ params }) => {
   const seriesName = decodeURIComponent((await params).seriesName || "all");
-
-  // // TODO 에러바운더리 도입하면 해당 쿼리문 제거하기
-  // const numOfSeriesArray = await getArticleInfoPerSeries().queryFn();
-
-  // const searchedSeries = numOfSeriesArray.find(
-  //   (data) => data.seriesName === seriesName
-  // );
-
-  // if (!searchedSeries && seriesName) {
-  //   // 찾는 시리즈가 없는 경우 404
-  //   // TODO errorboundary 를 통해 404 페이지로 이동시키기
-  //   return <NotFound series={seriesName} />;
-  // }
 
   const articleListState = await getArticleListState(seriesName);
 

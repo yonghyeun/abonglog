@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 
-import { useGetArticleInfoPerSeries } from "@/entities/article/model";
+import { useGetArticleMetaListPerSeries } from "@/entities/article/model";
 import { SeriesItem } from "@/entities/series/ui";
 
 import { Grid } from "@/shared/ui/Grid";
 
 export const SeriesListSlot = () => {
-  const { data: articleInfoList } = useGetArticleInfoPerSeries();
+  const { data: articleMetaInfoList } = useGetArticleMetaListPerSeries();
 
   return (
     <>
@@ -23,17 +23,19 @@ export const SeriesListSlot = () => {
       </div>
 
       <Grid>
-        {articleInfoList.map((data) => (
-          <Grid.Item key={data.seriesName}>
-            <Link
-              href={{
-                pathname: `/article/list/${data.seriesName}`
-              }}
-            >
-              <SeriesItem {...data} />
-            </Link>
-          </Grid.Item>
-        ))}
+        {Object.entries(articleMetaInfoList).map(
+          ([seriesName, articleMetaList], index) => (
+            <Grid.Item key={index}>
+              <Link href={`/article/list/${seriesName}`}>
+                <SeriesItem
+                  seriesName={seriesName}
+                  numOfArticles={articleMetaList.length}
+                  updatedAt={articleMetaList[0].updatedAt}
+                />
+              </Link>
+            </Grid.Item>
+          )
+        )}
       </Grid>
     </>
   );

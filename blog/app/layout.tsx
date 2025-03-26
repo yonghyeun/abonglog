@@ -1,12 +1,17 @@
 import { Header } from "./Header";
 import "./globals.css";
+import { HydrationBoundary } from "@tanstack/react-query";
 import { IBM_Plex_Sans_KR } from "next/font/google";
+import { Suspense } from "react";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
 
 import { DarkModeInitializeScript } from "@/features/utils/ui";
 
+import { getArticleMetaListPerSeries } from "@/entities/article/model";
+
 import { GithubIcon, HumanIcon } from "@/shared/config";
+import { prefetchQueryInServer } from "@/shared/model";
 
 const IBMPlex = IBM_Plex_Sans_KR({
   subsets: ["latin"],
@@ -19,17 +24,23 @@ interface RootLayoutProps {
   modal: React.ReactNode;
 }
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children, modal }) => {
+const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
+  const sidebarState = await prefetchQueryInServer(getArticleMetaListPerSeries);
+
   return (
     <html suppressHydrationWarning className={IBMPlex.className}>
       <body className="flex min-h-screen flex-col bg-primary">
         <DarkModeInitializeScript />
         <ServiceProvider>
-          <Header />
-          <main className="flex flex-grow flex-col">
-            {modal}
-            {children}
-          </main>
+          <HydrationBoundary state={sidebarState}>
+            <Suspense fallback={null}>
+              <Header />
+              <main className="flex flex-grow flex-col">
+                {modal}
+                {children}
+              </main>
+            </Suspense>
+          </HydrationBoundary>
           <Footer />
         </ServiceProvider>
       </body>
