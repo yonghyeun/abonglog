@@ -48,13 +48,13 @@ export const SideBar = () => {
           </div>
           {/* 목차 */}
           <nav className="text-primary">
-            <ul>
+            <ul className="flex flex-col gap-4">
               {Object.entries(data).map(
                 ([seriesName, articleMetaList], index) => (
                   <li key={index} className="flex flex-col gap-1">
                     <p
                       key={index}
-                      className="flex w-fit items-center gap-2 text-2xl font-bold text-primary"
+                      className="flex w-fit items-center gap-2 text-2xl text-primary"
                     >
                       <LibraryIcon />
                       {seriesName}
