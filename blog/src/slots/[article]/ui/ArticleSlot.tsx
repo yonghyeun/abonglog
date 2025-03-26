@@ -72,10 +72,12 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
 
       <section className="media-padding-x flex min-h-screen gap-2">
         {/* 본문 */}
-        <article className="w-full pb-32 lg:flex-grow">{html}</article>
+        <article className="w-full pb-32 lg:flex-grow xl:max-w-[75%]">
+          {html}
+        </article>
         {/* 사이드바 */}
         <aside className="relative hidden text-gray-400 xl:block">
-          <div className="sticky top-32 flex flex-col items-end gap-2">
+          <div className="sticky top-32 flex max-h-[80vh] flex-col items-end gap-2 overflow-y-auto">
             <ArticleSidebar
               articleId={articleId}
               headings={createNestedHeadings(headings)}
