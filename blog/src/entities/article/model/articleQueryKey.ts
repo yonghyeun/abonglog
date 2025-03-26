@@ -32,5 +32,7 @@ export const ARTICLE_QUERY_KEY = {
     [...ARTICLE_QUERY_KEY.popularDefault(), period] as const,
 
   infoPerSeries: () =>
-    [...ARTICLE_QUERY_KEY.default("published"), "perSeries"] as const
+    [...ARTICLE_QUERY_KEY.default("published"), "perSeries"] as const,
+  metaListPerSeries: () =>
+    [...ARTICLE_QUERY_KEY.default("published"), "metaListPerSeries"] as const
 };
