@@ -15,7 +15,10 @@ export const DarkModeToggle = () => {
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
     document.documentElement.classList.toggle("dark");
-    localStorage.setItem("abonglog-theme", isDarkMode ? "light" : "dark");
+
+    // 컨텍스트를 유지 할 수 있도록 안젆게 nextIsDarkMode를 사용한다.
+    const nextIsDarkMode = !isDarkMode;
+    localStorage.setItem("abonglog-theme", nextIsDarkMode ? "dark" : "light");
   };
 
   return (
