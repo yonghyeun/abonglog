@@ -1,17 +1,17 @@
 export const findImageUrl = (markdown: string) => {
-  // ![]() 로 시작하는 모든 문구 찾기
-  const regExp = /!\[.*?\]\(.*?\)/g;
-  const matches = markdown.match(regExp);
+  // 줄바꿈과 공백을 포함하여 매칭하도록 수정
+  const regExp = /!\[(.*?)\]\(([\s\S]*?)\)/g;
+  const matches = Array.from(markdown.matchAll(regExp));
 
-  if (!matches) {
+  if (!matches.length) {
     return [];
   }
 
-  // [] 안에 있는 alt, () 안에 있는 url 추출
   return matches
-    .map((text) => ({
-      src: (text.match(/\((.*?)\)/) || [])[1]!,
-      alt: (text.match(/\[(.*?)\]/) || [])[1]!
+    .map((match) => ({
+      alt: match[1].trim(),
+      // URL에서 줄바꿈과 공백 제거
+      src: match[2].replace(/[\n\r\s]+/g, "")
     }))
     .reduce(
       (result, image) => {
