@@ -7,18 +7,14 @@ export const DarkModeToggle = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    const localStorageSavedTheme = localStorage.getItem("abonglog-theme");
-    const userPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-
-    const isDarkMode = localStorageSavedTheme === "dark" || userPrefersDark;
-    setIsDarkMode(isDarkMode);
+    // 다크모드 여부는 html이 파싱되는 동안 DarkModeInitializeScript에서 설정되므로
+    // document.classList에 dark 클래스가 있는지 확인하면 된다.
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
   }, []);
 
   const toggleDarkMode = () => {
+    setIsDarkMode((prev) => !prev);
     document.documentElement.classList.toggle("dark");
-    setIsDarkMode(!isDarkMode);
     localStorage.setItem("abonglog-theme", isDarkMode ? "light" : "dark");
   };
 
