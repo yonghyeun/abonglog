@@ -255,17 +255,17 @@ pre[data-language] code[data-language] {
 
 /* add, remove , pointing 마다 배경색 설정 */
 pre[data-language] code[data-language] span[data-highlighted-line-id="add"] {
-  background-color: rgba(129, 199, 132, 0.4);
+  background-color: rgba(129, 199, 132, 0.3);
 }
 
 pre[data-language] code[data-language] span[data-highlighted-line-id="remove"] {
-  background-color: rgba(229, 115, 115, 0.4);
+  background-color: rgba(229, 115, 115, 0.3);
 }
 
 pre[data-language]
   code[data-language]
   span[data-highlighted-line-id="pointing"] {
-  background-color: rgba(79, 195, 247, 0.2);
+  background-color: rgba(79, 195, 247, 0.3);
 }
 
 pre[data-language] code[data-language] span[data-line] {
