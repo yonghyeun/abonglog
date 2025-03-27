@@ -35,6 +35,8 @@
     0 1px 3px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(255, 255, 255, 0.06);
 
   --selection-bg: #d3d3d3;
+
+  --code-background: #383a42;
 }
 .dark {
   --bg-primary: var(--bg-dark-primary);
@@ -224,7 +226,7 @@ p {
   border-radius: 0 0.5rem 0.5rem 0.5rem;
   padding: 0 2rem 1rem 1rem;
   overflow: auto;
-  background-color: #212121;
+  background-color: var(--code-background);
   font-style: normal;
   font-size: 1.1rem;
   font-family: "VictorMono", transparent;
@@ -251,6 +253,21 @@ pre[data-language] code[data-language] {
   display: grid; /* 그리드 레이아웃 사용 */
 }
 
+/* add, remove , pointing 마다 배경색 설정 */
+pre[data-language] code[data-language] span[data-highlighted-line-id="add"] {
+  background-color: rgba(129, 199, 132, 0.4);
+}
+
+pre[data-language] code[data-language] span[data-highlighted-line-id="remove"] {
+  background-color: rgba(229, 115, 115, 0.4);
+}
+
+pre[data-language]
+  code[data-language]
+  span[data-highlighted-line-id="pointing"] {
+  background-color: rgba(79, 195, 247, 0.2);
+}
+
 pre[data-language] code[data-language] span[data-line] {
   counter-increment: line-number; /* 라인 번호 카운터 증가 */
 }
@@ -273,7 +290,7 @@ figcaption[data-rehype-pretty-code-title] {
   font-size: 1rem;
   font-weight: bold;
   color: #ddd;
-  background-color: #212121;
+  background-color: var(--code-background);
   display: inline-block;
   padding: 0.5rem 2.5rem 0.5rem 1rem;
   border-radius: 1rem 1rem 0 0; /* 오른쪽 상단 모서리 반지름 증가 */
