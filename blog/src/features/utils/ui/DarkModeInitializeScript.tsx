@@ -4,6 +4,11 @@ export const DarkModeInitializeScript = () => {
       dangerouslySetInnerHTML={{
         __html: `
         const localStorageSavedTheme = localStorage.getItem("abonglog-theme");
+        
+        if (localStorageSavedTheme === 'light') {
+          return;
+        }
+        
         const userPrefersDark = window.matchMedia(
           "(prefers-color-scheme: dark)"
         ).matches;
