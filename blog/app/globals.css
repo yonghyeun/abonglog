@@ -238,7 +238,7 @@ p {
   text-align: right;
   width: 100%;
   display: block;
-  padding: 0.5rem 0;
+  padding: 0.5rem 0 0.2rem 0;
 }
 
 /* 라인 줄 간격 설정 */
@@ -292,7 +292,7 @@ figcaption[data-rehype-pretty-code-title] {
   color: #ddd;
   background-color: var(--code-background);
   display: inline-block;
-  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 1rem 1rem 0 0; /* 오른쪽 상단 모서리 반지름 증가 */
 }
 
