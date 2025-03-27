@@ -1,6 +1,8 @@
 import { findImageUrl } from "./findImageUrl";
 import { describe, it } from "@jest/globals";
 
+import { SUPABASE_STORAGE_URL } from "@/shared/config";
+
 describe("findImageUrl test", () => {
   it("이미지 문구가 없는 경우 findImageUrl 은 빈 배열을 반환한다.", () => {
     const text = `
@@ -40,5 +42,23 @@ describe("findImageUrl test", () => {
       { alt: "alt2_1", src: "https://image2.com" },
       { alt: "alt3_1", src: "https://image3.com" }
     ]);
+  });
+
+  it("줄바꿈이 되어있는 이미지 경로도 올바르게 인식한다.", () => {
+    const imageAlt = "alt";
+    const imageName = "1.png";
+    //  줄바꿈이 되어있는 imagePath
+    const imagePath = `${SUPABASE_STORAGE_URL}
+    /${imageName}
+    `;
+    const content = `![${imageAlt}](${imagePath})`;
+
+    const expected = [
+      {
+        alt: imageAlt,
+        src: `${SUPABASE_STORAGE_URL}/${imageName}`
+      }
+    ];
+    expect(findImageUrl(content)).toEqual(expected);
   });
 });
