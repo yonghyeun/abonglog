@@ -31,7 +31,7 @@ export const SideBar = () => {
 
       {/* 사이드바 컴포넌트 */}
       <aside
-        className={`absolute left-0 top-0 flex max-h-screen min-h-80 max-w-[80%] flex-col justify-between gap-4 overflow-y-auto bg-primary px-4 pb-1 pt-4 ${isOpen ? "" : "-translate-x-full"} z-50 rounded-r-lg shadow-md transition-transform duration-300`}
+        className={`absolute left-0 top-0 flex max-h-screen min-h-80 max-w-[80%] flex-col justify-between gap-4 overflow-y-auto bg-primary px-4 pb-1 pt-4 ${isOpen ? "" : "-translate-x-full"} z-50 rounded-r-lg transition-transform duration-300`}
         ref={sideBarRef}
       >
         <div>
