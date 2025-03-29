@@ -33,7 +33,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
           className="aspect-video w-full rounded-t-lg object-cover"
           width={300}
           height={169}
-          sizes="(max-width: 500px) 300px, 600px"
+          sizes="600px"
           quality={100}
         />
       ) : (

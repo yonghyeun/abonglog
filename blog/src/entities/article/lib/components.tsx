@@ -195,15 +195,16 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
   }
 
   return (
-    <span className="flex flex-col">
+    <span className="flex w-full flex-col">
       <Image
         src={src}
         alt={alt}
         {...props}
         width={1200}
-        height={630}
-        className="mx-auto w-fit min-w-[50%] rounded-lg"
-        sizes="(max-width: 1200px) 100vw, 1200px"
+        height={620}
+        className="mx-auto w-fit rounded-lg"
+        // 픽셀 밀도를 고려하여 원하는 이미지 크기 * 2 만큼의 sizes 고려
+        sizes="(max-width: 600px) 1200px , (max-width: 800px) 1600px , 2400px"
         aria-describedby={`caption-${randomImageId}`}
         quality={100}
       />

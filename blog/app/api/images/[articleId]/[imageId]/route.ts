@@ -1,10 +1,8 @@
-import { resizeAndConvertToWebp } from "@backend/image/lib";
 import { downloadImage } from "@backend/image/model";
 import { createErrorResponse } from "@backend/shared/lib";
 import { NextRequest, NextResponse } from "next/server";
 
 const STORAGE_NAME = "article_image";
-const BASE_IMAGE_WIDTH = 1000;
 const getStoragePath = (articleId: string, imageId: string) => {
   return `images/${articleId}/${imageId}`;
 };
@@ -36,25 +34,6 @@ export const GET = async (
     return createErrorResponse(error);
   }
 
-  const contentType = imageData.type;
-  if (contentType === "image/gif") {
-    return NextResponse.json(
-      {
-        code: 400,
-        message: "GIF 이미지는 리사이징할 수 없습니다."
-      },
-      {
-        status: 400
-      }
-    );
-  }
-
-  const resizedImage = await resizeAndConvertToWebp(
-    imageData,
-    parseInt(width, 10) || BASE_IMAGE_WIDTH,
-    100
-  );
-
   const cacheKey = `${articleId}-${imageId}-${width}`;
   const cacheHeaders = {
     "Cache-Control": "public, max-age=31536000, immutable",
@@ -66,7 +45,7 @@ export const GET = async (
     Vary: "Accept-Encoding"
   };
 
-  return new NextResponse(resizedImage, {
+  return new NextResponse(imageData, {
     status: 200,
     headers: cacheHeaders
   });
