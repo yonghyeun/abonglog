@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useGetArticleMetaListPerSeries } from "@/entities/article/model";
 import { AdminProfile } from "@/entities/user/ui";
 
-import { BackwardIcon, LibraryIcon } from "@/shared/config";
+import { BackwardIcon } from "@/shared/config";
 import { useSession } from "@/shared/model";
 
 export const SideBar = () => {
@@ -56,12 +56,11 @@ export const SideBar = () => {
                       key={index}
                       className="flex w-fit items-center gap-2 text-xl text-primary"
                     >
-                      <LibraryIcon />
                       {seriesName}
                     </p>
                     <ul className="flex flex-col gap-2 text-secondary">
                       {articleMetaList.map(({ title, id }) => (
-                        <li key={id} className="ml-4 list-disc">
+                        <li key={id} className="ml-8 list-disc">
                           <Link
                             href={`/article/${id}`}
                             className="hover:text-blue-500"
