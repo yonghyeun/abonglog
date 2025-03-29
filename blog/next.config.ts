@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    deviceSizes: [1200, 1600, 2400],
+    deviceSizes: [600, 1200, 1600, 2400],
     imageSizes: [],
     remotePatterns:
       process.env.NODE_ENV === "development"
