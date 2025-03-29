@@ -1,7 +1,7 @@
 import { Header } from "./Header";
 import "./globals.css";
 import { HydrationBoundary } from "@tanstack/react-query";
-import { IBM_Plex_Sans_KR } from "next/font/google";
+import { Gothic_A1 } from "next/font/google";
 import { Suspense } from "react";
 
 import { ServiceProvider } from "@/app/ServiceProvider";
@@ -13,10 +13,10 @@ import { getArticleMetaListPerSeries } from "@/entities/article/model";
 import { GithubIcon, HumanIcon } from "@/shared/config";
 import { prefetchQueryInServer } from "@/shared/model";
 
-const IBMPlex = IBM_Plex_Sans_KR({
+const GothicA1 = Gothic_A1({
   subsets: ["latin"],
   display: "swap",
-  weight: ["500", "600", "700"]
+  weight: ["400", "700"]
 });
 
 interface RootLayoutProps {
@@ -28,7 +28,7 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
   const sidebarState = await prefetchQueryInServer(getArticleMetaListPerSeries);
 
   return (
-    <html suppressHydrationWarning className={IBMPlex.className}>
+    <html suppressHydrationWarning className={GothicA1.className}>
       <body className="flex min-h-screen flex-col bg-primary">
         <DarkModeInitializeScript />
         <ServiceProvider>

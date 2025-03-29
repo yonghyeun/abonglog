@@ -84,6 +84,7 @@ h3 {
 
 p {
   margin-bottom: 0.5rem;
+  font-weight: 400;
 }
 
 /* 
@@ -160,7 +161,6 @@ p {
 
 .blockquote p {
   margin: 0;
-  font-size: 1rem;
 }
 
 .unordered-list,
@@ -287,6 +287,7 @@ figcaption[data-rehype-pretty-code-title] {
 }
 
 figcaption[data-rehype-pretty-code-title]::before {
-  content: "👨‍💻";
-  font-size: 1.5rem;
+  content: "🔴🟠🟢";
+  font-size: 1rem;
+  margin-right: 0.5rem;
 }
