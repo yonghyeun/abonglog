@@ -156,11 +156,11 @@ p {
   margin: 1rem 0;
   font-style: italic;
   background-color: var(--bg-secondary);
-  border-radius: 8px;
 }
 
 .blockquote p {
   margin: 0;
+  font-size: 1rem;
 }
 
 .unordered-list,
