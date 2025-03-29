@@ -200,10 +200,11 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
         src={src}
         alt={alt}
         {...props}
-        width={1200}
-        height={630}
+        width={2400}
+        height={1260}
         className="mx-auto w-fit min-w-[50%] rounded-lg"
-        sizes="(max-width: 1200px) 100vw, 1200px"
+        // 픽셀 밀도를 고려하여 원하는 이미지 크기 * 2 만큼의 sizes 고려
+        sizes="(max-width: 600px) 1200px , (max-width: 800px) 1600px , 2400px"
         aria-describedby={`caption-${randomImageId}`}
         quality={100}
       />
