@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useGetArticleMetaListPerSeries } from "@/entities/article/model";
 import { AdminProfile } from "@/entities/user/ui";
 
-import { BackwardIcon, LibraryIcon } from "@/shared/config";
+import { BackwardIcon } from "@/shared/config";
 import { useSession } from "@/shared/model";
 
 export const SideBar = () => {
@@ -31,7 +31,7 @@ export const SideBar = () => {
 
       {/* 사이드바 컴포넌트 */}
       <aside
-        className={`absolute left-0 top-0 flex max-h-screen min-h-80 max-w-[80%] flex-col justify-between gap-4 overflow-y-auto bg-primary px-4 pb-1 pt-4 ${isOpen ? "" : "-translate-x-full"} z-50 rounded-r-lg shadow-md transition-transform duration-300`}
+        className={`absolute left-0 top-0 flex max-h-screen min-h-80 max-w-[80%] flex-col justify-between gap-4 overflow-y-auto bg-primary px-4 pb-1 pt-4 ${isOpen ? "" : "-translate-x-full"} z-50 rounded-r-lg transition-transform duration-300`}
         ref={sideBarRef}
       >
         <div>
@@ -56,12 +56,11 @@ export const SideBar = () => {
                       key={index}
                       className="flex w-fit items-center gap-2 text-xl text-primary"
                     >
-                      <LibraryIcon />
                       {seriesName}
                     </p>
                     <ul className="flex flex-col gap-2 text-secondary">
                       {articleMetaList.map(({ title, id }) => (
-                        <li key={id} className="ml-4 list-disc">
+                        <li key={id} className="ml-8 list-disc">
                           <Link
                             href={`/article/${id}`}
                             className="hover:text-blue-500"
