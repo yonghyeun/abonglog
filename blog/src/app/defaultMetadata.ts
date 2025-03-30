@@ -30,6 +30,7 @@ export const defaultMetadata: Metadata = {
     title: "abonglog",
     description:
       "웹 개발과 관련된 내용을 포스팅하는 블로그입니다. 고양이 이름이 애봉이예요",
+    type: "website",
     locale: "ko_KR",
     countryName: "Korea",
     images: [
