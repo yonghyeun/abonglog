@@ -131,7 +131,8 @@ p {
 }
 
 .link {
-  color: #0070f3;
+  /* color 는 text-blue-500 */
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
   text-decoration: none;
   word-break: break-all;
 }
@@ -170,6 +171,7 @@ p {
   color: var(--text-primary);
   border-left: 1px solid var(--text-quaternary);
   font-size: 1.2rem;
+  line-height: 1.7;
 }
 
 .unordered-list {
