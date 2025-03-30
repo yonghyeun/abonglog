@@ -35,5 +35,5 @@ export const Profile: React.FC<ProfileProps> = ({
 export const AdminProfile: React.FC<Pick<ProfileProps, "size">> = ({
   size
 }) => {
-  return <Profile size={size} src="/images/profile.jpg" alt="프로필 이미지" />;
+  return <Profile size={size} src="/images/logo.svg" alt="프로필 이미지" />;
 };

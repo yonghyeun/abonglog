@@ -185,7 +185,7 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
           aria-describedby={`caption-${randomImageId}`}
         />
         <span
-          className="block text-center text-secondary"
+          className="my-1 block text-center text-base text-secondary"
           id={`caption-${randomImageId}`}
         >
           {alt}
@@ -202,14 +202,14 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
         {...props}
         width={1200}
         height={620}
-        className="mx-auto w-fit rounded-lg"
+        className="mx-auto w-fit rounded-lg text-base"
         // 픽셀 밀도를 고려하여 원하는 이미지 크기 * 2 만큼의 sizes 고려
         sizes="(max-width: 600px) 1200px , (max-width: 800px) 1600px , 2400px"
         aria-describedby={`caption-${randomImageId}`}
         quality={100}
       />
       <span
-        className="block text-center text-secondary"
+        className="my-1 block text-center text-base text-secondary"
         id={`caption-${randomImageId}`}
       >
         {alt}

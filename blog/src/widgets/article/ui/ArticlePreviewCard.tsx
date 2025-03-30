@@ -2,7 +2,6 @@ import Image from "next/image";
 import React from "react";
 
 import { TagChip } from "@/entities/tag/ui";
-import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
 
@@ -24,7 +23,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
   updatedAt
 }) => {
   return (
-    <section className="transition-bg flex h-full flex-col justify-between rounded-lg border transition-all duration-200 hover:scale-105 hover:bg-secondary">
+    <section className="flex h-full flex-col justify-between rounded-lg bg-secondary transition-all duration-200 hover:scale-105">
       {/* 이미지 컴포넌트 */}
       {thumbnailUrl ? (
         <Image
@@ -52,22 +51,16 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
 
           {/* 글 제목과 시리즈 이름 */}
           <div>
-            <h3 className="text-xl font-semibold text-primary">{title}</h3>
+            <p className="text-xl font-semibold text-primary">{title}</p>
             <p className="text-sm text-secondary">{seriesName}</p>
           </div>
-          <p className="break-words text-sm text-secondary">{description}</p>
+          <p className="break-words text-sm/6 text-secondary">{description}</p>
         </div>
       </div>
       {/* 소개글 & 게시자 정보 */}
-      <div className="flex flex-col gap-4 p-2 text-sm text-secondary">
-        <div className="flex items-center gap-2">
-          <AdminProfile size="sm" />
-          <div className="text-xs">
-            <p className="font-medium">yonghyeun</p>
-            <time>{new Date(updatedAt).toLocaleString()}</time>
-          </div>
-        </div>
-      </div>
+      <time className="w-full p-2 text-xs text-secondary">
+        {new Date(updatedAt).toLocaleString()}
+      </time>
     </section>
   );
 };
