@@ -29,7 +29,7 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
   const sidebarState = await prefetchQueryInServer(getArticleMetaListPerSeries);
 
   return (
-    <html suppressHydrationWarning className={GothicA1.className}>
+    <html suppressHydrationWarning className={GothicA1.className} lang="ko">
       <body className="flex min-h-screen flex-col bg-primary">
         <DarkModeInitializeScript />
         <ServiceProvider>
