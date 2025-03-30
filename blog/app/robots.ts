@@ -29,7 +29,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/temp/"]
       }
     ],
-    // TODO siteMap 생성하기
-    sitemap: "https://abonglog.me/sitemap.xml"
+    sitemap: "https://abonglog.me/api/sitemap"
   };
 }
