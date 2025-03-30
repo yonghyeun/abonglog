@@ -22,7 +22,11 @@ export const DarkModeToggle = () => {
   };
 
   return (
-    <button onClick={toggleDarkMode} className="text-secondary">
+    <button
+      onClick={toggleDarkMode}
+      className="text-secondary"
+      aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+    >
       {isDarkMode ? <FaMoon size={18} /> : <FaSun size={18} />}
     </button>
   );
