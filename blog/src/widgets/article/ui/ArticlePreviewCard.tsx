@@ -54,7 +54,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
             <p className="text-xl font-semibold text-primary">{title}</p>
             <p className="text-sm text-secondary">{seriesName}</p>
           </div>
-          <p className="break-words text-sm text-secondary">{description}</p>
+          <p className="break-words text-sm/6 text-secondary">{description}</p>
         </div>
       </div>
       {/* 소개글 & 게시자 정보 */}

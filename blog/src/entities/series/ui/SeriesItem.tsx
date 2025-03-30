@@ -14,7 +14,7 @@ export const SeriesItem: React.FC<SeriesItemProps> = ({
   return (
     <div className="transtion-all flex flex-grow transform flex-col gap-2 rounded-lg bg-primary p-4 text-secondary transition-transform duration-200 hover:scale-105">
       <div className="flex items-center gap-2">
-        <h3 className="font-semibold text-primary">{seriesName}</h3>
+        <p className="text-xl font-semibold text-primary">{seriesName}</p>
         <span className="text-sm">({numOfArticles})</span>
       </div>
       <p className="text-xs">

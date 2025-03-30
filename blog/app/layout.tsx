@@ -55,10 +55,10 @@ const Footer = () => (
     <div className="flex flex-col justify-between gap-4 md:flex-row">
       <div className="flex-grow">
         <h3 className="mb-2">abonglog</h3>
-        <p>
+        <p className="mb-2">
           공부한 내용을 기록하고 함께 성장하고 싶어 만든 두 번째 블로그입니다
         </p>
-        <p>주로 웹개발과 관련된 내용을 포스팅합니다.</p>
+        <p className="mb-2">주로 웹개발과 관련된 내용을 포스팅합니다.</p>
       </div>
 
       <div className="flex flex-col justify-end">

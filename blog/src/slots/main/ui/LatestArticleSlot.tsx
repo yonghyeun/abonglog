@@ -27,7 +27,7 @@ export const LatestArticleSlot = () => {
     <div className="flex flex-col-reverse gap-4 sm:flex-row">
       {/* preview */}
       <div className="flex w-full flex-col justify-between gap-2 sm:w-1/2">
-        <div>
+        <div className="flex flex-col gap-2">
           <p className="text-blue-500">최근 게시글</p>
           {/* 글 제목 */}
           <h2 className="text-3xl">{title}</h2>
@@ -43,7 +43,7 @@ export const LatestArticleSlot = () => {
           </List.UnOrder>
         </div>
         {/* 글 설명 */}
-        <p className="h-24 text-ellipsis text-sm text-secondary">
+        <p className="h-24 text-ellipsis text-sm/6 text-secondary">
           {description}
         </p>
 
@@ -52,7 +52,7 @@ export const LatestArticleSlot = () => {
           <div className="flex items-center gap-3">
             <AdminProfile size="sm" />
             <div className="text-xs text-secondary">
-              <p>{author}</p>
+              <p className="mb-1">{author}</p>
               <time dateTime={new Date(updatedAt).toISOString()}>
                 {new Date(updatedAt).toLocaleString()}
               </time>
