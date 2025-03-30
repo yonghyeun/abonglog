@@ -1,10 +1,9 @@
 import { Header } from "./Header";
 import "./globals.css";
+import { ServiceProvider, defaultMetadata } from "@/app";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Gothic_A1 } from "next/font/google";
 import { Suspense } from "react";
-
-import { ServiceProvider } from "@/app/ServiceProvider";
 
 import { DarkModeInitializeScript } from "@/features/utils/ui";
 
@@ -23,6 +22,8 @@ interface RootLayoutProps {
   children: React.ReactNode;
   modal: React.ReactNode;
 }
+
+export const metadata = defaultMetadata;
 
 const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
   const sidebarState = await prefetchQueryInServer(getArticleMetaListPerSeries);
