@@ -2,7 +2,6 @@ import Image from "next/image";
 import React from "react";
 
 import { TagChip } from "@/entities/tag/ui";
-import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
 
@@ -59,15 +58,9 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
         </div>
       </div>
       {/* 소개글 & 게시자 정보 */}
-      <div className="flex flex-col gap-4 p-2 text-sm text-secondary">
-        <div className="flex items-center gap-2">
-          <AdminProfile size="sm" />
-          <div className="text-xs">
-            <p className="font-medium">yonghyeun</p>
-            <time>{new Date(updatedAt).toLocaleString()}</time>
-          </div>
-        </div>
-      </div>
+      <time className="w-full p-2 text-xs text-secondary">
+        {new Date(updatedAt).toLocaleString()}
+      </time>
     </section>
   );
 };
