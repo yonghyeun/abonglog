@@ -23,7 +23,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
   updatedAt
 }) => {
   return (
-    <section className="transition-bg flex h-full flex-col justify-between rounded-lg border border-gray-200 transition-all duration-200 hover:scale-105 hover:bg-secondary">
+    <section className="flex h-full flex-col justify-between rounded-lg bg-secondary transition-all duration-200 hover:scale-105">
       {/* 이미지 컴포넌트 */}
       {thumbnailUrl ? (
         <Image
