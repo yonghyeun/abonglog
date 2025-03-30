@@ -78,7 +78,7 @@ export const SideBar = () => {
           </nav>
         </div>
         {user && (
-          <div className="flex flex-col justify-between border-t-2 sm:flex-row">
+          <div className="flex flex-col justify-between border-t-[1px] border-gray-200 sm:flex-row">
             <Link
               href="/write"
               className="text-md p-2 text-gray-400 hover:bg-secondary"
