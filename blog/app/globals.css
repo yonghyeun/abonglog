@@ -271,6 +271,7 @@ pre[data-language] code[data-language] span[data-line]::before {
   user-select: none; /* 라인 번호 선택 방지 */
   display: inline-block; /* 인라인 블록 요소로 표시 */
   width: 30px; /* 라인 번호 영역 너비 설정 */
+  margin-right: 0.5rem; /* 라인 번호와 코드 간격 설정 */
 }
 
 figcaption[data-rehype-pretty-code-title] {
