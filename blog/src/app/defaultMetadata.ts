@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const defaultMetadata: Metadata = {
+  metadataBase: new URL("https://abonglog.me"),
   generator: "yonghyeun",
   applicationName: "abonglog",
   referrer: "origin-when-cross-origin",
@@ -40,6 +41,18 @@ export const defaultMetadata: Metadata = {
         height: 630,
         alt: "abonglog logo",
         type: "image/png"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "abonglog",
+    description:
+      "웹 개발과 관련된 내용을 포스팅하는 블로그입니다. 고양이 이름이 애봉이예요",
+    images: [
+      {
+        url: "/images/ogLogo.png",
+        alt: "abonglog logo"
       }
     ]
   }
