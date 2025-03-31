@@ -1,14 +1,19 @@
 "use client";
 
+import { forEach } from "@fxts/core";
 import { useEffect, useState } from "react";
+
+const MARKDOWN_WHITESPACE_REGEX = /\s+/g;
+const MARKDOWN_SPECIAL_CHARS_REGEX = /[^\w\s가-힣-]/g;
+const HEADING_SELECTORS = "h1, h2, h3";
 
 export const useArticleSidebar = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const transformIdToSlug = (id: string) => {
     return id
-      .replace(/\s+/g, "-")
-      .replace(/[^\w\s가-힣-]/g, "")
+      .replace(MARKDOWN_WHITESPACE_REGEX, "-")
+      .replace(MARKDOWN_SPECIAL_CHARS_REGEX, "")
       .toLowerCase();
   };
 
@@ -24,25 +29,24 @@ export const useArticleSidebar = () => {
 
       { rootMargin: "0% 0% -80% 0%" }
     );
-    const headings = document.querySelectorAll("h1, h2, h3");
+    const headings = document.querySelectorAll(HEADING_SELECTORS);
 
-    headings.forEach((heading) => observer.observe(heading));
-
+    forEach((heading) => observer.observe(heading), headings);
     return () => {
-      headings.forEach((heading) => observer.unobserve(heading));
+      forEach((heading) => observer.unobserve(heading), headings);
+      observer.disconnect();
     };
   }, []);
 
-  const handleHeadingScroll = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    headingId: string
-  ) => {
-    event.preventDefault();
-    const element = document.getElementById(headingId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const handleHeadingScroll =
+    (headingId: string) =>
+    (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      event.preventDefault();
+      const element = document.getElementById(headingId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    };
 
   return { activeId, handleHeadingScroll, transformIdToSlug };
 };
