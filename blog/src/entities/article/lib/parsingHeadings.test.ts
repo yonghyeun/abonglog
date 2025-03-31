@@ -1,6 +1,7 @@
-import { type HeadingInfo, parsingHeading } from "@/entities/article/lib";
+import { parsingHeadings } from "./parsingHeadings";
+import type { HeadingInfo } from "./parsingHeadings";
 
-describe("parsingHeading", () => {
+describe("parsingHeadings", () => {
   test("heading 이 존재하지 않는 경우 빈 배열을 반환한다.", () => {
     const markdown = `마크다운 
     마크다운 테스트 
@@ -8,7 +9,7 @@ describe("parsingHeading", () => {
 
     const expected: HeadingInfo[] = [];
 
-    const result = parsingHeading(markdown);
+    const result = parsingHeadings(markdown);
     expect(result).toEqual(expected);
   });
 
@@ -27,7 +28,7 @@ describe("parsingHeading", () => {
       { level: 3, title: "heading3" }
     ];
 
-    const result = parsingHeading(markdown);
+    const result = parsingHeadings(markdown);
     expect(result).toEqual(expected);
   });
 });
