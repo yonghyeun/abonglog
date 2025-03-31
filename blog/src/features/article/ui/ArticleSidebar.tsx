@@ -45,7 +45,7 @@ export const ArticleSidebar: React.FC<ArticleSidebarProps> = ({
                   ? "font-semibold text-blue-500"
                   : "text-gray-500"
               }`}
-              onClick={(event) => handleHeadingScroll(event, headingId)}
+              onClick={handleHeadingScroll(headingId)}
             >
               {heading}
             </Link>

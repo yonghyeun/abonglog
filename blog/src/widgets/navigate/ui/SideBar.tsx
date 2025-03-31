@@ -10,8 +10,7 @@ import { BackwardIcon } from "@/shared/config";
 import { useSession } from "@/shared/model";
 
 export const SideBar = () => {
-  const { isOpen, sideBarRef, handleOpenSidebar, handleCloseSidebar } =
-    useSidebar();
+  const { isOpen, sideBarRef, toggleSidebar } = useSidebar();
   const { data } = useGetArticleMetaListPerSeries();
   const user = useSession();
 
@@ -22,7 +21,7 @@ export const SideBar = () => {
         className="flex flex-col gap-1 rounded-lg p-2 text-primary hover:bg-secondary focus:outline-none focus:ring focus:ring-blue-500 active:bg-secondary"
         aria-label="메뉴 열기"
         tabIndex={0}
-        onClick={handleOpenSidebar}
+        onClick={toggleSidebar("open")}
       >
         <span className="h-0.5 w-4 bg-gray-400"></span>
         <span className="h-0.5 w-4 bg-gray-400"></span>
@@ -39,7 +38,7 @@ export const SideBar = () => {
           <div className="mb-4 flex items-center justify-between">
             <h1>abonglog</h1>
             <button
-              onClick={handleCloseSidebar}
+              onClick={toggleSidebar("close")}
               aria-label="메뉴 닫기"
               className="p-2 text-primary hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
             >
@@ -64,7 +63,7 @@ export const SideBar = () => {
                           <Link
                             href={`/article/${id}`}
                             className="hover:text-blue-500"
-                            onClick={handleCloseSidebar}
+                            onClick={toggleSidebar("close")}
                           >
                             {title}
                           </Link>

@@ -3,7 +3,7 @@ import { ArticleSidebar } from "./ArticleSidebar";
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 
-import { parsingHeading } from "@/entities/article/lib";
+import { parsingHeadings } from "@/entities/article/lib";
 
 const meta: Meta<typeof ArticleSidebar> = {
   title: "features/article/ArticleSidebar",
@@ -63,7 +63,7 @@ type Story = StoryObj<typeof ArticleSidebar>;
 export const Default: Story = {
   args: {
     headings: createNestedHeadings(
-      parsingHeading(`
+      parsingHeadings(`
 # Heading 1
 ## Heading 2
 ### Heading 3

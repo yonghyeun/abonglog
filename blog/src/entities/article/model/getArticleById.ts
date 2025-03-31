@@ -1,4 +1,4 @@
-import { parsingHeading, rehypeMarkdown } from "../lib";
+import { parsingHeadings, rehypeMarkdown } from "../lib";
 import { extractTagName } from "./utils";
 
 import { createBrowserSupabase } from "@/shared/lib";
@@ -37,7 +37,7 @@ const transformArticleData = async <
   data: T
 ) => {
   const html = await rehypeMarkdown(data.content);
-  const headings = parsingHeading(data.content);
+  const headings = parsingHeadings(data.content);
 
   return {
     html,

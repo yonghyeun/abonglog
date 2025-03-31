@@ -4,13 +4,8 @@ export const useSidebar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const sideBarRef = useRef<HTMLDivElement>(null);
 
-  const handleOpenSidebar = () => {
-    setIsOpen(true);
-  };
-
-  const handleCloseSidebar = () => {
-    setIsOpen(false);
-  };
+  const toggleSidebar = (status: "open" | "close") => () =>
+    setIsOpen(status === "open" ? true : false);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -33,5 +28,5 @@ export const useSidebar = () => {
     };
   }, [isOpen]);
 
-  return { isOpen, handleOpenSidebar, handleCloseSidebar, sideBarRef };
+  return { isOpen, toggleSidebar, sideBarRef };
 };
