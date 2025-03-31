@@ -1,4 +1,4 @@
-import { flatMap, isNil, pipe, toArray, when } from "@fxts/core";
+import { flatMap, isNil, map, pipe, split, toArray, when } from "@fxts/core";
 
 export interface HeadingInfo {
   level: number;
@@ -11,13 +11,12 @@ export const parsingHeadings: parsingHeadings = (content) => {
   return pipe(
     content.match(/^#{1,3}\s[^\n]+/gm),
     when(isNil, () => []),
-    flatMap((heading) => {
-      const [sharps, ...title] = heading.trim().split(" ");
-      return {
-        level: sharps.length,
-        title: title.join(" ")
-      };
-    }),
+    map((heading) => heading.trim()),
+    map(split(" ")),
+    flatMap(([sharps, ...title]) => ({
+      level: sharps.length,
+      title: title.join(" ")
+    })),
     toArray
   );
 };
