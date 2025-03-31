@@ -13,6 +13,7 @@
     "db-type": "npx supabase gen types typescript --project-id bnhwpfqowipytfquprwl --schema public > ./src/shared/model/database.types.ts"
   },
   "dependencies": {
+    "@fxts/core": "^1.7.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-query": "^5.66.9",
