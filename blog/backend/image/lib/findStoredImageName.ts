@@ -6,18 +6,18 @@ import { SUPABASE_STORAGE_URL } from "@/shared/config";
 
 type FindStoredImageName = (content: string) => string[];
 
-const isStoredImage = () => (url: string) =>
-  url.startsWith(SUPABASE_STORAGE_URL);
+const isStartsWith = (prefix: string) => (str: string) =>
+  str.startsWith(prefix);
 
-const popLastHref = (url: string) => url.split("/").pop();
+const splitPop = (spliter: string) => (str: string) => str.split(spliter).pop();
 
 export const findStoredImageName: FindStoredImageName = (content) => {
   return pipe(
     content,
     findImageUrl,
     map(prop("src")),
-    filter(isStoredImage),
-    map(popLastHref),
+    filter(isStartsWith(SUPABASE_STORAGE_URL)),
+    map(splitPop("/")),
     filter((url) => !isUndefined(url)),
     toArray
   );
