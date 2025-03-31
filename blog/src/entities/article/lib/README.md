@@ -21,7 +21,7 @@
 
 ### 헤딩 파싱 관련
 
-- `parsingHeadingss.ts`: 마크다운 내 헤딩(#) 파싱
+- `parsingHeadings.ts`: 마크다운 내 헤딩(#) 파싱
   - 1~3레벨 헤딩 추출
   - 목차 생성을 위한 헤딩 정보 제공
 - `parsingHeadings.test.ts`: 헤딩 파싱 테스트 코드
