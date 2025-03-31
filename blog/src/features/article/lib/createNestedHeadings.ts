@@ -1,38 +1,45 @@
-import { type HeadingInfo } from "@/entities/article/lib";
+import { HeadingInfo } from "@/entities/article/lib";
+
+export type Heading = {
+  level: number;
+  title: string;
+};
 
 export type NestedHeadingList = (string | string[] | NestedHeadingList)[];
-
-type CreateNestedHeadings = (
-  headings: HeadingInfo[],
-  level?: number
-) => NestedHeadingList;
-
-export const createNestedHeadings: CreateNestedHeadings = (
-  headings,
-  level = 1
-) => {
-  const currentLevelHeadings: NestedHeadingList = [];
-
+export const createNestedHeadings = (headings: HeadingInfo[]) => {
   if (headings.length === 0) {
-    return currentLevelHeadings;
+    return [];
   }
 
-  while (headings.length > 0) {
-    const heading = headings.shift()!;
+  const createNested = (
+    headings: HeadingInfo[],
+    level: number,
+    start: number,
+    end: number
+  ) => {
+    const result: NestedHeadingList = [];
 
-    if (heading.level === level) {
-      currentLevelHeadings.push(heading.title);
-      continue;
+    let currentIndex = start;
+    while (currentIndex < end) {
+      const current = headings[currentIndex];
+
+      if (current.level < level) {
+        return result;
+      }
+
+      if (current.level === level) {
+        result.push(current.title);
+        currentIndex++;
+      } else {
+        result.push(createNested(headings, level + 1, currentIndex, end));
+        while (currentIndex < end && headings[currentIndex].level > level) {
+          currentIndex++;
+        }
+      }
     }
 
-    if (heading.level < level) {
-      headings.unshift(heading);
-      return currentLevelHeadings;
-    }
+    return result;
+  };
 
-    headings.unshift(heading);
-    currentLevelHeadings.push(createNestedHeadings(headings, level + 1));
-  }
-
-  return currentLevelHeadings;
+  return createNested(headings, headings[0].level, 0, headings.length);
 };
