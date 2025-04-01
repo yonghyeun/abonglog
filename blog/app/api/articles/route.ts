@@ -1,13 +1,13 @@
+import { deleteUnusedImages } from "./__model__";
 import { deleteArticle } from "@backend/article/model";
-import {
-  filterUnusedImageNames,
-  findStoredImageName
-} from "@backend/image/lib";
+import { filterUnusedImageNames } from "@backend/image/lib";
 import { deleteImages, getImageList } from "@backend/image/model";
 import { createErrorResponse, findError } from "@backend/shared/lib";
 import { camelToSnake } from "@backend/shared/lib";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+
+import { findImageUrl } from "@/features/article/lib";
 
 import type {
   DeleteArticleRequest,
@@ -49,30 +49,7 @@ const insertArticleTag = (
   );
 };
 
-const deleteUnusedImages = async (articleId: number, content: string) => {
-  const { data: storedImages } = await getImageList(
-    "article_image",
-    `images/${articleId}`
-  );
-  const usedImages = findStoredImageName(content);
-
-  if (!storedImages) {
-    return { error: null };
-  }
-
-  const unusedImageNames = filterUnusedImageNames(storedImages, usedImages);
-
-  if (unusedImageNames.length === 0) {
-    return { error: null };
-  }
-
-  return deleteImages(
-    "article_image",
-    unusedImageNames.map((name) => `images/${articleId}/${name}`)
-  );
-};
-
-const deleteUnusedThumbnail = async (
+export const deleteUnusedThumbnail = async (
   articleId: number,
   thumbnailUrl: string
 ) => {
@@ -99,6 +76,7 @@ const deleteUnusedThumbnail = async (
     unusedThumbnails.map((name) => `thumbnails/${articleId}/${name}`)
   );
 };
+
 const uploadArticle = async ({
   tags,
   ...articleData
@@ -107,7 +85,12 @@ const uploadArticle = async ({
 
   const upsertArticleResponse = await Promise.all([
     upsertNewArticle(articleData, supabase),
-    deleteUnusedImages(articleData.id, articleData.content),
+
+    deleteUnusedImages(
+      articleData.id,
+      findImageUrl(articleData.content).map(({ src }) => src)
+    ),
+
     articleData.thumbnailUrl
       ? deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl)
       : { error: null }
