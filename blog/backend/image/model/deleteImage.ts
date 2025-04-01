@@ -1,14 +1,11 @@
 import type { ImageStorageName } from "./types";
-import * as E from "@fp/either";
+import { withEitherRequest } from "@backend/shared/lib";
 
 import { createServerSupabase } from "@/shared/lib";
 
-export const deleteImages = async (
-  storageName: ImageStorageName,
-  urls: string[]
-) => {
-  const supabase = await createServerSupabase();
-  const { data, error } = await supabase.storage.from(storageName).remove(urls);
-
-  return error ? E.left(error) : E.right(data);
-};
+export const deleteImages = withEitherRequest(
+  async (storageName: ImageStorageName, urls: string[]) => {
+    const supabase = await createServerSupabase();
+    return supabase.storage.from(storageName).remove(urls);
+  }
+);

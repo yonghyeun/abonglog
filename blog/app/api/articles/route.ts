@@ -1,7 +1,5 @@
-import { deleteUnusedImages } from "./__model__";
+import { deleteUnusedImages, deleteUnusedThumbnail } from "./__model__";
 import { deleteArticle } from "@backend/article/model";
-import { filterUnusedImageNames } from "@backend/image/lib";
-import { deleteImages, getImageList } from "@backend/image/model";
 import { createErrorResponse, findError } from "@backend/shared/lib";
 import { camelToSnake } from "@backend/shared/lib";
 import { revalidatePath } from "next/cache";
@@ -46,34 +44,6 @@ const insertArticleTag = (
       tag_name: tag,
       article_id: id
     }))
-  );
-};
-
-export const deleteUnusedThumbnail = async (
-  articleId: number,
-  thumbnailUrl: string
-) => {
-  const { data: storedImageList } = await getImageList(
-    "article_thumbnail",
-    `thumbnails/${articleId}`
-  );
-
-  if (!storedImageList) {
-    return { error: null };
-  }
-
-  const thumbnailImageName = thumbnailUrl.split("/").pop();
-  const unusedThumbnails = thumbnailImageName
-    ? filterUnusedImageNames(storedImageList, [thumbnailImageName])
-    : storedImageList;
-
-  if (unusedThumbnails.length === 0) {
-    return { error: null };
-  }
-
-  return deleteImages(
-    "article_thumbnail",
-    unusedThumbnails.map((name) => `thumbnails/${articleId}/${name}`)
   );
 };
 
