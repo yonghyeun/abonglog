@@ -1,7 +1,8 @@
 import { deleteUnusedImages, deleteUnusedThumbnail } from "./__model__";
 import { deleteArticle } from "@backend/article/model";
-import { createErrorResponse, findError } from "@backend/shared/lib";
-import { camelToSnake } from "@backend/shared/lib";
+import { upsertNewArticle } from "@backend/article/model/upsertNewArticle";
+import { upsertArticleTags } from "@backend/image/model";
+import { createErrorResponse } from "@backend/shared/lib";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,84 +14,37 @@ import type {
   PostNewArticleResponse
 } from "@/entities/article/model";
 
-import { createServerSupabase } from "@/shared/lib";
-
-const upsertNewArticle = (
-  newArticle: Omit<PostNewArticleRequest, "tags">,
-  supabase: Awaited<ReturnType<typeof createServerSupabase>>
-) => {
-  const currentTimeStamp = new Date().toISOString();
-
-  return supabase.from("articles").upsert({
-    ...camelToSnake(newArticle),
-    created_at: currentTimeStamp,
-    updated_at: currentTimeStamp
-  });
-};
-
-const deleteArticleTags = (
-  articleId: PostNewArticleRequest["id"],
-  supabsae: Awaited<ReturnType<typeof createServerSupabase>>
-) => {
-  return supabsae.from("article_tags").delete().eq("article_id", articleId);
-};
-
-const insertArticleTag = (
-  { id, tags }: Pick<PostNewArticleRequest, "tags" | "id">,
-  supabase: Awaited<ReturnType<typeof createServerSupabase>>
-) => {
-  return supabase.from("article_tags").insert(
-    tags.map((tag) => ({
-      tag_name: tag,
-      article_id: id
-    }))
-  );
-};
-
 const uploadArticle = async ({
   tags,
   ...articleData
 }: PostNewArticleRequest) => {
-  const supabase = await createServerSupabase();
+  const { id } = articleData;
 
   const upsertArticleResponse = await Promise.all([
-    upsertNewArticle(articleData, supabase),
-
+    // 아티클 삽입
+    upsertNewArticle(articleData),
+    // 사용하지 않은 이미지 제거
     deleteUnusedImages(
-      articleData.id,
+      id,
       findImageUrl(articleData.content).map(({ src }) => src)
     ),
-
-    articleData.thumbnailUrl
-      ? deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl)
-      : { error: null }
+    // 사용하지 않은 썸네일 제거
+    deleteUnusedThumbnail(id, articleData.thumbnailUrl),
+    // 아티클 태그 삽입
+    upsertArticleTags(id, tags)
   ]);
 
-  const deleteArticleTagsResponse = await deleteArticleTags(
-    articleData.id,
-    supabase
-  );
-
-  const insertArticleTagResponse = await insertArticleTag(
-    { id: articleData.id, tags },
-    supabase
-  );
-
-  return [
-    deleteArticleTagsResponse,
-    insertArticleTagResponse,
-    ...upsertArticleResponse
-  ];
+  return [...upsertArticleResponse];
 };
 
 export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as PostNewArticleRequest;
-  const responses = await uploadArticle(data);
+  const uploadArticleEithers = await uploadArticle(data);
 
-  const error = findError(responses);
+  const error = uploadArticleEithers.find((either) => either._tag === "left");
 
   if (error) {
-    return createErrorResponse(error);
+    return createErrorResponse(error.value);
   }
 
   revalidatePath("/");

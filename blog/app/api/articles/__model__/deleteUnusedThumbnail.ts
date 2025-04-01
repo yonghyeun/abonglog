@@ -4,7 +4,7 @@ import { filter, map, not, pipe, toArray } from "@fxts/core";
 
 export const deleteUnusedThumbnail = async (
   articleId: number,
-  usedThumbnailUrl: string
+  usedThumbnailUrl: string | null
 ) => {
   const response = await getImageList(
     "article_thumbnail",
@@ -12,7 +12,7 @@ export const deleteUnusedThumbnail = async (
   );
 
   const filterUnusedThumbnail = (storedImage: { name: string }) =>
-    not(usedThumbnailUrl.includes(storedImage.name));
+    not((usedThumbnailUrl || "").includes(storedImage.name));
 
   return pipe(
     response,
