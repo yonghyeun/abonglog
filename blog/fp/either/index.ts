@@ -48,3 +48,21 @@ export const flatMap =
   <L, R, T>(onRight: (value: R) => T) =>
   (either: Either<L, R>) =>
     isRight(either) ? onRight(either.value) : either;
+
+export const match =
+  <L, R>(onLeft: (value: L) => void, onRight: (value: R) => void) =>
+  (either: Either<L, R>) => {
+    fold(onLeft, onRight)(either);
+
+    return either;
+  };
+
+export const matchRight =
+  <L, R>(onRight: (value: R) => void) =>
+  (either: Either<L, R>) => {
+    if (isRight(either)) {
+      onRight(either.value);
+    }
+
+    return either;
+  };
