@@ -1,11 +1,14 @@
 import type { ImageStorageName } from "./types";
-import { withEitherRequest } from "@backend/shared/lib";
+import * as E from "@fp/either";
 
 import { createServerSupabase } from "@/shared/lib";
 
-export const getImageList = withEitherRequest(
-  async (storageName: ImageStorageName, url: string) => {
-    const supabase = await createServerSupabase();
-    return supabase.storage.from(storageName).list(url);
-  }
-);
+export const getImageList = async (
+  storageName: ImageStorageName,
+  url: string
+) => {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase.storage.from(storageName).list(url);
+
+  return error ? E.left(error) : E.right(data);
+};
