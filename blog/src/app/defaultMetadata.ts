@@ -55,5 +55,8 @@ export const defaultMetadata: Metadata = {
         alt: "abonglog logo"
       }
     ]
+  },
+  verification: {
+    google: "7O0-gfyTg8JG154_G2ceeUM5SyOAQ1R9tH4W9BHoP7U"
   }
 };
