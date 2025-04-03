@@ -56,10 +56,9 @@ const MESSAGE = {
 
 export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as PostNewArticleRequest;
-  const response = await uploadArticleAction(data);
 
   return pipe(
-    response,
+    uploadArticleAction(data),
     E.matchRight(revalidateArticlePath(data.id, data.seriesName)),
     E.fold(
       createErrorResponse,
@@ -83,10 +82,9 @@ const deleteArticleAction = async (articleId: number) => {
 
 export const DELETE = async (req: NextRequest) => {
   const { articleId, seriesName } = (await req.json()) as DeleteArticleRequest;
-  const response = await deleteArticleAction(Number(articleId));
 
   return pipe(
-    response,
+    deleteArticleAction(Number(articleId)),
     E.matchRight(revalidateArticlePath(Number(articleId), seriesName)),
     E.fold(
       createErrorResponse,
