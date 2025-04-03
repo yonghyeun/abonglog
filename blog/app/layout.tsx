@@ -3,6 +3,7 @@ import "./globals.css";
 import { ServiceProvider, defaultMetadata } from "@/app";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Gothic_A1 } from "next/font/google";
+import Head from "next/head";
 import { Suspense } from "react";
 
 import { DarkModeInitializeScript } from "@/features/utils/ui";
@@ -30,6 +31,12 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
 
   return (
     <html suppressHydrationWarning className={GothicA1.className} lang="ko">
+      <Head>
+        <meta
+          name="google-site-verification"
+          content="sSCZHyS4oRQkfjgR57eonFbCk-fm111rmoF9CPdh0o8"
+        />
+      </Head>
       <body className="flex min-h-screen flex-col bg-primary">
         <DarkModeInitializeScript />
         <ServiceProvider>
