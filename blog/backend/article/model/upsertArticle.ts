@@ -1,18 +1,21 @@
 import { camelToSnake } from "@backend/shared/lib";
+import * as E from "@fp/either";
 
-import type { PostNewArticleRequest } from "@/entities/article/model";
+import { PostNewArticleRequest } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/lib";
 
 export const upsertArticle = async (
-  newArticle: Omit<PostNewArticleRequest, "tags">
+  articleData: Omit<PostNewArticleRequest, "tags">
 ) => {
   const supabase = await createServerSupabase();
   const currentTimeStamp = new Date().toISOString();
 
-  return supabase.from("articles").upsert({
-    ...camelToSnake(newArticle),
+  const { data, error } = await supabase.from("articles").upsert({
+    ...camelToSnake(articleData),
     created_at: currentTimeStamp,
     updated_at: currentTimeStamp
   });
+
+  return error ? E.left(error) : E.right(data);
 };

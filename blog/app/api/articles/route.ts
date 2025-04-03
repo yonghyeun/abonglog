@@ -1,179 +1,96 @@
-import { deleteArticle } from "@backend/article/model";
+import { deleteUnusedImages, deleteUnusedThumbnail } from "./__model__";
 import {
-  filterUnusedImageNames,
-  findStoredImageName
-} from "@backend/image/lib";
-import { deleteImages, getImageList } from "@backend/image/model";
-import { createErrorResponse, findError } from "@backend/shared/lib";
-import { camelToSnake } from "@backend/shared/lib";
+  deleteArticleTags,
+  removeArticle,
+  upsertArticle
+} from "@backend/article/model";
+import { upsertArticleTags } from "@backend/image/model";
+import {
+  createErrorResponse,
+  createSuccessResponse
+} from "@backend/shared/lib";
+import * as E from "@fp/either";
+import { pipe } from "@fxts/core";
 import { revalidatePath } from "next/cache";
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+import { findImageUrl } from "@/features/article/lib";
 
 import type {
   DeleteArticleRequest,
-  PostNewArticleRequest,
-  PostNewArticleResponse
+  PostNewArticleRequest
 } from "@/entities/article/model";
 
-import { createServerSupabase } from "@/shared/lib";
-
-const upsertNewArticle = (
-  newArticle: Omit<PostNewArticleRequest, "tags">,
-  supabase: Awaited<ReturnType<typeof createServerSupabase>>
-) => {
-  const currentTimeStamp = new Date().toISOString();
-
-  return supabase.from("articles").upsert({
-    ...camelToSnake(newArticle),
-    created_at: currentTimeStamp,
-    updated_at: currentTimeStamp
-  });
-};
-
-const deleteArticleTags = (
-  articleId: PostNewArticleRequest["id"],
-  supabsae: Awaited<ReturnType<typeof createServerSupabase>>
-) => {
-  return supabsae.from("article_tags").delete().eq("article_id", articleId);
-};
-
-const insertArticleTag = (
-  { id, tags }: Pick<PostNewArticleRequest, "tags" | "id">,
-  supabase: Awaited<ReturnType<typeof createServerSupabase>>
-) => {
-  return supabase.from("article_tags").insert(
-    tags.map((tag) => ({
-      tag_name: tag,
-      article_id: id
-    }))
-  );
-};
-
-const deleteUnusedImages = async (articleId: number, content: string) => {
-  const { data: storedImages } = await getImageList(
-    "article_image",
-    `images/${articleId}`
-  );
-  const usedImages = findStoredImageName(content);
-
-  if (!storedImages) {
-    return { error: null };
-  }
-
-  const unusedImageNames = filterUnusedImageNames(storedImages, usedImages);
-
-  if (unusedImageNames.length === 0) {
-    return { error: null };
-  }
-
-  return deleteImages(
-    "article_image",
-    unusedImageNames.map((name) => `images/${articleId}/${name}`)
-  );
-};
-
-const deleteUnusedThumbnail = async (
-  articleId: number,
-  thumbnailUrl: string
-) => {
-  const { data: storedImageList } = await getImageList(
-    "article_thumbnail",
-    `thumbnails/${articleId}`
-  );
-
-  if (!storedImageList) {
-    return { error: null };
-  }
-
-  const thumbnailImageName = thumbnailUrl.split("/").pop();
-  const unusedThumbnails = thumbnailImageName
-    ? filterUnusedImageNames(storedImageList, [thumbnailImageName])
-    : storedImageList;
-
-  if (unusedThumbnails.length === 0) {
-    return { error: null };
-  }
-
-  return deleteImages(
-    "article_thumbnail",
-    unusedThumbnails.map((name) => `thumbnails/${articleId}/${name}`)
-  );
-};
-const uploadArticle = async ({
+const uploadArticleAction = async ({
   tags,
   ...articleData
 }: PostNewArticleRequest) => {
-  const supabase = await createServerSupabase();
+  const usedImages = findImageUrl(articleData.content).map(({ src }) => src);
 
-  const upsertArticleResponse = await Promise.all([
-    upsertNewArticle(articleData, supabase),
-    deleteUnusedImages(articleData.id, articleData.content),
-    articleData.thumbnailUrl
-      ? deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl)
-      : { error: null }
+  const responses = await Promise.all([
+    upsertArticle(articleData),
+    deleteUnusedImages(articleData.id, usedImages),
+    deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl),
+    upsertArticleTags(articleData.id, tags)
   ]);
 
-  const deleteArticleTagsResponse = await deleteArticleTags(
-    articleData.id,
-    supabase
-  );
+  const error = responses.find((response) => response._tag === "left");
 
-  const insertArticleTagResponse = await insertArticleTag(
-    { id: articleData.id, tags },
-    supabase
-  );
+  return error ? E.left(error.value) : E.right({ type: articleData.status });
+};
 
-  return [
-    deleteArticleTagsResponse,
-    insertArticleTagResponse,
-    ...upsertArticleResponse
-  ];
+const revalidateArticlePath =
+  (articleId: number, seriesName?: string) => () => {
+    revalidatePath("/");
+    revalidatePath(`/article/list/all`);
+    revalidatePath(`/article/${articleId}`);
+    if (seriesName) {
+      revalidatePath(`/article/list/${encodeURI(seriesName)}`);
+    }
+  };
+
+const MESSAGE = {
+  POST_ARTICLE_SUCCESS: "아티클이 성공적으로 저장 되었습니다",
+  DELETE_ARTICLE_SUCCESS: "아티클이 성공적으로 삭제 되었습니다"
 };
 
 export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as PostNewArticleRequest;
-  const responses = await uploadArticle(data);
+  const response = await uploadArticleAction(data);
 
-  const error = findError(responses);
+  return pipe(
+    response,
+    E.matchRight(revalidateArticlePath(data.id, data.seriesName)),
+    E.fold(
+      createErrorResponse,
+      createSuccessResponse(MESSAGE.POST_ARTICLE_SUCCESS)
+    )
+  );
+};
 
-  if (error) {
-    return createErrorResponse(error);
-  }
+const deleteArticleAction = async (articleId: number) => {
+  const response = await Promise.all([
+    removeArticle(articleId),
+    deleteArticleTags(articleId),
+    deleteUnusedImages(articleId, []),
+    deleteUnusedThumbnail(articleId, null)
+  ]);
 
-  revalidatePath("/");
-  if (data.status === "published") {
-    revalidatePath("/article/list/all");
-    revalidatePath(`/article/${encodeURI(data.seriesName)}`);
-    revalidatePath(`/article/${data.id}`);
-  }
+  const error = response.find((response) => response._tag === "left");
 
-  return NextResponse.json<PostNewArticleResponse>({
-    code: 200,
-    message: "아티클이 성공적으로 저장 되었습니다",
-    data: {
-      type: data.status
-    }
-  });
+  return error ? E.left(error.value) : E.right(null);
 };
 
 export const DELETE = async (req: NextRequest) => {
   const { articleId, seriesName } = (await req.json()) as DeleteArticleRequest;
+  const response = await deleteArticleAction(Number(articleId));
 
-  const error = await deleteArticle(articleId);
-
-  if (error) {
-    return createErrorResponse(error);
-  }
-
-  revalidatePath("/");
-  revalidatePath(`/article/list/all`);
-  revalidatePath(`/article/${articleId}`);
-  if (seriesName) {
-    revalidatePath(`/article/list/${encodeURI(seriesName)}`);
-  }
-
-  return NextResponse.json({
-    code: 200,
-    message: "게시글이 성공적으로 삭제되었습니다."
-  });
+  return pipe(
+    response,
+    E.matchRight(revalidateArticlePath(Number(articleId), seriesName)),
+    E.fold(
+      createErrorResponse,
+      createSuccessResponse(MESSAGE.DELETE_ARTICLE_SUCCESS)
+    )
+  );
 };
