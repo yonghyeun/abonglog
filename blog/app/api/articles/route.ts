@@ -84,8 +84,8 @@ export const DELETE = async (req: NextRequest) => {
   const { articleId, seriesName } = (await req.json()) as DeleteArticleRequest;
 
   return pipe(
-    deleteArticleAction(Number(articleId)),
-    E.matchRight(revalidateArticlePath(Number(articleId), seriesName)),
+    deleteArticleAction(articleId),
+    E.matchRight(revalidateArticlePath(articleId, seriesName)),
     E.fold(
       createErrorResponse,
       createSuccessResponse(MESSAGE.DELETE_ARTICLE_SUCCESS)

@@ -2,7 +2,7 @@ import { ARTICLE_ENDPOINT } from "../config";
 import { useMutation } from "@tanstack/react-query";
 
 export interface DeleteArticleRequest {
-  articleId: string;
+  articleId: number;
   seriesName?: string;
 }
 
@@ -12,7 +12,7 @@ const deleteArticle = async ({
 }: DeleteArticleRequest) => {
   const response = await fetch(ARTICLE_ENDPOINT.DELETE_ARTICLE(), {
     method: "DELETE",
-    body: JSON.stringify({ articleId, seriesName })
+    body: JSON.stringify({ articleId: Number(articleId), seriesName })
   });
 
   if (!response.ok) {
