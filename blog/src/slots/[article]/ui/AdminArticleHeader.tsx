@@ -40,7 +40,7 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   const handleDelete = () => {
     if (confirm("해당 게시글을 삭제하시겠습니까?")) {
       deleteArticle(
-        { articleId, seriesName },
+        { articleId: Number(articleId), seriesName },
         {
           onSuccess: () => {
             alert("게시글이 제거되었습니다.");

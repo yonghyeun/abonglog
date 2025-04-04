@@ -21,7 +21,7 @@ import type {
   PostNewArticleRequest
 } from "@/entities/article/model";
 
-const uploadArticleAction = async ({
+const postArticleAction = async ({
   tags,
   ...articleData
 }: PostNewArticleRequest) => {
@@ -56,10 +56,9 @@ const MESSAGE = {
 
 export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as PostNewArticleRequest;
-  const response = await uploadArticleAction(data);
 
   return pipe(
-    response,
+    postArticleAction(data),
     E.matchRight(revalidateArticlePath(data.id, data.seriesName)),
     E.fold(
       createErrorResponse,
@@ -83,11 +82,10 @@ const deleteArticleAction = async (articleId: number) => {
 
 export const DELETE = async (req: NextRequest) => {
   const { articleId, seriesName } = (await req.json()) as DeleteArticleRequest;
-  const response = await deleteArticleAction(Number(articleId));
 
   return pipe(
-    response,
-    E.matchRight(revalidateArticlePath(Number(articleId), seriesName)),
+    deleteArticleAction(articleId),
+    E.matchRight(revalidateArticlePath(articleId, seriesName)),
     E.fold(
       createErrorResponse,
       createSuccessResponse(MESSAGE.DELETE_ARTICLE_SUCCESS)
