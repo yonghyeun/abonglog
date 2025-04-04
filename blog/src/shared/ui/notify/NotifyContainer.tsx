@@ -18,14 +18,17 @@ const positionConfig: Record<
   bottomRight: { className: "fixed bottom-0 right-4", slideDirection: "right" }
 };
 
-export const NotifyContainer = () => (
-  <>
-    <NotifyQueue position="topLeft" />
-    <NotifyQueue position="topRight" />
-    <NotifyQueue position="bottomLeft" />
-    <NotifyQueue position="bottomRight" />
-  </>
-);
+const NOTIFY_QUEUE_POSITION = [
+  "topLeft",
+  "topRight",
+  "bottomLeft",
+  "bottomRight"
+] as const;
+
+export const NotifyContainer = () =>
+  NOTIFY_QUEUE_POSITION.map((position) => (
+    <NotifyQueue key={position} position={position} />
+  ));
 
 const NotifyQueue = ({ position }: { position: QueuePosition }) => {
   const items = useNotifyStore((state) => state[`${position}Queue`]);
@@ -34,7 +37,7 @@ const NotifyQueue = ({ position }: { position: QueuePosition }) => {
   const config = positionConfig[position];
 
   return (
-    <aside className={`${config.className} z-[9999]`}>
+    <section className={`${config.className} z-[9999]`}>
       <ul className="flex flex-col gap-2 py-2">
         {items.map((item) => (
           <li key={item.id}>
@@ -46,7 +49,7 @@ const NotifyQueue = ({ position }: { position: QueuePosition }) => {
           </li>
         ))}
       </ul>
-    </aside>
+    </section>
   );
 };
 
@@ -58,51 +61,55 @@ interface AnimatedNotifyProps extends NotifyData {
 const SLIDE_ANIMATION_TIME = 150;
 const AUTO_REMOVE_TIME = 5000;
 
+type TimerRefRecord = Record<
+  "create" | "remove" | "autoRemove",
+  ReturnType<typeof setTimeout> | null
+>;
+
 const AnimatedNotify: React.FC<AnimatedNotifyProps> = ({
   position,
   remove,
   ...item
 }) => {
-  const [isExisting, setIsExiting] = useState<boolean>(false);
-  const onOpen = () => setIsExiting(true);
-  const onClose = () => setIsExiting(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const showNotify = () => setIsVisible(true);
+  const hideNotify = () => setIsVisible(false);
 
-  // 생성 될 때 애니메이션을 제어 할 ref
-  const createTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // 수동으로 제거 될 때 애니메이션을 제어 할 ref
-  const removeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // 자동으로 제거 될 때 애니메이션을 제어 할 ref
-  const autoRemoveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRefRecord = useRef<TimerRefRecord>({
+    // 생성 될 때 애니메이션을 제어 할 ref
+    create: null,
+    // 수동으로 제거 될 때 애니메이션을 제어 할 ref
+    remove: null,
+    // 자동으로 제거 될 때 애니메이션을 제어 할 ref
+    autoRemove: null
+  });
 
   useEffect(() => {
+    const timers = timerRefRecord.current;
+
     // 초기 마운트
-    if (!isExisting && !createTimerRef.current) {
-      createTimerRef.current = setTimeout(onOpen, 0);
-      autoRemoveTimerRef.current = setTimeout(onClose, AUTO_REMOVE_TIME);
+    if (!isVisible && !timers.create) {
+      timers.create = setTimeout(showNotify, 0);
+      timers.autoRemove = setTimeout(hideNotify, AUTO_REMOVE_TIME);
       return;
     }
     // 수동 제거
-    if (!isExisting && !removeTimerRef.current) {
+    if (!isVisible && !timers.remove) {
       // 자동 타이머 제거
-      if (autoRemoveTimerRef.current) {
-        clearTimeout(autoRemoveTimerRef.current);
+      if (timers.autoRemove) {
+        clearTimeout(timers.autoRemove);
       }
 
-      removeTimerRef.current = setTimeout(
-        () => remove(item),
-        SLIDE_ANIMATION_TIME
-      );
+      timers.remove = setTimeout(() => remove(item), SLIDE_ANIMATION_TIME);
       return;
     }
-  }, [isExisting, remove, item]);
+  }, [isVisible, remove, item]);
 
   return (
     <div
-      className={`transition-all duration-[${SLIDE_ANIMATION_TIME}] ${isExisting ? "" : position === "left" ? "-translate-x-full" : "translate-x-full"}`}
+      className={`transition-all duration-[${SLIDE_ANIMATION_TIME}] ${isVisible ? "" : position === "left" ? "-translate-x-full" : "translate-x-full"}`}
     >
-      <Notify {...item} onClose={onClose} />
+      <Notify {...item} onClose={hideNotify} />
     </div>
   );
 };

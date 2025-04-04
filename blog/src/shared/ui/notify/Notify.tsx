@@ -30,7 +30,7 @@ const getTypeIcon = (type: NotifyProps["type"]) => {
 export const Notify: React.FC<NotifyProps> = ({ type, text, onClose }) => {
   return (
     <div
-      className={`${getTypeStyle(type)} right-4 top-4 flex items-center gap-2 rounded-lg border px-6 py-3 text-base shadow-md transition-all duration-300`}
+      className={`${getTypeStyle(type)} right-4 top-4 flex items-center gap-2 rounded-lg border bg-primary px-6 py-3 text-base shadow-md transition-all duration-300`}
       role="alert"
     >
       {getTypeIcon(type)}
