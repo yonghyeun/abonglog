@@ -21,7 +21,7 @@ import type {
   PostNewArticleRequest
 } from "@/entities/article/model";
 
-const uploadArticleAction = async ({
+const postArticleAction = async ({
   tags,
   ...articleData
 }: PostNewArticleRequest) => {
@@ -58,7 +58,7 @@ export const POST = async (req: NextRequest) => {
   const data = (await req.json()) as PostNewArticleRequest;
 
   return pipe(
-    uploadArticleAction(data),
+    postArticleAction(data),
     E.matchRight(revalidateArticlePath(data.id, data.seriesName)),
     E.fold(
       createErrorResponse,
