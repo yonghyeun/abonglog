@@ -28,7 +28,7 @@ const getTypeIcon = (type: NotifyProps["type"]) => {
   return icons[type];
 };
 
-const AUTO_CLOSE_DURATION = 3000;
+const AUTO_CLOSE_DURATION = 5000;
 
 export const Notify: React.FC<NotifyProps> = ({ type, text, onClose }) => {
   useEffect(() => {
