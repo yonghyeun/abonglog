@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface NotifyData {
+export interface NotifyData {
   id: string;
   type: "error" | "success" | "info";
   text: string;
