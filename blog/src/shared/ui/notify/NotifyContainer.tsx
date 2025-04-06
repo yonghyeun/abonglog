@@ -59,7 +59,7 @@ interface AnimatedNotifyProps extends NotifyData {
 }
 
 const SLIDE_ANIMATION_TIME = 150;
-const AUTO_REMOVE_TIME = 5000;
+const AUTO_REMOVE_TIME = process.env.STORYBOOK === "true" ? 1000 : 5000;
 
 const AnimatedNotify: React.FC<AnimatedNotifyProps> = ({
   position,
