@@ -51,11 +51,6 @@ export const useNotify = () => {
   };
 };
 
-type TimerRefRecord = Record<
-  "create" | "remove" | "autoRemove",
-  ReturnType<typeof setTimeout> | null
->;
-
 /**
  * useSlideAnimation 훅은 알림의 슬라이드 애니메이션을 처리합니다.
  */
@@ -66,46 +61,53 @@ export const useSlideAnimation = (
     autoRemoveTime?: number;
   }
 ) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const { slideAnimationTime = 150, autoRemoveTime = 5000 } = options || {};
 
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  // 클린업을 위한 타이머 ref
+  const timersRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
-  const timerRefRecord = useRef<TimerRefRecord>({
-    // 생성 될 때 애니메이션을 제어 할 ref
-    create: null,
-    // 수동으로 제거 될 때 애니메이션을 제어 할 ref
-    remove: null,
-    // 자동으로 제거 될 때 애니메이션을 제어 할 ref
-    autoRemove: null
-  });
+  // 새 타이머 등록 함수
+  const registerTimer = (callback: () => unknown, delay: number) => {
+    timersRef.current.push(setTimeout(callback, delay));
+  };
 
-  const animationEnd = useRef<boolean>(false);
+  // 슬라이드 애니메이션 시작
+  const startAnimation = () => {
+    // 생성 애니메이션
+    registerTimer(() => setIsVisible(true), 0);
 
-  // 초기 마운트 시 애니메이션 시작 및 자동 제거 타이머 설정
-  useEffect(() => {
-    timerRefRecord.current.create = setTimeout(() => {
-      setIsVisible(true);
-      setTimeout(() => {
-        animationEnd.current = true;
-      }, slideAnimationTime);
-    }, 0);
+    // 자동 제거 애니메이션
+    registerTimer(() => {
+      setIsVisible(false);
+      registerTimer(removeAction, slideAnimationTime);
+    }, autoRemoveTime);
+  };
 
-    timerRefRecord.current.autoRemove = setTimeout(
-      () => setIsVisible(false),
-      autoRemoveTime
-    );
-  }, [autoRemoveTime, slideAnimationTime]);
+  // 클린업 함수
+  const cleanupTimers = () => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+  };
 
-  // isVisible이 false로 변경되고 애니메이션이 끝난 후 수동 제거 처리
-  useEffect(() => {
-    const timers = timerRefRecord.current;
-    if (!isVisible && animationEnd.current && !timers.remove) {
-      if (timers.autoRemove) {
-        clearTimeout(timers.autoRemove);
-      }
-      timers.remove = setTimeout(removeAction, slideAnimationTime + 10);
+  useEffect(
+    () => {
+      startAnimation();
+      return cleanupTimers;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // 메뉴얼 hide 핸들러
+  const handleHide = () => {
+    setIsVisible(false);
+
+    if (timersRef.current.length > 0) {
+      cleanupTimers();
     }
-  }, [isVisible, removeAction, slideAnimationTime]);
+    registerTimer(removeAction, slideAnimationTime);
+  };
 
-  return [isVisible, setIsVisible] as const;
+  return [isVisible, handleHide] as const;
 };
