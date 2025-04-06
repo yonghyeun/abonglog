@@ -1,6 +1,7 @@
 import { Notify } from "./Notify";
 import { useSlideAnimation } from "./lib";
 import { NotifyData, useNotifyStore } from "./model";
+import { useCallback } from "react";
 
 // 위치 타입 정의
 type Position = "top" | "bottom";
@@ -66,7 +67,14 @@ const AnimatedNotify: React.FC<AnimatedNotifyProps> = ({
   remove,
   ...item
 }) => {
-  const [isVisible, handleHide] = useSlideAnimation(() => remove(item), {
+  const { id, type, text } = item;
+
+  const removeAction = useCallback(
+    () => remove({ id, type, text }),
+    [remove, id, type, text]
+  );
+
+  const [isVisible, handleHide] = useSlideAnimation(removeAction, {
     slideAnimationTime: SLIDE_ANIMATION_TIME,
     autoRemoveTime: AUTO_REMOVE_TIME
   });

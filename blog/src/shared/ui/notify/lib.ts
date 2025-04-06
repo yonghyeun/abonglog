@@ -72,8 +72,13 @@ export const useSlideAnimation = (
     timersRef.current.push(setTimeout(callback, delay));
   };
 
-  // 슬라이드 애니메이션 시작
-  const startAnimation = () => {
+  // 클린업 함수
+  const cleanupTimers = () => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+  };
+
+  useEffect(() => {
     // 생성 애니메이션
     registerTimer(() => setIsVisible(true), 0);
 
@@ -82,22 +87,9 @@ export const useSlideAnimation = (
       setIsVisible(false);
       registerTimer(removeAction, slideAnimationTime);
     }, autoRemoveTime);
-  };
 
-  // 클린업 함수
-  const cleanupTimers = () => {
-    timersRef.current.forEach(clearTimeout);
-    timersRef.current = [];
-  };
-
-  useEffect(
-    () => {
-      startAnimation();
-      return cleanupTimers;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+    return cleanupTimers;
+  }, [removeAction, slideAnimationTime, autoRemoveTime]);
 
   // 메뉴얼 hide 핸들러
   const handleHide = () => {
