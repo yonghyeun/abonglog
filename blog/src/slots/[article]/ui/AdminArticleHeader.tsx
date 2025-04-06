@@ -9,6 +9,7 @@ import { useDeleteArticle } from "@/entities/article/model";
 import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
 
 import { useSession } from "@/shared/model";
+import { useNotify } from "@/shared/ui/notify";
 
 interface AdminArticleHeaderProps {
   articleId: string;
@@ -30,6 +31,7 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
   const queryClient = useQueryClient();
 
   const { mutate: deleteArticle } = useDeleteArticle();
+  const { notifyTopLeft } = useNotify();
 
   if (!user) {
     return null;
@@ -43,7 +45,7 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
         { articleId: Number(articleId), seriesName },
         {
           onSuccess: () => {
-            alert("게시글이 제거되었습니다.");
+            notifyTopLeft.success("게시글이 제거되었습니다.");
             queryClient.invalidateQueries({
               queryKey: ARTICLE_QUERY_KEY.default(
                 isTempArticle ? "draft" : "published"
