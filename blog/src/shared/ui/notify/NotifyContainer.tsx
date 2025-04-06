@@ -66,16 +66,16 @@ const AnimatedNotify: React.FC<AnimatedNotifyProps> = ({
   remove,
   ...item
 }) => {
-  const [isVisible, setIsVisible] = useSlideAnimation(() => remove(item), {
+  const [isVisible, handleHide] = useSlideAnimation(() => remove(item), {
     slideAnimationTime: SLIDE_ANIMATION_TIME,
     autoRemoveTime: AUTO_REMOVE_TIME
   });
 
   return (
     <div
-      className={`transition-all duration-[${SLIDE_ANIMATION_TIME}] ${isVisible ? "" : position === "left" ? "-translate-x-full" : "translate-x-full"}`}
+      className={`flex ${position === "left" ? "justify-start" : "justify-end"} transition-all duration-[${SLIDE_ANIMATION_TIME}] ${isVisible ? "" : position === "left" ? "-translate-x-full opacity-0" : "translate-x-full"}`}
     >
-      <Notify {...item} onClose={() => setIsVisible(false)} />
+      <Notify {...item} onClose={handleHide} />
     </div>
   );
 };

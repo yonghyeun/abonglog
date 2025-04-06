@@ -30,11 +30,13 @@ const getTypeIcon = (type: NotifyProps["type"]) => {
 export const Notify: React.FC<NotifyProps> = ({ type, text, onClose }) => {
   return (
     <div
-      className={`${getTypeStyle(type)} right-4 top-4 flex items-center gap-2 rounded-lg border bg-primary px-6 py-3 text-base shadow-md transition-all duration-300`}
+      className={`${getTypeStyle(type)} flex w-fit items-center gap-2 rounded-lg border bg-primary px-6 py-3 text-base shadow-md transition-all duration-300`}
       role="alert"
     >
-      {getTypeIcon(type)}
-      <span className="w-60 overflow-hidden text-ellipsis">{text}</span>
+      <p className="flex gap-2">
+        {getTypeIcon(type)}
+        <span>{text}</span>
+      </p>
       <button onClick={onClose} className="hover:opacity-70" aria-label="닫기">
         <IoClose className="text-xl" />
       </button>
