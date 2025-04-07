@@ -2,9 +2,9 @@ import { deleteUnusedImages, deleteUnusedThumbnail } from "./__model__";
 import {
   deleteArticleTags,
   removeArticle,
-  upsertArticle
+  upsertArticle,
+  upsertArticleTags
 } from "@backend/article/model";
-import { upsertArticleTags } from "@backend/image/model";
 import {
   createErrorResponse,
   createSuccessResponse

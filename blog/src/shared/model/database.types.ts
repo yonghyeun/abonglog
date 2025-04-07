@@ -12,18 +12,15 @@ export type Database = {
       article_tags: {
         Row: {
           article_id: number;
-          id: string;
-          tag_name: string | null;
+          tag_name: string;
         };
         Insert: {
           article_id: number;
-          id?: string;
-          tag_name?: string | null;
+          tag_name: string;
         };
         Update: {
           article_id?: number;
-          id?: string;
-          tag_name?: string | null;
+          tag_name?: string;
         };
         Relationships: [
           {
