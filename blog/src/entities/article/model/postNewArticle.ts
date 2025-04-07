@@ -8,7 +8,6 @@ import type { Tag } from "@/entities/tag/@x/article";
  * created_at , updated_at은 서버에서 자동으로 생성
  */
 export interface PostNewArticleRequest {
-  // articleId
   id: number;
   title: string;
   content: string;
@@ -18,6 +17,10 @@ export interface PostNewArticleRequest {
   tags: Tag["name"][];
   status: ArticleStatus;
   thumbnailUrl: string | null;
+  // 기존 서버에서 받은 데이터도 함께 전송
+  immutable: {
+    tags: string[];
+  };
 }
 
 export interface PostNewArticleResponse {

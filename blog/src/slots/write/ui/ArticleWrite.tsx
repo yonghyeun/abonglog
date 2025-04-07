@@ -401,7 +401,8 @@ const TempSaveButton = () => {
       seriesName,
       articleId,
       thumbnailUrl,
-      description
+      description,
+      immutable
     } = store.getState();
 
     addNewArticle(
@@ -414,7 +415,10 @@ const TempSaveButton = () => {
         id: articleId,
         author: "yonghyeun",
         description,
-        thumbnailUrl
+        thumbnailUrl,
+        immutable: {
+          tags: immutable.tags
+        }
       },
       {
         onSuccess: (data) => {
@@ -558,7 +562,8 @@ const SubmitButton = () => {
       seriesName,
       articleId,
       thumbnailUrl,
-      description
+      description,
+      immutable
     } = store.getState();
 
     if (
@@ -583,7 +588,10 @@ const SubmitButton = () => {
         id: articleId,
         author: "yonghyeun",
         description,
-        thumbnailUrl
+        thumbnailUrl,
+        immutable: {
+          tags: immutable.tags
+        }
       },
       {
         onSuccess: (data) => {

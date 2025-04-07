@@ -6,7 +6,7 @@ import { PostNewArticleRequest } from "@/entities/article/model";
 import { createServerSupabase } from "@/shared/lib";
 
 export const upsertArticle = async (
-  articleData: Omit<PostNewArticleRequest, "tags">
+  articleData: Omit<PostNewArticleRequest, "tags" | "immutable">
 ) => {
   const supabase = await createServerSupabase();
   const currentTimeStamp = new Date().toISOString();
