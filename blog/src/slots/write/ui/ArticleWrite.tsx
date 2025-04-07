@@ -34,6 +34,7 @@ import { TagChip } from "@/entities/tag/ui";
 import { PenIcon } from "@/shared/config";
 import { Button } from "@/shared/ui/Button";
 import { List } from "@/shared/ui/List";
+import { useNotify } from "@/shared/ui/notify";
 
 type ArticleWriteProps = {
   initialState?: Partial<{
@@ -390,6 +391,7 @@ const MarkdownPreview = () => {
 const TempSaveButton = () => {
   const { mutate: addNewArticle } = usePostNewArticle();
   const store = useContext(ArticleWriteStoreContext)!;
+  const { notifyTopLeft } = useNotify();
 
   const handleSave = useCallback(() => {
     const {
@@ -416,11 +418,11 @@ const TempSaveButton = () => {
       },
       {
         onSuccess: (data) => {
-          alert(data.message);
+          notifyTopLeft.success(data.message);
         }
       }
     );
-  }, [addNewArticle, store]);
+  }, [notifyTopLeft, addNewArticle, store]);
 
   useEffect(() => {
     const interval = setInterval(handleSave, 1000 * 60 * 5);
@@ -546,6 +548,7 @@ const SubmitButton = () => {
   const { mutate: addNewArticle } = usePostNewArticle();
   const store = useContext(ArticleWriteStoreContext)!;
   const queryClient = useQueryClient();
+  const { notifyTopLeft } = useNotify();
 
   const handleSaveArticle = () => {
     const {
@@ -566,7 +569,7 @@ const SubmitButton = () => {
       !thumbnailUrl ||
       !description
     ) {
-      alert("입력되지 않은 정보가 있습니다.");
+      notifyTopLeft.error("입력되지 않은 정보가 있습니다.");
       return;
     }
 
@@ -584,7 +587,7 @@ const SubmitButton = () => {
       },
       {
         onSuccess: (data) => {
-          alert(data.message);
+          notifyTopLeft.success(data.message);
 
           queryClient.invalidateQueries({
             queryKey: ARTICLE_QUERY_KEY.popularDefault()
