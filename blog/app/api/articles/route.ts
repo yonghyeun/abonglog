@@ -10,7 +10,7 @@ import {
   createSuccessResponse
 } from "@backend/shared/lib";
 import * as E from "@fp/either";
-import { pipe } from "@fxts/core";
+import { isEmpty, pipe } from "@fxts/core";
 import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 
@@ -21,17 +21,20 @@ import type {
   PostNewArticleRequest
 } from "@/entities/article/model";
 
-const postArticleAction = async ({
-  tags,
-  ...articleData
-}: PostNewArticleRequest) => {
+const postArticleAction = async ({ tags, ...rest }: PostNewArticleRequest) => {
+  const { immutable, ...articleData } = rest;
+
   const usedImages = findImageUrl(articleData.content).map(({ src }) => src);
+  const removedTags = immutable.tags.filter((tag) => !tags.includes(tag));
 
   const responses = await Promise.all([
     upsertArticle(articleData),
     deleteUnusedImages(articleData.id, usedImages),
     deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl),
-    upsertArticleTags(articleData.id, tags)
+    upsertArticleTags(articleData.id, tags),
+    isEmpty(removedTags)
+      ? E.right(null)
+      : deleteArticleTags(articleData.id, removedTags)
   ]);
 
   const error = responses.find((response) => response._tag === "left");
