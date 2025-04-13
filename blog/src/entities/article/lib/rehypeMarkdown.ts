@@ -6,6 +6,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeReact from "rehype-react";
 import rehypeSlug from "rehype-slug";
 import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remark2rehype from "remark-rehype";
 import { unified } from "unified";
@@ -16,6 +17,8 @@ export const rehypeMarkdown = async (markdown: string) => {
   const vfileObject = await unified()
     // 마크다운 텍스트를 AST 형태로 파싱 합니다.
     .use(remarkParse)
+    // GitHub Flavored Markdown 확장 기능을 지원합니다 (테이블, 취소선 등).
+    .use(remarkGfm)
     // 줄바꿈을 <br> 태그로 변환 합니다.
     .use(remarkBreaks)
     // AST 형태로 파싱된 마크다운 텍스트를 HTML로 변환 합니다.
