@@ -31,7 +31,7 @@ export const rehypeMarkdown = async (markdown: string) => {
     // 코드 블럭을 예쁘게 표현하기 위한 설정을 추가 합니다.
     .use(rehypePrettyCode, {
       grid: true,
-      theme: "one-dark-pro",
+      theme: "github-dark",
       keepBackground: false,
       bypassInlineCode: false,
       defaultLang: {

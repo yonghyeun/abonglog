@@ -71,7 +71,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
 
       <AdminArticleHeader articleId={articleId} seriesName={seriesName} />
 
-      <section className="media-padding-x flex min-h-screen gap-2">
+      <section className="mx-auto flex min-h-screen max-w-screen-xl gap-2 px-4">
         {/* 본문 */}
         <article className="w-full pb-32 lg:flex-grow xl:max-w-[75%]">
           {html}

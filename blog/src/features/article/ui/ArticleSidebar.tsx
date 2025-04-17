@@ -21,7 +21,7 @@ export const ArticleSidebar: React.FC<ArticleSidebarProps> = ({
     useArticleSidebar();
 
   return (
-    <ul className="pl-6">
+    <ul className="max-w-72 pl-6">
       {headings.map((heading, index) => {
         if (Array.isArray(heading)) {
           return (
@@ -42,7 +42,7 @@ export const ArticleSidebar: React.FC<ArticleSidebarProps> = ({
               href={`/article/${articleId}#${headingId}`}
               className={`transition-all duration-200 ${
                 activeId === headingId
-                  ? "font-semibold text-blue-500"
+                  ? "text-blue-700 dark:text-blue-300"
                   : "text-gray-500"
               }`}
               onClick={handleHeadingScroll(headingId)}

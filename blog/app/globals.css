@@ -36,7 +36,7 @@
 
   --selection-bg: #d3d3d3;
 
-  --code-background: #282334;
+  --code-background: #0d1117;
 }
 .dark {
   --bg-primary: var(--bg-dark-primary);
@@ -75,7 +75,7 @@ h3 {
 }
 
 .media-padding-x {
-  @apply px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-40;
+  @apply px-4 sm:px-8 md:px-24 lg:px-32 xl:px-40 2xl:px-80;
 }
 
 * {
@@ -122,7 +122,7 @@ h3 {
   color: var(--text-primary);
   line-height: 1.7;
   text-indent: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .link {
@@ -165,7 +165,7 @@ h3 {
   margin: 1rem 0;
   color: var(--text-primary);
   border-left: 1px solid var(--text-quaternary);
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.7;
 }
 
@@ -215,7 +215,7 @@ h3 {
   overflow: auto;
   background-color: var(--code-background);
   font-style: normal;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-family: "VictorMono", transparent;
 }
 
@@ -276,7 +276,6 @@ pre[data-language] code[data-language] span[data-line]::before {
 
 figcaption[data-rehype-pretty-code-title] {
   font-size: 1rem;
-  font-weight: bold;
   color: #ddd;
   background-color: var(--code-background);
   display: inline-block;
