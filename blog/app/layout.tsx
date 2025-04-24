@@ -2,6 +2,7 @@ import { Header } from "./Header";
 import "./globals.css";
 import { ServiceProvider, defaultMetadata } from "@/app";
 import { HydrationBoundary } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/next";
 import { Gothic_A1 } from "next/font/google";
 import { Suspense } from "react";
 
@@ -39,6 +40,7 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
               <main className="flex flex-grow flex-col">
                 {modal}
                 {children}
+                <Analytics />
               </main>
             </Suspense>
           </HydrationBoundary>
