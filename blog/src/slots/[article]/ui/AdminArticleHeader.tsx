@@ -68,7 +68,7 @@ export const AdminArticleHeader: React.FC<AdminArticleHeaderProps> = ({
       <button className="hover:text-red-500" onClick={handleDelete}>
         글 삭제
       </button>
-      <Link className="hover:text-blue-500" href={`/write/${articleId}`}>
+      <Link className="hover:text-purple-500" href={`/write/${articleId}`}>
         글 수정
       </Link>
     </div>

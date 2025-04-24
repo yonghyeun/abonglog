@@ -221,7 +221,7 @@ const Bold: FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
   ...props
 }) => (
-  <strong {...props} className="text-blue-500 dark:text-blue-300">
+  <strong {...props} className="text-purple-500 dark:text-purple-300">
     {children}
   </strong>
 );

@@ -136,7 +136,7 @@ const SeriesList = () => {
       />
       {/* 선택된 시리즈 명 */}
       <p
-        className="flex-grow cursor-pointer text-ellipsis text-blue-700"
+        className="flex-grow cursor-pointer text-ellipsis text-purple-700"
         onClick={() => {
           setSeriesName("");
         }}
@@ -449,7 +449,7 @@ const DescriptionTextArea = () => {
     <div className="flex flex-col gap-2">
       <label
         htmlFor="article-description"
-        className="flex cursor-pointer items-center gap-1 text-secondary hover:text-blue-500"
+        className="flex cursor-pointer items-center gap-1 text-secondary hover:text-purple-500"
       >
         <PenIcon size={18} />
         <span>소개글 등록</span>
@@ -505,7 +505,7 @@ const ThumbnailUploadInput = () => {
         }}
       />
       {/* 선택된 썸네일 주소 표현 컴포넌트 */}
-      <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-blue-500 text-secondary">
+      <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-purple-500 text-secondary">
         {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
       </p>
     </div>

@@ -18,7 +18,7 @@ export const SideBar = () => {
     <>
       {/* 사이드바 햄버거 */}
       <button
-        className="flex flex-col gap-1 rounded-lg p-2 text-primary hover:bg-secondary focus:outline-none focus:ring focus:ring-blue-500 active:bg-secondary"
+        className="flex flex-col gap-1 rounded-lg p-2 text-primary hover:bg-secondary focus:outline-none focus:ring focus:ring-purple-500 active:bg-secondary"
         aria-label="메뉴 열기"
         tabIndex={0}
         onClick={toggleSidebar("open")}
@@ -40,7 +40,7 @@ export const SideBar = () => {
             <button
               onClick={toggleSidebar("close")}
               aria-label="메뉴 닫기"
-              className="p-2 text-primary hover:bg-gray-200 focus:outline-none focus:ring focus:ring-blue-300 active:bg-gray-200"
+              className="p-2 text-primary hover:bg-gray-200 focus:outline-none focus:ring focus:ring-purple-300 active:bg-gray-200"
             >
               <BackwardIcon size="24" />
             </button>
@@ -62,7 +62,7 @@ export const SideBar = () => {
                         <li key={id} className="ml-8 list-disc">
                           <Link
                             href={`/article/${id}`}
-                            className="hover:text-blue-500"
+                            className="hover:text-purple-500"
                             onClick={toggleSidebar("close")}
                           >
                             {title}

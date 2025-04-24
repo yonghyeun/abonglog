@@ -53,7 +53,7 @@ const buttonBaseStyle = "px-4 py-2 rounded-md text-white transition-colors";
 const buttonStyles = {
   error: "bg-red-500 hover:bg-red-600",
   success: "bg-green-500 hover:bg-green-600",
-  info: "bg-blue-500 hover:bg-blue-600"
+  info: "bg-purple-500 hover:bg-blue-600"
 } as const;
 
 const getNotifyMessage = (

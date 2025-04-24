@@ -28,7 +28,7 @@ export const LatestArticleSlot = () => {
       {/* preview */}
       <div className="flex w-full flex-col justify-between gap-2 sm:w-1/2">
         <div className="flex flex-col gap-2">
-          <p className="text-blue-500">최근 게시글</p>
+          <p className="text-purple-500">최근 게시글</p>
           {/* 글 제목 */}
           <h2 className="text-3xl">{title}</h2>
           {/* 시리즈 제목 */}
@@ -61,7 +61,7 @@ export const LatestArticleSlot = () => {
 
           <Link
             href={`/article/${id}`}
-            className="w-fit rounded-md bg-blue-700 px-4 py-2 text-sm text-white hover:bg-blue-900"
+            className="w-fit rounded-md bg-purple-700 px-4 py-2 text-sm text-white hover:bg-purple-900"
             aria-label={`게시글 ${title}로 이동`}
           >
             게시글로 이동

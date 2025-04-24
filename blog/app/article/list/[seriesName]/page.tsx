@@ -69,24 +69,4 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({ params }) => {
   );
 };
 
-// const NotFound: React.FC<{ series: string }> = ({ series }) => (
-//   <section className="media-padding-x flex min-h-screen flex-col">
-//     <section className="my-12 flex items-center justify-center">
-//       <p className="text-[10rem] text-gray-400">Σ(°ロ°)</p>
-//     </section>
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <h1>
-//         아쉽게도 입력하신 <span className="text-blue-700">{series}</span>는
-//         존재하지 않는 시리즈 이름입니다.
-//       </h1>
-//       <Link
-//         href="/"
-//         className="border border-blue-700 bg-blue-700 px-8 py-4 text-white"
-//       >
-//         메인 페이지로 돌아가기
-//       </Link>
-//     </div>
-//   </section>
-// );
-
 export default ArticleListPage;

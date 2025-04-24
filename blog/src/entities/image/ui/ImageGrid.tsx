@@ -73,7 +73,7 @@ const Item = ({
       size="sm"
       onClick={() => onSelectImage?.(src)}
       className={`flex flex-col justify-between ${
-        src === selectedImageUrl ? "border-blue-700" : "border-gray-300"
+        src === selectedImageUrl ? "border-purple-700" : "border-gray-300"
       } ${className}`}
     >
       {/* TODO 이미지 최적화 직접 구현하기 */}
