@@ -1,25 +1,24 @@
+import { TAG_END_POINT } from "../config";
 import { TAG_QUERY_KEY } from "./tagQueryKey";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createBrowserSupabase } from "@/shared/lib";
-
-interface PostAddNewTagRequest {
+export interface PostAddNewTagRequest {
   name: string;
 }
 
 const postAddNewTag = async ({ name }: PostAddNewTagRequest) => {
-  const supabase = await createBrowserSupabase();
-  const created_at = new Date().toISOString();
+  const response = await fetch(TAG_END_POINT.POST_NEW_TAG, {
+    method: "POST",
+    body: JSON.stringify({ name })
+  });
 
-  const { error } = await supabase.from("tags").insert([{ name, created_at }]);
-  if (error) {
-    throw error;
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
   }
 
-  return {
-    status: 200,
-    message: "success"
-  };
+  return data;
 };
 
 /**

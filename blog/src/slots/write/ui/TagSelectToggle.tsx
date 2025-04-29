@@ -7,6 +7,7 @@ import { TagChip } from "@/entities/tag/ui";
 
 import { SearchIcon } from "@/shared/config";
 import { Selector } from "@/shared/ui/Selector";
+import { useNotify } from "@/shared/ui/notify";
 
 interface TagSelectToggleProps {
   tags: Tag[];
@@ -25,6 +26,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
     filterBySearchedText
   } = useTagSelectToggle();
   const { mutate: onAddNewTag } = usePostAddNewTag();
+  const { notifyTopLeft } = useNotify();
 
   const searchedTag = filterBySearchedText(tags);
 
@@ -66,7 +68,12 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
         <Selector.Form
           onSubmit={(event) => {
             event.preventDefault();
-            onAddNewTag({ name: newTagName });
+            onAddNewTag(
+              { name: newTagName },
+              {
+                onSuccess: ({ message }) => notifyTopLeft.success(message)
+              }
+            );
           }}
         >
           <Selector.Label className="sr-only" value="새로운 태그 추가하기" />
