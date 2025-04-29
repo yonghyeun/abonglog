@@ -13,12 +13,10 @@ const WritePage = async () => {
     getSeriesList
   );
 
-  const randomArticleId = Math.floor(Math.random() * 10 ** 7);
-
   return (
     <HydrationBoundary state={articleWriteState}>
       <Suspense fallback={"loading..."}>
-        <ArticleWriteSlot articleId={randomArticleId} />
+        <ArticleWriteSlot />
       </Suspense>
     </HydrationBoundary>
   );

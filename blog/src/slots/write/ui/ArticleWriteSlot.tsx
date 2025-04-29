@@ -1,7 +1,7 @@
 "use client";
 
 import { ArticleWrite } from "./ArticleWrite";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { BackwardIcon } from "@/shared/config";
 import { Button } from "@/shared/ui/Button";
@@ -20,17 +20,22 @@ interface ArticleWriteSlotProps {
     thumbnailUrl: string | null;
   }>;
 
-  articleId: number;
+  articleId?: number;
 }
 
 export const ArticleWriteSlot: React.FC<ArticleWriteSlotProps> = ({
   articleId,
   initialState
 }) => {
+  const _articleId = useMemo(
+    () => articleId || Math.floor(Math.random() * 10 ** 7),
+    [articleId]
+  );
+
   const [step, setStep] = useState<1 | 2>(1);
 
   return (
-    <ArticleWrite articleId={articleId} initialState={initialState}>
+    <ArticleWrite articleId={_articleId} initialState={initialState}>
       {step === 1 ? (
         <section className="media-padding-x">
           <div className="mb-2 flex h-screen">

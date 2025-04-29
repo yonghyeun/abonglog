@@ -4,6 +4,7 @@ import { type Series, usePostAddNewSeries } from "@/entities/series/model";
 
 import { SearchIcon } from "@/shared/config";
 import { Selector } from "@/shared/ui/Selector";
+import { useNotify } from "@/shared/ui/notify";
 
 interface SeriesSelectToggleProps {
   seriesList: Series[];
@@ -24,6 +25,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
 
   const { mutate: onAddNewSeries } = usePostAddNewSeries();
   const searchedSeries = filterBySearchedText(seriesList);
+  const { notifyTopLeft } = useNotify();
 
   return (
     <details className="cursor-pointer">
@@ -65,9 +67,14 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
         <Selector.Form
           onSubmit={(event) => {
             event.preventDefault();
-            onAddNewSeries({
-              name: newSeriesName
-            });
+            onAddNewSeries(
+              {
+                name: newSeriesName
+              },
+              {
+                onSuccess: ({ message }) => notifyTopLeft.success(message)
+              }
+            );
           }}
         >
           <Selector.Label className="sr-only" value="새로운 시리즈 추가하기" />
