@@ -1,28 +1,24 @@
+import { SERIES_END_POINT } from "../config";
 import { SERIES_QUERY_KEY } from "./seriesQueryKey";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createBrowserSupabase } from "@/shared/lib";
-
-interface PostAddNewSeriesRequest {
+export interface PostAddNewSeriesRequest {
   name: string;
 }
 
 const postAddNewSeries = async ({ name }: PostAddNewSeriesRequest) => {
-  const supabase = await createBrowserSupabase();
-  const created_at = new Date().toISOString();
+  const response = await fetch(SERIES_END_POINT.POST_NEW_SERIES, {
+    method: "POST",
+    body: JSON.stringify({ name })
+  });
 
-  const { error } = await supabase
-    .from("series")
-    .insert([{ name, created_at }]);
+  const data = await response.json();
 
-  if (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error(data.message);
   }
 
-  return {
-    status: 200,
-    message: "success"
-  };
+  return data;
 };
 
 /**
