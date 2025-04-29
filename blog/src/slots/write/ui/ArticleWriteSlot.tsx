@@ -20,11 +20,11 @@ interface ArticleWriteSlotProps {
     thumbnailUrl: string | null;
   }>;
 
-  articleId: number;
+  articleId?: number;
 }
 
 export const ArticleWriteSlot: React.FC<ArticleWriteSlotProps> = ({
-  articleId,
+  articleId = Math.floor(Math.random() * 10 ** 7),
   initialState
 }) => {
   const [step, setStep] = useState<1 | 2>(1);
