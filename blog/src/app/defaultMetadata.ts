@@ -36,7 +36,7 @@ export const defaultMetadata: Metadata = {
     countryName: "Korea",
     images: [
       {
-        url: "/images/ogLogo.png",
+        url: "/images/oglogo.jpg",
         width: 1200,
         height: 630,
         alt: "abonglog logo",
