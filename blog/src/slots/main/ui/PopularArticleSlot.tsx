@@ -89,7 +89,7 @@ interface PopularArticleGridProps {
       author: string;
       seriesName: string;
       description: string;
-      updatedAt: string;
+      createdAt: string;
       thumbnailUrl: string | null;
       tags: string[];
     }[];

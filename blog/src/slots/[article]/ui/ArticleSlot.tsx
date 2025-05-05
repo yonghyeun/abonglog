@@ -20,7 +20,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
     title,
     tags,
     author,
-    updatedAt,
+    createdAt,
     seriesName,
     html,
     headings
@@ -63,7 +63,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
             <AdminProfile size="sm" />
             <div className="flex flex-col gap-1 text-sm text-gray-500">
               <span>{author}</span>
-              <time>{new Date(updatedAt).toLocaleString()}</time>
+              <time>{createdAt}</time>
             </div>
           </div>
         </div>

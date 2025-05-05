@@ -17,7 +17,7 @@ export const LatestArticleSlot = () => {
       author,
       seriesName,
       description,
-      updatedAt,
+      createdAt,
       thumbnailUrl,
       tags
     }
@@ -53,8 +53,8 @@ export const LatestArticleSlot = () => {
             <AdminProfile size="sm" />
             <div className="text-xs text-secondary">
               <p className="mb-1">{author}</p>
-              <time dateTime={new Date(updatedAt).toISOString()}>
-                {new Date(updatedAt).toLocaleString()}
+              <time dateTime={new Date(createdAt).toISOString()}>
+                {new Date(createdAt).toLocaleString()}
               </time>
             </div>
           </div>

@@ -10,10 +10,10 @@ export const getArticleMetaListPerSeries = () => {
 
     const { data, error } = await supabase
       .from("articles")
-      .select("series_name, title,id, updated_at")
+      .select("series_name, title,id, created_at")
       .eq("status", "published")
       .order("series_name", { ascending: true })
-      .order("updated_at", { ascending: false });
+      .order("created_at", { ascending: false });
 
     if (error) {
       throw error;
@@ -28,12 +28,12 @@ export const getArticleMetaListPerSeries = () => {
         acc[cur.seriesName].push({
           title: cur.title,
           id: cur.id,
-          updatedAt: cur.updatedAt
+          createdAt: cur.createdAt
         });
 
         return acc;
       },
-      {} as Record<string, { title: string; id: number; updatedAt: string }[]>
+      {} as Record<string, { title: string; id: number; createdAt: string }[]>
     );
   };
 

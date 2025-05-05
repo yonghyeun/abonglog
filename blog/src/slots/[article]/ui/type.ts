@@ -6,7 +6,7 @@ export interface ArticlePageProps {
     title: string;
     tags: string[];
     author: string;
-    updatedAt: string;
+    createdAt: string;
     seriesName: string;
     content: string;
     headings: HeadingInfo[];

@@ -8,7 +8,7 @@ import { snakeToCamel } from "@/shared/util";
 const ARTICLE_SELECT_FIELDS = `
   id, title, author, 
   series_name, description, 
-  status, updated_at, thumbnail_url,
+  status, created_at, thumbnail_url,
   article_tags(tag_name)
 `;
 
@@ -19,7 +19,7 @@ const fetchLatestArticle = () => {
     .from("articles")
     .select(ARTICLE_SELECT_FIELDS)
     .eq("status", "published")
-    .order("updated_at", { ascending: false })
+    .order("created_at", { ascending: false })
     .limit(1)
     .single();
 };

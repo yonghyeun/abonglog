@@ -7,7 +7,7 @@ import { snakeToCamel } from "@/shared/util";
 const ARTICLE_SELECT_FIELDS = `
   id , title , author , 
   series_name , description , 
-  status , updated_at, thumbnail_url,
+  status , created_at, thumbnail_url,
   content, article_tags(tag_name)
 `;
 

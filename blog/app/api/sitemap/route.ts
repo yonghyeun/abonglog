@@ -25,10 +25,10 @@ export async function GET() {
       </url>
       ${Object.values(publishedArticleList)
         .flatMap(
-          ({ id, updatedAt }) => `
+          ({ id, createdAt }) => `
         <url>
           <loc>${baseUrl}/article/${id}</loc>
-          <lastmod>${new Date(updatedAt).toISOString()}</lastmod>
+          <lastmod>${new Date(createdAt).toISOString()}</lastmod>
           <changefreq>daily</changefreq>
           <priority>0.8</priority>
         </url>

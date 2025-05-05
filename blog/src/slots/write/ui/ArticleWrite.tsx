@@ -630,7 +630,7 @@ const PreviewCard = () => {
 
   return (
     <ArticlePreviewCard
-      updatedAt={new Date().toISOString()}
+      createdAt={new Date().toISOString()}
       title={title}
       tags={tags}
       seriesName={seriesName}

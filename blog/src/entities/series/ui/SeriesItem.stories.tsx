@@ -18,7 +18,7 @@ const meta: Meta<typeof SeriesItem> = {
       },
       description: "아티클 수"
     },
-    updatedAt: {
+    createdAt: {
       control: {
         type: "text"
       },
@@ -37,7 +37,7 @@ const meta: Meta<typeof SeriesItem> = {
 ### SeriesItemProps
 - \`seriesName\` (string): 시리즈 이름.
 - \`numOfArticles\` (number): 아티클 수.
-- \`updatedAt\` (string): 마지막 업데이트 날짜.
+- \`createdAt\` (string): 마지막 업데이트 날짜.
 
 ## 사용 예시
 
@@ -47,8 +47,8 @@ import { SeriesItem } from "@/entities/series/ui/SeriesItem";
 const ExampleComponent = () => {
   return (
     <div>
-      <SeriesItem seriesName="React Basics" numOfArticles={10} updatedAt="2025-03-05" />
-      <SeriesItem seriesName="Advanced TypeScript" numOfArticles={5} updatedAt="2025-02-28" />
+      <SeriesItem seriesName="React Basics" numOfArticles={10} createdAt="2025-03-05" />
+      <SeriesItem seriesName="Advanced TypeScript" numOfArticles={5} createdAt="2025-02-28" />
     </div>
   );
 };
@@ -66,7 +66,7 @@ export const Default: Story = {
   args: {
     seriesName: "React Basics",
     numOfArticles: 10,
-    updatedAt: "2025-03-05"
+    createdAt: "2025-03-05"
   },
   render: (args) => (
     <div className="p-4">
@@ -81,17 +81,17 @@ export const WithFewArticles: Story = {
       <SeriesItem
         seriesName="Advanced TypeScript"
         numOfArticles={3}
-        updatedAt="2025-02-28"
+        createdAt="2025-02-28"
       />
       <SeriesItem
         seriesName="JavaScript Essentials"
         numOfArticles={2}
-        updatedAt="2025-01-15"
+        createdAt="2025-01-15"
       />
       <SeriesItem
         seriesName="CSS Mastery"
         numOfArticles={4}
-        updatedAt="2025-02-10"
+        createdAt="2025-02-10"
       />
     </div>
   )
@@ -103,17 +103,17 @@ export const RecentlyUpdated: Story = {
       <SeriesItem
         seriesName="Next.js Guide"
         numOfArticles={5}
-        updatedAt={new Date().toISOString().split("T")[0]}
+        createdAt={new Date().toISOString().split("T")[0]}
       />
       <SeriesItem
         seriesName="GraphQL Basics"
         numOfArticles={6}
-        updatedAt={new Date().toISOString().split("T")[0]}
+        createdAt={new Date().toISOString().split("T")[0]}
       />
       <SeriesItem
         seriesName="Node.js in Depth"
         numOfArticles={7}
-        updatedAt={new Date().toISOString().split("T")[0]}
+        createdAt={new Date().toISOString().split("T")[0]}
       />
     </div>
   )

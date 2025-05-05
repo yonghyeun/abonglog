@@ -11,7 +11,7 @@ interface ArticlePreviewCardProps {
   seriesName: string;
   title: string;
   description: string;
-  updatedAt: string;
+  createdAt: string;
 }
 
 export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
@@ -20,7 +20,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
   title,
   seriesName,
   description,
-  updatedAt
+  createdAt
 }) => {
   return (
     <section className="hover:border-primary flex h-full flex-col justify-between rounded-lg bg-secondary transition-all duration-200 hover:shadow-lg hover:dark:shadow-gray-700/50">
@@ -59,7 +59,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
       </div>
       {/* 소개글 & 게시자 정보 */}
       <time className="w-full p-2 text-xs text-secondary">
-        {new Date(updatedAt).toLocaleString()}
+        {new Date(createdAt).toLocaleString()}
       </time>
     </section>
   );

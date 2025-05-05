@@ -30,7 +30,7 @@ export const SeriesListSlot = () => {
                 <SeriesItem
                   seriesName={seriesName}
                   numOfArticles={articleMetaList.length}
-                  updatedAt={articleMetaList[0].updatedAt}
+                  createdAt={articleMetaList[0].createdAt}
                 />
               </Link>
             </Grid.Item>
