@@ -402,7 +402,8 @@ const TempSaveButton = () => {
       articleId,
       thumbnailUrl,
       description,
-      immutable
+      immutable,
+      createdAt
     } = store.getState();
 
     addNewArticle(
@@ -416,6 +417,8 @@ const TempSaveButton = () => {
         author: "yonghyeun",
         description,
         thumbnailUrl,
+        createdAt,
+        updatedAt: new Date().toISOString(),
         immutable: {
           tags: immutable.tags
         }
@@ -563,6 +566,7 @@ const SubmitButton = () => {
       articleId,
       thumbnailUrl,
       description,
+      createdAt,
       immutable
     } = store.getState();
 
@@ -589,6 +593,8 @@ const SubmitButton = () => {
         author: "yonghyeun",
         description,
         thumbnailUrl,
+        createdAt,
+        updatedAt: new Date().toISOString(),
         immutable: {
           tags: immutable.tags
         }
@@ -624,7 +630,7 @@ const PreviewCard = () => {
 
   return (
     <ArticlePreviewCard
-      updatedAt={new Date().toLocaleString()}
+      updatedAt={new Date().toISOString()}
       title={title}
       tags={tags}
       seriesName={seriesName}

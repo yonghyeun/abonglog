@@ -18,6 +18,8 @@ interface ArticleWriteSlotProps {
     // step 2 state
     description: string;
     thumbnailUrl: string | null;
+    createdAt: string;
+    updatedAt: string;
   }>;
 
   articleId?: number;
@@ -35,7 +37,14 @@ export const ArticleWriteSlot: React.FC<ArticleWriteSlotProps> = ({
   const [step, setStep] = useState<1 | 2>(1);
 
   return (
-    <ArticleWrite articleId={_articleId} initialState={initialState}>
+    <ArticleWrite
+      articleId={_articleId}
+      initialState={{
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        ...initialState
+      }}
+    >
       {step === 1 ? (
         <section className="media-padding-x">
           <div className="mb-2 flex h-screen">
