@@ -4,9 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { Tag } from "@/entities/tag/@x/article";
 
-/**
- * created_at , updated_at은 서버에서 자동으로 생성
- */
 export interface PostNewArticleRequest {
   id: number;
   title: string;
