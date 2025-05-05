@@ -56,7 +56,12 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
           {/* 제목 */}
           <h1 className="text-center font-bold">{title}</h1>
           {/* 시리즈명 */}
-          <p className="text-center text-gray-500">{seriesName}</p>
+          <Link
+            href={`/article/list/${seriesName}`}
+            className="flex justify-center text-purple-500 hover:text-purple-400 dark:text-purple-300 dark:hover:text-purple-200"
+          >
+            {seriesName}
+          </Link>
           {/* 태그 리스트 */}
           <List.UnOrder className="py-2">
             {tags.map((tag) => (
@@ -68,7 +73,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
           {/* 저자와 마지막 업데이트일 */}
           <div className="flex items-center gap-2">
             <AdminProfile size="sm" />
-            <div className="flex flex-col gap-1 text-sm text-gray-500">
+            <div className="flex flex-col gap-1 text-sm text-tertiary">
               <span>{author}</span>
               <time>{createdAt}</time>
             </div>
@@ -88,7 +93,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
               {previousArticle && (
                 <Link
                   href={`/article/${previousArticle.id}`}
-                  className="flex h-full flex-1 items-center justify-end gap-2 rounded-lg border border-purple-700 p-2 text-purple-700 hover:text-purple-500 dark:border-purple-300 dark:text-purple-300 hover:dark:text-purple-200"
+                  className="flex h-full flex-1 items-center justify-start gap-2 rounded-lg border border-purple-700 p-2 text-purple-700 hover:text-purple-500 dark:border-purple-300 dark:text-purple-300 hover:dark:text-purple-200"
                 >
                   <BiSolidLeftArrowCircle />
                   {previousArticle.title}

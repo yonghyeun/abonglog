@@ -28,11 +28,13 @@ export const LatestArticleSlot = () => {
       {/* preview */}
       <div className="flex w-full flex-col justify-between gap-2 sm:w-1/2">
         <div className="flex flex-col gap-2">
-          <p className="text-purple-500">최근 게시글</p>
+          <p className="font-base text-purple-500 dark:text-purple-200">
+            최근 게시글
+          </p>
           {/* 글 제목 */}
-          <h2 className="text-3xl">{title}</h2>
+          <h2 className="text-3xl font-bold">{title}</h2>
           {/* 시리즈 제목 */}
-          <p className="text-secondary">{seriesName}</p>
+          <p className="text-purple-500 dark:text-purple-300">{seriesName}</p>
           {/* 태그 리스트 */}
           <List.UnOrder>
             {tags.map((tag) => (

@@ -16,7 +16,7 @@ export const SeriesListSlot = () => {
       <div className="flex justify-end">
         <Link
           href="/article/list/all"
-          className="text-secondary hover:text-purple-500"
+          className="text-purple-700 hover:text-purple-500 dark:text-purple-300 dark:hover:text-purple-200"
         >
           전체 게시글 보기
         </Link>
