@@ -11,6 +11,14 @@ export interface ArticlePageProps {
     content: string;
     headings: HeadingInfo[];
     html: string;
+    previousArticle: {
+      id: number;
+      title: string;
+    } | null;
+    nextArticle: {
+      id: number;
+      title: string;
+    } | null;
   };
   articleId: string;
 }
