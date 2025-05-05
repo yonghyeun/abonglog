@@ -13,6 +13,8 @@ interface ArticleWriteStoreState {
   // step 2 state
   description: string;
   thumbnailUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
 
   // util state
   isPreviewNeedScroll: boolean;
@@ -48,7 +50,9 @@ const ARTICLE_WRITE_INITIAL_STATE: Omit<ArticleWriteStoreState, "immutable"> = {
   thumbnailUrl: null,
   html: "",
   articleId: 0,
-  isPreviewNeedScroll: true
+  isPreviewNeedScroll: true,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString()
 };
 
 export const createArticleWriteStore = (

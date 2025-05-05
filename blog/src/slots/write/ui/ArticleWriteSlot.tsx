@@ -18,6 +18,8 @@ interface ArticleWriteSlotProps {
     // step 2 state
     description: string;
     thumbnailUrl: string | null;
+    createdAt: string;
+    updatedAt: string;
   }>;
 
   articleId?: number;

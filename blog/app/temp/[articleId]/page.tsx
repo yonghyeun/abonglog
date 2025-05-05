@@ -11,14 +11,7 @@ const TempArticlePage: React.FC<TempArticlePageProps> = async ({ params }) => {
   const { articleId } = await params;
   const articleData = await getArticleById(articleId, "draft");
 
-  return (
-    <ArticleSlot
-      articleId={articleId}
-      articleData={{
-        ...articleData
-      }}
-    />
-  );
+  return <ArticleSlot articleId={articleId} articleData={articleData} />;
 };
 
 export default TempArticlePage;

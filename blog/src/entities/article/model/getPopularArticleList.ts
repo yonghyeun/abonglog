@@ -8,7 +8,7 @@ import { snakeToCamel } from "@/shared/util";
 const SELECT_POPULAR_ARTICLE_FIELDS = `
   id , title , author , 
   series_name , description , 
-  status , updated_at, thumbnail_url,
+  status , created_at, thumbnail_url,
   article_tags(tag_name)
 `;
 
@@ -24,7 +24,7 @@ const fetchPopularArticleList = (_period: "daily" | "weekly" | "monthly") => {
     .select(SELECT_POPULAR_ARTICLE_FIELDS)
     .limit(NUMBER_OF_POPULAR_ARTICLE)
     .eq("status", "published")
-    .order("updated_at", { ascending: false });
+    .order("created_at", { ascending: false });
 };
 
 export const getPopularArticleList = (

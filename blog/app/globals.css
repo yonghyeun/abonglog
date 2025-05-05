@@ -74,6 +74,10 @@ h3 {
   color: var(--text-primary);
 }
 
+hr {
+  margin: 1rem 0;
+}
+
 .media-padding-x {
   @apply px-4 sm:px-8 md:px-24 lg:px-32 xl:px-40 2xl:px-80;
 }
@@ -136,7 +140,7 @@ h3 {
 }
 
 .code-block {
-  font-family: transparent;
+  font-family: VictorMono, transparent;
   background-color: var(--bg-secondary);
   padding: 0.1rem 0.5rem;
   font-size: 1rem;
@@ -145,6 +149,7 @@ h3 {
 
 :not(.pre-block) > .code-block {
   border: 1px solid var(--text-quaternary);
+  font-size: 0.8rem;
 }
 
 .blockquote {
@@ -185,7 +190,9 @@ h3 {
   width: 100%;
   border-collapse: collapse;
   margin: 1rem 0;
+  color: var(--text-primary);
 }
+
 .table-head th,
 .table-body td {
   border: 1px solid var(--text-quaternary);
