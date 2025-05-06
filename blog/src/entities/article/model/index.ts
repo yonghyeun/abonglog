@@ -10,3 +10,4 @@ export * from "./deleteArticle";
 export * from "./getNumberOfArticles";
 export * from "./utils";
 export * from "./getArticleMetaListPerSeries";
+export * from "./getArticleGraph";

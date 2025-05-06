@@ -1,12 +1,10 @@
 import { AdminArticleHeader } from "./AdminArticleHeader";
+import { ArticleFooter } from "./ArticleFooter";
 import { ProgressBar } from "./ProgressBar";
 import type { ArticlePageProps } from "./type";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  BiSolidLeftArrowCircle,
-  BiSolidRightArrowCircle
-} from "react-icons/bi";
+import { Suspense } from "react";
 
 import { createNestedHeadings } from "@/features/article/lib/createNestedHeadings";
 import { ArticleSidebar } from "@/features/article/ui";
@@ -28,9 +26,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
     createdAt,
     seriesName,
     html,
-    headings,
-    previousArticle,
-    nextArticle
+    headings
   } = articleData;
 
   return (
@@ -89,31 +85,12 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
         {/* 본문 */}
         <article className="w-full pb-32 lg:flex-grow xl:max-w-[75%]">
           {html}
-          <footer className="flex flex-col justify-between gap-4 text-lg sm:flex-row sm:justify-between">
-            {/* 하단 네비게이션 버튼 */}
-            <div className="flex-1">
-              {previousArticle && (
-                <Link
-                  href={`/article/${previousArticle.id}`}
-                  className="flex h-full flex-1 items-center justify-start gap-2 rounded-lg border border-purple-700 p-2 text-purple-700 hover:text-purple-500 dark:border-purple-300 dark:text-purple-300 hover:dark:text-purple-200"
-                >
-                  <BiSolidLeftArrowCircle />
-                  {previousArticle.title}
-                </Link>
-              )}
-            </div>
-            <div className="flex flex-1">
-              {nextArticle && (
-                <Link
-                  href={`/article/${nextArticle.id}`}
-                  className="flex h-full flex-1 items-center justify-end gap-2 rounded-lg border border-purple-700 p-2 text-purple-700 hover:text-purple-500 dark:border-purple-300 dark:text-purple-300 hover:dark:text-purple-200"
-                >
-                  {nextArticle.title}
-                  <BiSolidRightArrowCircle />
-                </Link>
-              )}
-            </div>
-          </footer>
+          {/* 아티클 footer  */}
+          <Suspense
+            fallback={<div className="h-96 w-full animate-pulse rounded-lg" />}
+          >
+            <ArticleFooter articleId={articleId} seriesName={seriesName} />
+          </Suspense>
         </article>
         {/* 사이드바 */}
         <aside className="relative hidden text-gray-400 xl:block">

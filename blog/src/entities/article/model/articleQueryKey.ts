@@ -34,5 +34,7 @@ export const ARTICLE_QUERY_KEY = {
   infoPerSeries: () =>
     [...ARTICLE_QUERY_KEY.default("published"), "perSeries"] as const,
   metaListPerSeries: () =>
-    [...ARTICLE_QUERY_KEY.default("published"), "metaListPerSeries"] as const
+    [...ARTICLE_QUERY_KEY.default("published"), "metaListPerSeries"] as const,
+  graph: (articleId: number) =>
+    [...ARTICLE_QUERY_KEY.default("published"), "graph", articleId] as const
 };
