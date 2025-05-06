@@ -41,7 +41,10 @@ interface ArticleWriteStoreAction {
   ) => void;
 }
 
-const ARTICLE_WRITE_INITIAL_STATE: Omit<ArticleWriteStoreState, "immutable"> = {
+const ARTICLE_WRITE_INITIAL_STATE: Omit<
+  ArticleWriteStoreState,
+  "immutable" | "createdAt" | "updatedAt"
+> = {
   title: "",
   tags: [],
   seriesName: "",
@@ -50,9 +53,7 @@ const ARTICLE_WRITE_INITIAL_STATE: Omit<ArticleWriteStoreState, "immutable"> = {
   thumbnailUrl: null,
   html: "",
   articleId: 0,
-  isPreviewNeedScroll: true,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString()
+  isPreviewNeedScroll: true
 };
 
 export const createArticleWriteStore = (
@@ -61,6 +62,8 @@ export const createArticleWriteStore = (
   return createStore<ArticleWriteStoreState & ArticleWriteStoreAction>(
     (set, get) => ({
       ...ARTICLE_WRITE_INITIAL_STATE,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       ...initialState,
       immutable: {
         tags: initialState?.tags || []
