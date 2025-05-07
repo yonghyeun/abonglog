@@ -2,9 +2,6 @@
 
 ## Create
 
-- `postNewArticle.ts`: 새 아티클 작성 기능
-  - 제목, 내용, 작성자, 시리즈, 설명, 태그 등 저장
-  - 아티클 상태(published/draft) 관리
 - `postArticleImage.ts`: 아티클 내 이미지 업로드
 - `postArticleThumbnail.ts`: 아티클 썸네일 이미지 업로드
 
