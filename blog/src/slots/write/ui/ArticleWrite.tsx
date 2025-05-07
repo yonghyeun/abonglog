@@ -20,7 +20,7 @@ import { rehypeMarkdown } from "@/entities/article/lib";
 import {
   usePostArticleImage,
   usePostArticleThumbnail,
-  usePostNewArticle
+  useUpsertArticle
 } from "@/entities/article/model";
 import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
 import {
@@ -389,47 +389,34 @@ const MarkdownPreview = () => {
 };
 
 const TempSaveButton = () => {
-  const { mutate: addNewArticle } = usePostNewArticle();
+  const { mutate: upsertArticle } = useUpsertArticle();
+
   const store = useContext(ArticleWriteStoreContext)!;
   const { notifyTopLeft } = useNotify();
 
   const handleSave = useCallback(() => {
-    const {
-      title,
-      content,
-      tags,
-      seriesName,
-      articleId,
-      thumbnailUrl,
-      description,
-      immutable,
-      createdAt
-    } = store.getState();
+    const articleData = store.getState();
 
-    addNewArticle(
-      {
-        title: title || `${articleId} 의 임시 저장된 글`,
-        content: content,
-        tags: tags,
-        seriesName: seriesName,
-        status: "draft",
-        id: articleId,
-        author: "yonghyeun",
-        description,
-        thumbnailUrl,
-        createdAt,
+    const body = {
+      articleData: {
+        ...articleData,
+        status: "draft" as const,
         updatedAt: new Date().toISOString(),
-        immutable: {
-          tags: immutable.tags
-        }
+        author: "yonghyeun",
+        id: articleData.articleId
       },
-      {
-        onSuccess: (data) => {
-          notifyTopLeft.success(data.message);
-        }
+      tags: articleData.immutable.tags
+    };
+
+    upsertArticle(body, {
+      onSuccess: ({ message }) => {
+        notifyTopLeft.success(message);
+      },
+      onError: (error) => {
+        notifyTopLeft.error(error.message);
       }
-    );
-  }, [notifyTopLeft, addNewArticle, store]);
+    });
+  }, [upsertArticle, store, notifyTopLeft]);
 
   useEffect(() => {
     const interval = setInterval(handleSave, 1000 * 60 * 5);
@@ -552,73 +539,42 @@ const ArticleImageGrid = () => {
 
 const SubmitButton = () => {
   const router = useRouter();
-  const { mutate: addNewArticle } = usePostNewArticle();
   const store = useContext(ArticleWriteStoreContext)!;
   const queryClient = useQueryClient();
   const { notifyTopLeft } = useNotify();
 
-  const handleSaveArticle = () => {
-    const {
-      title,
-      content,
-      tags,
-      seriesName,
-      articleId,
-      thumbnailUrl,
-      description,
-      createdAt,
-      immutable
-    } = store.getState();
+  const { mutate: upsertArticle } = useUpsertArticle();
 
-    if (
-      !title ||
-      !content ||
-      !tags.length ||
-      !seriesName ||
-      !thumbnailUrl ||
-      !description
-    ) {
-      notifyTopLeft.error("입력되지 않은 정보가 있습니다.");
-      return;
-    }
+  const handleSave = useCallback(() => {
+    const articleData = store.getState();
 
-    addNewArticle(
-      {
-        title: title,
-        content: content,
-        tags: tags,
-        seriesName: seriesName,
-        status: "published",
-        id: articleId,
-        author: "yonghyeun",
-        description,
-        thumbnailUrl,
-        createdAt,
+    const body = {
+      articleData: {
+        ...articleData,
+        status: "published" as const,
         updatedAt: new Date().toISOString(),
-        immutable: {
-          tags: immutable.tags
-        }
+        author: "yonghyeun",
+        id: articleData.articleId
       },
-      {
-        onSuccess: (data) => {
-          notifyTopLeft.success(data.message);
+      tags: articleData.immutable.tags
+    };
 
-          queryClient.invalidateQueries({
-            queryKey: ARTICLE_QUERY_KEY.popularDefault()
-          });
-          router.push("/");
-        }
+    upsertArticle(body, {
+      onSuccess: ({ message }) => {
+        notifyTopLeft.success(message);
+        queryClient.invalidateQueries({
+          queryKey: ARTICLE_QUERY_KEY.default("published")
+        });
+        router.push("/");
+      },
+      onError: (error) => {
+        notifyTopLeft.error(error.message);
       }
-    );
-  };
+    });
+  }, [upsertArticle, store, notifyTopLeft, queryClient, router]);
 
   return (
-    <Button
-      variant="filled"
-      size="md"
-      className="mt-4"
-      onClick={handleSaveArticle}
-    >
+    <Button variant="filled" size="md" className="mt-4" onClick={handleSave}>
       게시글 발행하기
     </Button>
   );

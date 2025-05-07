@@ -1,7 +1,6 @@
 export * from "./getPopularArticleList";
 export * from "./postArticleImage";
 export * from "./postArticleThumbnail";
-export * from "./postNewArticle";
 export * from "./getArticleList";
 export * from "./getArticleListBySeries";
 export * from "./getLatestArticle";
@@ -11,3 +10,4 @@ export * from "./getNumberOfArticles";
 export * from "./utils";
 export * from "./getArticleMetaListPerSeries";
 export * from "./getArticleGraph";
+export * from "./upsertArticle";

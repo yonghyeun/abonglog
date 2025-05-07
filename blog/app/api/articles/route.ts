@@ -1,16 +1,12 @@
 import { deleteUnusedImages, deleteUnusedThumbnail } from "./__model__";
+import { deleteArticleTags, removeArticle } from "@backend/article/model";
 import {
-  deleteArticleTags,
-  removeArticle,
-  upsertArticle,
-  upsertArticleTags
-} from "@backend/article/model";
-import {
+  camelToSnake,
   createErrorResponse,
   createSuccessResponse
 } from "@backend/shared/lib";
 import * as E from "@fp/either";
-import { isEmpty, pipe } from "@fxts/core";
+import { pipe } from "@fxts/core";
 import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 
@@ -18,28 +14,62 @@ import { findImageUrl } from "@/features/article/lib";
 
 import type {
   DeleteArticleRequest,
-  PostNewArticleRequest
+  UpsertArticleRequest
 } from "@/entities/article/model";
 
-const postArticleAction = async ({ tags, ...rest }: PostNewArticleRequest) => {
-  const { immutable, ...articleData } = rest;
+import { createServerSupabase } from "@/shared/lib";
 
-  const usedImages = findImageUrl(articleData.content).map(({ src }) => src);
-  const removedTags = immutable.tags.filter((tag) => !tags.includes(tag));
+const upsertArticleAction = async ({
+  articleData,
+  tags
+}: UpsertArticleRequest) => {
+  const supabase = await createServerSupabase();
 
-  const responses = await Promise.all([
-    upsertArticle(articleData),
-    deleteUnusedImages(articleData.id, usedImages),
-    deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl),
-    upsertArticleTags(articleData.id, tags),
-    isEmpty(removedTags)
-      ? E.right(null)
-      : deleteArticleTags(articleData.id, removedTags)
+  const { error } = await supabase.rpc("upsertarticle", {
+    article_data: camelToSnake(articleData),
+    tags
+  });
+
+  if (error) {
+    console.error("Error upserting article:", error);
+
+    return E.left(error);
+  }
+
+  const unusedImages = findImageUrl(articleData.content).map(({ src }) => src);
+
+  // TODO 현재 Either 의 타입 시그니처가 올바르지 않아 분기문을 사용하고 있음
+  // 추후 Either 의 타입 시그니처가 올바르게 변경되면 분기문을 제거할 수 있음
+  await Promise.all([
+    deleteUnusedImages(articleData.id, unusedImages).then((response) => {
+      if (E.isLeft(response)) {
+        console.error(
+          `🤖 upsertArticle - ${articleData.id} 에서 사용하지 않은 이미지 삭제 중 오류:`,
+          response.value
+        );
+      } else {
+        console.log(
+          `🤖 upsertArticle - ${articleData.id} 에서 사용하지 않은 이미지 ${response.value.length}개 삭제 완료`
+        );
+      }
+    }),
+    deleteUnusedThumbnail(articleData.id, articleData.thumbnailUrl).then(
+      (response) => {
+        if (E.isLeft(response)) {
+          console.error(
+            `🤖 upsertArticle - ${articleData.id} 에서 사용하지 않은 썸네일 삭제 중 오류:`,
+            response.value
+          );
+        } else {
+          console.log(
+            `🤖 upsertArticle - ${articleData.id} 에서 사용하지 않은 썸네일 ${response.value.length}개 삭제 완료`
+          );
+        }
+      }
+    )
   ]);
 
-  const error = responses.find((response) => response._tag === "left");
-
-  return error ? E.left(error.value) : E.right({ type: articleData.status });
+  return E.right(null);
 };
 
 const revalidateArticlePath =
@@ -58,11 +88,11 @@ const MESSAGE = {
 };
 
 export const POST = async (req: NextRequest) => {
-  const data = (await req.json()) as PostNewArticleRequest;
+  const { articleData, tags } = (await req.json()) as UpsertArticleRequest;
 
   return pipe(
-    postArticleAction(data),
-    E.matchRight(revalidateArticlePath(data.id, data.seriesName)),
+    upsertArticleAction({ articleData, tags }),
+    E.matchRight(revalidateArticlePath(articleData.id, articleData.seriesName)),
     E.fold(
       createErrorResponse,
       createSuccessResponse(MESSAGE.POST_ARTICLE_SUCCESS)
