@@ -1,5 +1,4 @@
 import { deleteUnusedImages, deleteUnusedThumbnail } from "./__model__";
-import { deleteArticleTags, removeArticle } from "@backend/article/model";
 import {
   camelToSnake,
   createErrorResponse,
@@ -101,16 +100,48 @@ export const POST = async (req: NextRequest) => {
 };
 
 const deleteArticleAction = async (articleId: number) => {
-  const response = await Promise.all([
-    removeArticle(articleId),
-    deleteArticleTags(articleId),
-    deleteUnusedImages(articleId, []),
-    deleteUnusedThumbnail(articleId, null)
+  const supabase = await createServerSupabase();
+
+  const { error } = await supabase.rpc("delete_article", {
+    delete_article_id: articleId
+  });
+
+  if (error) {
+    console.error("Error deleting article:", error);
+
+    return E.left(error);
+  }
+
+  // TODO 현재 Either 의 타입 시그니처가 올바르지 않아 분기문을 사용하고 있음
+  // 추후 Either 의 타입 시그니처가 올바르게 변경되면 분기문을 제거할 수 있음
+  await Promise.all([
+    deleteUnusedImages(articleId, []).then((response) => {
+      if (E.isLeft(response)) {
+        console.error(
+          `🤖 deleteArticle - ${articleId} 에서 사용하지 않은 이미지 삭제 중 오류:`,
+          response.value
+        );
+      } else {
+        console.log(
+          `🤖 deleteArticle - ${articleId} 에서 사용하지 않은 이미지 ${response.value.length}개 삭제 완료`
+        );
+      }
+    }),
+    deleteUnusedThumbnail(articleId, null).then((response) => {
+      if (E.isLeft(response)) {
+        console.error(
+          `🤖 deleteArticle - ${articleId} 에서 사용하지 않은 썸네일 삭제 중 오류:`,
+          response.value
+        );
+      } else {
+        console.log(
+          `🤖 deleteArticle - ${articleId} 에서 사용하지 않은 썸네일 ${response.value.length}개 삭제 완료`
+        );
+      }
+    })
   ]);
 
-  const error = response.find((response) => response._tag === "left");
-
-  return error ? E.left(error.value) : E.right(null);
+  return E.right(null);
 };
 
 export const DELETE = async (req: NextRequest) => {

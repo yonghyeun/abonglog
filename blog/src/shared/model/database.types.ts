@@ -159,6 +159,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      delete_article: {
+        Args: { delete_article_id: number };
+        Returns: number;
+      };
       upsertarticle: {
         Args:
           | { article_data: Json; tags: string[] }
