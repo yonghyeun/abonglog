@@ -405,7 +405,7 @@ const TempSaveButton = () => {
         author: "yonghyeun",
         id: articleData.articleId
       },
-      tags: articleData.immutable.tags
+      tags: articleData.tags
     };
 
     upsertArticle(body, {
@@ -556,7 +556,7 @@ const SubmitButton = () => {
         author: "yonghyeun",
         id: articleData.articleId
       },
-      tags: articleData.immutable.tags
+      tags: articleData.tags
     };
 
     upsertArticle(body, {

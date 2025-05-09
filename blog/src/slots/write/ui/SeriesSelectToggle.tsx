@@ -51,7 +51,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
             {searchedSeries.map((series) => (
               <li
                 key={series.name}
-                className="flex cursor-pointer list-disc items-center justify-between text-sm text-gray-600 hover:text-purple-700"
+                className="flex cursor-pointer list-disc items-center justify-between text-sm text-secondary hover:text-purple-500"
                 onClick={() => onEachSeriesClick(series)}
               >
                 {series.name}

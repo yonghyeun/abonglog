@@ -18,11 +18,6 @@ interface ArticleWriteStoreState {
 
   // util state
   isPreviewNeedScroll: boolean;
-
-  // readonly state
-  immutable: {
-    tags: string[];
-  };
 }
 
 interface ArticleWriteStoreAction {
@@ -65,9 +60,6 @@ export const createArticleWriteStore = (
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       ...initialState,
-      immutable: {
-        tags: initialState?.tags || []
-      },
 
       setTitle: (action) => {
         const newState =

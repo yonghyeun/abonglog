@@ -7,7 +7,10 @@ const Heading1: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   children,
   ...props
 }) => (
-  <h1 {...props} className="heading-1 border-b-2 border-b-purple-300">
+  <h1
+    {...props}
+    className="heading-1 border-b-2 border-b-purple-500 dark:border-b-purple-300"
+  >
     {children}
   </h1>
 );
@@ -15,7 +18,10 @@ const Heading2: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   children,
   ...props
 }) => (
-  <h2 {...props} className="heading-2 border-b-2 border-b-purple-300">
+  <h2
+    {...props}
+    className="heading-2 border-b-2 border-b-purple-500 dark:border-b-purple-300"
+  >
     {children}
   </h2>
 );
@@ -23,7 +29,10 @@ const Heading3: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   children,
   ...props
 }) => (
-  <h3 {...props} className="heading-3 border-b-2 border-b-purple-300">
+  <h3
+    {...props}
+    className="heading-3 border-b-2 border-b-purple-500 dark:border-b-purple-300"
+  >
     {children}
   </h3>
 );
