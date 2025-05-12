@@ -208,6 +208,11 @@ const ImageUploadInput: React.FC = () => {
                           blobUrl,
                           `![image](${data[index]})`
                         );
+
+                        // blob으로 생성된 url 을 메모리에서 해제
+                        URL.revokeObjectURL(
+                          blobUrl.match(/\((.*?)\)/)?.[1] || blobUrl
+                        );
                       });
 
                       return prev;
@@ -220,6 +225,11 @@ const ImageUploadInput: React.FC = () => {
                         prev = prev.replace(
                           blobUrl,
                           "이미지 업로드에 실패했습니다."
+                        );
+
+                        // blob으로 생성된 url 을 메모리에서 해제
+                        URL.revokeObjectURL(
+                          blobUrl.match(/\((.*?)\)/)?.[1] || blobUrl
                         );
                       });
 
@@ -370,7 +380,13 @@ const MarkdownEditor = () => {
                           blobUrl,
                           `![image](${data[index]})`
                         );
+
+                        // blob으로 생성된 url 을 메모리에서 해제
+                        URL.revokeObjectURL(
+                          blobUrl.match(/\((.*?)\)/)?.[1] || blobUrl
+                        );
                       });
+
                       return prev;
                     });
                   },
@@ -381,6 +397,11 @@ const MarkdownEditor = () => {
                         prev = prev.replace(
                           blobUrl,
                           "이미지 업로드에 실패했습니다."
+                        );
+
+                        // blob으로 생성된 url 을 메모리에서 해제
+                        URL.revokeObjectURL(
+                          blobUrl.match(/\((.*?)\)/)?.[1] || blobUrl
                         );
                       });
 
