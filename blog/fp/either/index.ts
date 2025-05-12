@@ -49,7 +49,7 @@ export const flatMap =
   (either: Either<L, R>) =>
     isRight(either) ? onRight(either.value) : either;
 
-export const match =
+export const tab =
   <L, R>(onLeft: (value: L) => void, onRight: (value: R) => void) =>
   (either: Either<L, R>) => {
     fold(onLeft, onRight)(either);
@@ -57,7 +57,7 @@ export const match =
     return either;
   };
 
-export const matchRight =
+export const tabRight =
   <L, R>(onRight: (value: R) => void) =>
   (either: Either<L, R>) => {
     if (isRight(either)) {

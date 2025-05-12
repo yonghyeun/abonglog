@@ -91,7 +91,7 @@ export const POST = async (req: NextRequest) => {
 
   return pipe(
     upsertArticleAction({ articleData, tags }),
-    E.matchRight(revalidateArticlePath(articleData.id, articleData.seriesName)),
+    E.tabRight(revalidateArticlePath(articleData.id, articleData.seriesName)),
     E.fold(
       createErrorResponse,
       createSuccessResponse(MESSAGE.POST_ARTICLE_SUCCESS)
@@ -149,7 +149,7 @@ export const DELETE = async (req: NextRequest) => {
 
   return pipe(
     deleteArticleAction(articleId),
-    E.matchRight(revalidateArticlePath(articleId, seriesName)),
+    E.tabRight(revalidateArticlePath(articleId, seriesName)),
     E.fold(
       createErrorResponse,
       createSuccessResponse(MESSAGE.DELETE_ARTICLE_SUCCESS)

@@ -76,7 +76,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
             event.preventDefault();
             pipe(
               parseTagSchema({ name: newTagName }, tags),
-              E.match(notifyTopLeft.error, (data) => {
+              E.tab(notifyTopLeft.error, (data) => {
                 onAddNewTag(data, {
                   onSuccess: (_, { name }) =>
                     notifyTopLeft.success(`${name} 태그가 추가되었습니다`),
