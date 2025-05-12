@@ -16,19 +16,19 @@ const TagSchema = z.object({
 
 export type TagRequest = z.infer<typeof TagSchema>;
 
-const isExsitingTag = (newTag: TagRequest) => (existingTag: TagRequest) =>
+const isExistingTag = (newTag: TagRequest) => (existingTag: TagRequest) =>
   newTag.name.toLowerCase() === existingTag.name.toLowerCase();
 
 export const parseTagSchema = (
   data: TagRequest,
-  exsitingTags: TagRequest[]
+  existingTags: TagRequest[]
 ) => {
   return pipe(
     TagSchema.safeParse(data),
     ({ success, data, error }) =>
       success ? E.right(data) : E.left(error.errors[0].message),
     E.flatMap((newTag) =>
-      exsitingTags.some(isExsitingTag(newTag))
+      existingTags.some(isExistingTag(newTag))
         ? E.left(TagErrorMessage.ALREADY_EXIST)
         : E.right(newTag)
     )
