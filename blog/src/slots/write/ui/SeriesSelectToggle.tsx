@@ -75,7 +75,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
             event.preventDefault();
             pipe(
               parseSeriesSchema({ name: newSeriesName }, seriesList),
-              E.tab(notifyTopLeft.error, (data) => {
+              E.tap(notifyTopLeft.error, (data) => {
                 addNewSeries(data, {
                   onSuccess: (_, { name }) => {
                     notifyTopLeft.success(`${name} 시리즈가 추가되었습니다`);

@@ -451,7 +451,7 @@ const TempSaveButton = () => {
 
     pipe(
       parseTempArticleData(body),
-      E.tab(notifyTopLeft.error, (data) => {
+      E.tap(notifyTopLeft.error, (data) => {
         postTempArticle(data, {
           onSuccess: ({ message }) => {
             notifyTopLeft.success(message);
@@ -607,7 +607,7 @@ const SubmitButton = () => {
 
     pipe(
       parseArticleData(body),
-      E.tab(notifyTopLeft.error, (data) => {
+      E.tap(notifyTopLeft.error, (data) => {
         postArticle(data, {
           onSuccess: ({ message }) => {
             notifyTopLeft.success(message);
