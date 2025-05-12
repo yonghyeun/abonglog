@@ -66,3 +66,8 @@ export const matchRight =
 
     return either;
   };
+
+export const fromPredicate =
+  <L, R>(predicate: (value: R) => boolean, onLeft: (value: R) => L) =>
+  (value: R): Either<L, R> =>
+    predicate(value) ? right(value) : left(onLeft(value));

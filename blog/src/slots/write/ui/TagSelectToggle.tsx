@@ -1,8 +1,14 @@
 "use client";
 
 import { useTagSelectToggle } from "../lib";
+import * as E from "@fp/either";
+import { pipe } from "@fxts/core";
 
-import { type Tag, usePostAddNewTag } from "@/entities/tag/model";
+import {
+  type Tag,
+  parseTagSchema,
+  usePostAddNewTag
+} from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { SearchIcon } from "@/shared/config";
@@ -68,11 +74,15 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
         <Selector.Form
           onSubmit={(event) => {
             event.preventDefault();
-            onAddNewTag(
-              { name: newTagName },
-              {
-                onSuccess: ({ message }) => notifyTopLeft.success(message)
-              }
+            pipe(
+              parseTagSchema({ name: newTagName }, tags),
+              E.match(notifyTopLeft.error, (data) => {
+                onAddNewTag(data, {
+                  onSuccess: (_, { name }) =>
+                    notifyTopLeft.success(`${name} 태그가 추가되었습니다`),
+                  onError: ({ message }) => notifyTopLeft.error(message)
+                });
+              })
             );
           }}
         >
