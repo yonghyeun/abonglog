@@ -36,7 +36,7 @@ const Label: React.FC<LabelProps> = ({ className = "", value, ...props }) => {
 const Input: React.FC<SearchInputProps> = ({ ...props }) => {
   return (
     <input
-      className="flex-grow bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-purple-700"
+      className="flex-grow rounded-sm bg-secondary p-2 text-sm text-gray-400 outline-none focus:outline-purple-700"
       {...props}
     />
   );
