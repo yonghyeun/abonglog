@@ -555,7 +555,7 @@ const SubmitButton = () => {
 
   const { mutate: postArticle } = usePostArticle();
 
-  const handleSave = useCallback(() => {
+  const handleSave = () => {
     const articleData = store.getState();
 
     const body = {
@@ -586,7 +586,7 @@ const SubmitButton = () => {
         });
       })
     );
-  }, [postArticle, store, notifyTopLeft, router, queryClient]);
+  };
 
   return (
     <Button variant="filled" size="md" className="mt-4" onClick={handleSave}>
