@@ -9,7 +9,7 @@ import {
 import { SeriesSelectToggle } from "./SeriesSelectToggle";
 import { TagSelectToggle } from "./TagSelectToggle";
 import * as E from "@fp/either";
-import { pipe } from "@fxts/core";
+import { pipe, tap, toArray, when, zip } from "@fxts/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useContext, useEffect, useRef } from "react";
@@ -158,53 +158,70 @@ const ImageUploadInput: React.FC = () => {
   const articleId = useArticleWriteStore((state) => state.articleId);
   const setContent = useArticleWriteStore((state) => state.setContent);
 
-  const blobImageStack = useRef<string[]>([]);
-
   const handleImageUpload = async ({
     target
   }: React.ChangeEvent<HTMLInputElement>) => {
-    const files = target.files;
+    return pipe(
+      target.files,
+      when(
+        (files) => !!files,
+        (files) => {
+          pipe(
+            // 0. 파일과 blobUrl 을 zip 으로 묶기
+            zip(
+              files,
+              [...files].map((file) => `![image](${URL.createObjectURL(file)})`)
+            ),
+            toArray,
+            // 1. blobUrl 을 이용해 본문 수정
+            tap((filesWithBlobUrl) => {
+              setContent((prev) => {
+                const blobUrls = filesWithBlobUrl
+                  .map(([, blobUrl]) => blobUrl)
+                  .join("\n");
 
-    if (!files || files.length === 0) {
-      return;
-    }
+                return `${prev}\n${blobUrls}`;
+              });
+            }),
 
-    // API 요청 전 blob url 주소로 이미지를 미리 표현하기 위해 content 상태를 변경 합니다.
+            (filesWithBlobUrl) => {
+              uploadImage(
+                {
+                  files: filesWithBlobUrl.map(([file]) => file),
+                  articleId: articleId.toString()
+                },
+                {
+                  onSuccess: (data) => {
+                    // 2. 업로드 성공시 blobUrl 을 실제 url 로 변경
+                    setContent((prev) => {
+                      filesWithBlobUrl.forEach(([_, blobUrl], index) => {
+                        prev = prev.replace(
+                          blobUrl,
+                          `![image](${data[index]})`
+                        );
+                      });
+                      return prev;
+                    });
+                  },
+                  onError: () => {
+                    // 3. 업로드 실패시 blobUrl 을 에러 문구로 변경
+                    setContent((prev) => {
+                      filesWithBlobUrl.forEach(([_, blobUrl]) => {
+                        prev = prev.replace(
+                          blobUrl,
+                          "이미지 업로드에 실패했습니다."
+                        );
+                      });
 
-    blobImageStack.current = [...files].map(
-      (file) => `![image](${URL.createObjectURL(file)})`
-    );
-
-    setContent((prev) => `${prev}\n${blobImageStack.current.join("\n")}`);
-
-    uploadImage(
-      {
-        files: [...files],
-        articleId: articleId.toString()
-      },
-      // API 요청 성공 혹은 실패 후 마크다운 상태를 변경 합니다.
-      {
-        onSuccess: (data) => {
-          setContent((prev) => {
-            blobImageStack.current.forEach((blobUrl, index) => {
-              prev = prev.replace(blobUrl, `![image](${data[index]})`);
-            });
-
-            blobImageStack.current = [];
-            return prev;
-          });
-        },
-        onError: () => {
-          setContent((prev) => {
-            blobImageStack.current.forEach((blobUrl) => {
-              prev = prev.replace(blobUrl, "이미지 업로드에 실패했습니다.");
-            });
-
-            blobImageStack.current = [];
-            return prev;
-          });
+                      return prev;
+                    });
+                  }
+                }
+              );
+            }
+          );
         }
-      }
+      )
     );
   };
 
