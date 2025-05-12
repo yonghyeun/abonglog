@@ -1,13 +1,13 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-import type { Tag } from "@/entities/tag/model";
+import type { TagRequest } from "@/entities/tag/model";
 
 import { createServerSupabase } from "@/shared/lib";
 
 export const POST = async (req: NextRequest) => {
   const supabase = await createServerSupabase();
-  const { name } = (await req.json()) as Tag;
+  const { name } = (await req.json()) as TagRequest;
 
   const { error } = await supabase.from("tags").insert([
     {

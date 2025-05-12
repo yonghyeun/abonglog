@@ -14,14 +14,15 @@ const SeriesSchema = z.object({
   name: z.string().min(1, SeriesErrorMessage.EMPTY)
 });
 
-export type Series = z.infer<typeof SeriesSchema>;
+export type SeriesRequest = z.infer<typeof SeriesSchema>;
 
-const isExistingSeries = (newSeries: Series) => (existingSeriesItem: Series) =>
-  newSeries.name.toLowerCase() === existingSeriesItem.name.toLowerCase();
+const isExistingSeries =
+  (newSeries: SeriesRequest) => (existingSeriesItem: SeriesRequest) =>
+    newSeries.name.toLowerCase() === existingSeriesItem.name.toLowerCase();
 
 export const parseSeriesSchema = (
   data: { name: string },
-  existingSeriesList: Series[] = []
+  existingSeriesList: SeriesRequest[] = []
 ) => {
   return pipe(
     SeriesSchema.safeParse(data),
@@ -37,7 +38,7 @@ export const parseSeriesSchema = (
   );
 };
 
-const postAddNewSeries = async ({ name }: Series) => {
+const postAddNewSeries = async ({ name }: SeriesRequest) => {
   const response = await fetch(SERIES_END_POINT.POST_NEW_SERIES, {
     method: "POST",
     body: JSON.stringify({ name })

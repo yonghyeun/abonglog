@@ -14,12 +14,15 @@ const TagSchema = z.object({
   name: z.string().min(1, TagErrorMessage.EMPTY)
 });
 
-export type Tag = z.infer<typeof TagSchema>;
+export type TagRequest = z.infer<typeof TagSchema>;
 
-const isExsitingTag = (newTag: Tag) => (existingTag: Tag) =>
+const isExsitingTag = (newTag: TagRequest) => (existingTag: TagRequest) =>
   newTag.name.toLowerCase() === existingTag.name.toLowerCase();
 
-export const parseTagSchema = (data: Tag, exsitingTags: Tag[]) => {
+export const parseTagSchema = (
+  data: TagRequest,
+  exsitingTags: TagRequest[]
+) => {
   return pipe(
     TagSchema.safeParse(data),
     ({ success, data, error }) =>
@@ -32,7 +35,7 @@ export const parseTagSchema = (data: Tag, exsitingTags: Tag[]) => {
   );
 };
 
-const postAddNewTag = async ({ name }: Tag) => {
+const postAddNewTag = async ({ name }: TagRequest) => {
   const response = await fetch(TAG_END_POINT.POST_NEW_TAG, {
     method: "POST",
     body: JSON.stringify({ name })

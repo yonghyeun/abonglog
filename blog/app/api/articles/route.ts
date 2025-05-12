@@ -12,16 +12,16 @@ import type { NextRequest } from "next/server";
 import { findImageUrl } from "@/features/article/lib";
 
 import type {
+  ArticleDataRequest,
   DeleteArticleRequest,
-  UpsertArticleRequest
+  TempArticleDataRequest
 } from "@/entities/article/model";
 
 import { createServerSupabase } from "@/shared/lib";
 
-const upsertArticleAction = async ({
-  articleData,
-  tags
-}: UpsertArticleRequest) => {
+type ArticleData = TempArticleDataRequest | ArticleDataRequest;
+
+const upsertArticleAction = async ({ articleData, tags }: ArticleData) => {
   const supabase = await createServerSupabase();
 
   const { error } = await supabase.rpc("upsertarticle", {
@@ -87,7 +87,7 @@ const MESSAGE = {
 };
 
 export const POST = async (req: NextRequest) => {
-  const { articleData, tags } = (await req.json()) as UpsertArticleRequest;
+  const { articleData, tags } = (await req.json()) as ArticleData;
 
   return pipe(
     upsertArticleAction({ articleData, tags }),

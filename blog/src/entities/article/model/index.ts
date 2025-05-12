@@ -10,4 +10,5 @@ export * from "./getNumberOfArticles";
 export * from "./utils";
 export * from "./getArticleMetaListPerSeries";
 export * from "./getArticleGraph";
-export * from "./upsertArticle";
+export * from "./postTempArticle";
+export * from "./postArticle";
