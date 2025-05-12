@@ -9,7 +9,16 @@ import {
 import { SeriesSelectToggle } from "./SeriesSelectToggle";
 import { TagSelectToggle } from "./TagSelectToggle";
 import * as E from "@fp/either";
-import { filter, flatMap, pipe, tap, toArray, when, zip } from "@fxts/core";
+import {
+  filter,
+  flatMap,
+  last,
+  pipe,
+  tap,
+  toArray,
+  when,
+  zip
+} from "@fxts/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useContext, useEffect, useRef } from "react";
@@ -519,22 +528,24 @@ const ThumbnailUploadInput = () => {
   );
 
   const handleUploadThumbnail = ({
-    target
+    target: { files }
   }: React.ChangeEvent<HTMLInputElement>) => {
-    const files = target.files;
-
-    if (!files || !files.length) {
-      return;
-    }
-
-    uploadNewThumbnail(
-      {
-        file: files[files.length - 1],
-        articleId: articleId.toString()
-      },
-      {
-        onSuccess: setThumbnailUrl
-      }
+    pipe(
+      files,
+      when(
+        (files): files is FileList => !!files && files.length > 0,
+        (files) => {
+          uploadNewThumbnail(
+            {
+              file: last(files)!,
+              articleId: articleId.toString()
+            },
+            {
+              onSuccess: setThumbnailUrl
+            }
+          );
+        }
+      )
     );
   };
 
