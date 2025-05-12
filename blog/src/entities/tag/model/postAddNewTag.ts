@@ -1,12 +1,41 @@
 import { TAG_END_POINT } from "../config";
 import { TAG_QUERY_KEY } from "./tagQueryKey";
+import * as E from "@fp/either";
+import { pipe } from "@fxts/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
 
-export interface PostAddNewTagRequest {
-  name: string;
-}
+const TagErrorMessage = {
+  EMPTY: "태그는 최소 1자 이상이어야 합니다",
+  ALREADY_EXIST: "이미 존재하는 태그입니다"
+};
 
-const postAddNewTag = async ({ name }: PostAddNewTagRequest) => {
+const TagSchema = z.object({
+  name: z.string().min(1, TagErrorMessage.EMPTY)
+});
+
+export type TagRequest = z.infer<typeof TagSchema>;
+
+const isExistingTag = (newTag: TagRequest) => (existingTag: TagRequest) =>
+  newTag.name.toLowerCase() === existingTag.name.toLowerCase();
+
+export const parseTagSchema = (
+  data: TagRequest,
+  existingTags: TagRequest[]
+) => {
+  return pipe(
+    TagSchema.safeParse(data),
+    ({ success, data, error }) =>
+      success ? E.right(data) : E.left(error.errors[0].message),
+    E.flatMap((newTag) =>
+      existingTags.some(isExistingTag(newTag))
+        ? E.left(TagErrorMessage.ALREADY_EXIST)
+        : E.right(newTag)
+    )
+  );
+};
+
+const postAddNewTag = async ({ name }: TagRequest) => {
   const response = await fetch(TAG_END_POINT.POST_NEW_TAG, {
     method: "POST",
     body: JSON.stringify({ name })

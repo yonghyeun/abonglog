@@ -1,13 +1,13 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-import type { PostAddNewTagRequest } from "@/entities/tag/model";
+import type { TagRequest } from "@/entities/tag/model";
 
 import { createServerSupabase } from "@/shared/lib";
 
 export const POST = async (req: NextRequest) => {
   const supabase = await createServerSupabase();
-  const { name } = (await req.json()) as PostAddNewTagRequest;
+  const { name } = (await req.json()) as TagRequest;
 
   const { error } = await supabase.from("tags").insert([
     {
@@ -22,6 +22,7 @@ export const POST = async (req: NextRequest) => {
       message: error.message
     });
   }
+
   // 태그 셀렉터 토글을 사용하는 모든 경로를 revalidate
   revalidatePath("/write");
   revalidatePath("/write/[articleId]");

@@ -1,8 +1,14 @@
 "use client";
 
 import { useTagSelectToggle } from "../lib";
+import * as E from "@fp/either";
+import { pipe } from "@fxts/core";
 
-import { type Tag, usePostAddNewTag } from "@/entities/tag/model";
+import {
+  type Tag,
+  parseTagSchema,
+  usePostAddNewTag
+} from "@/entities/tag/model";
 import { TagChip } from "@/entities/tag/ui";
 
 import { SearchIcon } from "@/shared/config";
@@ -25,7 +31,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
     isAvailableAddNewTag,
     filterBySearchedText
   } = useTagSelectToggle();
-  const { mutate: onAddNewTag } = usePostAddNewTag();
+  const { mutate: addNewTag } = usePostAddNewTag();
   const { notifyTopLeft } = useNotify();
 
   const searchedTag = filterBySearchedText(tags);
@@ -68,11 +74,15 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
         <Selector.Form
           onSubmit={(event) => {
             event.preventDefault();
-            onAddNewTag(
-              { name: newTagName },
-              {
-                onSuccess: ({ message }) => notifyTopLeft.success(message)
-              }
+            pipe(
+              parseTagSchema({ name: newTagName }, tags),
+              E.tab(notifyTopLeft.error, (data) => {
+                addNewTag(data, {
+                  onSuccess: (_, { name }) =>
+                    notifyTopLeft.success(`${name} 태그가 추가되었습니다`),
+                  onError: ({ message }) => notifyTopLeft.error(message)
+                });
+              })
             );
           }}
         >
@@ -81,7 +91,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
             placeholder="새로운 태그명을 입력해주세요"
             onChange={handleChangeNewTagName}
           />
-          <Selector.SubmitButton disabled={!isAvailableAddNewTag}>
+          <Selector.SubmitButton disabled={!isAvailableAddNewTag(tags)}>
             태그 추가
           </Selector.SubmitButton>
         </Selector.Form>

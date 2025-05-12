@@ -1,6 +1,12 @@
 import { useSeriesSelectToggle } from "../lib";
+import * as E from "@fp/either";
+import { pipe } from "@fxts/core";
 
-import { type Series, usePostAddNewSeries } from "@/entities/series/model";
+import {
+  type Series,
+  parseSeriesSchema,
+  usePostAddNewSeries
+} from "@/entities/series/model";
 
 import { SearchIcon } from "@/shared/config";
 import { Selector } from "@/shared/ui/Selector";
@@ -23,7 +29,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
     filterBySearchedText
   } = useSeriesSelectToggle();
 
-  const { mutate: onAddNewSeries } = usePostAddNewSeries();
+  const { mutate: addNewSeries } = usePostAddNewSeries();
   const searchedSeries = filterBySearchedText(seriesList);
   const { notifyTopLeft } = useNotify();
 
@@ -67,13 +73,18 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
         <Selector.Form
           onSubmit={(event) => {
             event.preventDefault();
-            onAddNewSeries(
-              {
-                name: newSeriesName
-              },
-              {
-                onSuccess: ({ message }) => notifyTopLeft.success(message)
-              }
+            pipe(
+              parseSeriesSchema({ name: newSeriesName }, seriesList),
+              E.tab(notifyTopLeft.error, (data) => {
+                addNewSeries(data, {
+                  onSuccess: (_, { name }) => {
+                    notifyTopLeft.success(`${name} 시리즈가 추가되었습니다`);
+                  },
+                  onError: ({ message }) => {
+                    notifyTopLeft.error(message);
+                  }
+                });
+              })
             );
           }}
         >

@@ -8,6 +8,8 @@ import {
 } from "../model";
 import { SeriesSelectToggle } from "./SeriesSelectToggle";
 import { TagSelectToggle } from "./TagSelectToggle";
+import * as E from "@fp/either";
+import { pipe } from "@fxts/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useContext, useEffect, useRef } from "react";
@@ -18,11 +20,14 @@ import { findImageUrl } from "@/features/article/lib";
 
 import { rehypeMarkdown } from "@/entities/article/lib";
 import {
+  parseArticleData,
+  usePostArticle,
   usePostArticleImage,
   usePostArticleThumbnail,
-  useUpsertArticle
+  usePostTempArticle
 } from "@/entities/article/model";
 import { ARTICLE_QUERY_KEY } from "@/entities/article/model/articleQueryKey";
+import { parseTempArticleData } from "@/entities/article/model/postTempArticle";
 import {
   ImageGrid,
   ImageUploadInput as _ImageUploadInput
@@ -389,7 +394,7 @@ const MarkdownPreview = () => {
 };
 
 const TempSaveButton = () => {
-  const { mutate: upsertArticle } = useUpsertArticle();
+  const { mutate: postTempArticle } = usePostTempArticle();
 
   const store = useContext(ArticleWriteStoreContext)!;
   const { notifyTopLeft } = useNotify();
@@ -408,15 +413,20 @@ const TempSaveButton = () => {
       tags: articleData.tags
     };
 
-    upsertArticle(body, {
-      onSuccess: ({ message }) => {
-        notifyTopLeft.success(message);
-      },
-      onError: (error) => {
-        notifyTopLeft.error(error.message);
-      }
-    });
-  }, [upsertArticle, store, notifyTopLeft]);
+    pipe(
+      parseTempArticleData(body),
+      E.tab(notifyTopLeft.error, (data) => {
+        postTempArticle(data, {
+          onSuccess: ({ message }) => {
+            notifyTopLeft.success(message);
+          },
+          onError: (error) => {
+            notifyTopLeft.error(error.message);
+          }
+        });
+      })
+    );
+  }, [postTempArticle, store, notifyTopLeft]);
 
   useEffect(() => {
     const interval = setInterval(handleSave, 1000 * 60 * 5);
@@ -543,9 +553,9 @@ const SubmitButton = () => {
   const queryClient = useQueryClient();
   const { notifyTopLeft } = useNotify();
 
-  const { mutate: upsertArticle } = useUpsertArticle();
+  const { mutate: postArticle } = usePostArticle();
 
-  const handleSave = useCallback(() => {
+  const handleSave = () => {
     const articleData = store.getState();
 
     const body = {
@@ -559,19 +569,24 @@ const SubmitButton = () => {
       tags: articleData.tags
     };
 
-    upsertArticle(body, {
-      onSuccess: ({ message }) => {
-        notifyTopLeft.success(message);
-        queryClient.invalidateQueries({
-          queryKey: ARTICLE_QUERY_KEY.default("published")
+    pipe(
+      parseArticleData(body),
+      E.tab(notifyTopLeft.error, (data) => {
+        postArticle(data, {
+          onSuccess: ({ message }) => {
+            notifyTopLeft.success(message);
+            queryClient.invalidateQueries({
+              queryKey: ARTICLE_QUERY_KEY.default("published")
+            });
+            router.push("/");
+          },
+          onError: (error) => {
+            notifyTopLeft.error(error.message);
+          }
         });
-        router.push("/");
-      },
-      onError: (error) => {
-        notifyTopLeft.error(error.message);
-      }
-    });
-  }, [upsertArticle, store, notifyTopLeft, queryClient, router]);
+      })
+    );
+  };
 
   return (
     <Button variant="filled" size="md" className="mt-4" onClick={handleSave}>
