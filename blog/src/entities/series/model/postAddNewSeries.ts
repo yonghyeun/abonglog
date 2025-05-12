@@ -1,10 +1,47 @@
 import { SERIES_END_POINT } from "../config";
 import { SERIES_QUERY_KEY } from "./seriesQueryKey";
+import * as E from "@fp/either";
+import { pipe } from "@fxts/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+
+// Added import
 
 export interface PostAddNewSeriesRequest {
   name: string;
 }
+
+const SeriesErrorMessage = {
+  EMPTY: "시리즈 이름은 최소 1자 이상이어야 합니다",
+  ALREADY_EXIST: "이미 존재하는 시리즈 이름입니다"
+};
+
+const SeriesSchema = z.object({
+  name: z.string().min(1, SeriesErrorMessage.EMPTY)
+});
+
+type Series = z.infer<typeof SeriesSchema>;
+
+const isExistingSeries = (newSeries: Series) => (existingSeriesItem: Series) =>
+  newSeries.name.toLowerCase() === existingSeriesItem.name.toLowerCase();
+
+export const parseSeriesSchema = (
+  data: { name: string },
+  existingSeriesList: Series[] = []
+) => {
+  return pipe(
+    SeriesSchema.safeParse(data),
+    (validationResult) =>
+      validationResult.success
+        ? E.right(validationResult.data)
+        : E.left(validationResult.error.errors[0].message),
+    E.flatMap((newSeries) =>
+      existingSeriesList.some(isExistingSeries(newSeries))
+        ? E.left(SeriesErrorMessage.ALREADY_EXIST)
+        : E.right(newSeries)
+    )
+  );
+};
 
 const postAddNewSeries = async ({ name }: PostAddNewSeriesRequest) => {
   const response = await fetch(SERIES_END_POINT.POST_NEW_SERIES, {
