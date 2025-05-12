@@ -164,7 +164,7 @@ const ImageUploadInput: React.FC = () => {
     return pipe(
       target.files,
       when(
-        (files) => !!files,
+        (files): files is FileList => !!files && files.length > 0,
         (files) => {
           pipe(
             // 0. 파일과 blobUrl 을 zip 으로 묶기
@@ -184,7 +184,7 @@ const ImageUploadInput: React.FC = () => {
               });
             }),
 
-            (filesWithBlobUrl) => {
+            tap((filesWithBlobUrl) => {
               uploadImage(
                 {
                   files: filesWithBlobUrl.map(([file]) => file),
@@ -200,6 +200,7 @@ const ImageUploadInput: React.FC = () => {
                           `![image](${data[index]})`
                         );
                       });
+
                       return prev;
                     });
                   },
@@ -218,7 +219,7 @@ const ImageUploadInput: React.FC = () => {
                   }
                 }
               );
-            }
+            })
           );
         }
       )
@@ -329,16 +330,23 @@ const MarkdownEditor = () => {
             toArray,
             // 2. blobUrl 을 이용해 본문 수정
             tap((filesWithBlobUrl) => {
-              setContent((prev) => {
-                const blobUrls = filesWithBlobUrl
-                  .map(([, blobUrl]) => blobUrl)
-                  .join("\n");
+              const textArea = textAreaRef.current!;
 
-                return `${prev}\n${blobUrls}`;
+              const selectionStart = textArea.selectionStart;
+              const selectionEnd = textArea.selectionEnd;
+
+              const blobUrls = filesWithBlobUrl
+                .map(([, blobUrl]) => blobUrl)
+                .join("\n");
+
+              setContent((prev) => {
+                return `${prev.slice(0, selectionStart)}${blobUrls}${prev.slice(
+                  selectionEnd
+                )}`;
               });
             }),
 
-            (filesWithBlobUrl) => {
+            tap((filesWithBlobUrl) => {
               uploadImage(
                 {
                   files: filesWithBlobUrl.map(([file]) => file),
@@ -372,7 +380,7 @@ const MarkdownEditor = () => {
                   }
                 }
               );
-            }
+            })
           );
         }
       )
