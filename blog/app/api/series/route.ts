@@ -1,13 +1,13 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-import type { PostAddNewSeriesRequest } from "@/entities/series/model";
+import type { Series } from "@/entities/series/model";
 
 import { createServerSupabase } from "@/shared/lib";
 
 export const POST = async (req: NextRequest) => {
   const supabase = await createServerSupabase();
-  const { name } = (await req.json()) as PostAddNewSeriesRequest;
+  const { name } = (await req.json()) as Series;
 
   const { error } = await supabase.from("series").insert([
     {

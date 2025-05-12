@@ -29,7 +29,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
     filterBySearchedText
   } = useSeriesSelectToggle();
 
-  const { mutate: onAddNewSeries } = usePostAddNewSeries();
+  const { mutate: addNewSeries } = usePostAddNewSeries();
   const searchedSeries = filterBySearchedText(seriesList);
   const { notifyTopLeft } = useNotify();
 
@@ -76,7 +76,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
             pipe(
               parseSeriesSchema({ name: newSeriesName }, seriesList),
               E.tab(notifyTopLeft.error, (data) => {
-                onAddNewSeries(data, {
+                addNewSeries(data, {
                   onSuccess: (_, { name }) => {
                     notifyTopLeft.success(`${name} 시리즈가 추가되었습니다`);
                   },

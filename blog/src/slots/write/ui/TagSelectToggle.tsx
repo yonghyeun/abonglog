@@ -31,7 +31,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
     isAvailableAddNewTag,
     filterBySearchedText
   } = useTagSelectToggle();
-  const { mutate: onAddNewTag } = usePostAddNewTag();
+  const { mutate: addNewTag } = usePostAddNewTag();
   const { notifyTopLeft } = useNotify();
 
   const searchedTag = filterBySearchedText(tags);
@@ -77,7 +77,7 @@ export const TagSelectToggle: React.FC<TagSelectToggleProps> = ({
             pipe(
               parseTagSchema({ name: newTagName }, tags),
               E.tab(notifyTopLeft.error, (data) => {
-                onAddNewTag(data, {
+                addNewTag(data, {
                   onSuccess: (_, { name }) =>
                     notifyTopLeft.success(`${name} 태그가 추가되었습니다`),
                   onError: ({ message }) => notifyTopLeft.error(message)
