@@ -28,7 +28,7 @@ const ArticleDataSchema = z.object({
     createdAt: z.string(),
     updatedAt: z.string()
   }),
-  tags: z.array(z.string()).length(1, ARTICLE_DATA_ERROR_MESSAGE.tags)
+  tags: z.array(z.string()).min(1, ARTICLE_DATA_ERROR_MESSAGE.tags)
 });
 
 export type ArticleDataRequest = z.infer<typeof ArticleDataSchema>;
