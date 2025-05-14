@@ -10,6 +10,7 @@ const getArticleGraph = async (articleId: number, seriesName: string) => {
     .from("articles")
     .select("id, title")
     .eq("series_name", seriesName)
+    .eq("status", "published")
     .order("created_at", { ascending: true });
 
   if (error) {

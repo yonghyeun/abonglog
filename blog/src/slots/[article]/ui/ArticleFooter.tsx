@@ -7,7 +7,7 @@ import {
   BiSolidRightArrowCircle
 } from "react-icons/bi";
 
-import { useGetArticleGraph } from "@/entities/article/model/getArticleGraph";
+import { useGetArticleGraph } from "@/entities/article/model";
 
 interface ArticleFooterProps {
   articleId: string;
