@@ -203,6 +203,18 @@ applyto: "**/app/globals.css"
     - [x] `LatestArticleSlot.tsx` 리디자인 (Author 제거, Button Style, Layout)
     - [x] "Latest Post" -> "New Update" 뱃지 적용
 
+### Step 17: 인기글 섹션을 최신글 모아보기로 변경 및 디자인 통일
+
+- **목표**: 제대로 동작하지 않는 '인기글' 섹션을 '최신글 모아보기'로 변경하고 디자인 일관성을 확보한다.
+- **설명**:
+    - `PopularArticleSlot`을 `RecentArticleListSlot`으로 변경한다.
+    - 데이터 소스를 `getPopularArticleList`에서 `getArticleList`로 교체한다.
+    - 섹션 헤더 디자인을 `LatestArticleSlot`의 "New Update" 뱃지 스타일과 동일한 룩앤필("RECENT ARTICLES")로 적용한다.
+- **작업 (Checklist)**:
+    - [x] `PopularArticleSlot.tsx` -> `RecentArticleListSlot.tsx` 리팩토링 및 파일명 변경
+    - [x] `page.tsx` 데이터 프리패칭 로직 수정 (Infinite Query 지원)
+    - [x] 헤더 디자인 및 리스트 UI 구현
+
 ## 4. 검증 (Verification)
 - [x] 메인 컬러가 Warm Orange로 변경되어 따뜻한 분위기를 주는가?
 - [x] `src` 폴더 내에 `text-purple` 등의 하드코딩된 클래스가 남아있지 않은가?
@@ -218,3 +230,4 @@ applyto: "**/app/globals.css"
 - [x] CodeBlock 테두리가 자연스러운가?
 - [x] TagChip이 다크모드에서도 잘 보이는가?
 - [x] 최신 글 섹션이 더 전문적이고 깊이 있어 보이는가?
+- [x] 인기글 섹션이 최신글 리스트로 변경되었으며 디자인이 통일감 있는가?

@@ -1,18 +1,17 @@
 import {
   LatestArticleSlot,
-  PopularArticleSlot,
+  RecentArticleListSlot,
   SeriesListSlot
 } from "@/slots/main/ui";
-import { HydrationBoundary } from "@tanstack/react-query";
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 import {
-  getLatestArticle,
-  getPopularArticleList
+  getArticleList,
+  getLatestArticle
 } from "@/entities/article/model";
 
 import { Container } from "@/shared/ui/layout";
-import { prefetchQueryInServer } from "@/shared/model";
 
 export const dynamic = "force-static";
 export const revalidate = 86400; // 24 hours
@@ -22,9 +21,17 @@ export async function generateStaticParams() {
 }
 
 const MainPage = async () => {
-  const mainPageState = await prefetchQueryInServer(getLatestArticle, () =>
-    getPopularArticleList("daily")
-  );
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(getLatestArticle()),
+    queryClient.prefetchInfiniteQuery({
+      initialPageParam: 0,
+       ...getArticleList("published")
+    })
+  ]);
+
+  const mainPageState = dehydrate(queryClient);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -36,10 +43,10 @@ const MainPage = async () => {
           </Container>
         </section>
         
-        {/* Popular */}
+        {/* Recent Article List */}
         <section className="bg-app py-16 transition-colors">
           <Container variant="listing">
-            <PopularArticleSlot />
+            <RecentArticleListSlot />
           </Container>
         </section>
         
