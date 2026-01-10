@@ -13,6 +13,7 @@ import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
+import { Container } from "@/shared/ui/layout";
 
 export const ArticleSlot: React.FC<ArticlePageProps> = async ({
   articleData,
@@ -50,16 +51,18 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
         )}
         <div className="mx-auto w-fit py-12">
           {/* 제목 */}
-          <h1 className="text-center font-bold">{title}</h1>
+          <h1 className="mb-4 text-center text-display font-bold text-primary">
+            {title}
+          </h1>
           {/* 시리즈명 */}
           <Link
             href={`/article/list/${seriesName}`}
-            className="flex justify-center text-purple-500 hover:text-purple-400 dark:text-purple-300 dark:hover:text-purple-200"
+            className="flex justify-center text-info hover:underline"
           >
             {seriesName}
           </Link>
           {/* 태그 리스트 */}
-          <List.UnOrder className="py-2">
+          <List.UnOrder className="py-4">
             {tags.map((tag) => (
               <List.Item key={tag}>
                 <TagChip>{tag}</TagChip>
@@ -81,20 +84,24 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
 
       <AdminArticleHeader articleId={articleId} seriesName={seriesName} />
 
-      <section className="mx-auto flex min-h-screen max-w-screen-xl gap-2 px-4">
+      <section className="mx-auto flex min-h-screen max-w-screen-xl gap-6 px-4">
         {/* 본문 */}
         <article className="w-full pb-32 lg:flex-grow xl:max-w-[75%]">
-          {html}
-          {/* 아티클 footer  */}
-          <Suspense
-            fallback={<div className="h-96 w-full animate-pulse rounded-lg" />}
-          >
-            <ArticleFooter articleId={articleId} seriesName={seriesName} />
-          </Suspense>
+          <Container variant="reading" className="px-0">
+            {html}
+            {/* 아티클 footer  */}
+            <Suspense
+              fallback={
+                <div className="h-96 w-full animate-pulse rounded-lg bg-surface-2" />
+              }
+            >
+              <ArticleFooter articleId={articleId} seriesName={seriesName} />
+            </Suspense>
+          </Container>
         </article>
         {/* 사이드바 */}
-        <aside className="relative hidden text-gray-400 xl:block">
-          <div className="sticky top-32 flex max-h-[80vh] flex-col items-end gap-2 overflow-y-auto">
+        <aside className="relative hidden xl:block xl:w-[25%] text-secondary">
+          <div className="sticky top-32 flex max-h-[80vh] flex-col overflow-y-auto">
             <ArticleSidebar
               articleId={articleId}
               headings={createNestedHeadings(headings)}

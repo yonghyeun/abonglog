@@ -5,7 +5,7 @@ applyto: "**/docs/01_slices/**/*.md"
 # Article UX 구현: 타이포그래피 상세 및 코드 블록 고도화
 
 **작성자**: yonghyeun
-**상태**: planning
+**상태**: done
 **날짜**: 2026-01-10
 
 ## 1. 컨텍스트 (Context)
@@ -51,9 +51,9 @@ Core Layout을 통해 외형적인 틀은 잡혔으나, 실제 Markdown 콘텐�
     - 커스텀 컴포넌트(`components` prop)를 주입하여 `h1`, `p`, `a` 등의 렌더링 방식을 제어한다.
     - `Container`(`variant="reading"`) 안에서 텍스트가 어떻게 보이는지 검증.
 - **작업**:
-    - [ ] Markdown 렌더링 컴포넌트(`ArticleContent` 등) 파악.
-    - [ ] 각 태그별 커스텀 컴포넌트 연결 및 Tailwind 유틸리티(`text-body-l` 등) 적용.
-    - [ ] `Link` 컴포넌트 스타일링 (외부 링크: `target="_blank"`, 아이콘 추가 고려).
+    - [x] Markdown 렌더링 컴포넌트(`ArticleContent` 등) 파악.
+    - [x] 각 태그별 커스텀 컴포넌트 연결 및 Tailwind 유틸리티(`text-body-l` 등) 적용.
+    - [x] `Link` 컴포넌트 스타일링 (외부 링크: `target="_blank"`, 아이콘 추가 고려).
 
 ### Step 2. 코드 블록 컴포넌트 구현 (`shared/ui/code`)
 - **목표**: 기능이 풍부한 코드 블록 래퍼를 구현한다.
@@ -62,9 +62,9 @@ Core Layout을 통해 외형적인 틀은 잡혔으나, 실제 Markdown 콘텐�
     - `navigator.clipboard` API를 이용한 복사 기능 구현.
     - 코드 하이라이팅 테마가 System Dark Mode와 연동되거나, 독자적인 Dark Theme을 유지하도록 설정.
 - **작업**:
-    - [ ] `CodeBlockHeader` 컴포넌트 구현 (파일명, 복사 버튼).
-    - [ ] `pre` 태그 스타일링 (가로 스크롤 `overflow-x-auto`, `scrollbar-hide` 등).
-    - [ ] Markdown 파서 설정에서 `rehype-pretty-code` 등의 옵션 튜닝.
+    - [x] `CodeBlockHeader` 컴포넌트 구현 (파일명, 복사 버튼).
+    - [x] `pre` 태그 스타일링 (가로 스크롤 `overflow-x-auto`, `scrollbar-hide` 등).
+    - [x] Markdown 파서 설정에서 `rehype-pretty-code` 등의 옵션 튜닝.
 
 ### Step 3. Callout (Admonition) 구현
 - **목표**: 강조 구문을 위한 Callout UI를 추가한다.
@@ -72,8 +72,8 @@ Core Layout을 통해 외형적인 틀은 잡혔으나, 실제 Markdown 콘텐�
     - `Blockquote`를 재활용하거나, 별도 구문을 파싱하여 `Callout` 컴포넌트로 렌더링.
     - 디자인 시스템의 Semantic Color(`bg-surface-2`, `border-l-4`) 활용.
 - **작업**:
-    - [ ] `Callout` 컴포넌트 구현.
-    - [ ] Markdown 매핑 설정 (예: `> [!INFO]` 구문 지원 또는 일반 `blockquote` 스타일링).
+    - [x] `Callout` 컴포넌트 구현.
+    - [x] Markdown 매핑 설정 (예: `> [!INFO]` 구문 지원 또는 일반 `blockquote` 스타일링).
 
 ### Step 4. 아티클 상세 페이지 점검
 - **목표**: 실제 글을 띄워보고 가독성을 최종 점검한다.
@@ -81,5 +81,5 @@ Core Layout을 통해 외형적인 틀은 잡혔으나, 실제 Markdown 콘텐�
     - 다양한 요소(이미지, 코드, 리스트, 인용문)가 섞인 샘플 마크다운을 렌더링해본다.
     - 모바일에서 좌우 여백과 폰트 크기가 적절한지(`16px` vs `18px`) 확인.
 - **작업**:
-    - [ ] `article/[articleId]/page.tsx` 레이아웃 확인.
-    - [ ] 최종 렌더링 테스트 (QA).
+    - [x] `article/[articleId]/page.tsx` 레이아웃 확인.
+    - [x] 최종 렌더링 테스트 (QA).
