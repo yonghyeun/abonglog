@@ -37,7 +37,7 @@ const MainPage = async () => {
         </section>
         
         {/* Popular */}
-        <section className="bg-app transition-colors">
+        <section className="bg-app py-16 transition-colors">
           <Container variant="listing">
             <PopularArticleSlot />
           </Container>

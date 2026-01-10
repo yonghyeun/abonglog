@@ -195,12 +195,13 @@ applyto: "**/app/globals.css"
 
 - **목표**: 메인 페이지 최신 글 섹션의 시각적 위계와 완성도를 높인다.
 - **설명**:
-    - **Typography**: 제목, 시리즈명, 설명글의 폰트 크기와 색상 대비를 조정하여 깊이감을 준다.
-    - **Button**: "게시글로 이동" 버튼을 더 세련된 스타일(Ghost or Soft button)로 변경하거나 제거하고 카드 전체를 링크화한다.
-    - **Timestamp**: `toLocaleString` 대신 `YYYY년 M월 D일` 포맷으로 변경하여 가독성을 높인다.
+    - **Typography**: "NEW UPDATE" 뱃지를 추가하고, 제목 및 시리즈명의 가독성을 높인다.
+    - **Layout**: 작성자/날짜 정보를 과감히 제거하여 콘텐츠 자체에 집중하도록 한다.
+    - **Button**: Brand Color가 적용된 Solid 버튼으로 변경하여 행동 유도(CTA)를 강화한다.
+    - **Image**: 썸네일 영역이 남은 공간을 꽉 채우도록 Flex 레이아웃을 최적화한다.
 - **작업 (Checklist)**:
-    - [x] `LatestArticleSlot.tsx` 리디자인
-    - [x] 날짜 포맷팅 유틸리티 적용
+    - [x] `LatestArticleSlot.tsx` 리디자인 (Author 제거, Button Style, Layout)
+    - [x] "Latest Post" -> "New Update" 뱃지 적용
 
 ## 4. 검증 (Verification)
 - [x] 메인 컬러가 Warm Orange로 변경되어 따뜻한 분위기를 주는가?

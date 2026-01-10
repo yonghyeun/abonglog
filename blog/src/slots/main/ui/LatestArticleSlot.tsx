@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { useGetLatestArticle } from "@/entities/article/model";
 import { TagChip } from "@/entities/tag/ui";
-import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
 
@@ -14,10 +13,8 @@ export const LatestArticleSlot = () => {
     data: {
       id,
       title,
-      author,
       seriesName,
       description,
-      createdAt,
       thumbnailUrl,
       tags
     }
@@ -28,12 +25,9 @@ export const LatestArticleSlot = () => {
       {/* preview */}
       <div className="flex flex-1 flex-col gap-6">
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-brand-primary animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-primary">
-              Latest Post
+            <span className="text-brand-primary text-xs font-bold uppercase tracking-wider">
+              New Update
             </span>
-          </div>
 
           <Link href={`/article/${id}`} className="group block space-y-2">
             <h2 className="text-3xl font-extrabold text-primary transition-colors group-hover:text-brand-primary sm:text-4xl">
@@ -55,25 +49,10 @@ export const LatestArticleSlot = () => {
           {description}
         </p>
 
-        {/* 프로필 사진과 제목 및 시간 */}
-        <div className="flex items-center justify-between border-t border-default pt-6">
-          <div className="flex items-center gap-3">
-            <AdminProfile size="sm" />
-            <div className="flex flex-col text-xs text-secondary">
-              <span className="font-semibold text-primary">{author}</span>
-              <time dateTime={new Date(createdAt).toISOString()}>
-                {new Date(createdAt).toLocaleDateString("ko-KR", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-            </div>
-          </div>
-
+        <div className="flex items-center">
           <Link
             href={`/article/${id}`}
-            className="group flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all hover:bg-surface-2 active:scale-95"
+            className="group flex items-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-brand-primary/90 hover:shadow-lg active:scale-95"
             aria-label={`게시글 ${title}로 이동`}
           >
             Read Article
@@ -83,13 +62,13 @@ export const LatestArticleSlot = () => {
       </div>
 
       {/* image */}
-      <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-lg sm:w-1/2">
+      <div className="relative aspect-video w-full flex-1 overflow-hidden rounded-2xl shadow-xl sm:h-full">
         {thumbnailUrl ? (
           <Link href={`/article/${id}`}>
             <Image
               src={thumbnailUrl}
               alt={`${title} 의 썸네일 이미지`}
-              className="object-cover transition-transform duration-500 hover:scale-105"
+              className="object-cover transition-transform duration-700 hover:scale-105"
               fill
               priority={true}
               quality={100}

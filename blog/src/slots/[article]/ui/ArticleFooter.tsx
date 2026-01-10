@@ -35,7 +35,7 @@ export const ArticleFooter: React.FC<ArticleFooterProps> = ({
               <BiSolidLeftArrowCircle className="text-lg" />
               이전 포스트
             </span>
-            <span className="line-clamp-1 text-base font-bold text-primary group-hover:text-brand-primary">
+            <span className="text-base font-bold text-primary group-hover:text-brand-primary">
               {prevArticleData.title}
             </span>
           </Link>
@@ -55,7 +55,7 @@ export const ArticleFooter: React.FC<ArticleFooterProps> = ({
               다음 포스트
               <BiSolidRightArrowCircle className="text-lg" />
             </span>
-            <span className="line-clamp-1 text-base font-bold text-primary group-hover:text-brand-primary">
+            <span className="text-base font-bold text-primary group-hover:text-brand-primary">
               {nextArticleData.title}
             </span>
           </Link>
