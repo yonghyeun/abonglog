@@ -23,9 +23,9 @@ export const SideBar = () => {
         tabIndex={0}
         onClick={toggleSidebar("open")}
       >
-        <span className="h-0.5 w-5 rounded-full bg-secondary transition-all duration-300 group-hover:w-6 group-hover:bg-brand-primary"></span>
-        <span className="h-0.5 w-5 rounded-full bg-secondary transition-all duration-300 group-hover:bg-brand-primary"></span>
-        <span className="h-0.5 w-5 rounded-full bg-secondary transition-all duration-300 group-hover:w-6 group-hover:bg-brand-primary"></span>
+        <span className="h-0.5 w-5 rounded-full bg-current transition-all duration-300 group-hover:w-6 group-hover:bg-brand-primary"></span>
+        <span className="h-0.5 w-5 rounded-full bg-current transition-all duration-300 group-hover:bg-brand-primary"></span>
+        <span className="h-0.5 w-5 rounded-full bg-current transition-all duration-300 group-hover:w-6 group-hover:bg-brand-primary"></span>
       </button>
 
       {/* 사이드바 컴포넌트 */}

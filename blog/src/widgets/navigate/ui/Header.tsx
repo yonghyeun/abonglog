@@ -9,7 +9,7 @@ import { Container } from "@/shared/ui/layout";
 
 export const Header = () => {
   return (
-    <header className="bg-surface-1/80 sticky top-0 z-50 w-full border-b border-default backdrop-blur-md">
+    <header className="bg-surface-1 md:bg-surface-1/80 relative md:sticky md:top-0 z-50 w-full">
       <Container
         variant="listing"
         className="flex h-16 items-center justify-between"
