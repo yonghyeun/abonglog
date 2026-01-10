@@ -1,19 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Container } from "@/shared/ui/layout";
 import { SideBar } from "@/widgets/navigate/ui";
 
 import { DarkModeToggle } from "@/features/utils/ui";
 
 export const Header = () => {
   return (
-    <header className="media-padding-x sticky top-0 z-50 flex items-center justify-between bg-primary py-4">
-      <div className="flex items-center gap-2">
-        <h1>
+    <header className="sticky top-0 z-50 w-full border-b border-default bg-surface-1/80 backdrop-blur-md">
+      <Container variant="listing" className="flex h-16 items-center justify-between">
+        <div className="flex items-center gap-3">
+          <SideBar />
           <Link
             href="/"
-            aria-labelledby="메인 페이지로 이동"
-            className="flex items-center gap-2"
+            aria-label="메인 페이지로 이동"
+            className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
             <Image
               src="/images/logo.svg"
@@ -22,14 +24,14 @@ export const Header = () => {
               height={32}
               className="rounded-full"
             />
-            abonglog
+            <span className="text-body-l font-bold text-primary">abonglog</span>
           </Link>
-        </h1>
-        <SideBar />
-      </div>
-      <div className="flex items-center gap-2">
-        <DarkModeToggle />
-      </div>
+        </div>
+        <div className="flex items-center gap-2">
+          {/* 추후 검색 버튼 등 추가 공간 */}
+          <DarkModeToggle />
+        </div>
+      </Container>
     </header>
   );
 };
