@@ -23,28 +23,44 @@ export const ArticleFooter: React.FC<ArticleFooterProps> = ({
   } = useGetArticleGraph(Number(articleId), seriesName);
 
   return (
-    <footer className="flex flex-col justify-between gap-4 text-lg sm:flex-row sm:justify-between">
-      {/* 하단 네비게이션 버튼 */}
-      <div className="flex-1">
-        {prevArticleData && (
+    <footer className="mt-12 flex flex-col justify-between gap-6 sm:flex-row">
+      {/* 이전 글 */}
+      <div className="flex flex-1">
+        {prevArticleData ? (
           <Link
             href={`/article/${prevArticleData.id}`}
-            className="flex h-full flex-1 items-center justify-start gap-2 rounded-lg border border-brand-primary p-2 text-brand-primary hover:opacity-80 dark:border-brand-primary dark:text-brand-primary hover:dark:text-brand-primary"
+            className="group flex w-full flex-col gap-1 rounded-xl bg-surface-2 px-6 py-4 text-left transition-all hover:bg-surface-3 hover:scale-[1.02] active:scale-[0.98]"
           >
-            <BiSolidLeftArrowCircle />
-            {prevArticleData.title}
+            <span className="flex items-center gap-2 text-xs font-medium text-secondary group-hover:text-brand-primary">
+              <BiSolidLeftArrowCircle className="text-lg" />
+              이전 포스트
+            </span>
+            <span className="line-clamp-1 text-base font-bold text-primary group-hover:text-brand-primary">
+              {prevArticleData.title}
+            </span>
           </Link>
+        ) : (
+          <div aria-hidden="true" className="flex-1 opacity-0" />
         )}
       </div>
+
+      {/* 다음 글 */}
       <div className="flex flex-1">
-        {nextArticleData && (
+        {nextArticleData ? (
           <Link
             href={`/article/${nextArticleData.id}`}
-            className="flex h-full flex-1 items-center justify-end gap-2 rounded-lg border border-brand-primary p-2 text-brand-primary hover:opacity-80 dark:border-brand-primary dark:text-brand-primary hover:dark:text-brand-primary"
+            className="group flex w-full flex-col items-end gap-1 rounded-xl bg-surface-2 px-6 py-4 text-right transition-all hover:bg-surface-3 hover:scale-[1.02] active:scale-[0.98]"
           >
-            {nextArticleData.title}
-            <BiSolidRightArrowCircle />
+            <span className="flex items-center gap-2 text-xs font-medium text-secondary group-hover:text-brand-primary">
+              다음 포스트
+              <BiSolidRightArrowCircle className="text-lg" />
+            </span>
+            <span className="line-clamp-1 text-base font-bold text-primary group-hover:text-brand-primary">
+              {nextArticleData.title}
+            </span>
           </Link>
+        ) : (
+          <div aria-hidden="true" className="flex-1 opacity-0" />
         )}
       </div>
     </footer>

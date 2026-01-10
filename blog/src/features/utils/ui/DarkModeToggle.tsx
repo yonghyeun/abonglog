@@ -24,10 +24,12 @@ export const DarkModeToggle = () => {
   return (
     <button
       onClick={toggleDarkMode}
-      className="text-secondary"
+      className="p-2 text-secondary transition-transform hover:scale-110 active:scale-95"
       aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {isDarkMode ? <FaMoon size={18} /> : <FaSun size={18} />}
+      <div className={`transition-all duration-300 ${isDarkMode ? "rotate-0" : "rotate-90"}`}>
+        {isDarkMode ? <FaMoon size={20} /> : <FaSun size={20} />}
+      </div>
     </button>
   );
 };

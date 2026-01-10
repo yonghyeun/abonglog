@@ -1,5 +1,12 @@
 import Image from "next/image";
 import React, { FC } from "react";
+import {
+  BiError,
+  BiErrorCircle,
+  BiInfoCircle,
+  BiCheckCircle,
+  BiBulb
+} from "react-icons/bi";
 
 import { CodeBlock as SharedCodeBlock } from "@/shared/ui/code";
 import { CodeFigure } from "./CodeFigure";
@@ -104,51 +111,52 @@ const Link: FC<
   </a>
 );
 
-const Blockquote: FC<React.BlockquoteHTMLAttributes<HTMLQuoteElement> & { 'data-callout'?: string }> = ({
-  children,
-  ...props
-}) => {
-  const calloutType = props["data-callout"];
+const Blockquote: FC<
+  React.BlockquoteHTMLAttributes<HTMLQuoteElement> & { "data-callout"?: string }
+> = ({ children, ...props }) => {
+  const calloutType = (props["data-callout"] || "note").toLowerCase();
 
-  if (calloutType) {
-    const styles: Record<string, string> = {
-      note: "border-status-info bg-status-info/10 text-secondary",
-      tip: "border-status-success bg-status-success/10 text-secondary",
-      important: "border-brand-primary bg-brand-primary/10 text-secondary",
-      warning: "border-status-warning bg-status-warning/10 text-secondary",
-      caution: "border-status-error bg-status-error/10 text-secondary",
-    };
+  const styles: Record<string, string> = {
+    note: "border-status-info bg-surface-1 text-secondary",
+    tip: "border-status-success bg-status-success/10 text-secondary",
+    important: "border-brand-primary bg-brand-primary/10 text-secondary",
+    warning: "border-status-warning bg-status-warning/10 text-secondary",
+    caution: "border-status-error bg-status-error/10 text-secondary"
+  };
 
-    const titleColors: Record<string, string> = {
-      note: "text-status-info",
-      tip: "text-status-success",
-      important: "text-brand-primary",
-      warning: "text-status-warning",
-      caution: "text-status-error",
-    };
-    
-    const styleClass = styles[calloutType] || styles.note;
-    const titleColor = titleColors[calloutType] || titleColors.note;
+  const titleColors: Record<string, string> = {
+    note: "text-status-info",
+    tip: "text-status-success",
+    important: "text-brand-primary",
+    warning: "text-status-warning",
+    caution: "text-status-error"
+  };
 
-    return (
-      <blockquote
-        {...props}
-        className={`my-6 border-l-4 py-4 px-4 rounded-r-lg not-italic ${styleClass}`}
-      >
-        <div className={`font-bold mb-2 capitalize ${titleColor}`}>
-           {calloutType}
-        </div>
-        <div className="text-body-m">{children}</div>
-      </blockquote>
-    );
-  }
+  const icons: Record<string, React.ReactNode> = {
+    note: <BiInfoCircle className="text-xl" />,
+    tip: <BiBulb className="text-xl" />,
+    important: <BiCheckCircle className="text-xl" />, // Important usually purple, maybe checkmark or star? Using Check for now or maybe Bulb? Tip is Bulb. Important maybe InfoCircle filled? Let's use BiErrorCircle for Important as "Attention".
+    warning: <BiError className="text-xl" />,
+    caution: <BiErrorCircle className="text-xl" />
+  };
+
+  // Override Important icon to be distinctive if needed, or stick to defaults.
+  // user asked for default Note style if none.
+
+  const styleClass = styles[calloutType] || styles.note;
+  const titleColor = titleColors[calloutType] || titleColors.note;
+  const icon = icons[calloutType] || icons.note;
 
   return (
     <blockquote
       {...props}
-      className="my-6 border-l-4 border-info/50 bg-surface-2 py-3 px-4 italic text-secondary rounded-r-lg"
+      className={`my-6 rounded-r-lg border-l-4 px-4 py-4 not-italic ${styleClass}`}
     >
-      {children}
+      <div className={`mb-2 flex items-center gap-2 font-bold capitalize ${titleColor}`}>
+        {icon}
+        <span>{calloutType}</span>
+      </div>
+      <div className="text-body-m">{children}</div>
     </blockquote>
   );
 };

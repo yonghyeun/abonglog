@@ -39,9 +39,9 @@ export const CodeBlock = ({ children, className, title, language: propLanguage, 
   };
 
   return (
-    <div className="group relative my-8 overflow-hidden rounded-xl border border-border bg-[#ffffff] dark:bg-[#0d1117] text-sm shadow-md transition-shadow hover:shadow-lg">
-      <div className="flex items-center justify-between border-b border-border bg-surface-2/50 px-4 py-3 backdrop-blur-md dark:bg-surface-2/10">
-        <div className="flex gap-1.5 shrink-0">
+    <div className="group relative my-8 overflow-hidden rounded-xl border border-gray-200 bg-white text-sm shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-[#0d1117]">
+      <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/50 px-4 py-3 backdrop-blur-md dark:border-gray-800 dark:bg-white/5">
+        <div className="flex shrink-0 gap-1.5">
           <div className="h-3 w-3 rounded-full bg-[#FF5F56] border border-[#E0443E]" />
           <div className="h-3 w-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]" />
           <div className="h-3 w-3 rounded-full bg-[#27C93F] border border-[#1AAB29]" />

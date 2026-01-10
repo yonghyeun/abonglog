@@ -30,14 +30,14 @@ const MainPage = async () => {
     <Suspense fallback={<div>Loading...</div>}>
       <HydrationBoundary state={mainPageState}>
         {/* Latest Post */}
-        <section className="bg-surface-2/30 py-16 transition-colors">
+        <section className="bg-surface-2/30 transition-colors">
           <Container variant="listing">
              <LatestArticleSlot />
           </Container>
         </section>
         
         {/* Popular */}
-        <section className="py-16 transition-colors">
+        <section className="bg-app transition-colors">
           <Container variant="listing">
             <PopularArticleSlot />
           </Container>

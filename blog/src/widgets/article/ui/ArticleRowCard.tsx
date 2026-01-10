@@ -21,7 +21,7 @@ export const ArticleRowCard: React.FC<ArticleRowCardProps> = ({
   createdAt
 }) => {
   return (
-    <article className="group flex w-full flex-col overflow-hidden rounded-xl border border-border bg-overlay transition-all hover:border-primary/50 hover:shadow-lg dark:bg-surface-1 sm:flex-row">
+    <article className="group flex w-full flex-col overflow-hidden rounded-xl border border-default bg-overlay transition-all hover:border-brand-primary/50 hover:shadow-lg dark:bg-surface-1 sm:flex-row">
       <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-surface-2 sm:w-72">
         {thumbnailUrl ? (
           <Image
@@ -39,10 +39,10 @@ export const ArticleRowCard: React.FC<ArticleRowCardProps> = ({
         )}
       </div>
 
-      <div className="flex flex-grow flex-col justify-between p-5 sm:p-6">
+      <div className="flex w-full flex-grow flex-col justify-between p-5 sm:p-6">
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="block text-xs font-bold uppercase tracking-wider text-info">
+            <span className="block text-xs font-bold uppercase tracking-wider text-brand-secondary">
               {seriesName}
             </span>
             <time dateTime={createdAt} className="text-xs text-tertiary">
@@ -50,7 +50,7 @@ export const ArticleRowCard: React.FC<ArticleRowCardProps> = ({
             </time>
           </div>
           
-          <h3 className="line-clamp-2 text-heading-s font-bold text-primary transition-colors group-hover:text-info">
+          <h3 className="line-clamp-2 text-heading-s font-bold text-primary transition-colors group-hover:text-brand-primary">
             {title}
           </h3>
 
