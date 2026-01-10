@@ -112,19 +112,19 @@ const Blockquote: FC<React.BlockquoteHTMLAttributes<HTMLQuoteElement> & { 'data-
 
   if (calloutType) {
     const styles: Record<string, string> = {
-      note: "border-info bg-blue-50 dark:bg-blue-950/30 text-secondary",
-      tip: "border-success bg-green-50 dark:bg-green-950/30 text-secondary",
-      important: "border-primary bg-purple-50 dark:bg-purple-950/30 text-secondary",
-      warning: "border-warning bg-orange-50 dark:bg-orange-950/30 text-secondary",
-      caution: "border-error bg-red-50 dark:bg-red-950/30 text-secondary",
+      note: "border-status-info bg-status-info/10 text-secondary",
+      tip: "border-status-success bg-status-success/10 text-secondary",
+      important: "border-brand-primary bg-brand-primary/10 text-secondary",
+      warning: "border-status-warning bg-status-warning/10 text-secondary",
+      caution: "border-status-error bg-status-error/10 text-secondary",
     };
 
     const titleColors: Record<string, string> = {
-      note: "text-info",
-      tip: "text-success",
-      important: "text-primary",
-      warning: "text-warning",
-      caution: "text-error",
+      note: "text-status-info",
+      tip: "text-status-success",
+      important: "text-brand-primary",
+      warning: "text-status-warning",
+      caution: "text-status-error",
     };
     
     const styleClass = styles[calloutType] || styles.note;

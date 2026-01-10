@@ -29,7 +29,7 @@ export const ArticleFooter: React.FC<ArticleFooterProps> = ({
         {prevArticleData && (
           <Link
             href={`/article/${prevArticleData.id}`}
-            className="flex h-full flex-1 items-center justify-start gap-2 rounded-lg border border-purple-700 p-2 text-purple-700 hover:text-purple-500 dark:border-purple-300 dark:text-purple-300 hover:dark:text-purple-200"
+            className="flex h-full flex-1 items-center justify-start gap-2 rounded-lg border border-brand-primary p-2 text-brand-primary hover:opacity-80 dark:border-brand-primary dark:text-brand-primary hover:dark:text-brand-primary"
           >
             <BiSolidLeftArrowCircle />
             {prevArticleData.title}
@@ -40,7 +40,7 @@ export const ArticleFooter: React.FC<ArticleFooterProps> = ({
         {nextArticleData && (
           <Link
             href={`/article/${nextArticleData.id}`}
-            className="flex h-full flex-1 items-center justify-end gap-2 rounded-lg border border-purple-700 p-2 text-purple-700 hover:text-purple-500 dark:border-purple-300 dark:text-purple-300 hover:dark:text-purple-200"
+            className="flex h-full flex-1 items-center justify-end gap-2 rounded-lg border border-brand-primary p-2 text-brand-primary hover:opacity-80 dark:border-brand-primary dark:text-brand-primary hover:dark:text-brand-primary"
           >
             {nextArticleData.title}
             <BiSolidRightArrowCircle />

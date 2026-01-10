@@ -28,13 +28,13 @@ export const LatestArticleSlot = () => {
       {/* preview */}
       <div className="flex w-full flex-col justify-between gap-2 sm:w-1/2">
         <div className="flex flex-col gap-2">
-          <p className="font-base text-purple-500 dark:text-purple-200">
+          <p className="font-base text-brand-primary opacity-80 dark:text-brand-primary dark:opacity-70">
             최근 게시글
           </p>
           {/* 글 제목 */}
           <h2 className="text-3xl font-bold">{title}</h2>
           {/* 시리즈 제목 */}
-          <p className="text-purple-500 dark:text-purple-300">{seriesName}</p>
+          <p className="text-brand-primary font-semibold dark:text-brand-primary">{seriesName}</p>
           {/* 태그 리스트 */}
           <List.UnOrder>
             {tags.map((tag) => (
@@ -63,7 +63,7 @@ export const LatestArticleSlot = () => {
 
           <Link
             href={`/article/${id}`}
-            className="w-fit rounded-md bg-purple-700 px-4 py-2 text-sm text-white hover:bg-purple-900"
+            className="w-fit rounded-md bg-brand-primary px-4 py-2 text-sm text-white hover:bg-brand-primary"
             aria-label={`게시글 ${title}로 이동`}
           >
             게시글로 이동

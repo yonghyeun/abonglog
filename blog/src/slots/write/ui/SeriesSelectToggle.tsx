@@ -35,7 +35,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
 
   return (
     <details className="cursor-pointer">
-      <summary className="text-sm text-gray-400 hover:text-purple-700">
+      <summary className="text-sm text-gray-400 hover:text-brand-primary">
         시리즈 선택
       </summary>
       <Selector className="absolute left-0 top-12 z-50">
@@ -57,7 +57,7 @@ export const SeriesSelectToggle: React.FC<SeriesSelectToggleProps> = ({
             {searchedSeries.map((series) => (
               <li
                 key={series.name}
-                className="flex cursor-pointer list-disc items-center justify-between text-sm text-secondary hover:text-purple-500"
+                className="flex cursor-pointer list-disc items-center justify-between text-sm text-secondary hover:text-brand-primary"
                 onClick={() => onEachSeriesClick(series)}
               >
                 {series.name}

@@ -82,7 +82,7 @@ export const ArticleListBySeriesSlot: React.FC<
       <header className="flex flex-col items-center">
         <h3>시리즈별로 보기</h3>
         <div className="flex items-center gap-2">
-          <h1 className="text-purple-500">{seriesName}</h1>
+          <h1 className="text-brand-primary">{seriesName}</h1>
           <span className="text-secondary">({numOfArticles})</span>
         </div>
       </header>

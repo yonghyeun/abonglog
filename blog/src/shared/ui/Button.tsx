@@ -5,9 +5,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const buttonStyles = {
   filled:
-    "bg-purple-700 text-white hover:bg-purple-900 active:scale-105 disabled:bg-gray-300 disabled:text-gray-500 transform",
+    "bg-brand-primary text-white hover:opacity-90 active:scale-105 disabled:bg-gray-300 disabled:text-gray-500 transform",
   outlined:
-    "bg-primary text-purple-700 border border-2 border-purple-700 hover:bg-secondary active:scale-105 disabled:bg-gray-100 disabled:text-gray-400 transform"
+    "bg-app text-brand-primary border border-2 border-brand-primary hover:bg-surface-2 active:scale-105 disabled:bg-gray-100 disabled:text-gray-400 transform"
 } as const;
 
 const buttonSizes = {

@@ -22,7 +22,7 @@ export const ProgressBar = () => {
   return (
     <div className="fixed top-0 z-[51] h-1 w-full bg-primary">
       <div
-        className="h-full origin-left transform bg-purple-500"
+        className="h-full origin-left transform bg-brand-primary"
         style={{
           transform: `scaleX(${progress})`
         }}

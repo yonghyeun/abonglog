@@ -60,7 +60,7 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
         {popularPostNavData.map(({ name, value }) => (
           <button
             key={value}
-            className={`${value === period ? "text-semibold text-purple-500" : "text-primary"} px-10 py-4 font-semibold transition-colors duration-200`}
+            className={`${value === period ? "text-semibold text-brand-primary" : "text-primary"} px-10 py-4 font-semibold transition-colors duration-200`}
             onClick={() => onClick(value)}
           >
             {name}
@@ -69,7 +69,7 @@ export const PopularNavigationBar: React.FC<PopularNavigationBarProps> = ({
       </nav>
       <div className="relative mt-2 h-0.5 w-full bg-gray-200">
         <div
-          className={`absolute h-0.5 w-1/3 bg-purple-500 transition-transform duration-200`}
+          className={`absolute h-0.5 w-1/3 bg-brand-primary transition-transform duration-200`}
           style={{
             transform: `translateX(${activeParamIndex * 100}%)`
           }}
