@@ -66,39 +66,59 @@
   }
 }
 
-/* 
- * Markdown Renderer CSS 속성
- */
-
-.heading-1,
-.heading-2,
-.heading-3,
-.heading-4,
-.heading-5,
-.heading-6 {
-  font-weight: bold;
-  line-height: 1.3;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  color: var(--text-primary);
-  width: fit-content;
+@layer base {
+  h1 {
+    @apply text-display text-primary mb-6;
+  }
+  h2 {
+    @apply text-heading-l text-primary mb-4 mt-12;
+  }
+  h3 {
+    @apply text-heading-m text-primary mb-3 mt-8;
+  }
+  h4 {
+    @apply text-heading-s text-primary mb-2 mt-6;
+  }
+  p {
+    @apply text-body-l text-primary mb-4 leading-relaxed;
+  }
+  small {
+    @apply text-caption text-secondary;
+  }
+  li {
+    @apply text-body-l text-primary;
+  }
 }
 
+/* 
+ * Markdown Renderer CSS 속성
+ * Legacy Support: Remap to new design tokens
+ */
+
 .heading-1 {
-  font-size: 2rem;
+  @apply text-display text-primary mb-6 pb-2 w-fit font-bold;
+  line-height: 1.25;
 }
 
 .heading-2 {
-  font-size: 1.75rem;
+  @apply text-heading-l text-primary mb-4 mt-8 pb-2 w-fit font-semibold;
+  line-height: 1.35;
 }
 
 .heading-3 {
-  font-size: 1.5rem;
+  @apply text-heading-m text-primary mb-3 mt-6 pb-2 w-fit font-medium;
+  line-height: 1.4;
 }
 
 .heading-4 {
-  font-size: 1.25rem;
+  @apply text-heading-s text-primary mb-2 mt-4 pb-2 w-fit font-medium;
+  line-height: 1.5;
 }
+
+.heading-5, .heading-6 {
+  @apply text-body-l text-primary font-bold mb-2;
+}
+
 
 .paragraph {
   margin-bottom: 1rem;
@@ -109,8 +129,7 @@
 }
 
 .link {
-  /* color 는 text-blue-500 */
-  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+  color: var(--color-info);
   text-decoration: none;
   word-break: break-all;
 }

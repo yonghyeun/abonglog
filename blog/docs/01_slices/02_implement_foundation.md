@@ -44,9 +44,8 @@ applyto: "**/docs/01_slices/**/*.md"
     - `Pretendard`는 로컬 파일(woff2) 혹은 CDN(google font 지원 안함, 로컬 추천)을 사용하고, `JetBrains Mono`는 구글 폰트(`next/font/google`)를 활용할 수 있다. (Pretendard 패키지 `next/font` 지원 여부 확인 필요, 없을 시 로컬 에셋 등록).
     - `layout.tsx`의 `html` 태그에 변수 클래스를 적용한다.
 - **작업**:
-    - [ ] `PretendardStd` (또는 Variable) 폰트 파일 준비 및 `public/fonts` 또는 `app/fonts` 배치 (필요시).
-    - [ ] `app/fonts/index.ts` (또는 레이아웃 내부)에서 폰트 로더 설정.
-    - [ ] `app/layout.tsx`에 `variable` 클래스네임 주입.
+    - [x] `PretendardVariable` 폰트 파일 준비 및 `app/fonts` 배치 (필요시).
+    - [x] `app/layout.tsx`에 `variable` 클래스네임 주입.
 - **검증**:
     - 브라우저 개발자 도구에서 `font-family`가 `Pretendard`로 올바르게 적용되는지 확인.
 
@@ -57,8 +56,8 @@ applyto: "**/docs/01_slices/**/*.md"
     - `tailwind.config.ts`의 `theme.extend.colors`에 이 변수들을 매핑한다.
     - 기존의 레거시 컬러 설정(`--background`, `--foreground` 등)은 제거하거나 마이그레이션 과도기 동안 유지(deprecate 주석)한다.
 - **작업**:
-    - [ ] `globals.css` : CSS Variables 정의 (Light/Dark 모드 값).
-    - [ ] `tailwind.config.ts` : Color Theme Extend 설정.
+    - [x] `globals.css` : CSS Variables 정의 (Light/Dark 모드 값).
+    - [x] `tailwind.config.ts` : Color Theme Extend 설정.
 - **검증**:
     - 다크 모드 토글 시 배경색과 텍스트 색상이 정의된 값(#121212 등)으로 정확히 변경되는지 확인.
 
@@ -68,8 +67,8 @@ applyto: "**/docs/01_slices/**/*.md"
     - Tailwind의 `fontSize` 설정을 확장하여 사이즈, 라인하이트, 레터스페이싱을 묶어서 정의한다. (예: `body-l: ['18px', { lineHeight: '1.7', letterSpacing: '-0.01em' }]`)
     - H1~H4, Body, Caption 등에 해당하는 유틸리티 클래스를 생성한다.
 - **작업**:
-    - [ ] `tailwind.config.ts` : `fontSize`, `lineHeight`, `fontFamily` 설정 업데이트.
-    - [ ] 기본 HTML 태그(h1, p 등)에 대한 Base Style을 `@layer base`에 적용할지, 유틸리티 클래스로만 사용할지 결정하여 반영. (SOT 준수를 위해 유틸리티 클래스 권장)
+    - [x] `tailwind.config.ts` : `fontSize`, `lineHeight`, `fontFamily` 설정 업데이트.
+    - [x] 기본 HTML 태그(h1, p 등)에 대한 Base Style을 `@layer base`에 적용하여 Markdown 및 기본 태그 스타일 동기화.
 - **검증**:
     - `text-body-l` 클래스 적용 시 18px / 1.7 행간이 적용되는지 확인.
 
