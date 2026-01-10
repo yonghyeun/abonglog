@@ -41,20 +41,20 @@ export const CodeBlock = ({ children, className, title, language: propLanguage, 
   return (
     <div className="group relative my-8 overflow-hidden rounded-xl border border-border bg-[#ffffff] dark:bg-[#0d1117] text-sm shadow-md transition-shadow hover:shadow-lg">
       <div className="flex items-center justify-between border-b border-border bg-surface-2/50 px-4 py-3 backdrop-blur-md dark:bg-surface-2/10">
-        <div className="flex gap-1.5">
+        <div className="flex gap-1.5 shrink-0">
           <div className="h-3 w-3 rounded-full bg-[#FF5F56] border border-[#E0443E]" />
           <div className="h-3 w-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]" />
           <div className="h-3 w-3 rounded-full bg-[#27C93F] border border-[#1AAB29]" />
         </div>
         
         {/* Title or Language */}
-        <span className="absolute left-1/2 -translate-x-1/2 font-mono text-xs font-semibold text-secondary truncate max-w-[200px]">
+        <span className="mx-4 font-mono text-xs font-semibold text-secondary text-center break-words">
           {title || language.toUpperCase()}
         </span>
 
         <button
           onClick={onCopy}
-          className="flex items-center gap-1 rounded p-1.5 text-secondary transition-colors hover:bg-surface-3 hover:text-primary"
+          className="flex shrink-0 items-center gap-1 rounded p-1.5 text-secondary transition-colors hover:bg-surface-3 hover:text-primary"
           aria-label="Copy code"
         >
           {isCopied ? (
