@@ -115,13 +115,22 @@ applyto: "**/app/globals.css"
     - 현재의 단순 나열 레이아웃을 "책"이나 "앨범" 메타포를 차용한 디자인으로 변경 고려.
     - 시리즈 내 게시글 수(Count)와 대표 이미지를 조화롭게 배치한다.
 - **작업 (Checklist)**:
-    - [ ] `SeriesItem` (또는 `SeriesCard`) 컴포넌트 초기화 및 재설계
-    - [ ] 시리즈 제목, 설명, 게시글 수 표시 방식 개선
-    - [ ] Grid 레이아웃 내에서의 배치 확인
+    - [x] Grid 레이아웃 내에서의 배치 확인
+
+### Step 8: 인용구(Blockquote) 기본 스타일 개선 (Default to Note)
+
+- **목표**: 특별한 Alert 문법(`[!TYPE]`)이 없는 일반 인용구(`> content`)도 `[!NOTE]`와 동일한 스타일을 적용하여 디자인 일관성을 높인다.
+- **설명**:
+    - `remark-alert`가 감지하지 못한 일반 `blockquote` 요소를 렌더링할 때, `Note` 타입의 Alert와 시각적으로 동일하게 처리한다.
+    - 아이콘(ℹ️)과 배경색, 테두리 스타일을 `Note` 테마로 통일한다.
+- **작업 (Checklist)**:
+    - [ ] `components.tsx`의 `Blockquote` 컴포넌트 로직 수정
+    - [ ] 일반 인용구 렌더링 시 `Note` 스타일 적용 확인
 
 ## 4. 검증 (Verification)
 - [x] 메인 컬러가 Warm Orange로 변경되어 따뜻한 분위기를 주는가?
 - [x] `src` 폴더 내에 `text-purple` 등의 하드코딩된 클래스가 남아있지 않은가?
 - [x] 스크롤바가 다크/라이트 모드 모두에서 자연스러운가?
-- [ ] Border 색상이 튀지 않고 콘텐츠와 조화롭게 어우러지는가?
-- [ ] ArticleCard와 SeriesCard가 심미적으로 개선되었으며 정보 전달이 명확한가?
+- [x] Border 색상이 튀지 않고 콘텐츠와 조화롭게 어우러지는가?
+- [x] ArticleCard와 SeriesCard가 심미적으로 개선되었으며 정보 전달이 명확한가?
+- [ ] 일반 인용구(`>`)가 `[!NOTE]`와 동일하게 예쁘게 렌더링되는가?
