@@ -1,4 +1,4 @@
-import { Header } from "./Header";
+import { Header, Footer } from "@/widgets/navigate/ui";
 import "./globals.css";
 import { ServiceProvider, defaultMetadata } from "@/app";
 import { HydrationBoundary } from "@tanstack/react-query";
@@ -8,7 +8,6 @@ import localFont from "next/font/local";
 import { Suspense } from "react";
 
 import { DarkModeInitializeScript } from "@/features/utils/ui";
-import { Footer } from "@/widgets/navigate/ui";
 
 import { getArticleMetaListPerSeries } from "@/entities/article/model";
 
