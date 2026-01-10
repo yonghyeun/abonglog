@@ -11,6 +11,7 @@ import {
   getPopularArticleList
 } from "@/entities/article/model";
 
+import { Container } from "@/shared/ui/layout";
 import { prefetchQueryInServer } from "@/shared/model";
 
 export const dynamic = "force-static";
@@ -29,16 +30,24 @@ const MainPage = async () => {
     <Suspense fallback={<div>Loading...</div>}>
       <HydrationBoundary state={mainPageState}>
         {/* Latest Post */}
-        <section className="media-padding-x min-h-48 bg-secondary py-12">
-          <LatestArticleSlot />
+        <section className="bg-surface-2/30 py-16 transition-colors">
+          <Container variant="listing">
+             <LatestArticleSlot />
+          </Container>
         </section>
+        
         {/* Popular */}
-        <section className="media-padding-x mt-4 flex flex-col gap-4 py-12">
-          <PopularArticleSlot />
+        <section className="py-16 transition-colors">
+          <Container variant="listing">
+            <PopularArticleSlot />
+          </Container>
         </section>
+        
         {/* Series List  */}
-        <section className="media-padding-x mt-4 bg-secondary py-12">
-          <SeriesListSlot />
+        <section className="bg-surface-2/30 py-16 transition-colors">
+          <Container variant="listing">
+            <SeriesListSlot />
+          </Container>
         </section>
       </HydrationBoundary>
     </Suspense>

@@ -11,6 +11,7 @@ import {
 } from "@/entities/article/model";
 import { getSeriesList } from "@/entities/series/model";
 
+import { Container } from "@/shared/ui/layout";
 import { mergeDehydrateState } from "@/shared/lib";
 import {
   prefetchInfiniteQueryInServer,
@@ -58,12 +59,14 @@ const ArticleListPage: React.FC<ArticleListPageProps> = async ({ params }) => {
 
   return (
     <HydrationBoundary state={articleListState}>
-      <section className="media-padding-x flex min-h-screen flex-col">
-        {seriesName === "all" ? (
-          <EveryArticleListSlot />
-        ) : (
-          <ArticleListBySeriesSlot seriesName={seriesName} />
-        )}
+      <section className="min-h-screen py-16">
+        <Container variant="listing">
+          {seriesName === "all" ? (
+            <EveryArticleListSlot />
+          ) : (
+            <ArticleListBySeriesSlot seriesName={seriesName} />
+          )}
+        </Container>
       </section>
     </HydrationBoundary>
   );

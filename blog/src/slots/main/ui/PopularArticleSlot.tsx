@@ -3,11 +3,9 @@
 import Link from "next/link";
 import React, { Suspense, use, useState } from "react";
 
-import { ArticlePreviewCard } from "@/widgets/article/ui";
+import { ArticleRowCard } from "@/widgets/article/ui";
 
 import { useGetPopularArticleList } from "@/entities/article/model";
-
-import { Grid } from "@/shared/ui/Grid";
 
 type Period = "daily" | "weekly" | "monthly";
 
@@ -100,28 +98,33 @@ const PopularArticleGrid: React.FC<PopularArticleGridProps> = ({ promise }) => {
   const { articleList } = use(promise);
 
   return (
-    <Grid>
+    <div className="flex flex-col gap-6 mt-6">
       {articleList.map((article) => (
-        <Grid.Item key={article.id}>
-          <Link href={`article/${article.id}`}>
-            <ArticlePreviewCard {...article} />
-          </Link>
-        </Grid.Item>
+        <Link href={`article/${article.id}`} key={article.id}>
+          <ArticleRowCard {...article} />
+        </Link>
       ))}
-    </Grid>
+    </div>
   );
 };
 
 const LoadingGrid = () => {
   return (
-    <Grid>
-      {Array.from({ length: 12 }, (_, idx) => {
+    <div className="flex flex-col gap-6 mt-6">
+      {Array.from({ length: 6 }, (_, idx) => {
         return (
-          <Grid.Item key={idx}>
-            <div className="w-fill bg-disabled-bg-color aspect-square animate-pulse" />
-          </Grid.Item>
+          <div
+            key={idx}
+            className="flex h-48 w-full animate-pulse gap-6 border border-border bg-surface-1 p-4"
+          >
+            <div className="h-full w-1/3 bg-gray-200" />
+            <div className="flex flex-grow flex-col gap-2">
+              <div className="h-6 w-3/4 bg-gray-200" />
+              <div className="h-4 w-1/2 bg-gray-200" />
+            </div>
+          </div>
         );
       })}
-    </Grid>
+    </div>
   );
 };
