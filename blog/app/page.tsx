@@ -1,17 +1,18 @@
 import {
   LatestArticleSlot,
-  PopularArticleSlot,
+  RecentArticleListSlot,
   SeriesListSlot
 } from "@/slots/main/ui";
-import { HydrationBoundary } from "@tanstack/react-query";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate
+} from "@tanstack/react-query";
 import { Suspense } from "react";
 
-import {
-  getLatestArticle,
-  getPopularArticleList
-} from "@/entities/article/model";
+import { getArticleList, getLatestArticle } from "@/entities/article/model";
 
-import { prefetchQueryInServer } from "@/shared/model";
+import { Container } from "@/shared/ui/layout";
 
 export const dynamic = "force-static";
 export const revalidate = 86400; // 24 hours
@@ -21,24 +22,39 @@ export async function generateStaticParams() {
 }
 
 const MainPage = async () => {
-  const mainPageState = await prefetchQueryInServer(getLatestArticle, () =>
-    getPopularArticleList("daily")
-  );
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(getLatestArticle()),
+    queryClient.prefetchInfiniteQuery({
+      ...getArticleList("published")
+    })
+  ]);
+
+  const mainPageState = dehydrate(queryClient);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <HydrationBoundary state={mainPageState}>
         {/* Latest Post */}
-        <section className="media-padding-x min-h-48 bg-secondary py-12">
-          <LatestArticleSlot />
+        <section className="bg-surface-2/30 transition-colors">
+          <Container variant="listing">
+            <LatestArticleSlot />
+          </Container>
         </section>
-        {/* Popular */}
-        <section className="media-padding-x mt-4 flex flex-col gap-4 py-12">
-          <PopularArticleSlot />
+
+        {/* Recent Article List */}
+        <section className="bg-app py-16 transition-colors">
+          <Container variant="listing">
+            <RecentArticleListSlot />
+          </Container>
         </section>
+
         {/* Series List  */}
-        <section className="media-padding-x mt-4 bg-secondary py-12">
-          <SeriesListSlot />
+        <section className="bg-surface-2/30 py-16 transition-colors">
+          <Container variant="listing">
+            <SeriesListSlot />
+          </Container>
         </section>
       </HydrationBoundary>
     </Suspense>

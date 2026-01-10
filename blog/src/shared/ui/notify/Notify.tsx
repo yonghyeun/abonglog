@@ -13,7 +13,7 @@ const getTypeStyle = (type: NotifyProps["type"]) => {
   const styles = {
     error: "border-red-500 text-red-500",
     success: "border-green-500 text-green-500",
-    info: "border-purple-500 text-purple-500"
+    info: "border-brand-primary text-brand-primary"
   } as const;
   return styles[type];
 };

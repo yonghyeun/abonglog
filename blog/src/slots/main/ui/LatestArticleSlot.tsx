@@ -5,38 +5,31 @@ import Link from "next/link";
 
 import { useGetLatestArticle } from "@/entities/article/model";
 import { TagChip } from "@/entities/tag/ui";
-import { AdminProfile } from "@/entities/user/ui";
 
 import { List } from "@/shared/ui/List";
 
 export const LatestArticleSlot = () => {
   const {
-    data: {
-      id,
-      title,
-      author,
-      seriesName,
-      description,
-      createdAt,
-      thumbnailUrl,
-      tags
-    }
+    data: { id, title, seriesName, description, thumbnailUrl, tags }
   } = useGetLatestArticle();
 
   return (
-    <div className="flex flex-col-reverse gap-4 sm:flex-row">
+    <div className="flex flex-col-reverse gap-8 sm:flex-row sm:items-center">
       {/* preview */}
-      <div className="flex w-full flex-col justify-between gap-2 sm:w-1/2">
-        <div className="flex flex-col gap-2">
-          <p className="font-base text-purple-500 dark:text-purple-200">
-            최근 게시글
-          </p>
-          {/* 글 제목 */}
-          <h2 className="text-3xl font-bold">{title}</h2>
-          {/* 시리즈 제목 */}
-          <p className="text-purple-500 dark:text-purple-300">{seriesName}</p>
-          {/* 태그 리스트 */}
-          <List.UnOrder>
+      <div className="flex flex-1 flex-col gap-6">
+        <div className="space-y-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+            New Update
+          </span>
+
+          <Link href={`/article/${id}`} className="group block space-y-2">
+            <h2 className="text-3xl font-extrabold text-primary transition-colors group-hover:text-brand-primary sm:text-4xl">
+              {title}
+            </h2>
+            <p className="text-lg font-medium text-secondary">{seriesName}</p>
+          </Link>
+
+          <List.UnOrder className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <List.Item key={tag}>
                 <TagChip>{tag!}</TagChip>
@@ -44,47 +37,42 @@ export const LatestArticleSlot = () => {
             ))}
           </List.UnOrder>
         </div>
-        {/* 글 설명 */}
-        <p className="h-24 text-ellipsis text-sm/6 text-secondary">
+
+        <p className="text-secondary/80 line-clamp-3 text-base leading-relaxed">
           {description}
         </p>
 
-        {/* 프로필 사진과 제목 및 시간 */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <AdminProfile size="sm" />
-            <div className="text-xs text-secondary">
-              <p className="mb-1">{author}</p>
-              <time dateTime={new Date(createdAt).toISOString()}>
-                {new Date(createdAt).toLocaleString()}
-              </time>
-            </div>
-          </div>
-
+        <div className="flex items-center">
           <Link
             href={`/article/${id}`}
-            className="w-fit rounded-md bg-purple-700 px-4 py-2 text-sm text-white hover:bg-purple-900"
+            className="hover:bg-brand-primary/90 group flex items-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:shadow-lg active:scale-95"
             aria-label={`게시글 ${title}로 이동`}
           >
-            게시글로 이동
+            Read Article
+            <span className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
           </Link>
         </div>
       </div>
 
       {/* image */}
-      <div className="relative aspect-video w-full sm:w-1/2">
+      <div className="relative aspect-video w-full flex-1 overflow-hidden rounded-2xl shadow-xl sm:h-full">
         {thumbnailUrl ? (
-          <Image
-            src={thumbnailUrl}
-            alt={`${title} 의 썸네일 이미지`}
-            className="rounded-lg object-cover"
-            fill
-            priority={true}
-            quality={100}
-          />
+          <Link href={`/article/${id}`}>
+            <Image
+              src={thumbnailUrl}
+              alt={`${title} 의 썸네일 이미지`}
+              className="object-cover transition-transform duration-700 hover:scale-105"
+              fill
+              priority={true}
+              quality={100}
+            />
+          </Link>
         ) : (
-          // TODO 기본 이미지 생성하기
-          <div>empty</div>
+          <div className="flex h-full w-full items-center justify-center bg-surface-2 text-secondary">
+            <span>No Image</span>
+          </div>
         )}
       </div>
     </div>

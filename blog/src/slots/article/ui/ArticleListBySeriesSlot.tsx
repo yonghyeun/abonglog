@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React, { Suspense } from "react";
 
-import { ArticlePreviewCard } from "@/widgets/article/ui";
+import { ArticleRowCard } from "@/widgets/article/ui";
 
 import {
   useGetInfiniteArticleListBySeries,
@@ -11,7 +11,6 @@ import {
 } from "@/entities/article/model";
 
 import { useObserver } from "@/shared/lib";
-import { Grid } from "@/shared/ui/Grid";
 
 interface ArticleListBySeriesSlotProps {
   seriesName: string;
@@ -36,31 +35,36 @@ const ArticleList = ({
   return (
     <>
       <section className="p-2">
-        <Grid>
+        <div className="flex flex-col gap-6">
           {pages.map((article) => (
-            <Grid.Item key={article.id}>
-              <Link href={`/article/${article.id}`}>
-                <ArticlePreviewCard {...article} />
-              </Link>
-            </Grid.Item>
+            <Link href={`/article/${article.id}`} key={article.id}>
+              <ArticleRowCard {...article} />
+            </Link>
           ))}
 
           {/* loading Skeleton */}
           {isFetchingNextPage &&
-            Array(6)
+            Array(3)
               .fill(0)
               .map((_, idx) => (
-                <Grid.Item key={idx}>
-                  <div className="aspect-square animate-pulse bg-gray-200" />
-                </Grid.Item>
+                <div
+                  key={idx}
+                  className="border-border flex h-48 w-full animate-pulse gap-6 border bg-surface-1 p-4"
+                >
+                  <div className="h-full w-1/3 bg-gray-200" />
+                  <div className="flex flex-grow flex-col gap-2">
+                    <div className="h-6 w-3/4 bg-gray-200" />
+                    <div className="h-4 w-1/2 bg-gray-200" />
+                  </div>
+                </div>
               ))}
-        </Grid>
+        </div>
         {/* Infinite scroll observer */}
         {hasNextPage ? (
-          <div ref={observerRef} />
+          <div ref={observerRef} className="h-10" />
         ) : (
-          <div className="flex items-center justify-center py-12 text-gray-400">
-            {seriesName}의 모든 게시글을 가져왔습니다.
+          <div className="flex items-center justify-center py-12 text-secondary">
+            {seriesName}의 모든 게시글을 불러왔습니다.
           </div>
         )}
       </section>
@@ -78,7 +82,7 @@ export const ArticleListBySeriesSlot: React.FC<
       <header className="flex flex-col items-center">
         <h3>시리즈별로 보기</h3>
         <div className="flex items-center gap-2">
-          <h1 className="text-purple-500">{seriesName}</h1>
+          <h1 className="text-brand-primary">{seriesName}</h1>
           <span className="text-secondary">({numOfArticles})</span>
         </div>
       </header>

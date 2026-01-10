@@ -1,4 +1,5 @@
 import { components } from "./components";
+import { remarkAlert } from "./remarkAlert";
 import { Fragment, createElement } from "react";
 import { jsxDEV } from "react/jsx-dev-runtime";
 import { jsx, jsxs } from "react/jsx-runtime";
@@ -19,6 +20,7 @@ export const rehypeMarkdown = async (markdown: string) => {
     .use(remarkParse)
     // GitHub Flavored Markdown 확장 기능을 지원합니다 (테이블, 취소선 등).
     .use(remarkGfm)
+    .use(remarkAlert)
     // 줄바꿈을 <br> 태그로 변환 합니다.
     .use(remarkBreaks)
     // AST 형태로 파싱된 마크다운 텍스트를 HTML로 변환 합니다.
@@ -31,7 +33,10 @@ export const rehypeMarkdown = async (markdown: string) => {
     // 코드 블럭을 예쁘게 표현하기 위한 설정을 추가 합니다.
     .use(rehypePrettyCode, {
       grid: true,
-      theme: "github-dark",
+      theme: {
+        dark: "github-dark",
+        light: "github-light"
+      },
       keepBackground: false,
       bypassInlineCode: false,
       defaultLang: {

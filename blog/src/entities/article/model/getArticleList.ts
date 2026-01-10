@@ -46,7 +46,14 @@ export const getArticleList = (status: ArticleStatus) => {
   return {
     queryKey,
     queryFn,
-    initialPageParam: 0
+    initialPageParam: 0,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getNextPageParam: (lastPage: { data: any[]; currentPage: number }) => {
+      if (lastPage.data.length < ITEM_PER_PAGE) {
+        return undefined;
+      }
+      return lastPage.currentPage + 1;
+    }
   };
 };
 
