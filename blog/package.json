@@ -78,5 +78,10 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "overrides": {
+    "@storybook/nextjs": {
+      "next": "$next"
+    }
   }
 }
