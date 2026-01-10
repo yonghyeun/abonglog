@@ -8,7 +8,7 @@ applyto: "**/app/globals.css"
 | --- | --- |
 | 작성자 | GitHub Copilot |
 | 이슈 | #165-redesign |
-| 상태 | done |
+| 상태 | in-progress |
 | 날짜 | 2026-01-10 |
 
 ## 1. 컨텍스트 (Context)
@@ -16,6 +16,7 @@ applyto: "**/app/globals.css"
 기능적인 UI 구조(목록, 상세, 코드 블록) 구현이 완료되었으나, 전반적인 시각적 완성도(Look & Feel)가 부족하다.
 특히 기존의 보라색(Purple) 테마는 다소 차갑고 기계적인 느낌을 주어, 블로그의 "에세이 같은 따뜻함"을 전달하기 어렵다.
 이에 따라 따뜻하고 감성적인 **Warm Orange** 테마로 전면 개편하고, 코드 곳곳에 산재된 하드코딩된 색상 값들을 정리하여 디자인 시스템의 일관성을 확보한다.
+추가적으로, 너무 강한 테두리(Border)와 투박한 카드 디자인(Article/Series Card)을 개선하여 시각적 피로도를 낮추고 심미성을 강화한다.
 
 ## 2. 요구사항 명세 (Requirements)
 
@@ -34,6 +35,14 @@ applyto: "**/app/globals.css"
 ### 2.4. 테마 전환 최적화 (Theme Stability)
 - 초기 계획했던 복잡한 애니메이션은 렌더링 동기화 문제(Hydration mismatch)를 유발하므로 제외한다.
 - 대신 **즉각적이고 깔끔한(Instant & Clean)** 전환을 목표로 하며, 불필요한 `transition` 속성을 제거한다.
+
+### 2.5. 보더 스타일 완화 (Soften Borders)
+- 현재 컴포넌트들의 테두리(Border) 색상이 너무 진해 시선을 분산시키므로, 은은하고 자연스러운 톤으로 변경한다.
+- `border-gray-300` 등을 `border-border-default` (Stone 200) 또는 더 연한 색상으로 교체한다.
+
+### 2.6. 카드 UI 디자인 고도화 (Refine Card UI)
+- **ArticleCard**: 정보의 위계(제목 > 설명 > 메타정보)를 명확히 하고, 여백을 조정하여 균형을 잡는다.
+- **SeriesCard**: 단순히 텍스트만 나열된 현재의 투박한 레이아웃을 전면 수정하여, 시리즈물임을 명확히 인지할 수 있도록 개선한다.
 
 ## 3. 구현 단계 (Implementation Steps)
 
@@ -76,7 +85,43 @@ applyto: "**/app/globals.css"
 - **작업 (Checklist)**:
     - [x] Global transition rule 제거
 
+### Step 5: 보더 스타일 완화 (Soften Borders)
+
+- **목표**: 강한 테두리를 제거하여 콘텐츠 본연에 집중할 수 있는 부드러운 UI 조성.
+- **설명**:
+    - `ArticleRowCard`, `ImageGrid`, `Selector` 등 주요 컴포넌트의 Border 색상을 점검한다.
+    - `border-gray-300`, `border-400` 등으로 하드코딩된 부분을 디자인 토큰 `border-default` (Stone 200 수준) 또는 투명도 조절된 색상으로 변경한다.
+- **작업 (Checklist)**:
+    - [ ] `ArticleRowCard` border 색상 완화
+    - [ ] `ImageGrid` 선택/비선택 상태 border 스타일 조정
+    - [ ] 기타 UI 컴포넌트(`Input`, `Button`) border 톤 다운
+
+### Step 6: 게시글 카드(ArticleCard) 디자인 개선
+
+- **목표**: 가독성과 심미성이 뛰어난 게시글 목록 카드 구현.
+- **설명**:
+    - 썸네일과 텍스트의 비율, 패딩 값을 조정하여 시원한 느낌을 준다.
+    - 제목, 날짜, 태그의 폰트 크기 및 색상 위계를 명확히 한다.
+    - Hover 시 약간의 Scale Up이나 Shadow 효과를 추가하여 인터랙션을 강화한다.
+- **작업 (Checklist)**:
+    - [ ] `ArticleRowCard` 레이아웃 및 여백 재조정
+    - [ ] Typography 계층 구조 강화 (Title Bold, Meta text muted)
+    - [ ] Hover Interaction 추가
+
+### Step 7: 시리즈 카드(SeriesCard) 전면 재설계
+
+- **목표**: 투박한 텍스트 나열 형태를 벗어나 시각적으로 매력적인 시리즈 카드 구현.
+- **설명**:
+    - 현재의 단순 나열 레이아웃을 "책"이나 "앨범" 메타포를 차용한 디자인으로 변경 고려.
+    - 시리즈 내 게시글 수(Count)와 대표 이미지를 조화롭게 배치한다.
+- **작업 (Checklist)**:
+    - [ ] `SeriesItem` (또는 `SeriesCard`) 컴포넌트 초기화 및 재설계
+    - [ ] 시리즈 제목, 설명, 게시글 수 표시 방식 개선
+    - [ ] Grid 레이아웃 내에서의 배치 확인
+
 ## 4. 검증 (Verification)
 - [x] 메인 컬러가 Warm Orange로 변경되어 따뜻한 분위기를 주는가?
 - [x] `src` 폴더 내에 `text-purple` 등의 하드코딩된 클래스가 남아있지 않은가?
 - [x] 스크롤바가 다크/라이트 모드 모두에서 자연스러운가?
+- [ ] Border 색상이 튀지 않고 콘텐츠와 조화롭게 어우러지는가?
+- [ ] ArticleCard와 SeriesCard가 심미적으로 개선되었으며 정보 전달이 명확한가?
