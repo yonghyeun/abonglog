@@ -13,10 +13,10 @@ export const SeriesListSlot = () => {
   return (
     <>
       <h1 className="mb-2">시리즈별로 보기</h1>
-      <div className="flex justify-end m-2">
+      <div className="m-2 flex justify-end">
         <Link
           href="/article/list/all"
-          className="text-xl text-brand-primary hover:opacity-80 dark:text-brand-primary dark:hover:opacity-70 "
+          className="text-xl text-brand-primary hover:opacity-80 dark:text-brand-primary dark:hover:opacity-70"
         >
           전체 게시글 보기
         </Link>

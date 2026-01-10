@@ -1,17 +1,14 @@
+import { CodeFigure } from "./CodeFigure";
 import Image from "next/image";
 import React, { FC } from "react";
 import {
+  BiBulb,
+  BiCheckCircle,
   BiError,
   BiErrorCircle,
-  BiInfoCircle,
-  BiCheckCircle,
-  BiBulb
+  BiInfoCircle
 } from "react-icons/bi";
 
-import { CodeBlock as SharedCodeBlock } from "@/shared/ui/code";
-import { CodeFigure } from "./CodeFigure";
-
-// ... existing code ...
 import { SUPABASE_STORAGE_URL } from "@/shared/config";
 
 const Heading1: FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
@@ -90,10 +87,7 @@ const Paragraph: FC<React.HTMLAttributes<HTMLParagraphElement>> = ({
   children,
   ...props
 }) => (
-  <p
-    {...props}
-    className="mb-6 leading-relaxed text-body-l text-primary"
-  >
+  <p {...props} className="mb-6 text-body-l leading-relaxed text-primary">
     {children}
   </p>
 );
@@ -103,7 +97,7 @@ const Link: FC<
 > = ({ children, ...props }) => (
   <a
     {...props}
-    className="font-medium text-info hover:underline underline-offset-4 decoration-2"
+    className="text-info font-medium decoration-2 underline-offset-4 hover:underline"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -152,7 +146,9 @@ const Blockquote: FC<
       {...props}
       className={`my-6 rounded-r-lg border-l-4 px-4 py-4 not-italic ${styleClass}`}
     >
-      <div className={`mb-2 flex items-center gap-2 font-bold capitalize ${titleColor}`}>
+      <div
+        className={`mb-2 flex items-center gap-2 font-bold capitalize ${titleColor}`}
+      >
         {icon}
         <span>{calloutType}</span>
       </div>
@@ -161,25 +157,14 @@ const Blockquote: FC<
   );
 };
 
-const CodeBlock: FC<React.HTMLAttributes<HTMLElement>> = ({
-  children,
-  ...props
-}) => (
-  <code
-    {...props}
-    className="px-[0.3rem] py-[0.15rem] rounded bg-surface-2 font-mono text-sm text-primary border border-border"
-  >
-    {children}
-  </code>
-);
-
-
-
 const UnorderedList: FC<React.HTMLAttributes<HTMLUListElement>> = ({
   children,
   ...props
 }) => (
-  <ul {...props} className="mb-6 ml-6 list-disc space-y-2 text-body-l text-primary">
+  <ul
+    {...props}
+    className="mb-6 ml-6 list-disc space-y-2 text-body-l text-primary"
+  >
     {children}
   </ul>
 );
@@ -188,7 +173,10 @@ const OrderedList: FC<React.HTMLAttributes<HTMLOListElement>> = ({
   children,
   ...props
 }) => (
-  <ol {...props} className="mb-6 ml-6 list-decimal space-y-2 text-body-l text-primary">
+  <ol
+    {...props}
+    className="mb-6 ml-6 list-decimal space-y-2 text-body-l text-primary"
+  >
     {children}
   </ol>
 );
@@ -235,7 +223,7 @@ const TableRow: FC<React.HTMLAttributes<HTMLTableRowElement>> = ({
   children,
   ...props
 }) => (
-  <tr {...props} className="m-0 border-t border-border p-0 even:bg-surface-1">
+  <tr {...props} className="border-border m-0 border-t p-0 even:bg-surface-1">
     {children}
   </tr>
 );
@@ -246,7 +234,7 @@ const TableHeader: FC<React.ThHTMLAttributes<HTMLTableCellElement>> = ({
 }) => (
   <th
     {...props}
-    className="border border-border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right"
+    className="border-border border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right"
   >
     {children}
   </th>
@@ -258,7 +246,7 @@ const TableCell: FC<React.TdHTMLAttributes<HTMLTableCellElement>> = ({
 }) => (
   <td
     {...props}
-    className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"
+    className="border-border border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"
   >
     {children}
   </td>
@@ -270,7 +258,7 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
-  const randomImageId = Math.floor(Math.random() * 100000); 
+  const randomImageId = Math.floor(Math.random() * 100000);
 
   if (!src.startsWith(SUPABASE_STORAGE_URL)) {
     return (
@@ -282,7 +270,7 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
           {...props}
           loading="lazy"
           decoding="async"
-          className="rounded-lg shadow-md border border-border w-auto max-w-full"
+          className="border-border w-auto max-w-full rounded-lg border shadow-md"
           aria-describedby={`caption-${randomImageId}`}
         />
         <span
@@ -303,7 +291,7 @@ const ArticlePhoto: FC<ImageProps> = ({ src, alt, ...props }) => {
         {...props}
         width={1200}
         height={620}
-        className="rounded-lg shadow-md border border-border w-auto max-w-full"
+        className="border-border w-auto max-w-full rounded-lg border shadow-md"
         // 픽셀 밀도를 고려하여 원하는 이미지 크기 * 2 만큼의 sizes 고려
         sizes="(max-width: 600px) 1200px , (max-width: 800px) 1600px , 2400px"
         aria-describedby={`caption-${randomImageId}`}

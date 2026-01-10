@@ -10,12 +10,12 @@ interface ContainerProps {
 export const Container: React.FC<ContainerProps> = ({
   children,
   variant = "listing",
-  className,
+  className
 }) => {
   const maxWidthClass = {
     reading: "max-w-[720px]", // 45rem
     listing: "max-w-[1024px]", // 64rem
-    full: "max-w-full",
+    full: "max-w-full"
   };
 
   return (

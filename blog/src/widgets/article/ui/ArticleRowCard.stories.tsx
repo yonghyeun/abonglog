@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import { ArticleRowCard } from "./ArticleRowCard";
+import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof ArticleRowCard> = {
   title: "Widgets/Article/ArticleRowCard",

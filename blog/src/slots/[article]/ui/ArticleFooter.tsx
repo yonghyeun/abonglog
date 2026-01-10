@@ -29,7 +29,7 @@ export const ArticleFooter: React.FC<ArticleFooterProps> = ({
         {prevArticleData ? (
           <Link
             href={`/article/${prevArticleData.id}`}
-            className="group flex w-full flex-col gap-1 rounded-xl bg-surface-2 px-6 py-4 text-left transition-all hover:bg-surface-3 hover:scale-[1.02] active:scale-[0.98]"
+            className="hover:bg-surface-3 group flex w-full flex-col gap-1 rounded-xl bg-surface-2 px-6 py-4 text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <span className="flex items-center gap-2 text-xs font-medium text-secondary group-hover:text-brand-primary">
               <BiSolidLeftArrowCircle className="text-lg" />
@@ -49,7 +49,7 @@ export const ArticleFooter: React.FC<ArticleFooterProps> = ({
         {nextArticleData ? (
           <Link
             href={`/article/${nextArticleData.id}`}
-            className="group flex w-full flex-col items-end gap-1 rounded-xl bg-surface-2 px-6 py-4 text-right transition-all hover:bg-surface-3 hover:scale-[1.02] active:scale-[0.98]"
+            className="hover:bg-surface-3 group flex w-full flex-col items-end gap-1 rounded-xl bg-surface-2 px-6 py-4 text-right transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <span className="flex items-center gap-2 text-xs font-medium text-secondary group-hover:text-brand-primary">
               다음 포스트

@@ -3,13 +3,14 @@ import {
   RecentArticleListSlot,
   SeriesListSlot
 } from "@/slots/main/ui";
-import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate
+} from "@tanstack/react-query";
 import { Suspense } from "react";
 
-import {
-  getArticleList,
-  getLatestArticle
-} from "@/entities/article/model";
+import { getArticleList, getLatestArticle } from "@/entities/article/model";
 
 import { Container } from "@/shared/ui/layout";
 
@@ -26,8 +27,7 @@ const MainPage = async () => {
   await Promise.all([
     queryClient.prefetchQuery(getLatestArticle()),
     queryClient.prefetchInfiniteQuery({
-      initialPageParam: 0,
-       ...getArticleList("published")
+      ...getArticleList("published")
     })
   ]);
 
@@ -39,17 +39,17 @@ const MainPage = async () => {
         {/* Latest Post */}
         <section className="bg-surface-2/30 transition-colors">
           <Container variant="listing">
-             <LatestArticleSlot />
+            <LatestArticleSlot />
           </Container>
         </section>
-        
+
         {/* Recent Article List */}
         <section className="bg-app py-16 transition-colors">
           <Container variant="listing">
             <RecentArticleListSlot />
           </Container>
         </section>
-        
+
         {/* Series List  */}
         <section className="bg-surface-2/30 py-16 transition-colors">
           <Container variant="listing">

@@ -21,7 +21,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
   createdAt
 }) => {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-overlay transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg dark:bg-surface-1">
+    <article className="border-border hover:border-primary/50 group flex h-full flex-col overflow-hidden rounded-xl border bg-overlay transition-all hover:-translate-y-1 hover:shadow-lg dark:bg-surface-1">
       {/* Thumbnail */}
       <div className="relative aspect-video w-full overflow-hidden bg-surface-2">
         {thumbnailUrl ? (
@@ -44,10 +44,10 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
         <div className="flex flex-col gap-3">
           {/* Series & Title */}
           <div>
-            <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-info">
+            <span className="text-info mb-1 block text-xs font-bold uppercase tracking-wider">
               {seriesName}
             </span>
-            <h3 className="line-clamp-2 text-heading-s font-bold text-primary transition-colors group-hover:text-info">
+            <h3 className="group-hover:text-info line-clamp-2 text-heading-s font-bold text-primary transition-colors">
               {title}
             </h3>
           </div>
@@ -73,7 +73,7 @@ export const ArticlePreviewCard: React.FC<ArticlePreviewCardProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="mt-6 flex items-center justify-between border-t border-border pt-4 text-caption text-tertiary">
+        <div className="border-border mt-6 flex items-center justify-between border-t pt-4 text-caption text-tertiary">
           <time dateTime={createdAt}>
             {new Date(createdAt).toLocaleDateString()}
           </time>

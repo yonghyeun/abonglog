@@ -8,7 +8,7 @@ export const SessionProvider: React.FC<React.PropsWithChildren> = ({
   children
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const supabase = createBrowserSupabase();
+  const [supabase] = useState(() => createBrowserSupabase());
 
   useEffect(() => {
     // 초기 세션 가져오기
@@ -24,7 +24,7 @@ export const SessionProvider: React.FC<React.PropsWithChildren> = ({
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   return <SessionContext value={user}>{children}</SessionContext>;
 };

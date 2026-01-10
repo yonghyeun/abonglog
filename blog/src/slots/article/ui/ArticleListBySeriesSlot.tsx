@@ -49,7 +49,7 @@ const ArticleList = ({
               .map((_, idx) => (
                 <div
                   key={idx}
-                  className="flex h-48 w-full animate-pulse gap-6 border border-border bg-surface-1 p-4"
+                  className="border-border flex h-48 w-full animate-pulse gap-6 border bg-surface-1 p-4"
                 >
                   <div className="h-full w-1/3 bg-gray-200" />
                   <div className="flex flex-grow flex-col gap-2">

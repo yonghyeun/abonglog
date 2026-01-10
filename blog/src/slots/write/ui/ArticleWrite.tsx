@@ -581,7 +581,7 @@ const ThumbnailUploadInput = () => {
         }}
       />
       {/* 선택된 썸네일 주소 표현 컴포넌트 */}
-      <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-secondary text-brand-primary">
+      <p className="mb-0 line-clamp-1 flex-grow text-ellipsis text-brand-primary text-secondary">
         {isThumbnailUploading ? "썸네일 업로드 중..." : thumbnailUrl}
       </p>
     </div>

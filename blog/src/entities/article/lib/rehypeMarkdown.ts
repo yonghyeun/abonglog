@@ -1,11 +1,11 @@
 import { components } from "./components";
+import { remarkAlert } from "./remarkAlert";
 import { Fragment, createElement } from "react";
 import { jsxDEV } from "react/jsx-dev-runtime";
 import { jsx, jsxs } from "react/jsx-runtime";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeReact from "rehype-react";
 import rehypeSlug from "rehype-slug";
-import { remarkAlert } from "./remarkAlert";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";

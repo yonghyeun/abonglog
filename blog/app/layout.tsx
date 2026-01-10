@@ -1,12 +1,13 @@
-import { Header, Footer } from "@/widgets/navigate/ui";
-import "./globals.css";
 import "./code-styles.css";
+import "./globals.css";
 import { ServiceProvider, defaultMetadata } from "@/app";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/next";
 import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { Suspense } from "react";
+
+import { Footer, Header } from "@/widgets/navigate/ui";
 
 import { DarkModeInitializeScript } from "@/features/utils/ui";
 
@@ -18,13 +19,13 @@ const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
   display: "swap",
   variable: "--font-sans",
-  weight: "45 920",
+  weight: "45 920"
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-  display: "swap",
+  display: "swap"
 });
 
 interface RootLayoutProps {

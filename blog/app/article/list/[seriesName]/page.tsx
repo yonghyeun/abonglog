@@ -11,12 +11,12 @@ import {
 } from "@/entities/article/model";
 import { getSeriesList } from "@/entities/series/model";
 
-import { Container } from "@/shared/ui/layout";
 import { mergeDehydrateState } from "@/shared/lib";
 import {
   prefetchInfiniteQueryInServer,
   prefetchQueryInServer
 } from "@/shared/model";
+import { Container } from "@/shared/ui/layout";
 
 interface ArticleListPageProps {
   params: Promise<{

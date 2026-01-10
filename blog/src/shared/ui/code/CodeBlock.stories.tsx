@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import { CodeBlock } from "./CodeBlock";
+import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 
 const meta: Meta<typeof CodeBlock> = {
@@ -8,7 +8,7 @@ const meta: Meta<typeof CodeBlock> = {
   tags: ["autodocs"],
   argTypes: {
     "data-language": { control: "text" },
-    title: { control: "text" },
+    title: { control: "text" }
   },
   parameters: {
     layout: "padded"
@@ -39,7 +39,11 @@ export const WithTitle: Story = {
   args: {
     "data-language": "tsx",
     title: "Component.tsx",
-    children: <pre style={{ margin: 0 }}>{`const Component = () => <div>Hello</div>`}</pre>
+    children: (
+      <pre
+        style={{ margin: 0 }}
+      >{`const Component = () => <div>Hello</div>`}</pre>
+    )
   }
 };
 
@@ -47,7 +51,9 @@ export const LongLines: Story = {
   args: {
     "data-language": "javascript",
     children: (
-      <pre style={{ margin: 0 }}>{`const veryLongLine = "This is a line that is intentionally very long to test the horizontal scrolling behavior of the code block component. It should not wrap to the next line but instead allow the user to scroll horizontally to read the full content.";
+      <pre
+        style={{ margin: 0 }}
+      >{`const veryLongLine = "This is a line that is intentionally very long to test the horizontal scrolling behavior of the code block component. It should not wrap to the next line but instead allow the user to scroll horizontally to read the full content.";
     
 function checkScroll() {
   if (veryLongLine.length > 80) {
@@ -63,7 +69,7 @@ export const Bash: Story = {
     "data-language": "bash",
     title: "Terminal",
     children: (
-        <pre style={{ margin: 0 }}>{`npm install react react-dom next
+      <pre style={{ margin: 0 }}>{`npm install react react-dom next
 git commit -m "feat: add code block component"
 ls -la`}</pre>
     )

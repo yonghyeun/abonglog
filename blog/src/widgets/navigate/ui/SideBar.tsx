@@ -51,9 +51,7 @@ export const SideBar = () => {
               {Object.entries(data).map(
                 ([seriesName, articleMetaList], index) => (
                   <li key={index} className="flex flex-col gap-2">
-                    <h3
-                      className="flex w-fit items-center gap-2 text-lg font-bold text-brand-primary"
-                    >
+                    <h3 className="flex w-fit items-center gap-2 text-lg font-bold text-brand-primary">
                       {seriesName}
                     </h3>
                     <ul className="flex flex-col gap-1 border-l-2 border-default pl-4">

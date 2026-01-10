@@ -27,7 +27,9 @@ export const DarkModeToggle = () => {
       className="p-2 text-secondary transition-transform hover:scale-110 active:scale-95"
       aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
     >
-      <div className={`transition-all duration-300 ${isDarkMode ? "rotate-0" : "rotate-90"}`}>
+      <div
+        className={`transition-all duration-300 ${isDarkMode ? "rotate-0" : "rotate-90"}`}
+      >
         {isDarkMode ? <FaMoon size={20} /> : <FaSun size={20} />}
       </div>
     </button>

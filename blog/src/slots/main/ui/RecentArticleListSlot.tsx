@@ -1,11 +1,12 @@
 "use client";
 
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+
+import { ArticleRowCard } from "@/widgets/article/ui";
 
 import { getArticleList } from "@/entities/article/model";
-import { ArticleRowCard } from "@/widgets/article/ui";
 
 export const RecentArticleListSlot = () => {
   const { data } = useSuspenseInfiniteQuery(getArticleList("published"));
@@ -14,9 +15,9 @@ export const RecentArticleListSlot = () => {
 
   return (
     <div className="flex flex-col gap-8">
-            <span className="text-brand-primary text-xs font-bold uppercase tracking-wider">
-             Recent Articles 
-            </span>
+      <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+        Recent Articles
+      </span>
 
       <div className="flex flex-col gap-6">
         {articleList.map((article) => (

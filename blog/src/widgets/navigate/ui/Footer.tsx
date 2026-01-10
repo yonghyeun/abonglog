@@ -9,7 +9,8 @@ export const Footer = () => {
           <div className="flex-grow space-y-2">
             <h3 className="text-body-l font-bold text-primary">abonglog</h3>
             <p className="text-body-m">
-              공부한 내용을 기록하고 함께 성장하고 싶어 만든 두 번째 블로그입니다.
+              공부한 내용을 기록하고 함께 성장하고 싶어 만든 두 번째
+              블로그입니다.
               <br />
               주로 웹개발과 관련된 내용을 포스팅합니다.
             </p>

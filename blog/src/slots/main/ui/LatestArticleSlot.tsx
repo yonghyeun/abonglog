@@ -10,14 +10,7 @@ import { List } from "@/shared/ui/List";
 
 export const LatestArticleSlot = () => {
   const {
-    data: {
-      id,
-      title,
-      seriesName,
-      description,
-      thumbnailUrl,
-      tags
-    }
+    data: { id, title, seriesName, description, thumbnailUrl, tags }
   } = useGetLatestArticle();
 
   return (
@@ -25,9 +18,9 @@ export const LatestArticleSlot = () => {
       {/* preview */}
       <div className="flex flex-1 flex-col gap-6">
         <div className="space-y-4">
-            <span className="text-brand-primary text-xs font-bold uppercase tracking-wider">
-              New Update
-            </span>
+          <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+            New Update
+          </span>
 
           <Link href={`/article/${id}`} className="group block space-y-2">
             <h2 className="text-3xl font-extrabold text-primary transition-colors group-hover:text-brand-primary sm:text-4xl">
@@ -45,18 +38,20 @@ export const LatestArticleSlot = () => {
           </List.UnOrder>
         </div>
 
-        <p className="line-clamp-3 text-base leading-relaxed text-secondary/80">
+        <p className="text-secondary/80 line-clamp-3 text-base leading-relaxed">
           {description}
         </p>
 
         <div className="flex items-center">
           <Link
             href={`/article/${id}`}
-            className="group flex items-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-brand-primary/90 hover:shadow-lg active:scale-95"
+            className="hover:bg-brand-primary/90 group flex items-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-sm font-bold text-white shadow-md transition-all hover:shadow-lg active:scale-95"
             aria-label={`게시글 ${title}로 이동`}
           >
             Read Article
-            <span className="transition-transform group-hover:translate-x-1">→</span>
+            <span className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
           </Link>
         </div>
       </div>

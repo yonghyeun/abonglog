@@ -15,7 +15,7 @@ const chipStyles = [
   "bg-purple-100 text-purple-800 dark:bg-purple-500/10 dark:text-purple-200 hover:opacity-80",
   "bg-fuchsia-100 text-fuchsia-800 dark:bg-fuchsia-500/10 dark:text-fuchsia-200 hover:opacity-80",
   "bg-pink-100 text-pink-800 dark:bg-pink-500/10 dark:text-pink-200 hover:opacity-80",
-  "bg-rose-100 text-rose-800 dark:bg-rose-500/10 dark:text-rose-200 hover:opacity-80",
+  "bg-rose-100 text-rose-800 dark:bg-rose-500/10 dark:text-rose-200 hover:opacity-80"
 ] as const;
 interface ChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -30,7 +30,7 @@ export const Chip: React.FC<ChipProps> = ({
 }) => {
   // Ensure array index is non-negative and valid
   const safeIndex = Math.abs(theme) % chipStyles.length;
-  
+
   return (
     <button
       className={`${

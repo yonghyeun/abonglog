@@ -21,7 +21,7 @@ export const ArticleRowCard: React.FC<ArticleRowCardProps> = ({
   createdAt
 }) => {
   return (
-    <article className="group flex w-full flex-col overflow-hidden rounded-xl border border-default bg-overlay transition-all hover:border-brand-primary/50 hover:shadow-lg dark:bg-surface-1 sm:flex-row">
+    <article className="hover:border-brand-primary/50 group flex w-full flex-col overflow-hidden rounded-xl border border-default bg-overlay transition-all hover:shadow-lg dark:bg-surface-1 sm:flex-row">
       <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-surface-2 sm:w-72">
         {thumbnailUrl ? (
           <Image
@@ -49,7 +49,7 @@ export const ArticleRowCard: React.FC<ArticleRowCardProps> = ({
               {new Date(createdAt).toLocaleDateString()}
             </time>
           </div>
-          
+
           <h3 className="line-clamp-2 text-heading-s font-bold text-primary transition-colors group-hover:text-brand-primary">
             {title}
           </h3>
@@ -57,7 +57,7 @@ export const ArticleRowCard: React.FC<ArticleRowCardProps> = ({
           <p className="line-clamp-2 text-body-m text-secondary">
             {description}
           </p>
-          
+
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.slice(0, 4).map((tag) => (
               <TagChip key={tag} className="scale-90 opacity-90">

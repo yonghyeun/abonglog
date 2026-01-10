@@ -57,7 +57,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
           {/* 시리즈명 */}
           <Link
             href={`/article/list/${seriesName}`}
-            className="flex justify-center text-info hover:underline"
+            className="text-info flex justify-center hover:underline"
           >
             {seriesName}
           </Link>
@@ -100,7 +100,7 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
           </Container>
         </article>
         {/* 사이드바 */}
-        <aside className="relative hidden xl:block xl:w-[25%] text-secondary">
+        <aside className="relative hidden text-secondary xl:block xl:w-[25%]">
           <div className="sticky top-32 flex max-h-[80vh] flex-col overflow-y-auto">
             <ArticleSidebar
               articleId={articleId}
