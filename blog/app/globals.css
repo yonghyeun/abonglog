@@ -2,88 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "VictorMono";
-  src: url("/assets/fonts/VictorMono-Regular.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
+@layer base {
+  :root {
+    /* --- Design System 2026: Light Utils (Defaults) --- */
+    /* Backgrounds */
+    --bg-app: #ffffff;
+    --bg-surface-1: #f3f4f6;
+    --bg-surface-2: #e5e7eb;
+    --bg-overlay: #ffffff;
 
-:root {
-  --white: #faf4f4;
-  --secondary-white: #f4eeee;
-  --black: #1c1c1e;
-  --gray-dark: #212121;
+    /* Texts */
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-tertiary: #6b7280;
+    --text-quaternary: #9ca3af;
 
-  --bg-primary: var(--white);
-  --bg-secondary: var(--secondary-white);
-  --bg-dark-primary: var(--black);
-  --bg-dark-secondary: var(--gray-dark);
+    /* Borders */
+    --border-default: #e5e7eb;
+    --border-active: #d1d5db;
 
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-tertiary: #6b7280;
-  --text-quaternary: #9ca3af;
-  --text-dark-primary: #f9fafb;
-  --text-dark-secondary: #e5e7eb;
-  --text-dark-tertiary: #d1d5db;
-  --text-dark-quaternary: #9ca3af;
+    /* Semantic (Brand) */
+    --color-primary: #6200ea;
+    --color-secondary: #03dac6;
+    --color-error: #b00020;
+    --color-warning: #f57f17;
+    --color-info: #1976d2;
+    --color-success: #388e3c;
+    
+    /* Legacy (Deprecated) */
+    --selection-bg: #d3d3d3;
+    --code-background: #f6f8fa;
+  }
 
-  --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-dark:
-    0 1px 3px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(255, 255, 255, 0.06);
+  .dark {
+     /* --- Design System 2026: Dark Utils (Spec) --- */
+    /* Backgrounds */
+    --bg-app: #121212;
+    --bg-surface-1: #1e1e1e;
+    --bg-surface-2: #2c2c2c;
+    --bg-overlay: #383838;
 
-  --selection-bg: #d3d3d3;
+    /* Texts */
+    --text-primary: #e0e0e0; /* 87% */
+    --text-secondary: #b0b0b0; /* 70% */
+    --text-tertiary: #808080; /* 50% */
+    --text-quaternary: #6b7280; /* Fallback */
 
-  --code-background: #0d1117;
-}
-.dark {
-  --bg-primary: var(--bg-dark-primary);
-  --bg-secondary: var(--bg-dark-secondary);
-  --text-primary: var(--text-dark-primary);
-  --text-secondary: var(--text-dark-secondary);
-  --text-tertiary: var(--text-dark-tertiary);
-  --text-quaternary: var(--text-dark-quaternary);
-  --shadow-light: var(--shadow-dark);
-  --selection-bg: #374151;
-}
+    /* Borders */
+    --border-default: #333333;
+    --border-active: #555555;
 
-::-webkit-scrollbar {
-  display: none;
-}
+    /* Semantic (Brand) */
+    --color-primary: #bb86fc;
+    --color-secondary: #03dac6;
+    --color-error: #cf6679;
+    --color-warning: #ffb74d;
+    --color-info: #64b5f6;
+    --color-success: #81c784;
 
-/* 글자 드래그 시 셀렉션 된 영역 배경 수정 */
-::selection {
-  background-color: var(--selection-bg);
-}
-
-h1 {
-  font-size: 2rem;
-  word-break: keep-all;
-  color: var(--text-primary);
-}
-h2 {
-  font-size: 1.5rem;
-  word-break: keep-all;
-  color: var(--text-primary);
-}
-h3 {
-  font-size: 1.17rem;
-  word-break: keep-all;
-  color: var(--text-primary);
-}
-
-hr {
-  margin: 1rem 0;
-}
-
-.media-padding-x {
-  @apply px-4 sm:px-8 md:px-24 lg:px-32 xl:px-40 2xl:px-80;
-}
-
-* {
-  border-color: var(--text-quaternary);
+    /* Legacy (Deprecated) */
+    --selection-bg: #374151;
+    --code-background: #0d1117;
+  }
 }
 
 /* 
@@ -139,8 +119,8 @@ hr {
 }
 
 .code-block {
-  font-family: VictorMono, transparent;
-  background-color: var(--bg-secondary);
+  font-family: var(--font-mono), monospace;
+  background-color: var(--bg-surface-1);
   padding: 0.1rem 0.5rem;
   font-size: 1rem;
   border-radius: 4px;
@@ -156,7 +136,7 @@ hr {
   padding: 1rem 0.5rem;
   margin: 1rem 0;
   font-style: italic;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-surface-1);
 }
 
 .blockquote p {
@@ -199,7 +179,7 @@ hr {
   text-align: left;
 }
 .table-head th {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-surface-1);
 }
 
 .bold {

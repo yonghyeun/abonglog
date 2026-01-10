@@ -3,7 +3,8 @@ import "./globals.css";
 import { ServiceProvider, defaultMetadata } from "@/app";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/next";
-import { Gothic_A1 } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Suspense } from "react";
 
 import { DarkModeInitializeScript } from "@/features/utils/ui";
@@ -13,10 +14,17 @@ import { getArticleMetaListPerSeries } from "@/entities/article/model";
 import { GithubIcon, HumanIcon } from "@/shared/config";
 import { prefetchQueryInServer } from "@/shared/model";
 
-const GothicA1 = Gothic_A1({
-  subsets: ["latin"],
+const pretendard = localFont({
+  src: "./fonts/PretendardVariable.woff2",
   display: "swap",
-  weight: ["400", "700"]
+  variable: "--font-sans",
+  weight: "45 920",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 interface RootLayoutProps {
@@ -30,8 +38,12 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
   const sidebarState = await prefetchQueryInServer(getArticleMetaListPerSeries);
 
   return (
-    <html suppressHydrationWarning className={GothicA1.className} lang="ko">
-      <body className="flex min-h-screen flex-col bg-primary">
+    <html
+      suppressHydrationWarning
+      className={`${pretendard.variable} ${jetbrainsMono.variable}`}
+      lang="ko"
+    >
+      <body className="flex min-h-screen flex-col bg-app text-primary">
         <DarkModeInitializeScript />
         <ServiceProvider>
           <HydrationBoundary state={sidebarState}>
