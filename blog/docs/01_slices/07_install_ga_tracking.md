@@ -2,7 +2,7 @@
 
 > **Assignee:** @Agent / @User
 >
-> **Status:** 📝 Planning
+> **Status:** 🚧 In Progress
 >
 > **Linked Issue:** #167
 >
@@ -65,33 +65,33 @@ sequenceDiagram
 
 #### 2.1. Functional Requirements (기능 요구사항)
 
-- [ ] **Inputs:** GA 측정 ID(`NEXT_PUBLIC_GA_ID`)와 이벤트 속성 입력 범위 정의됨.
-- [ ] **Outputs:** GA 이벤트 전송 대상과 포맷 정의됨.
-- [ ] **User Tasks:** 방문/이동/글 조회/버튼 클릭이 모두 나열됨.
-- [ ] **Data Flow:** 이벤트가 클라이언트에서 GA로 전달되는 흐름이 정의됨.
-- [ ] **External Interfaces:** Google Analytics 수집 엔드포인트 의존성이 명시됨.
+- [x] **Inputs:** GA 측정 ID(`NEXT_PUBLIC_GA_ID`)와 이벤트 속성 입력 범위 정의됨.
+- [x] **Outputs:** GA 이벤트 전송 대상과 포맷 정의됨.
+- [x] **User Tasks:** 방문/이동/글 조회/버튼 클릭이 모두 나열됨.
+- [x] **Data Flow:** 이벤트가 클라이언트에서 GA로 전달되는 흐름이 정의됨.
+- [x] **External Interfaces:** Google Analytics 수집 엔드포인트 의존성이 명시됨.
 
 #### 2.2. Nonfunctional Requirements (품질 요구사항)
 
-- [ ] **Performance:** 페이지 렌더링에 영향을 최소화하도록 비동기 스크립트 로딩.
-- [ ] **Security:** 공개 키만 사용하며 민감 정보는 전송하지 않음.
-- [ ] **Reliability:** `NEXT_PUBLIC_GA_ID`가 없으면 트래킹을 비활성화함.
+- [x] **Performance:** 페이지 렌더링에 영향을 최소화하도록 비동기 스크립트 로딩.
+- [x] **Security:** 공개 키만 사용하며 민감 정보는 전송하지 않음.
+- [x] **Reliability:** `NEXT_PUBLIC_GA_ID`가 없으면 트래킹을 비활성화함.
 - [ ] **Maintainability:** 이벤트 이름/속성은 중앙 정의로 관리함.
 
 #### 2.3. Requirements Quality (요구사항 품질)
 
-- [ ] **User Language:** 사용자 관점으로 행동 시나리오가 서술됨.
+- [x] **User Language:** 사용자 관점으로 행동 시나리오가 서술됨.
 - [ ] **No Conflicts:** 기존 로그/분석 시스템과 충돌 없음.
-- [ ] **No Design Lock-in:** 구현 방식 변경 가능함.
-- [ ] **Consistent Detail:** 요구사항 디테일 수준이 일관됨.
-- [ ] **Traceability:** 문제 및 목표가 추적 가능함.
-- [ ] **Testability:** 이벤트 호출 여부를 테스트로 검증 가능함.
+- [x] **No Design Lock-in:** 구현 방식 변경 가능함.
+- [x] **Consistent Detail:** 요구사항 디테일 수준이 일관됨.
+- [x] **Traceability:** 문제 및 목표가 추적 가능함.
+- [x] **Testability:** 이벤트 호출 여부를 테스트로 검증 가능함.
 
 #### 2.4. Requirements Completeness (요구사항 완전성)
 
-- [ ] **Unknowns:** 이벤트 목록 확정 및 측정 ID 확정 필요.
-- [ ] **Definition of Success/Failure:** 이벤트 전송 성공/실패 기준 정의됨.
-- [ ] **Feasibility:** Next.js 환경에서 GA 적용 가능함.
+- [x] **Unknowns:** 이벤트 목록 확정 및 측정 ID 확정 필요.
+- [x] **Definition of Success/Failure:** 이벤트 전송 성공/실패 기준 정의됨.
+- [x] **Feasibility:** Next.js 환경에서 GA 적용 가능함.
 
 ## 2. ✅ Acceptance Criteria (AC, 인수 조건 - QC 기준)
 
@@ -142,13 +142,13 @@ sequenceDiagram
 
 - Covers: AC-01, AC-03, AC-04
 - [ ] **Integration Test:** `trackPageView`, `trackEvent` 호출 시나리오 테스트
-- [ ] **Logic Integration:** 측정 ID 유무 처리 및 예외 방지
+- [x] **Logic Integration:** 측정 ID 유무 처리 및 예외 방지
 
 #### Step 4: Presentation (UI Components)
 
 - Covers: AC-01, AC-02
-- [ ] **Component Structure:** `app/layout.tsx`에 스크립트 로딩 삽입
-- [ ] **Interaction:** 라우트 변경 및 글 상세 진입 시 이벤트 호출
+- [x] **Component Structure:** `app/layout.tsx`에 스크립트 로딩 삽입
+- [x] **Interaction:** 라우트 변경 및 글 상세 진입 시 이벤트 호출
 - [ ] **UX/UI Review:** 렌더링 지연 및 콘솔 오류 없음
 
 #### Step 5: Final Review
