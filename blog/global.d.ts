@@ -4,7 +4,10 @@ declare module "rehype-add-classes" {
   export default rehypeAddClasses;
 }
 
-interface Window {
-  dataLayer?: unknown[];
-  gtag?: (...args: unknown[]) => void;
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
 }
+export {};
