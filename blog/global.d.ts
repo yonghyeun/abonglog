@@ -3,3 +3,11 @@ declare module "rehype-add-classes" {
   const rehypeAddClasses: any;
   export default rehypeAddClasses;
 }
+
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+export {};

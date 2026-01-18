@@ -14,6 +14,7 @@ import { DarkModeInitializeScript } from "@/features/utils/ui";
 import { getArticleMetaListPerSeries } from "@/entities/article/model";
 
 import { prefetchQueryInServer } from "@/shared/model";
+import { GoogleAnalytics } from "@/shared/ui/GoogleAnalytics";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -54,6 +55,7 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children, modal }) => {
                 {modal}
                 {children}
                 <Analytics />
+                <GoogleAnalytics />
               </main>
               <Footer />
             </Suspense>

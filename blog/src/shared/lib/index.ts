@@ -3,3 +3,4 @@ export * from "./useObserver";
 export * from "./mergeDehydrateState";
 export * from "./createBrowserSupabase";
 export * from "./createServerSupabase";
+export * from "./analytics";
