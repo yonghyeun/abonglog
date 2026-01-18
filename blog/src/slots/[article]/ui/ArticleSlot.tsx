@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { createNestedHeadings } from "@/features/article/lib/createNestedHeadings";
-import { ArticleSidebar } from "@/features/article/ui";
+import { ArticleSidebar, ArticleViewTracker } from "@/features/article/ui";
 
 import { TagChip } from "@/entities/tag/ui";
 import { AdminProfile } from "@/entities/user/ui";
@@ -33,6 +33,12 @@ export const ArticleSlot: React.FC<ArticlePageProps> = async ({
   return (
     <section>
       <ProgressBar />
+      <ArticleViewTracker
+        articleId={articleId}
+        title={title}
+        seriesName={seriesName}
+        tags={tags}
+      />
       <header>
         {/* 썸네일 이미지 */}
         {thumbnailUrl ? (
