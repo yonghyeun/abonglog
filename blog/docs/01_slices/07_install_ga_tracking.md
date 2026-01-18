@@ -2,7 +2,7 @@
 
 > **Assignee:** @Agent / @User
 >
-> **Status:** 🚧 In Progress
+> **Status:** ✅ Done
 >
 > **Linked Issue:** #167
 >
@@ -76,12 +76,12 @@ sequenceDiagram
 - [x] **Performance:** 페이지 렌더링에 영향을 최소화하도록 비동기 스크립트 로딩.
 - [x] **Security:** 공개 키만 사용하며 민감 정보는 전송하지 않음.
 - [x] **Reliability:** `NEXT_PUBLIC_GA_ID`가 없으면 트래킹을 비활성화함.
-- [ ] **Maintainability:** 이벤트 이름/속성은 중앙 정의로 관리함.
+- [x] **Maintainability:** 이벤트 이름/속성은 중앙 정의로 관리함.
 
 #### 2.3. Requirements Quality (요구사항 품질)
 
 - [x] **User Language:** 사용자 관점으로 행동 시나리오가 서술됨.
-- [ ] **No Conflicts:** 기존 로그/분석 시스템과 충돌 없음.
+- [x] **No Conflicts:** 기존 로그/분석 시스템과 충돌 없음.
 - [x] **No Design Lock-in:** 구현 방식 변경 가능함.
 - [x] **Consistent Detail:** 요구사항 디테일 수준이 일관됨.
 - [x] **Traceability:** 문제 및 목표가 추적 가능함.
@@ -95,13 +95,13 @@ sequenceDiagram
 
 ## 2. ✅ Acceptance Criteria (AC, 인수 조건 - QC 기준)
 
-- [ ] **Success Case:**
-  - [ ] (AC-01) 유효한 `NEXT_PUBLIC_GA_ID`가 있을 때 모든 페이지 이동에 대해 `page_view`가 전송됨.
-  - [ ] (AC-02) 글 상세 페이지 진입 시 `article_view` 이벤트가 전송됨.
-- [ ] **Failure Case:**
-  - [ ] (AC-03) `NEXT_PUBLIC_GA_ID`가 없으면 이벤트 전송이 발생하지 않음.
-- [ ] **Edge Case:**
-  - [ ] (AC-04) 이벤트 전송 실패가 UI 오류로 전파되지 않음.
+- [x] **Success Case:**
+  - [x] (AC-01) 유효한 `NEXT_PUBLIC_GA_ID`가 있을 때 모든 페이지 이동에 대해 `page_view`가 전송됨.
+  - [x] (AC-02) 글 상세 페이지 진입 시 `article_view` 이벤트가 전송됨.
+- [x] **Failure Case:**
+  - [x] (AC-03) `NEXT_PUBLIC_GA_ID`가 없으면 이벤트 전송이 발생하지 않음.
+- [x] **Edge Case:**
+  - [x] (AC-04) 이벤트 전송 실패가 UI 오류로 전파되지 않음.
 
 ### 2.1. Test Plan (AC → Tests)
 
@@ -116,8 +116,8 @@ sequenceDiagram
 
 ### 3.1. Data Model Changes (If any)
 
-- [ ] 테이블 생성/수정 없음
-- [ ] RLS 정책 적용 없음
+- [x] 테이블 생성/수정 없음
+- [x] RLS 정책 적용 없음
 
 ### 3.2. API Specifications
 
@@ -129,19 +129,19 @@ sequenceDiagram
 #### Step 1: Persistence (DB)
 
 - Covers: AC-01, AC-02, AC-03, AC-04
-- [ ] **Verification:** GA 수집 엔드포인트 전송 확인
+- [x] **Verification:** GA 수집 엔드포인트 전송 확인
 
 #### Step 2: Domain (Business Logic)
 
 - Covers: AC-01, AC-02, AC-03
-- [ ] **Unit Test:** 이벤트 이름/속성 규칙 테스트 작성
-- [ ] **Implementation:** 이벤트 정의 및 스키마 작성
-- [ ] **Refactoring:** 이벤트 목록 정리
+- [x] **Unit Test:** 이벤트 이름/속성 규칙 테스트 작성
+- [x] **Implementation:** 이벤트 정의 및 스키마 작성
+- [x] **Refactoring:** 이벤트 목록 정리
 
 #### Step 3: Application (API Interface)
 
 - Covers: AC-01, AC-03, AC-04
-- [ ] **Integration Test:** `trackPageView`, `trackEvent` 호출 시나리오 테스트
+- [x] **Integration Test:** `trackPageView`, `trackEvent` 호출 시나리오 테스트
 - [x] **Logic Integration:** 측정 ID 유무 처리 및 예외 방지
 
 #### Step 4: Presentation (UI Components)
@@ -149,16 +149,16 @@ sequenceDiagram
 - Covers: AC-01, AC-02
 - [x] **Component Structure:** `app/layout.tsx`에 스크립트 로딩 삽입
 - [x] **Interaction:** 라우트 변경 및 글 상세 진입 시 이벤트 호출
-- [ ] **UX/UI Review:** 렌더링 지연 및 콘솔 오류 없음
+- [x] **UX/UI Review:** 렌더링 지연 및 콘솔 오류 없음
 
 #### Step 5: Final Review
 
-- [ ] **All Tests Pass:** 전체 테스트 슈트 실행
-- [ ] **Code Cleanup:** 불필요한 로깅 제거
+- [x] **All Tests Pass:** 전체 테스트 슈트 실행
+- [x] **Code Cleanup:** 불필요한 로깅 제거
 
 ## 4. 🏁 DoD Verification (Definition of Done)
 
-- [ ] **End-to-End Execution:** 페이지 진입부터 GA 이벤트 전송까지 동작함.
-- [ ] **Test Coverage:** 관련 테스트가 통과됨.
-- [ ] **Code Quality:** 린트 및 포맷 규칙 준수.
-- [ ] **Self-Review:** 콘솔 로그 및 임시 코드 제거.
+- [x] **End-to-End Execution:** 페이지 진입부터 GA 이벤트 전송까지 동작함.
+- [x] **Test Coverage:** 관련 테스트가 통과됨.
+- [x] **Code Quality:** 린트 및 포맷 규칙 준수.
+- [x] **Self-Review:** 콘솔 로그 및 임시 코드 제거.
